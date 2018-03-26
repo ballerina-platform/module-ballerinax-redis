@@ -28,6 +28,7 @@ import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.ballerinalang.model.types.BType;
 import org.ballerinalang.model.values.BStruct;
@@ -60,6 +61,7 @@ public class RedisDataSource<K, V> implements BValue {
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
     private boolean isClusterConnection = false;
     private boolean poolingEnabled = false;
+    private GenericObjectPool<StatefulConnection<K, V>> objectPool;
 
     /**
      * Constructor for {@link RedisDataSource}
@@ -84,6 +86,7 @@ public class RedisDataSource<K, V> implements BValue {
      */
     public void init(String hosts, String password, BStruct options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
+        Supplier<StatefulConnection<K, V>> supplier;
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, options);
         } else {
@@ -99,7 +102,6 @@ public class RedisDataSource<K, V> implements BValue {
      */
     public RedisCommands<K, V> getRedisCommands() {
         if (poolingEnabled) {
-
             StatefulRedisConnection<K, V> statefulRedisConnection = (StatefulRedisConnection<K, V>)
                     getStatefulRedisConnectionFromPool();
             return statefulRedisConnection.sync();
@@ -149,6 +151,25 @@ public class RedisDataSource<K, V> implements BValue {
         if (!poolingEnabled) {
             statefulRedisConnection = redisClient.connect(codec);
             redisCommands = statefulRedisConnection.sync();
+        } else {
+            Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig());
+        }
+    }
+
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, BStruct options) {
+        StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
+        List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
+                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
+                .collect(Collectors.toList());
+        //TODO: Clarify password usage with Redis Clusters and implement cluster authentication.
+        redisClusterClient = RedisClusterClient.create(redisURIS);
+        if (!poolingEnabled) {
+            statefulRedisClusterConnection = redisClusterClient.connect(codec);
+            redisClusterCommands = statefulRedisClusterConnection.sync();
+        } else {
+            Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig());
         }
     }
 
@@ -177,19 +198,6 @@ public class RedisDataSource<K, V> implements BValue {
         return builder;
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, BStruct options) {
-        StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
-        List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
-                .collect(Collectors.toList());
-        //TODO: Clarify password usage with Redis Clusters and implement cluster authentication.
-        redisClusterClient = RedisClusterClient.create(redisURIS);
-        if (!poolingEnabled) {
-            statefulRedisClusterConnection = redisClusterClient.connect(codec);
-            redisClusterCommands = statefulRedisClusterConnection.sync();
-        }
-    }
-
     private List<ServerAddress> obtainServerAddresses(String hostStr) {
         String[] hosts = hostStr.split(HOSTS_SEPARATOR);
         List<ServerAddress> result = new ArrayList<>(hosts.length);
@@ -216,23 +224,13 @@ public class RedisDataSource<K, V> implements BValue {
     }
 
     private StatefulConnection<K, V> getStatefulRedisConnectionFromPool() {
-        Supplier<StatefulConnection<K, V>> supplier;
-        if (isClusterConnection) {
-            supplier = () -> redisClusterClient.connect(codec);
-        } else {
-            supplier = () -> redisClient.connect(codec);
-        }
-        return obtainStatefulRedisConnection(supplier);
-    }
-
-    private <T extends StatefulConnection<K, V>> T obtainStatefulRedisConnection(Supplier<T> supplier) {
         try {
-            return ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig())
-                    .borrowObject();
+            return objectPool.borrowObject();
         } catch (Exception e) {
             throw new BallerinaException("Error occurred while obtaining connection from the pool");
         }
     }
+
 
     @Override
     public String stringValue() {
