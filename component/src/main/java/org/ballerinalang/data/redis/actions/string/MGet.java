@@ -19,43 +19,39 @@
 package org.ballerinalang.data.redis.actions.string;
 
 import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.ConnectorFuture;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BStringArray;
-import org.ballerinalang.natives.annotations.Argument;
-import org.ballerinalang.natives.annotations.BallerinaAction;
+import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.BallerinaFunction;
+import org.ballerinalang.natives.annotations.Receiver;
 
 /**
  * {@code mget} Maps with "MGET" operation of Redis.
  *
  * @since 0.5.0
  */
-@BallerinaAction(packageName = "ballerina.data.redis",
-                 actionName = "mGet",
-                 connectorName = Constants.CONNECTOR_NAME,
-                 args = {
-                         @Argument(name = "c",
-                                   type = TypeKind.CONNECTOR)
-                 })
+@BallerinaFunction(orgName = "ballerina",
+                   packageName = "data.redis",
+                   functionName = "mGet",
+                   receiver = @Receiver(type = TypeKind.STRUCT,
+                                        structType = "ClientConnector"))
 public class MGet extends AbstractRedisAction {
 
     @Override
-    public ConnectorFuture execute(Context context) {
-        BConnector bConnector = (BConnector) getRefArgument(context, 0);
-        RedisDataSource<String, String> redisDataSource = getDataSource(bConnector);
+    public void execute(Context context) {
+        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
 
-        BStringArray keys = (BStringArray) getRefArgument(context, 1);
+        BStringArray keys = (BStringArray) context.getRefArgument(1);
         String[] keysArray = new String[(int) keys.size()];
         for (int i = 0; i < keys.size(); i++) {
             keysArray[i] = keys.get(i);
         }
         BMap result = mGet(redisDataSource, keysArray);
-        context.getControlStack().getCurrentFrame().returnValues[0] = result;
-        return getConnectorFuture();
+        context.setReturnValues(result);
     }
 }

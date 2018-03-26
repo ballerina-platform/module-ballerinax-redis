@@ -14,114 +14,138 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina.data.redis;
+import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testSAdd () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
-    string _ = conn.quit();
+function testSAdd () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSDiff () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sDiff(["testSDiffKey1", "testSDiffKey2"]);
-    string _ = conn.quit();
+function testSDiff () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sDiff(["testSDiffKey1", "testSDiffKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSDiffStore () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
-    string _ = conn.quit();
+function testSDiffStore () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSInter () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sInter(["testSInterKey1", "testSInterKey2"]);
-    string _ = conn.quit();
+function testSInter () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sInter(["testSInterKey1", "testSInterKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSInterStore () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
-    string _ = conn.quit();
+function testSInterStore () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSIsMember () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.sIsMember("testSIsMemberKey", "testSIsMemberValue");
-    string _ = conn.quit();
+function testSIsMember () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> sIsMember("testSIsMemberKey", "testSIsMemberValue");
+    _ = conn -> quit();
     return result;
 }
 
-function testSMembers () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sMembers("testSMembersKey");
-    string _ = conn.quit();
+function testSMembers () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sMembers("testSMembersKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testSPop () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sPop("testSPopKey", 2);
-    string _ = conn.quit();
+function testSPop () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sPop("testSPopKey", 2);
+    _ = conn -> quit();
     return result;
 }
 
-function testSRandMember () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sRandMember("testSRandMemberKey", 2);
-    string _ = conn.quit();
+function testSRandMember () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sRandMember("testSRandMemberKey", 2);
+    _ = conn -> quit();
     return result;
 }
 
-function testSRem () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
-    string _ = conn.quit();
+function testSRem () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSUnion () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sUnion(["testUnionKey1", "testUnionKey2"]);
-    string _ = conn.quit();
+function testSUnion () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sUnion(["testUnionKey1", "testUnionKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testSUnionStore () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
-    string _ = conn.quit();
+function testSUnionStore () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
+    _ = conn -> quit();
     return result;
 }

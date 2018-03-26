@@ -14,238 +14,288 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina.data.redis;
+import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testSet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.set("Name", "Manuri");
-    string _ = conn.quit();
+function testSet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> setVal("Name", "Manuri");
+    _ = conn -> quit();
     return result;
 }
 
-function testGet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.get("GetTestKey");
-    string _ = conn.quit();
+function testGet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> get("GetTestKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testAppend () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.append("AppendTestKey", "SomeValue");
-    string _ = conn.quit();
+function testAppend () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> append("AppendTestKey", "SomeValue");
+    _ = conn -> quit();
     return result;
 }
 
-function testBitCount () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.bitCount("BitCountTestKey");
-    string _ = conn.quit();
+function testBitCount () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> bitCount("BitCountTestKey");
+    _ = conn -> quit();
     return result;
 }
 
-function tesBitOpAnd () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
+function tesBitOpAnd () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
     string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = conn.bitOpAnd("tesBitOpAndDest", keys);
-    string _ = conn.quit();
+    int result = conn -> bitOpAnd("tesBitOpAndDest", keys);
+    _ = conn -> quit();
     return result;
 }
 
-function tesBitOpOr () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
+function tesBitOpOr () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
     string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = conn.bitOpOr("tesBitOpOrDest", keys);
-    string _ = conn.quit();
+    int result = conn -> bitOpOr("tesBitOpOrDest", keys);
+    _ = conn -> quit();
     return result;
 }
 
-function testSetBit () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.setBit("testSetBitKey", 1, 2);
-    string _ = conn.quit();
+function testSetBit () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> setBit("testSetBitKey", 1, 2);
+    _ = conn -> quit();
     return result;
 }
 
-function tesBitOpNot () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.bitOpNot("tesBitOpNotDest", "testBitOpKey1");
-    string _ = conn.quit();
+function tesBitOpNot () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> bitOpNot("tesBitOpNotDest", "testBitOpKey1");
+    _ = conn -> quit();
     return result;
 }
 
-function tesBitOpXor () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
-    string _ = conn.quit();
+function tesBitOpXor () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testDecr () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.decr("testDecrKey");
-    string _ = conn.quit();
+function testDecr () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> decr("testDecrKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testDecrBy () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.decrBy("testDecrByKey", 3);
-    string _ = conn.quit();
+function testDecrBy () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> decrBy("testDecrByKey", 3);
+    _ = conn -> quit();
     return result;
 }
 
-function testGetBit () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.getBit("testGetBitKey", 4);
-    string _ = conn.quit();
+function testGetBit () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> getBit("testGetBitKey", 4);
+    _ = conn -> quit();
     return result;
 }
 
-function testGetRange () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.getRange("testGetRangekey", 2, 5);
-    string _ = conn.quit();
+function testGetRange () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> getRange("testGetRangekey", 2, 5);
+    _ = conn -> quit();
     return result;
 }
 
-function testGetSet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.getSet("testGetSetKey", "testGetSetNewValue");
-    string _ = conn.quit();
+function testGetSet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> getSet("testGetSetKey", "testGetSetNewValue");
+    _ = conn -> quit();
     return result;
 }
 
-function testIncr () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.incr("testIncrKey");
-    string _ = conn.quit();
+function testIncr () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> incr("testIncrKey");
+    _ = conn -> quit();
     return result;
 }
 
 
-function testIncrBy () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.incrBy("testIncrByKey", 2);
-    string _ = conn.quit();
+function testIncrBy () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> incrBy("testIncrByKey", 2);
+    _ = conn -> quit();
     return result;
 }
 
-function testIncrByFloat () (float) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    float result = conn.incrByFloat("testIncrByKey", 0.2f);
-    string _ = conn.quit();
+function testIncrByFloat () returns (float) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    float result = conn -> incrByFloat("testIncrByKey", 0.2f);
+    _ = conn -> quit();
     return result;
 }
 
-function testMGet () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
-    string _ = conn.quit();
+function testMGet () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testMSet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
+function testMSet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
     map keyValueMap = {testMSetKey1:"testMSetValue1", testMSetKey2:"testMSetValue2", testMSetKey3:"testMSetValue3"};
-    string result = conn.mSet(keyValueMap);
-    string _ = conn.quit();
+    string result = conn -> mSet(keyValueMap);
+    _ = conn -> quit();
     return result;
 }
 
-function testMSetNx () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
+function testMSetNx () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
     map keyValueMap = {testMSetNxKey1:"testMSetNxNewValue1", testMSetNxKey2:"testMSetNxValue2", testMSetNxKey3:
                                                                                                 "testMSetNxValue3"};
-    boolean result = conn.mSetNx(keyValueMap);
-    string _ = conn.quit();
+    boolean result = conn -> mSetNx(keyValueMap);
+    _ = conn -> quit();
     return result;
 }
 
-function testPSetEx () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
-    string _ = conn.quit();
+function testPSetEx () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
+    _ = conn -> quit();
     return result;
 }
 
-function testSetEx () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.setEx("testSetExKey", "testSetExNewValue", 5);
-    string _ = conn.quit();
+function testSetEx () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> setEx("testSetExKey", "testSetExNewValue", 5);
+    _ = conn -> quit();
     return result;
 }
 
-function testSetNx () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.setNx("testSetNxKey", "testSetNxValue");
-    string _ = conn.quit();
+function testSetNx () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> setNx("testSetNxKey", "testSetNxValue");
+    _ = conn -> quit();
     return result;
 }
 
-function testSetRange () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.setRange("testSetRangeKey", 2, "!!!");
-    string _ = conn.quit();
+function testSetRange () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> setRange("testSetRangeKey", 2, "!!!");
+    _ = conn -> quit();
     return result;
 }
 
-function testStrln () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.strln("testStrlnKey");
-    string _ = conn.quit();
+function testStrln () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> strln("testStrlnKey");
+    _ = conn -> quit();
     return result;
 }
 

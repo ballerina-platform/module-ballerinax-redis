@@ -19,38 +19,34 @@
 package org.ballerinalang.data.redis.actions.key;
 
 import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.ConnectorFuture;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BStringArray;
-import org.ballerinalang.natives.annotations.Argument;
-import org.ballerinalang.natives.annotations.BallerinaAction;
+import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.BallerinaFunction;
+import org.ballerinalang.natives.annotations.Receiver;
 
 /**
  * {@code {@link Keys}} Maps with "KEYS" operation of Redis.
  *
  * @since 0.5.0
  */
-@BallerinaAction(packageName = "ballerina.data.redis",
-                 actionName = "keys",
-                 connectorName = Constants.CONNECTOR_NAME,
-                 args = {
-                         @Argument(name = "c",
-                                   type = TypeKind.CONNECTOR)
-                 })
+@BallerinaFunction(orgName = "ballerina",
+                   packageName = "data.redis",
+                   functionName = "keys",
+                   receiver = @Receiver(type = TypeKind.STRUCT,
+                                        structType = "ClientConnector"))
 public class Keys extends AbstractRedisAction {
 
     @Override
-    public ConnectorFuture execute(Context context) {
-        BConnector bConnector = (BConnector) getRefArgument(context, 0);
-        RedisDataSource<String, String> redisDataSource = getDataSource(bConnector);
+    public void execute(Context context) {
+        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
 
-        String pattern = getStringArgument(context, 0);
+        String pattern = context.getStringArgument(0);
         BStringArray result = keys(pattern, redisDataSource);
-        context.getControlStack().getCurrentFrame().returnValues[0] = result;
-        return getConnectorFuture();
+        context.setReturnValues(result);
     }
 }

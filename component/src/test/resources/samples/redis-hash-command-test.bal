@@ -14,133 +14,162 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina.data.redis;
+import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testHDel () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
-    string _ = conn.quit();
+function testHDel () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    
+    int result = conn -> hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testHGet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.hGet("testHGetKey", "testHGetField1");
-    string _ = conn.quit();
+function testHGet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> hGet("testHGetKey", "testHGetField1");
+    _ = conn -> quit();
     return result;
 }
 
-function testHExists () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.hExists("testHExistsKey", "testHExistsField1");
-    string _ = conn.quit();
+function testHExists () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> hExists("testHExistsKey", "testHExistsField1");
+    _ = conn -> quit();
     return result;
 }
 
-function testHGetAll () (map) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    map result = conn.hGetAll("testHGetAllKey");
-    string _ = conn.quit();
+function testHGetAll () returns (map) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    map result = conn -> hGetAll("testHGetAllKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testHIncrBy () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
-    string _ = conn.quit();
+function testHIncrBy () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
+    _ = conn -> quit();
     return result;
 }
 
-function testHIncrByFloat () (float) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    float result = conn.hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2f);
-    string _ = conn.quit();
+function testHIncrByFloat () returns (float) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    float result = conn -> hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2f);
+    _ = conn -> quit();
     return result;
 }
 
-function testHKeys () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.hKeys("testHKeysKey");
-    string _ = conn.quit();
+function testHKeys () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> hKeys("testHKeysKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testHLen () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.hLen("testHLenKey");
-    string _ = conn.quit();
+function testHLen () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> hLen("testHLenKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testHMGet () (map) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    map result = conn.hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
-    string _ = conn.quit();
+function testHMGet () returns (map) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    map result = conn -> hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testHMSet () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
+function testHMSet () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
     map fieldValueMap = {testHMSetField1:"testHMSetValue1", testHMSetField2:"testHMSetValue2"};
-    string result = conn.hMSet("testHMSetKey", fieldValueMap);
-    string _ = conn.quit();
+    string result = conn -> hMSet("testHMSetKey", fieldValueMap);
+    _ = conn -> quit();
     return result;
 }
 
-function testHSet () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.hSet("testHSetKey", "testHSetField1", "testHSetValue1");
-    string _ = conn.quit();
+function testHSet () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> hSet("testHSetKey", "testHSetField1", "testHSetValue1");
+    _ = conn -> quit();
     return result;
 }
 
-function testHSetNx () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
-    string _ = conn.quit();
+function testHSetNx () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+    _ = conn -> quit();
     return result;
 }
 
-function testHStrln () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.hStrln("testHStrlnKey", "testHStrlnField1");
-    string _ = conn.quit();
+function testHStrln () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> hStrln("testHStrlnKey", "testHStrlnField1");
+    _ = conn -> quit();
     return result;
 }
 
-function testHVals () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.hVals("testHValsKey");
-    string _ = conn.quit();
+function testHVals () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> hVals("testHValsKey");
+    _ = conn -> quit();
     return result;
 }

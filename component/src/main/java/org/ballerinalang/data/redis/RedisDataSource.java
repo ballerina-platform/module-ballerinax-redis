@@ -30,8 +30,8 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.ballerinalang.connector.api.Struct;
 import org.ballerinalang.model.types.BType;
-import org.ballerinalang.model.values.BStruct;
 import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
@@ -84,7 +84,7 @@ public class RedisDataSource<K, V> implements BValue {
      * @param password The password required for authentication
      * @param options  The additional options
      */
-    public void init(String hosts, String password, BStruct options) {
+    public void init(String hosts, String password, Struct options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         Supplier<StatefulConnection<K, V>> supplier;
         if (isClusterConnection) {
@@ -132,7 +132,20 @@ public class RedisDataSource<K, V> implements BValue {
         return isClusterConnection;
     }
 
-    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, BStruct options) {
+    /**
+     * Returns whether the connection made by the datasource is a cluster connection.
+     *
+     * @return boolean true/false
+     */
+    public boolean isPoolingEnabled() {
+        return poolingEnabled;
+    }
+
+    public void closeConnectionPool() {
+        objectPool.close();
+    }
+
+    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, Struct options) {
         if (serverAddresses.size() > 1) {
             throw new BallerinaException("More than one hosts have been provided for a non-cluster connection");
         }
@@ -157,7 +170,7 @@ public class RedisDataSource<K, V> implements BValue {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, BStruct options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, Struct options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
         List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
                 RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
@@ -173,14 +186,14 @@ public class RedisDataSource<K, V> implements BValue {
         }
     }
 
-    private RedisURI.Builder setOptions(RedisURI.Builder builder, BStruct options) {
-        int database = (int) options.getIntField(ConnectionParam.DATABASE.getIndex());
-        int connectionTimeout = (int) options.getIntField(ConnectionParam.CONNECTION_TIMEOUT.getIndex());
-        String clientName = options.getStringField(ConnectionParam.CLIENT_NAME.getIndex());
+    private RedisURI.Builder setOptions(RedisURI.Builder builder, Struct options) {
+        int database = (int) options.getIntField(ConnectionParam.DATABASE.getKey());
+        int connectionTimeout = (int) options.getIntField(ConnectionParam.CONNECTION_TIMEOUT.getKey());
+        String clientName = options.getStringField(ConnectionParam.CLIENT_NAME.getKey());
 
-        boolean sslEnabled = options.getBooleanField(ConnectionParam.SSL_ENABLED.getIndex()) != 0;
-        boolean startTlsEnabled = options.getBooleanField(ConnectionParam.START_TLS_ENABLED.getIndex()) != 0;
-        boolean verifyPeerEnabled = options.getBooleanField(ConnectionParam.VERIFY_PEER_ENABLED.getIndex()) != 0;
+        boolean sslEnabled = options.getBooleanField(ConnectionParam.SSL_ENABLED.getKey());
+        boolean startTlsEnabled = options.getBooleanField(ConnectionParam.START_TLS_ENABLED.getKey());
+        boolean verifyPeerEnabled = options.getBooleanField(ConnectionParam.VERIFY_PEER_ENABLED.getKey());
 
         if (database != -1) {
             builder.withDatabase(database);
@@ -249,22 +262,23 @@ public class RedisDataSource<K, V> implements BValue {
 
     private enum ConnectionParam {
         //String params
-        CLIENT_NAME(0),
+        CLIENT_NAME("clientName"),
 
         //int params
-        DATABASE(0), CONNECTION_TIMEOUT(1),
+        DATABASE("database"), CONNECTION_TIMEOUT("connectionTimeout"),
 
         //boolean params
-        POOLING_ENABLED(0), IS_CLUSTER_CONNECTION(1), SSL_ENABLED(2), START_TLS_ENABLED(3), VERIFY_PEER_ENABLED(4);
+        POOLING_ENABLED("poolingEnabled"), IS_CLUSTER_CONNECTION("isClusterConnection"), SSL_ENABLED(
+                "sslEnabled"), START_TLS_ENABLED("startTlsEnabled"), VERIFY_PEER_ENABLED("verifyPeerEnabled");
 
-        private int index;
+        private String key;
 
-        ConnectionParam(int index) {
-            this.index = index;
+        ConnectionParam(String key) {
+            this.key = key;
         }
 
-        private int getIndex() {
-            return index;
+        private String getKey() {
+            return key;
         }
     }
 

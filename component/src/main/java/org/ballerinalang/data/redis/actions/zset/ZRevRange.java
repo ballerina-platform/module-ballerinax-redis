@@ -19,41 +19,36 @@
 package org.ballerinalang.data.redis.actions.zset;
 
 import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.ConnectorFuture;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BStringArray;
-import org.ballerinalang.natives.annotations.Argument;
-import org.ballerinalang.natives.annotations.BallerinaAction;
+import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.BallerinaFunction;
+import org.ballerinalang.natives.annotations.Receiver;
 
 /**
  * {@code {@link ZRevRange}} Maps with "ZREVRANGE" operation of Redis.
  *
  * @since 0.5.0
  */
-@BallerinaAction(packageName = "ballerina.data.redis",
-                 actionName = "zRevRange",
-                 connectorName = Constants.CONNECTOR_NAME,
-                 args = {
-                         @Argument(name = "c",
-                                   type = TypeKind.CONNECTOR)
-                 })
-public class ZRevRange
-        extends AbstractRedisAction {
+@BallerinaFunction(orgName = "ballerina",
+                   packageName = "data.redis",
+                   functionName = "zRevRange",
+                   receiver = @Receiver(type = TypeKind.STRUCT,
+                                        structType = "ClientConnector"))
+public class ZRevRange extends AbstractRedisAction {
 
     @Override
-    public ConnectorFuture execute(Context context) {
-        BConnector bConnector = (BConnector) getRefArgument(context, 0);
-        RedisDataSource<String, String> redisDataSource = getDataSource(bConnector);
+    public void execute(Context context) {
+        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
 
-        String key = getStringArgument(context, 0);
-        long min = getLongArgument(context, 0);
-        long max = getLongArgument(context, 1);
+        String key = context.getStringArgument(0);
+        long min = (int) context.getIntArgument(0);
+        long max = context.getIntArgument(1);
         BStringArray result = zRevRange(key, min, max, redisDataSource);
-        context.getControlStack().getCurrentFrame().returnValues[0] = result;
-        return getConnectorFuture();
+        context.setReturnValues(result);
     }
 }

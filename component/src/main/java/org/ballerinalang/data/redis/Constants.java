@@ -18,13 +18,66 @@
 
 package org.ballerinalang.data.redis;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Constants for Redis Connector.
  *
  * @since 0.5.0
  */
 public class Constants {
-    public static final String CONNECTOR_NAME = "ClientConnector";
+    public static final String CLIENT_CONNECTOR = "ClientConnector";
     public static final String DATASOURCE_KEY = "datasource_key";
     public static final int DEFAULT_REDIS_PORT = 6379;
+    public static final String CLIENT_ENDPOINT_CONFIG = "clientEndpointConfig";
+    public static final String REDIS_PACKAGE_PATH = "ballerina.data.redis";
+    public static final String REDIS_CONNECTOR_ERROR = "RedisConnectorError";
+    public static final String REDIS_EXCEPTION_OCCURED = "Exception Occurred while executing Redis action";
+    public static final String B_CONNECTOR = "BConnector";
+
+    /**
+     * Endpoint configuration constants.
+     */
+    public static class EndpointConfig {
+        public static final String HOST = "host";
+        public static final String PASSWORD = "password";
+        public static final String OPTIONS = "options";
+        public static final String CLUSTERING_ENABLED = "isClusterConnection";
+        public static final String POOLING_ENABLED = "poolingEnabled";
+    }
+
+    /**
+     * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}
+     */
+    public enum Codec {
+        BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");
+
+        String codec;
+
+        static Map<String, Codec> codecMap = new HashMap<>(3);
+
+        static {
+            Codec[] codecs = values();
+            for (Codec codec : codecs) {
+                codecMap.put(codec.getCodecName(), codec);
+            }
+        }
+
+        Codec(String codec) {
+            this.codec = codec;
+        }
+
+        public String getCodecName() {
+            return codec;
+        }
+
+        public static Codec fromCodecName(String codecName) {
+            Codec codec = codecMap.get(codecName);
+            if (codec == null) {
+                throw new IllegalArgumentException("Unsupported Codec: " + codecName);
+            }
+            return codec;
+        }
+    }
 }

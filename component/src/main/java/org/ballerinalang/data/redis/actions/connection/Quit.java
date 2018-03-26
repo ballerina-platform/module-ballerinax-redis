@@ -19,36 +19,32 @@
 package org.ballerinalang.data.redis.actions.connection;
 
 import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.ConnectorFuture;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.natives.annotations.Argument;
-import org.ballerinalang.natives.annotations.BallerinaAction;
+import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.BallerinaFunction;
+import org.ballerinalang.natives.annotations.Receiver;
 
 /**
- * {@code Close} action is used to close the Redis connection.
+ * {@code Quit} action is used to quit the Redis connection.
  *
  * @since 0.5.0
  */
-@BallerinaAction(packageName = "ballerina.data.redis",
-                 actionName = "quit",
-                 connectorName = Constants.CONNECTOR_NAME,
-                 args = {
-                         @Argument(name = "c",
-                                   type = TypeKind.CONNECTOR)
-                 })
+@BallerinaFunction(orgName = "ballerina",
+                   packageName = "data.redis",
+                   functionName = "quit",
+                   receiver = @Receiver(type = TypeKind.STRUCT,
+                                        structType = "ClientConnector"))
 public class Quit extends AbstractRedisAction {
 
     @Override
-    public ConnectorFuture execute(Context context) {
-        BConnector bConnector = (BConnector) getRefArgument(context, 0);
-        RedisDataSource<String, String> redisDataSource = getDataSource(bConnector);
+    public void execute(Context context) {
+        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
         BString result = quit(redisDataSource);
-        context.getControlStack().getCurrentFrame().returnValues[0] = result;
-        return getConnectorFuture();
+        context.setReturnValues(result);
     }
 }

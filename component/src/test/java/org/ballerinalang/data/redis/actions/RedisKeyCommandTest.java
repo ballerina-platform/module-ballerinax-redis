@@ -186,7 +186,8 @@ public class RedisKeyCommandTest extends RedisCommandsBaseTest {
 
     @Test
     public void testSortCommand() throws Exception {
-        BValue[] result = BRunUtil.invoke(compileResult, "testSort");
+        BValue[] args = {};
+        BValue[] result = BRunUtil.invokeFunction(compileResult, "testSort", args);
         Assert.assertEquals(result.length, 1);
         BStringArray sortedArray = (BStringArray) result[0];
         String[] listValues = { "0", "1", "2", "3", "4", "8" };

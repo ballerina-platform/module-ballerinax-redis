@@ -16,39 +16,32 @@
  * under the License.
  */
 
-package org.ballerinalang.data.redis.actions.string;
+package org.ballerinalang.data.redis.actions.connection;
 
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.model.values.BStruct;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 
 /**
- * {@code pSetex} Maps with "PSETEX" operation of Redis.
+ * {@code Close} action is used to close the Redis connection pool.
  *
  * @since 0.5.0
  */
 @BallerinaFunction(orgName = "ballerina",
                    packageName = "data.redis",
-                   functionName = "pSetEx",
+                   functionName = "close",
                    receiver = @Receiver(type = TypeKind.STRUCT,
                                         structType = "ClientConnector"))
-public class PSetEx extends AbstractRedisAction {
-
+public class Close extends AbstractRedisAction {
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
-
-        String key = context.getStringArgument(0);
-        String value = context.getStringArgument(1);
-        long expirationPeriodMS = (int) context.getIntArgument(0);
-        BString result = pSetex(key, value, expirationPeriodMS, redisDataSource);
-        context.setReturnValues(result);
+        close(redisDataSource);
     }
 }

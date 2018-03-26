@@ -18,9 +18,9 @@
 package org.ballerinalang.data.redis;
 
 import org.ballerinalang.annotation.JavaSPIService;
-import org.ballerinalang.repository.PackageRepository;
-import org.ballerinalang.repository.fs.ClasspathPackageRepository;
 import org.ballerinalang.spi.SystemPackageRepositoryProvider;
+import org.wso2.ballerinalang.compiler.packaging.repo.JarRepo;
+import org.wso2.ballerinalang.compiler.packaging.repo.Repo;
 
 /**
  * This represents the standard Ballerina built-in system package repository provider.
@@ -28,12 +28,9 @@ import org.ballerinalang.spi.SystemPackageRepositoryProvider;
  * @since 0.5.0
  */
 @JavaSPIService("org.ballerinalang.spi.SystemPackageRepositoryProvider")
-public class StandardSystemPackageRepositoryProvider implements SystemPackageRepositoryProvider {
+public class RedisSystemPackageRepositoryProvider implements SystemPackageRepositoryProvider {
 
-    private static final String JAR_SYSTEM_LIB_LOCATION = "/META-INF/natives/";
-
-    @Override
-    public PackageRepository loadRepository() {
-        return new ClasspathPackageRepository(this.getClass(), JAR_SYSTEM_LIB_LOCATION);
+    public Repo loadRepository() {
+        return new JarRepo(SystemPackageRepositoryProvider.getClassUri(this));
     }
 }

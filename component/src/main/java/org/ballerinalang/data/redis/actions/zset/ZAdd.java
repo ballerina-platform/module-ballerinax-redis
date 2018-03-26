@@ -19,17 +19,16 @@
 package org.ballerinalang.data.redis.actions.zset;
 
 import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.ConnectorFuture;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.natives.annotations.Argument;
-import org.ballerinalang.natives.annotations.BallerinaAction;
+import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.BallerinaFunction;
+import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
 import java.util.HashMap;
@@ -40,22 +39,20 @@ import java.util.Map;
  *
  * @since 0.5.0
  */
-@BallerinaAction(packageName = "ballerina.data.redis",
-                 actionName = "zAdd",
-                 connectorName = Constants.CONNECTOR_NAME,
-                 args = {
-                         @Argument(name = "c",
-                                   type = TypeKind.CONNECTOR)
-                 })
+@BallerinaFunction(orgName = "ballerina",
+                   packageName = "data.redis",
+                   functionName = "zAdd",
+                   receiver = @Receiver(type = TypeKind.STRUCT,
+                                        structType = "ClientConnector"))
 public class ZAdd extends AbstractRedisAction {
 
     @Override
-    public ConnectorFuture execute(Context context) {
-        BConnector bConnector = (BConnector) getRefArgument(context, 0);
-        RedisDataSource<String, String> redisDataSource = getDataSource(bConnector);
+    public void execute(Context context) {
+        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
 
-        String key =  getStringArgument(context, 0);
-        BMap<String, BFloat> bMap = (BMap<String, BFloat>) getRefArgument(context, 1);
+        String key = context.getStringArgument(0);
+        BMap<String, BFloat> bMap = (BMap<String, BFloat>) context.getRefArgument(1);
         if (bMap == null) {
             throw new BallerinaException("Member Map " + MUST_NOT_BE_NULL);
         }
@@ -63,7 +60,6 @@ public class ZAdd extends AbstractRedisAction {
         bMap.keySet().forEach(value -> valueScoreMap.put(value, (bMap.get(value).floatValue())));
 
         BInteger result = zAdd(key, redisDataSource, valueScoreMap);
-        context.getControlStack().getCurrentFrame().returnValues[0] = result;
-        return getConnectorFuture();
+        context.setReturnValues(result);
     }
 }

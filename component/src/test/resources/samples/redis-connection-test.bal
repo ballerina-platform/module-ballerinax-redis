@@ -14,34 +14,40 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina.data.redis;
+import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testInitWithConnectionParam () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {poolingEnabled:true, isClusterConnection:false, sslEnabled:false,
-        startTlsEnabled:false, verifyPeerEnabled:false, database:0, connectionTimeout:500});
-    }
-    string result = conn.ping();
-    string _ = conn.quit();
+function testInitWithConnectionParam () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{poolingEnabled:true, isClusterConnection:false, sslEnabled:false,
+                    startTlsEnabled:false, verifyPeerEnabled:false, database:0, connectionTimeout:500}
+    };
+    string result = conn -> ping();
+    conn -> close();
     return result;
 }
 
-function testPing () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.ping();
-    string _ = conn.quit();
+function testPing () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> ping();
+    _ = conn -> quit();
     return result;
 }
 
-function testEcho () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.echo("Manuri");
-    string _ = conn.quit();
+function testEcho () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> echo("Manuri");
+    _ = conn -> quit();
     return result;
 }

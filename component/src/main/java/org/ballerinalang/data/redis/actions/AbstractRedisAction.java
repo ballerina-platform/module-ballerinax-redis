@@ -21,25 +21,14 @@ package org.ballerinalang.data.redis.actions;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScoredValue;
-import io.lettuce.core.codec.ByteArrayCodec;
-import io.lettuce.core.codec.RedisCodec;
-import io.lettuce.core.codec.StringCodec;
-import io.lettuce.core.codec.Utf8StringCodec;
-import org.ballerinalang.bre.Context;
-import org.ballerinalang.connector.api.AbstractNativeAction;
-import org.ballerinalang.connector.api.ConnectorFuture;
-import org.ballerinalang.data.redis.Constants;
+import org.ballerinalang.bre.bvm.BlockingNativeCallableUnit;
 import org.ballerinalang.data.redis.RedisDataSource;
 import org.ballerinalang.model.values.BBoolean;
-import org.ballerinalang.model.values.BConnector;
 import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
 import org.ballerinalang.model.values.BStringArray;
-import org.ballerinalang.model.values.BValue;
-import org.ballerinalang.nativeimpl.actions.ClientConnectorFuture;
-import org.ballerinalang.natives.exceptions.ArgumentOutOfRangeException;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
 import java.util.HashMap;
@@ -53,60 +42,10 @@ import java.util.Set;
  *
  * @since 0.5.0
  */
-public abstract class AbstractRedisAction extends AbstractNativeAction {
+public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
     protected static final String MUST_NOT_BE_NULL = "must not be null";
 
     protected AbstractRedisAction() {
-    }
-
-    @Override
-    public BValue getRefArgument(Context context, int index) {
-        if (index > -1) {
-            return context.getControlStack().getCurrentFrame().getRefRegs()[index];
-        }
-        throw new ArgumentOutOfRangeException(index);
-    }
-
-    protected ConnectorFuture getConnectorFuture() {
-        ClientConnectorFuture future = new ClientConnectorFuture();
-        future.notifySuccess();
-        return future;
-    }
-
-    protected RedisDataSource getDataSource(BConnector bConnector) {
-        RedisDataSource datasource = null;
-        BMap sharedMap = (BMap) bConnector.getRefField(1);
-        if (sharedMap.get(new BString(Constants.DATASOURCE_KEY)) != null) {
-            BValue value = sharedMap.get(new BString(Constants.DATASOURCE_KEY));
-            if (value instanceof RedisDataSource) {
-                datasource = (RedisDataSource) value;
-            }
-        } else {
-            throw new BallerinaException("Datasource is not initialized properly");
-        }
-        return datasource;
-    }
-
-    protected RedisCodec retrieveRedisCodec(String codecString) {
-        Codec codec = retrieveCodec(codecString);
-        switch (codec) {
-        case BYTE_ARRAY_CODEC:
-            return new ByteArrayCodec();
-        case STRING_CODEC:
-            return new StringCodec();
-        case UTF8_STRING_CODEC:
-            return new Utf8StringCodec();
-        default:
-            throw new UnsupportedOperationException("Support for RedisCodec " + codec + " is not implemented yet");
-        }
-    }
-
-    protected Codec retrieveCodec(String codecString) {
-        try {
-            return Codec.fromCodecName(codecString);
-        } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Unsupported Codec: " + codecString);
-        }
     }
 
     //String Commands
@@ -757,6 +696,22 @@ public abstract class AbstractRedisAction extends AbstractNativeAction {
         return new BString(result);
     }
 
+    protected <K, V> void close(RedisDataSource<K, V> redisDataSource) {
+        if (isClusterConnection(redisDataSource)) {
+            if (redisDataSource.isPoolingEnabled()) {
+                redisDataSource.closeConnectionPool();
+            } else {
+                redisDataSource.getRedisClusterCommands().quit();
+            }
+        } else {
+            if (redisDataSource.isPoolingEnabled()) {
+                redisDataSource.closeConnectionPool();
+            } else {
+                redisDataSource.getRedisCommands().quit();
+            }
+        }
+    }
+
     // Sorted Set Commands
 
     protected <K, V> BInteger zAdd(K key, RedisDataSource<K, V> redisDataSource, Map<V, Double> valueScoreMap) {
@@ -1403,57 +1358,5 @@ public abstract class AbstractRedisAction extends AbstractNativeAction {
         Map<String, String> map = new HashMap<>(bMap.size());
         bMap.keySet().forEach(item -> map.put(item, bMap.get(item).stringValue()));
         return map;
-    }
-
-    //TODO: This method should have been added to AbstractNativeAction class. Remove once it's added and released
-    public double getDoubleArgument(Context context, int index) {
-        if (index > -1) {
-            return context.getControlStack().getCurrentFrame().getDoubleRegs()[index];
-        } else {
-            throw new ArgumentOutOfRangeException(index);
-        }
-    }
-
-    //TODO: This method is already there in AbstractNativeAction but buggy. Remove this once its fixed
-    public long getLongArgument(Context context, int index) {
-        if (index > -1) {
-            return context.getControlStack().getCurrentFrame().getLongRegs()[index];
-        } else {
-            throw new ArgumentOutOfRangeException(index);
-        }
-    }
-
-    /**
-     * Enum of Codecs which map with classes of type {@link RedisCodec}
-     */
-    protected enum Codec {
-        BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");
-
-        String codec;
-
-        static Map<String, Codec> codecMap = new HashMap<>(3);
-
-        static {
-            Codec[] codecs = values();
-            for (Codec codec : codecs) {
-                codecMap.put(codec.getCodecName(), codec);
-            }
-        }
-
-        Codec(String codec) {
-            this.codec = codec;
-        }
-
-        public String getCodecName() {
-            return codec;
-        }
-
-        public static Codec fromCodecName(String codecName) {
-            Codec codec = codecMap.get(codecName);
-            if (codec == null) {
-                throw new IllegalArgumentException("Unsupported Codec: " + codecName);
-            }
-            return codec;
-        }
     }
 }

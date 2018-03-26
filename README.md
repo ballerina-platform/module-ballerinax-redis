@@ -147,54 +147,56 @@ Sample
 import ballerina.data.redis;
 
 function main (string[] args) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector("localhost", "", {sslEnabled:false});
-    }
+    endpoint redis:Client conn {
+        host:"localhost",
+        password:"",
+        options:{}
+    };
     
     println("Pinging Redis Server...");
     //Ping Server
-    string result = conn.ping();
+    string result = conn -> ping();
     println(result);
     
     println("===Executing sample string oprerations===");
     //Sample String Operations
     println("Setting value of the key \"Project\" as \"Ballerina\"");
-    string stringSetresult = conn.set("Project", "Ballerina");
+    string stringSetresult = conn -> set("Project", "Ballerina");
     println("Querying the server for the value of the key \"Project\"");
-    string value = conn.get("Project");
+    string value = conn -> get("Project");
     println("Reply from the server: " + value);
     
     println("===Executing sample list oprerations===");
     //Sample List Operations
     println("Pushing 3 elements to NumberList");
-    int listPushresult = conn.lPush("NumberList", ["One", "Two"]);
+    int listPushresult = conn -> lPush("NumberList", ["One", "Two"]);
     println("Reply from server: " + listPushresult);
     
     println("Poping an element from NumberList");
-    string poppedElement = conn.lPop("NumberList");
+    string poppedElement = conn -> lPop("NumberList");
     println("Popped Element: " + poppedElement);
     
     println("===Executing sample set oprerations===");
     //Sample Set Operations
     println("Adding 3 elements to NumberSet");
-    int setAddResult = conn.sAdd("NumberSet", ["1", "2", "3"]);
+    int setAddResult = conn -> sAdd("NumberSet", ["1", "2", "3"]);
     println("Reply from server: " + setAddResult);
 
     println("Querying number of elemenets in the Set");
-    int numberOfMembers = conn.sCard("NumberSet");
+    int numberOfMembers = conn -> sCard("NumberSet");
     println("Number of members: " + numberOfMembers);
         
     println("===Executing sample hash oprerations===");
     //Sample Hash operations
     println("Adding a key value pair to a hash");
-    boolean hashSetResult = conn.hSet("HashKey", "Name", "Manuri");
+    boolean hashSetResult = conn -> hSet("HashKey", "Name", "Manuri");
     println("Reply from server: " + hashSetResult);
     
     println("Querying the value of the hash field Name");
-    string hashGetResult = conn.hGet("HashKey", "Name");
+    string hashGetResult = conn -> hGet("HashKey", "Name");
     println("Value of the hash field \"Name\": " + hashGetResult);
     
-    string _ = conn.quit();
+    _ = conn -> quit();
     println("Redis connection closed!");
 }
 

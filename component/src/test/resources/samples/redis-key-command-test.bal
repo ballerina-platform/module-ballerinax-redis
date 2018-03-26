@@ -14,135 +14,163 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina.data.redis;
+import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testDel () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.del(["testDelKey1", "testDelKey2", "testDelKey3"]);
-    string _ = conn.quit();
+function testDel () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> del(["testDelKey1", "testDelKey2", "testDelKey3"]);
+    _ = conn -> quit();
     return result;
 }
 
-function testExists () (int, int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.exists(["testExistsKey"]);
-    int result2 = conn.exists(["nonExistentKey"]);
-    string _ = conn.quit();
-    return result, result2;
+function testExists () returns (int, int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> exists(["testExistsKey"]);
+    int result2 = conn -> exists(["nonExistentKey"]);
+    _ = conn -> quit();
+    return (result, result2);
 }
 
-function testExpire () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.expire("testExpireKey", 3);
-    string _ = conn.quit();
+function testExpire () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> expire("testExpireKey", 3);
+    _ = conn -> quit();
     return result;
 }
 
-function testKeys () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.keys("testKeysKey*");
-    string _ = conn.quit();
+function testKeys () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> keys("testKeysKey*");
+    _ = conn -> quit();
     return result;
 }
 
-function testMove () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.move("testMoveKey", 1);
-    string _ = conn.quit();
+function testMove () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> move("testMoveKey", 1);
+    _ = conn -> quit();
     return result;
 }
 
-function testPersist () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.persist("testPersistKey");
-    string _ = conn.quit();
+function testPersist () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> persist("testPersistKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testPExpire () (boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.pExpire("testPExpireKey", 3000);
-    string _ = conn.quit();
+function testPExpire () returns (boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> pExpire("testPExpireKey", 3000);
+    _ = conn -> quit();
     return result;
 }
 
-function testPTtl () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.pTtl("testPTtlKey");
-    string _ = conn.quit();
+function testPTtl () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> pTtl("testPTtlKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testRandomKey () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.randomKey();
-    string _ = conn.quit();
+function testRandomKey () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> randomKey();
+    _ = conn -> quit();
     return result;
 }
 
-function testRename () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.rename("testRenameKey", "testRenameKey1");
-    string _ = conn.quit();
+function testRename () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> rename("testRenameKey", "testRenameKey1");
+    _ = conn -> quit();
     return result;
 }
 
-function testRenameNx () (boolean, boolean) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    boolean result = conn.renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
-    boolean result2 = conn.renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
-    string _ = conn.quit();
-    return result, result2;
+function testRenameNx () returns (boolean, boolean) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    boolean result = conn -> renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
+    boolean result2 = conn -> renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+    _ = conn -> quit();
+    return (result, result2);
 }
 
-function testSort () (string[]) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string[] result = conn.sort("testSortKey");
-    string _ = conn.quit();
+function testSort () returns (string[]) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string[] result = conn -> sort("testSortKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testTtl () (int) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    int result = conn.pTtl("testTtlKey");
-    string _ = conn.quit();
+function testTtl () returns (int) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    int result = conn -> pTtl("testTtlKey");
+    _ = conn -> quit();
     return result;
 }
 
-function testType () (string) {
-    endpoint<redis:ClientConnector> conn {
-        create redis:ClientConnector(REDIS_HOST, "", {});
-    }
-    string result = conn.redisType("testTypeKey");
-    string _ = conn.quit();
+function testType () returns (string) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    string result = conn -> redisType("testTypeKey");
+    _ = conn -> quit();
     return result;
 }
 

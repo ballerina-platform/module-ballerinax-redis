@@ -15,40 +15,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.ballerinalang.data.redis.actions.string;
+package org.ballerinalang.data.redis.endpoint;
 
 import org.ballerinalang.bre.Context;
+import org.ballerinalang.bre.bvm.BlockingNativeCallableUnit;
 import org.ballerinalang.data.redis.Constants;
-import org.ballerinalang.data.redis.RedisDataSource;
-import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.model.values.BStruct;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
+import org.ballerinalang.natives.annotations.ReturnType;
 
 /**
- * {@code pSetex} Maps with "PSETEX" operation of Redis.
+ * Returns the Redis Client connector.
  *
  * @since 0.5.0
  */
-@BallerinaFunction(orgName = "ballerina",
-                   packageName = "data.redis",
-                   functionName = "pSetEx",
+
+@BallerinaFunction(orgName = "ballerina", packageName = "data.redis",
+                   functionName = "getClient",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = "ClientConnector"))
-public class PSetEx extends AbstractRedisAction {
+                                        structType = "Client",
+                                        structPackage = "ballerina.data.redis"),
+                   returnType = { @ReturnType(type = TypeKind.STRUCT) },
+                   isPublic = true)
+public class GetClient extends BlockingNativeCallableUnit {
 
     @Override
     public void execute(Context context) {
-        BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
-
-        String key = context.getStringArgument(0);
-        String value = context.getStringArgument(1);
-        long expirationPeriodMS = (int) context.getIntArgument(0);
-        BString result = pSetex(key, value, expirationPeriodMS, redisDataSource);
-        context.setReturnValues(result);
+        BStruct clientEndPoint = (BStruct) context.getRefArgument(0);
+        BStruct clientConnector = (BStruct) clientEndPoint.getNativeData(Constants.B_CONNECTOR);
+        context.setReturnValues(clientConnector);
     }
 }
