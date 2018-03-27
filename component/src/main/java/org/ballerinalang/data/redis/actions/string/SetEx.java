@@ -21,6 +21,7 @@ package org.ballerinalang.data.redis.actions.string;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
+import org.ballerinalang.data.redis.RedisDataSourceUtils;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BString;
@@ -49,6 +50,10 @@ public class SetEx extends AbstractRedisAction {
         String value = context.getStringArgument(1);
         int expirationPeriodSeconds = (int) context.getIntArgument(0);
         BString result = setEx(key, value, expirationPeriodSeconds, redisDataSource);
-        context.setReturnValues(result);
+        try {
+            context.setReturnValues(result);
+        } catch (Throwable e) {
+            context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
+        }
     }
 }

@@ -18,223 +18,223 @@ import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testZAdd () returns (int) {
+function testZAdd () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
     map valueScoreMap = {testZAddValue2:2f};
-    int result = conn -> zAdd("testZAddKey", valueScoreMap);
+    var result = conn -> zAdd("testZAddKey", valueScoreMap);
     _ = conn -> quit();
     return result;
 }
 
-function testZCard () returns (int) {
+function testZCard () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zCard("testZCardKey");
+    var result = conn -> zCard("testZCardKey");
     _ = conn -> quit();
     return result;
 }
 
-function testZCount () returns (int) {
+function testZCount () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zCount("testZCountKey", 2f, 5f);
+    var result = conn -> zCount("testZCountKey", 2f, 5f);
     _ = conn -> quit();
     return result;
 }
 
-function testZIncrBy () returns (float) {
+function testZIncrBy () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    float result = conn -> zIncrBy("testZIncrByKey", 1f, "testZIncrByValue1");
+    var result = conn -> zIncrBy("testZIncrByKey", 1f, "testZIncrByValue1");
     _ = conn -> quit();
     return result;
 }
 
-function testZInterStore () returns (int) {
+function testZInterStore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zInterStore("testZInterStoreDestKey", ["testZInterStoreKey1", "testZInterStoreKey2"]);
+    var result = conn -> zInterStore("testZInterStoreDestKey", ["testZInterStoreKey1", "testZInterStoreKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testZLexCount () returns (int) {
+function testZLexCount () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zLexCount("testZLexCountKey", "b", "f");
+    var result = conn -> zLexCount("testZLexCountKey", "b", "f");
     _ = conn -> quit();
     return result;
 }
 
-function testZRange () returns (string[]) {
+function testZRange () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRange("testZRangeKey", 1, 3);
+    var result = conn -> zRange("testZRangeKey", 1, 3);
     _ = conn -> quit();
     return result;
 }
 
-function testZRangeByLex () returns (string[]) {
+function testZRangeByLex () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRangeByLex("testZRangeByLexKey", "aaa", "g");
+    var result = conn -> zRangeByLex("testZRangeByLexKey", "aaa", "g");
     _ = conn -> quit();
     return result;
 }
 
-function testZRangeByScore () returns (string[]) {
+function testZRangeByScore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRangeByScore("testZRangeKey", 2, 4);
+    var result = conn -> zRangeByScore("testZRangeKey", 2, 4);
     _ = conn -> quit();
     return result;
 }
 
-function testZRank () returns (int) {
+function testZRank () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRank("testZRankKey", "a");
+    var result = conn -> zRank("testZRankKey", "a");
     _ = conn -> quit();
     return result;
 }
 
-function testZRem () returns (int) {
+function testZRem () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRem("testZRemKey", ["a", "b"]);
+    var result = conn -> zRem("testZRemKey", ["a", "b"]);
     _ = conn -> quit();
     return result;
 }
 
-function testZRemRangeByLex () returns (int) {
+function testZRemRangeByLex () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRemRangeByLex("testZRemRangeByLexKey", "alpha", "omega");
+    var result = conn -> zRemRangeByLex("testZRemRangeByLexKey", "alpha", "omega");
     _ = conn -> quit();
     return result;
 }
 
-function testZRemRangeByRank () returns (int) {
+function testZRemRangeByRank () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRemRangeByRank("testZRemRangeByRankKey", 1, 4);
+    var result = conn -> zRemRangeByRank("testZRemRangeByRankKey", 1, 4);
     _ = conn -> quit();
     return result;
 }
 
-function testZRemRangeByScore () returns (int) {
+function testZRemRangeByScore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRemRangeByScore("testZRemRangeByScoreKey", 2, 5);
+    var result = conn -> zRemRangeByScore("testZRemRangeByScoreKey", 2, 5);
     _ = conn -> quit();
     return result;
 }
 
-function testZRevRange () returns (string[]) {
+function testZRevRange () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRevRange("testZRangeKey", 1, 3);
+    var result = conn -> zRevRange("testZRangeKey", 1, 3);
     _ = conn -> quit();
     return result;
 }
 
-function testZRevRangeByLex () returns (string[]) {
+function testZRevRangeByLex () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRevRangeByLex("testZRangeByLexKey", "aaaa", "g");
+    var result = conn -> zRevRangeByLex("testZRangeByLexKey", "aaaa", "g");
     _ = conn -> quit();
     return result;
 }
 
-function testZRevRangeByScore () returns (string[]) {
+function testZRevRangeByScore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> zRangeByScore("testZRangeKey", 2, 4);
+    var result = conn -> zRangeByScore("testZRangeKey", 2, 4);
     _ = conn -> quit();
     return result;
 }
 
-function testZRevRank () returns (int) {
+function testZRevRank () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zRevRank("testZRankKey", "c");
+    var result = conn -> zRevRank("testZRankKey", "c");
     _ = conn -> quit();
     return result;
 }
 
-function testZScore () returns (float) {
+function testZScore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    float result = conn -> zScore("testZScoreKey", "a");
+    var result = conn -> zScore("testZScoreKey", "a");
     _ = conn -> quit();
     return result;
 }
 
-function testZUnionStore () returns (int) {
+function testZUnionStore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> zUnionStore("testZUnionStoreDestKey", ["testZUnionStoreKey1", "testZUnionStoreKey2"]);
+    var result = conn -> zUnionStore("testZUnionStoreDestKey", ["testZUnionStoreKey1", "testZUnionStoreKey2"]);
     _ = conn -> quit();
     return result;
 }

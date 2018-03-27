@@ -18,220 +18,220 @@ import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testSet () returns (string) {
+function testSet () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> setVal("Name", "Manuri");
+    var result = conn -> setVal("Name", "Manuri");
     _ = conn -> quit();
     return result;
 }
 
-function testGet () returns (string) {
+function testGet () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> get("GetTestKey");
+    var result = conn -> get("GetTestKey");
     _ = conn -> quit();
     return result;
 }
 
-function testAppend () returns (int) {
+function testAppend () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> append("AppendTestKey", "SomeValue");
+    var result = conn -> append("AppendTestKey", "SomeValue");
     _ = conn -> quit();
     return result;
 }
 
-function testBitCount () returns (int) {
+function testBitCount () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> bitCount("BitCountTestKey");
+    var result = conn -> bitCount("BitCountTestKey");
     _ = conn -> quit();
     return result;
 }
 
-function tesBitOpAnd () returns (int) {
-    endpoint redis:Client conn {
-        host:REDIS_HOST,
-        password:"",
-        options:{}
-    };
-    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = conn -> bitOpAnd("tesBitOpAndDest", keys);
-    _ = conn -> quit();
-    return result;
-}
-
-function tesBitOpOr () returns (int) {
+function tesBitOpAnd () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
     string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = conn -> bitOpOr("tesBitOpOrDest", keys);
+    var result = conn -> bitOpAnd("tesBitOpAndDest", keys);
     _ = conn -> quit();
     return result;
 }
 
-function testSetBit () returns (int) {
+function tesBitOpOr () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> setBit("testSetBitKey", 1, 2);
+    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
+    var result = conn -> bitOpOr("tesBitOpOrDest", keys);
     _ = conn -> quit();
     return result;
 }
 
-function tesBitOpNot () returns (int) {
+function testSetBit () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> bitOpNot("tesBitOpNotDest", "testBitOpKey1");
+    var result = conn -> setBit("testSetBitKey", 1, 2);
     _ = conn -> quit();
     return result;
 }
 
-function tesBitOpXor () returns (int) {
+function tesBitOpNot () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
+    var result = conn -> bitOpNot("tesBitOpNotDest", "testBitOpKey1");
     _ = conn -> quit();
     return result;
 }
 
-function testDecr () returns (int) {
+function tesBitOpXor () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> decr("testDecrKey");
+    var result = conn -> bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testDecrBy () returns (int) {
+function testDecr () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> decrBy("testDecrByKey", 3);
+    var result = conn -> decr("testDecrKey");
     _ = conn -> quit();
     return result;
 }
 
-function testGetBit () returns (int) {
+function testDecrBy () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> getBit("testGetBitKey", 4);
+    var result = conn -> decrBy("testDecrByKey", 3);
     _ = conn -> quit();
     return result;
 }
 
-function testGetRange () returns (string) {
+function testGetBit () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> getRange("testGetRangekey", 2, 5);
+    var result = conn -> getBit("testGetBitKey", 4);
     _ = conn -> quit();
     return result;
 }
 
-function testGetSet () returns (string) {
+function testGetRange () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> getSet("testGetSetKey", "testGetSetNewValue");
+    var result = conn -> getRange("testGetRangekey", 2, 5);
     _ = conn -> quit();
     return result;
 }
 
-function testIncr () returns (int) {
+function testGetSet () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> incr("testIncrKey");
+    var result = conn -> getSet("testGetSetKey", "testGetSetNewValue");
     _ = conn -> quit();
     return result;
 }
 
-
-function testIncrBy () returns (int) {
+function testIncr () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> incrBy("testIncrByKey", 2);
+    var result = conn -> incr("testIncrKey");
     _ = conn -> quit();
     return result;
 }
 
-function testIncrByFloat () returns (float) {
+
+function testIncrBy () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    float result = conn -> incrByFloat("testIncrByKey", 0.2f);
+    var result = conn -> incrBy("testIncrByKey", 2);
     _ = conn -> quit();
     return result;
 }
 
-function testMGet () returns (string[]) {
+function testIncrByFloat () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
+    var result = conn -> incrByFloat("testIncrByKey", 0.2f);
     _ = conn -> quit();
     return result;
 }
 
-function testMSet () returns (string) {
+function testMGet () returns (any) {
+    endpoint redis:Client conn {
+        host:REDIS_HOST,
+        password:"",
+        options:{}
+    };
+    var result = conn -> mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
+    _ = conn -> quit();
+    return result;
+}
+
+function testMSet () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
     map keyValueMap = {testMSetKey1:"testMSetValue1", testMSetKey2:"testMSetValue2", testMSetKey3:"testMSetValue3"};
-    string result = conn -> mSet(keyValueMap);
+    var result = conn -> mSet(keyValueMap);
     _ = conn -> quit();
     return result;
 }
 
-function testMSetNx () returns (boolean) {
+function testMSetNx () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
@@ -239,62 +239,62 @@ function testMSetNx () returns (boolean) {
     };
     map keyValueMap = {testMSetNxKey1:"testMSetNxNewValue1", testMSetNxKey2:"testMSetNxValue2", testMSetNxKey3:
                                                                                                 "testMSetNxValue3"};
-    boolean result = conn -> mSetNx(keyValueMap);
+    var result = conn -> mSetNx(keyValueMap);
     _ = conn -> quit();
     return result;
 }
 
-function testPSetEx () returns (string) {
+function testPSetEx () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
+    var result = conn -> pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
     _ = conn -> quit();
     return result;
 }
 
-function testSetEx () returns (string) {
+function testSetEx () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> setEx("testSetExKey", "testSetExNewValue", 5);
+    var result = conn -> setEx("testSetExKey", "testSetExNewValue", 5);
     _ = conn -> quit();
     return result;
 }
 
-function testSetNx () returns (boolean) {
+function testSetNx () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    boolean result = conn -> setNx("testSetNxKey", "testSetNxValue");
+    var result = conn -> setNx("testSetNxKey", "testSetNxValue");
     _ = conn -> quit();
     return result;
 }
 
-function testSetRange () returns (int) {
+function testSetRange () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> setRange("testSetRangeKey", 2, "!!!");
+    var result = conn -> setRange("testSetRangeKey", 2, "!!!");
     _ = conn -> quit();
     return result;
 }
 
-function testStrln () returns (int) {
+function testStrln () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> strln("testStrlnKey");
+    var result = conn -> strln("testStrlnKey");
     _ = conn -> quit();
     return result;
 }

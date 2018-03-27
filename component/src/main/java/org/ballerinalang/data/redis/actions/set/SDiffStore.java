@@ -21,6 +21,7 @@ package org.ballerinalang.data.redis.actions.set;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
+import org.ballerinalang.data.redis.RedisDataSourceUtils;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BInteger;
@@ -53,6 +54,10 @@ public class SDiffStore extends AbstractRedisAction {
         }
         String dest = context.getStringArgument(0);
         BInteger result = sDiffStore(dest, redisDataSource, createArrayFromBStringArray(keys));
-        context.setReturnValues(result);
+        try {
+            context.setReturnValues(result);
+        } catch (Throwable e) {
+            context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
+        }
     }
 }

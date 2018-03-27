@@ -21,6 +21,7 @@ package org.ballerinalang.data.redis.actions.string;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
+import org.ballerinalang.data.redis.RedisDataSourceUtils;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BInteger;
@@ -53,6 +54,10 @@ public class BitOpAnd extends AbstractRedisAction {
             keysArray[i] = keys.get(i);
         }
         BInteger result = bitopAnd(destination, redisDataSource, keysArray);
-        context.setReturnValues(result);
+        try {
+            context.setReturnValues(result);
+        } catch (Throwable e) {
+            context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
+        }
     }
 }
