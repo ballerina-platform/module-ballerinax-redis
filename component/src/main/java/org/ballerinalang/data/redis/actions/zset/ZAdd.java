@@ -21,6 +21,7 @@ package org.ballerinalang.data.redis.actions.zset;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
+import org.ballerinalang.data.redis.RedisDataSourceUtils;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BFloat;
@@ -60,6 +61,10 @@ public class ZAdd extends AbstractRedisAction {
         bMap.keySet().forEach(value -> valueScoreMap.put(value, (bMap.get(value).floatValue())));
 
         BInteger result = zAdd(key, redisDataSource, valueScoreMap);
-        context.setReturnValues(result);
+        try {
+            context.setReturnValues(result);
+        } catch (Throwable e) {
+            context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
+        }
     }
 }

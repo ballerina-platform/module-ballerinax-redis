@@ -21,6 +21,7 @@ package org.ballerinalang.data.redis.actions.zset;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.data.redis.Constants;
 import org.ballerinalang.data.redis.RedisDataSource;
+import org.ballerinalang.data.redis.RedisDataSourceUtils;
 import org.ballerinalang.data.redis.actions.AbstractRedisAction;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BStringArray;
@@ -49,6 +50,10 @@ public class ZRange extends AbstractRedisAction {
         long min = (int) context.getIntArgument(0);
         long max = context.getIntArgument(1);
         BStringArray result = zRange(key, min, max, redisDataSource);
-        context.setReturnValues(result);
+        try {
+            context.setReturnValues(result);
+        } catch (Throwable e) {
+            context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
+        }
     }
 }

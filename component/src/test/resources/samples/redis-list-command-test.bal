@@ -18,179 +18,179 @@ import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testBLPop () returns (map) {
+function testBLPop () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    map result = conn -> bLPop(1, ["testBLPopKey"]);
+    var result = conn -> bLPop(1, ["testBLPopKey"]);
     _ = conn -> quit();
     return result;
 }
 
-function testBRPop () returns (map) {
+function testBRPop () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    map result = conn -> bRPop(1, ["testBRPopKey"]);
+    var result = conn -> bRPop(1, ["testBRPopKey"]);
     _ = conn -> quit();
     return result;
 }
 
-function testLIndex () returns (string) {
+function testLIndex () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> lIndex("testLIndexKey", 0);
+    var result = conn -> lIndex("testLIndexKey", 0);
     _ = conn -> quit();
     return result;
 }
 
-function testLInsert () returns (int) {
+function testLInsert () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
+    var result = conn -> lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
     _ = conn -> quit();
     return result;
 }
 
-function testLLen () returns (int) {
+function testLLen () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> lLen("testLLenKey");
+    var result = conn -> lLen("testLLenKey");
     _ = conn -> quit();
     return result;
 }
 
-function testLPop () returns (string) {
+function testLPop () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> lPop("testLPopKey");
+    var result = conn -> lPop("testLPopKey");
     _ = conn -> quit();
     return result;
 }
 
-function testLPush () returns (int) {
+function testLPush () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
+    var result = conn -> lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
     _ = conn -> quit();
     return result;
 }
 
-function testLPushX () returns (int) {
+function testLPushX () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
+    var result = conn -> lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
     _ = conn -> quit();
     return result;
 }
 
-function testLRange () returns (string[]) {
+function testLRange () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> lRange("testLRangeKey", 1, 3);
+    var result = conn -> lRange("testLRangeKey", 1, 3);
     _ = conn -> quit();
     return result;
 }
 
-function testLRem () returns (int) {
+function testLRem () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> lRem("testLRemKey", 0, "toBeRemovedValue");
+    var result = conn -> lRem("testLRemKey", 0, "toBeRemovedValue");
     _ = conn -> quit();
     return result;
 }
 
-function testLSet () returns (string) {
+function testLSet () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> lSet("testLSetKey", 1, "testLSetValue2New");
+    var result = conn -> lSet("testLSetKey", 1, "testLSetValue2New");
     _ = conn -> quit();
     return result;
 
 }
 
-function testLTrim () returns (string) {
+function testLTrim () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> lTrim("testLTrimKey", 1, -1);
+    var result = conn -> lTrim("testLTrimKey", 1, -1);
     _ = conn -> quit();
     return result;
 }
 
-function testRPop () returns (string) {
+function testRPop () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> rPop("testRPopKey");
+    var result = conn -> rPop("testRPopKey");
     _ = conn -> quit();
     return result;
 }
 
-function testRPopLPush () returns (string) {
+function testRPopLPush () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> rPopLPush("testRPopLPushKey1", "testRPopLPushKey2");
+    var result = conn -> rPopLPush("testRPopLPushKey1", "testRPopLPushKey2");
     _ = conn -> quit();
     return result;
 }
 
-function testRPush () returns (int) {
+function testRPush () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
+    var result = conn -> rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
     _ = conn -> quit();
     return result;
 }
 
-function testRPushX () returns (int) {
+function testRPushX () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
+    var result = conn -> rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
     _ = conn -> quit();
     return result;
 

@@ -18,134 +18,134 @@ import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testSAdd () returns (int) {
+function testSAdd () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
+    var result = conn -> sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSDiff () returns (string[]) {
+function testSDiff () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sDiff(["testSDiffKey1", "testSDiffKey2"]);
+    var result = conn -> sDiff(["testSDiffKey1", "testSDiffKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSDiffStore () returns (int) {
+function testSDiffStore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
+    var result = conn -> sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSInter () returns (string[]) {
+function testSInter () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sInter(["testSInterKey1", "testSInterKey2"]);
+    var result = conn -> sInter(["testSInterKey1", "testSInterKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSInterStore () returns (int) {
+function testSInterStore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
+    var result = conn -> sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSIsMember () returns (boolean) {
+function testSIsMember () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    boolean result = conn -> sIsMember("testSIsMemberKey", "testSIsMemberValue");
+    var result = conn -> sIsMember("testSIsMemberKey", "testSIsMemberValue");
     _ = conn -> quit();
     return result;
 }
 
-function testSMembers () returns (string[]) {
+function testSMembers () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sMembers("testSMembersKey");
+    var result = conn -> sMembers("testSMembersKey");
     _ = conn -> quit();
     return result;
 }
 
-function testSPop () returns (string[]) {
+function testSPop () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sPop("testSPopKey", 2);
+    var result = conn -> sPop("testSPopKey", 2);
     _ = conn -> quit();
     return result;
 }
 
-function testSRandMember () returns (string[]) {
+function testSRandMember () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sRandMember("testSRandMemberKey", 2);
+    var result = conn -> sRandMember("testSRandMemberKey", 2);
     _ = conn -> quit();
     return result;
 }
 
-function testSRem () returns (int) {
+function testSRem () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
+    var result = conn -> sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSUnion () returns (string[]) {
+function testSUnion () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string[] result = conn -> sUnion(["testUnionKey1", "testUnionKey2"]);
+    var result = conn -> sUnion(["testUnionKey1", "testUnionKey2"]);
     _ = conn -> quit();
     return result;
 }
 
-function testSUnionStore () returns (int) {
+function testSUnionStore () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    int result = conn -> sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
+    var result = conn -> sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
     _ = conn -> quit();
     return result;
 }

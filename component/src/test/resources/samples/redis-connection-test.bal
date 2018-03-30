@@ -18,36 +18,36 @@ import ballerina/data.redis;
 
 const string REDIS_HOST = "localhost";
 
-function testInitWithConnectionParam () returns (string) {
+function testInitWithConnectionParam () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{poolingEnabled:true, isClusterConnection:false, sslEnabled:false,
                     startTlsEnabled:false, verifyPeerEnabled:false, database:0, connectionTimeout:500}
     };
-    string result = conn -> ping();
+    var result = conn -> ping();
     conn -> close();
     return result;
 }
 
-function testPing () returns (string) {
+function testPing () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> ping();
+    var result = conn -> ping();
     _ = conn -> quit();
     return result;
 }
 
-function testEcho () returns (string) {
+function testEcho () returns (any) {
     endpoint redis:Client conn {
         host:REDIS_HOST,
         password:"",
         options:{}
     };
-    string result = conn -> echo("Manuri");
+    var result = conn -> echo("Manuri");
     _ = conn -> quit();
     return result;
 }
