@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/data.redis;
+import ballerina/redis;
 
 const string REDIS_HOST = "localhost";
 
