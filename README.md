@@ -144,7 +144,7 @@ Sample
 ==================================
 
 ```ballerina
-import ballerina.data.redis;
+import ballerina.redis;
 
 function main (string[] args) {
     endpoint redis:Client conn {
