@@ -27,14 +27,11 @@ import java.util.Map;
  * @since 0.5.0
  */
 public class Constants {
-    public static final String CLIENT_CONNECTOR = "ClientConnector";
-    public static final String DATASOURCE_KEY = "datasource_key";
     public static final int DEFAULT_REDIS_PORT = 6379;
-    public static final String CLIENT_ENDPOINT_CONFIG = "clientEndpointConfig";
     public static final String REDIS_PACKAGE_PATH = "ballerina.redis";
     public static final String REDIS_CONNECTOR_ERROR = "RedisConnectorError";
+    public static final String REDIS_CLIENT = "RedisClient";
     public static final String REDIS_EXCEPTION_OCCURED = "Exception Occurred while executing Redis action";
-    public static final String B_CONNECTOR = "BConnector";
 
     /**
      * Endpoint configuration constants.
