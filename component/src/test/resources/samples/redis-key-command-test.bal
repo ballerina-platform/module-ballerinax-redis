@@ -16,7 +16,7 @@
 
 import ballerina/redis;
 
-const string REDIS_HOST = "localhost";
+@final string REDIS_HOST = "localhost";
 
 function testDel () returns (any) {
     endpoint redis:Client conn {

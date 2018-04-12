@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.ballerinalang.redis.endpoint;
 
 import io.lettuce.core.codec.ByteArrayCodec;
@@ -29,32 +30,31 @@ import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BStruct;
 import org.ballerinalang.natives.annotations.Argument;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
-import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
 /**
- * Initiates the data source.
+ * Creates a Redis client.
  *
- * @since 0.5.4
+ * @since 0.5.0
  */
-
 @BallerinaFunction(
         orgName = "ballerina", packageName = "redis",
-        functionName = "initEndpoint",
-        receiver = @Receiver(type = TypeKind.STRUCT, structType = "Client",
-                             structPackage = "ballerina.redis"),
-        args = {@Argument(name = "epName", type = TypeKind.STRING),
-                @Argument(name = "config", type = TypeKind.STRUCT, structType = "ClientEndpointConfiguration")},
+        functionName = "createRedisClient",
+        args = {
+                @Argument(name = "clientEndpointConfig",
+                          type = TypeKind.STRUCT,
+                          structType = "ClientEndpointConfiguration")
+        },
         isPublic = true
 )
-public class InitEndpoint extends BlockingNativeCallableUnit {
+public class CreateRedisClient extends BlockingNativeCallableUnit {
 
     @Override
     public void execute(Context context) {
-        Struct clientEndpoint = BLangConnectorSPIUtil.getConnectorEndpointStruct(context);
-        Struct clientEndpointConfig = clientEndpoint.getStructField(Constants.CLIENT_ENDPOINT_CONFIG);
+        BStruct configBStruct = (BStruct) context.getRefArgument(0);
+        Struct clientEndpointConfig = BLangConnectorSPIUtil.toStruct(configBStruct);
 
         //Extract parameters from the endpoint config
         String host = clientEndpointConfig.getStringField(Constants.EndpointConfig.HOST);
@@ -70,19 +70,13 @@ public class InitEndpoint extends BlockingNativeCallableUnit {
         redisDataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
         redisDataSource.init(host, password, options);
 
-        BStruct ballerinaClientConnector;
-        if (clientEndpoint.getNativeData(Constants.B_CONNECTOR) != null) {
-            ballerinaClientConnector = (BStruct) clientEndpoint.getNativeData(Constants.B_CONNECTOR);
-        } else {
-            ballerinaClientConnector = BLangConnectorSPIUtil
-                    .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.CLIENT_CONNECTOR,
-                            host, password, options, clientEndpointConfig);
-            clientEndpoint.addNativeData(Constants.B_CONNECTOR, ballerinaClientConnector);
-        }
+        BStruct redisClient = BLangConnectorSPIUtil
+                .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.REDIS_CLIENT);
+        redisClient.addNativeData(Constants.REDIS_CLIENT, redisDataSource);
+        context.setReturnValues(redisClient);
 
-        ballerinaClientConnector.addNativeData(Constants.CLIENT_CONNECTOR, redisDataSource);
-        context.setReturnValues();
     }
+
 
     private RedisCodec retrieveRedisCodec(String codecString) {
         Constants.Codec codec = retrieveCodec(codecString);

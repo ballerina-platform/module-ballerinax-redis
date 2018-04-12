@@ -39,13 +39,13 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis",
                    functionName = "mSet",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = "ClientConnector"))
+                                        structType = Constants.REDIS_CLIENT))
 public class MSet extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
 
         BMap<String, BString> bMap = (BMap<String, BString>) context.getRefArgument(1);
         BString result = mSet(createMapFromBMap(bMap), redisDataSource);

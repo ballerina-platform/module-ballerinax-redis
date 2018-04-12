@@ -44,13 +44,13 @@ import java.util.Map;
                    packageName = "redis",
                    functionName = "zAdd",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = "ClientConnector"))
+                                        structType = Constants.REDIS_CLIENT))
 public class ZAdd extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT_CONNECTOR);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
 
         String key = context.getStringArgument(0);
         BMap<String, BFloat> bMap = (BMap<String, BFloat>) context.getRefArgument(1);
