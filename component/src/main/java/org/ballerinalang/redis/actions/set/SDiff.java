@@ -31,7 +31,7 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
 /**
- * {@code {@link SDiff} Maps with "SDIFF" operation of Redis.
+ * {@code {@link SDiff}} Maps with "SDIFF" operation of Redis.
  *
  * @since 0.5.0
  */

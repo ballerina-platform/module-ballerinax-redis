@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 import static org.ballerinalang.redis.Constants.DEFAULT_REDIS_PORT;
 
 /**
- * {@code {@link RedisDataSource} Util class for Redis initialization.
+ * {@code {@link RedisDataSource}} Util class for Redis initialization.
  *
  * @param <K> Type of the Key
  * @param <V> Type of the Value
@@ -69,7 +69,7 @@ public class RedisDataSource<K, V> implements BValue {
      * @param codec The codec for transcoding keys/values between the application and the Redis DB.
      *              Instance of {@link RedisCodec}
      * @param isClusterConnection Whether the connection is a cluster connection
-     * @param poolingEnabled
+     * @param poolingEnabled Whether connection pooling is enabled
      */
     public RedisDataSource(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
         this.codec = codec;
