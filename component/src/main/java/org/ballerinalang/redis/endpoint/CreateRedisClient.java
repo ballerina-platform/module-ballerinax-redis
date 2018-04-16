@@ -40,7 +40,8 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  * @since 0.5.0
  */
 @BallerinaFunction(
-        orgName = "ballerina", packageName = "redis",
+        orgName = "ballerina",
+        packageName = "redis",
         functionName = "createRedisClient",
         args = {
                 @Argument(name = "clientEndpointConfig",
