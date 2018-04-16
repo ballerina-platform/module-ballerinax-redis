@@ -144,7 +144,8 @@ Sample
 ==================================
 
 ```ballerina
-import ballerina.redis;
+import ballerina/redis;
+import ballerina/io;
 
 function main (string[] args) {
     endpoint redis:Client conn {
@@ -153,51 +154,50 @@ function main (string[] args) {
         options:{}
     };
     
-    println("Pinging Redis Server...");
+    io:println("Pinging Redis Server...");
     //Ping Server
-    string result = conn -> ping();
-    println(result);
+    string result = check conn -> ping();
+    io:println(result);
     
-    println("===Executing sample string oprerations===");
+    io:println("===Executing sample string oprerations===");
     //Sample String Operations
-    println("Setting value of the key \"Project\" as \"Ballerina\"");
-    string stringSetresult = conn -> set("Project", "Ballerina");
-    println("Querying the server for the value of the key \"Project\"");
-    string value = conn -> get("Project");
-    println("Reply from the server: " + value);
+    io:println("Setting value of the key \"Project\" as \"Ballerina\"");
+    string stringSetresult = check conn -> setVal("Project", "Ballerina");
+    io:println("Querying the server for the value of the key \"Project\"");
+    string value = check conn -> get("Project");
+    io:println("Reply from the server: " + value);
     
-    println("===Executing sample list oprerations===");
+    io:println("===Executing sample list oprerations===");
     //Sample List Operations
-    println("Pushing 3 elements to NumberList");
-    int listPushresult = conn -> lPush("NumberList", ["One", "Two"]);
-    println("Reply from server: " + listPushresult);
+    io:println("Pushing 3 elements to NumberList");
+    int listPushresult = check conn -> lPush("NumberList", ["One", "Two"]);
+    io:println("Reply from server: " + listPushresult);
     
-    println("Poping an element from NumberList");
-    string poppedElement = conn -> lPop("NumberList");
-    println("Popped Element: " + poppedElement);
+    io:println("Poping an element from NumberList");
+    string poppedElement = check conn -> lPop("NumberList");
+    io:println("Popped Element: " + poppedElement);
     
-    println("===Executing sample set oprerations===");
+    io:println("===Executing sample set oprerations===");
     //Sample Set Operations
-    println("Adding 3 elements to NumberSet");
-    int setAddResult = conn -> sAdd("NumberSet", ["1", "2", "3"]);
-    println("Reply from server: " + setAddResult);
+    io:println("Adding 3 elements to NumberSet");
+    int setAddResult = check conn -> sAdd("NumberSet", ["1", "2", "3"]);
+    io:println("Reply from server: " + setAddResult);
 
-    println("Querying number of elemenets in the Set");
-    int numberOfMembers = conn -> sCard("NumberSet");
-    println("Number of members: " + numberOfMembers);
+    io:println("Querying number of elemenets in the Set");
+    int numberOfMembers = check conn -> sCard("NumberSet");
+    io:println("Number of members: " + numberOfMembers);
         
-    println("===Executing sample hash oprerations===");
+    io:println("===Executing sample hash oprerations===");
     //Sample Hash operations
-    println("Adding a key value pair to a hash");
-    boolean hashSetResult = conn -> hSet("HashKey", "Name", "Manuri");
-    println("Reply from server: " + hashSetResult);
+    io:println("Adding a key value pair to a hash");
+    boolean hashSetResult = check conn -> hSet("HashKey", "Name", "Manuri");
+    io:println("Reply from server: " + hashSetResult);
     
-    println("Querying the value of the hash field Name");
-    string hashGetResult = conn -> hGet("HashKey", "Name");
-    println("Value of the hash field \"Name\": " + hashGetResult);
+    io:println("Querying the value of the hash field Name");
+    string hashGetResult = check conn -> hGet("HashKey", "Name");
+    io:println("Value of the hash field \"Name\": " + hashGetResult);
     
-    _ = conn -> quit();
-    println("Redis connection closed!");
+    _ = check conn -> quit();
+    io:println("Redis connection closed!");
 }
-
 ```
