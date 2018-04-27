@@ -689,13 +689,6 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K, V> BString quit(RedisDataSource<K, V> redisDataSource) {
-        String result = isClusterConnection(redisDataSource) ?
-                redisDataSource.getRedisClusterCommands().quit() :
-                redisDataSource.getRedisCommands().quit();
-        return new BString(result);
-    }
-
     protected <K, V> void close(RedisDataSource<K, V> redisDataSource) {
         if (isClusterConnection(redisDataSource)) {
             if (redisDataSource.isPoolingEnabled()) {

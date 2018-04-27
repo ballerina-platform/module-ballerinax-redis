@@ -40,13 +40,13 @@ import org.ballerinalang.util.exceptions.BallerinaException;
                    packageName = "redis",
                    functionName = "sInterStore",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                                        structType = Constants.CALLER_ACTIONS))
 public class SInterStore extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
 
         String dest = context.getStringArgument(0);
         BStringArray keys = (BStringArray) context.getRefArgument(1);

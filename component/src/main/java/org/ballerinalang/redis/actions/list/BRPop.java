@@ -41,13 +41,13 @@ import org.ballerinalang.util.exceptions.BallerinaException;
                    packageName = "redis",
                    functionName = "bRPop",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                                        structType = Constants.CALLER_ACTIONS))
 public class BRPop extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
 
         long timeout = (int) context.getIntArgument(0);
         BStringArray keys = (BStringArray) context.getRefArgument(1);

@@ -38,14 +38,14 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis",
                    functionName = "setVal",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                                        structType = Constants.CALLER_ACTIONS))
 public class Set extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
         //TODO: Get Redis Datasource based on codec
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
         String key = context.getStringArgument(0);
         String value = context.getStringArgument(1);
 

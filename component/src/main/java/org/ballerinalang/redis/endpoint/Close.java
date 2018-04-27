@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.actions.connection;
+package org.ballerinalang.redis.endpoint;
 
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.natives.annotations.Argument;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
-import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
@@ -35,13 +35,15 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
 @BallerinaFunction(orgName = "ballerina",
                    packageName = "redis",
                    functionName = "close",
-                   receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                   args = {
+                           @Argument(name = "parameters", type = TypeKind.STRUCT, structType = Constants.CALLER_ACTIONS,
+                                     structPackage = "ballerina.redis")}
+)
 public class Close extends AbstractRedisAction {
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
         close(redisDataSource);
     }
 }

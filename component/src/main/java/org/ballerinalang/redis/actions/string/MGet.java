@@ -39,13 +39,13 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis",
                    functionName = "mGet",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                                        structType = Constants.CALLER_ACTIONS))
 public class MGet extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
 
         BStringArray keys = (BStringArray) context.getRefArgument(1);
         String[] keysArray = new String[(int) keys.size()];

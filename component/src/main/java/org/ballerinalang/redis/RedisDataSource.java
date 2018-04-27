@@ -269,7 +269,7 @@ public class RedisDataSource<K, V> implements BValue {
 
         //boolean params
         POOLING_ENABLED("poolingEnabled"), IS_CLUSTER_CONNECTION("isClusterConnection"), SSL_ENABLED(
-                "sslEnabled"), START_TLS_ENABLED("startTlsEnabled"), VERIFY_PEER_ENABLED("verifyPeerEnabled");
+                "ssl"), START_TLS_ENABLED("startTls"), VERIFY_PEER_ENABLED("verifyPeer");
 
         private String key;
 
