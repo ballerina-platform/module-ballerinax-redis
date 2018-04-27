@@ -40,6 +40,21 @@ function testGet() returns (any) {
     return result;
 }
 
+function testGetNilOutput() returns (string?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->get("GetTestKeyNonExistent");
+    conn.stop();
+    match result {
+        () => return ();
+        string s => return s;
+        error e => return e;
+    }
+}
+
 function testAppend() returns (any) {
     endpoint redis:Client conn {
         host: REDIS_HOST,
@@ -172,6 +187,21 @@ function testGetSet() returns (any) {
     var result = conn->getSet("testGetSetKey", "testGetSetNewValue");
     conn.stop();
     return result;
+}
+
+function testGetSetNilOutput() returns (string?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->getSet("testGetSetKeyNonExistent", "testGetSetNewValue");
+    conn.stop();
+    match result {
+        () => return ();
+        string s => return s;
+        error e => return e;
+    }
 }
 
 function testIncr() returns (any) {

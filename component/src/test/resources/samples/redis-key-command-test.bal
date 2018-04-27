@@ -118,6 +118,21 @@ function testRandomKey() returns (any) {
     return result;
 }
 
+function testRandomKeyNilOutput() returns (string?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: { database: 2 }
+    };
+    var result = conn->randomKey();
+    conn.stop();
+    match result {
+        () => return ();
+        string s => return s;
+        error e => return e;
+    }
+}
+
 function testRename() returns (any) {
     endpoint redis:Client conn {
         host: REDIS_HOST,

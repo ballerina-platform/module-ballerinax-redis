@@ -106,6 +106,21 @@ function testSPop() returns (any) {
     return result;
 }
 
+function testSPopNilOutput() returns (string[]?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->sPop("testSPopKeyNonExistent", 2);
+    conn.stop();
+    match result {
+        () => return ();
+        string[] s => return s;
+        error e => return e;
+    }
+}
+
 function testSRandMember() returns (any) {
     endpoint redis:Client conn {
         host: REDIS_HOST,
@@ -115,6 +130,21 @@ function testSRandMember() returns (any) {
     var result = conn->sRandMember("testSRandMemberKey", 2);
     conn.stop();
     return result;
+}
+
+function testSRandMemberNilOutput() returns (string[]?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->sRandMember("testSRandMemberKeyNonExistent", 2);
+    conn.stop();
+    match result {
+        () => return ();
+        string[] s => return s;
+        error e => return e;
+    }
 }
 
 function testSRem() returns (any) {

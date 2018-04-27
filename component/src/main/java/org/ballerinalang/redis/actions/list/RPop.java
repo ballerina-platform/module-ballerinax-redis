@@ -49,7 +49,7 @@ public class RPop extends AbstractRedisAction {
         String key = context.getStringArgument(0);
         BString result = rPop(key, redisDataSource);
         try {
-            context.setReturnValues(result);
+            setNullableReturnValues(result, context);
         } catch (Throwable e) {
             context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
         }

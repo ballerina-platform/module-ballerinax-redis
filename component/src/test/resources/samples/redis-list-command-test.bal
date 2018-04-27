@@ -29,6 +29,21 @@ function testBLPop() returns (any) {
     return result;
 }
 
+function testBLPopNilOutput() returns (map?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->bLPop(1, ["testBLPopKeyNonExistent"]);
+    conn.stop();
+    match result {
+        () => return ();
+        map m => return m;
+        error e => return e;
+    }
+}
+
 function testBRPop() returns (any) {
     endpoint redis:Client conn {
         host: REDIS_HOST,
@@ -38,6 +53,21 @@ function testBRPop() returns (any) {
     var result = conn->bRPop(1, ["testBRPopKey"]);
     conn.stop();
     return result;
+}
+
+function testBRPopNilOutput() returns (map?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->bRPop(1, ["testBRPopKeyNonExistent"]);
+    conn.stop();
+    match result {
+        () => return ();
+        map m => return m;
+        error e => return e;
+    }
 }
 
 function testLIndex() returns (any) {
@@ -82,6 +112,21 @@ function testLPop() returns (any) {
     var result = conn->lPop("testLPopKey");
     conn.stop();
     return result;
+}
+
+function testLPopNilOutput() returns (string?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->lPop("testLPopKeyNonExistent");
+    conn.stop();
+    match result {
+        () => return ();
+        string s => return s;
+        error e => return e;
+    }
 }
 
 function testLPush() returns (any) {
@@ -160,6 +205,21 @@ function testRPop() returns (any) {
     var result = conn->rPop("testRPopKey");
     conn.stop();
     return result;
+}
+
+function testRPopNilOutput() returns (string?|error) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: {}
+    };
+    var result = conn->rPop("testRPopKeyNonExistent");
+    conn.stop();
+    match result {
+        () => return ();
+        string s => return s;
+        error e => return e;
+    }
 }
 
 function testRPopLPush() returns (any) {

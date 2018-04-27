@@ -50,7 +50,7 @@ public class GetSet extends AbstractRedisAction {
         String value = context.getStringArgument(1);
         BString result = getSet(key, value, redisDataSource);
         try {
-            context.setReturnValues(result);
+            setNullableReturnValues(result, context);
         } catch (Throwable e) {
             context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
         }

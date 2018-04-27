@@ -50,7 +50,7 @@ public class SRandMember extends AbstractRedisAction {
         int count = (int) context.getIntArgument(0);
         BStringArray result = sRandMember(key, count, redisDataSource);
         try {
-            context.setReturnValues(result);
+            setNullableReturnValues(result, context);
         } catch (Throwable e) {
             context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
         }

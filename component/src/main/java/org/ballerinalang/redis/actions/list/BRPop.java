@@ -56,7 +56,7 @@ public class BRPop extends AbstractRedisAction {
         }
         BMap<String, BString> result = bRPop(timeout, redisDataSource, createArrayFromBStringArray(keys));
         try {
-            context.setReturnValues(result);
+            setNullableReturnValues(result, context);
         } catch (Throwable e) {
             context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
         }

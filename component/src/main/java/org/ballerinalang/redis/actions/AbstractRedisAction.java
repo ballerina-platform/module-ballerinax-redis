@@ -21,6 +21,7 @@ package org.ballerinalang.redis.actions;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScoredValue;
+import org.ballerinalang.bre.Context;
 import org.ballerinalang.bre.bvm.BlockingNativeCallableUnit;
 import org.ballerinalang.model.values.BBoolean;
 import org.ballerinalang.model.values.BFloat;
@@ -28,6 +29,7 @@ import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
 import org.ballerinalang.model.values.BStringArray;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
@@ -66,7 +68,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             String result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().get(key) :
                     redisDataSource.getRedisCommands().get(key);
-            return new BString(result);
+            return result == null ? null : new BString(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -187,7 +189,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             String result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().getset(key, value) :
                     redisDataSource.getRedisCommands().getset(key, value);
-            return new BString(result);
+            return result == null ? null : new BString(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -344,7 +346,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             String result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().lpop(key) :
                     redisDataSource.getRedisCommands().lpop(key);
-            return new BString(result);
+            return result == null ? null : new BString(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -489,7 +491,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             String result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().rpop(key) :
                     redisDataSource.getRedisCommands().rpop(key);
-            return new BString(result);
+            return result == null ? null : new BString(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -635,11 +637,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             Set<String> result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().spop(key, count) :
                     redisDataSource.getRedisCommands().spop(key, count);
-            if (result != null) {
-                return createBStringArrayFromSet(result);
-            } else {
-                return null;
-            }
+            return (result == null || result.isEmpty()) ? null : createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -650,7 +648,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             List<String> result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().srandmember(key, count) :
                     redisDataSource.getRedisCommands().srandmember(key, count);
-            return createBStringArrayFromList(result);
+            return (result == null || result.isEmpty()) ? null : createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -1197,7 +1195,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
             String result = isClusterConnection(redisDataSource) ?
                     redisDataSource.getRedisClusterCommands().randomkey() :
                     redisDataSource.getRedisCommands().randomkey();
-            return new BString(result);
+            return result == null ? null : new BString(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key " + MUST_NOT_BE_NULL);
         }
@@ -1351,5 +1349,13 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         Map<String, String> map = new HashMap<>(bMap.size());
         bMap.keySet().forEach(item -> map.put(item, bMap.get(item).stringValue()));
         return map;
+    }
+
+    protected void setNullableReturnValues(BValue result, Context context) {
+        if (result == null) {
+            context.setReturnValues();
+        } else {
+            context.setReturnValues(result);
+        }
     }
 }

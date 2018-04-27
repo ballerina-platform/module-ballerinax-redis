@@ -121,17 +121,17 @@ public type CallerActions object {
 
         P{{key}} The key
         P{{value}} The value to be set
-        R{{}} The old value stored at key, or null when key does not exist or `error` if an error occurs
+        R{{}} The old value stored at key, or nil when key does not exist or `error` if an error occurs
     }
-    public native function getSet(string key, string value) returns (string|error);
+    public native function getSet(string key, string value) returns (string?|error);
 
     documentation {
         Get the value of a key.
 
         P{{key}} The key
-        R{{}} The value of the key, or null when key does not exist or `error` if an error occurs
+        R{{}} The value of the key, or nil when key does not exist or `error` if an error occurs
     }
-    public native function get(string key) returns (string|error);
+    public native function get(string key) returns (string?|error);
 
     documentation {
         Increment the integer value of a key by one.
@@ -267,9 +267,9 @@ public type CallerActions object {
         Remove and get the first element in a list.
 
         P{{key}} The key
-        R{{}} The value of the first element, or null when key does not exist or `error` if an error occurs
+        R{{}} The value of the first element, or nil when key does not exist or `error` if an error occurs
     }
-    public native function lPop(string key) returns (string|error);
+    public native function lPop(string key) returns (string?|error);
 
     documentation {
         Prepend one or multiple values to a list, only if the list exists.
@@ -285,22 +285,22 @@ public type CallerActions object {
 
         P{{timeOut}} The timeout in seconds
         P{{keys}} The keys
-        R{{}} `null` when no element could be popped and the timeout expired. A map containing one item, with the
+        R{{}} `nil` when no element could be popped and the timeout expired. A map containing one item, with the
               key being  the name of the key where an element was popped and the second element  being the value of the
               popped element, or `error` if an error occurs
     }
-    public native function bLPop(int timeOut, string[] keys) returns (map|error);
+    public native function bLPop(int timeOut, string[] keys) returns (map?|error);
 
     documentation {
         Remove and get the last element in a list, or block until one is available.
 
         P{{timeOut}} The timeout in seconds
         P{{keys}} The keys
-        R{{}} `null` when no element could be popped and the timeout expired. A map containing one item, with the
+        R{{}} `nil` when no element could be popped and the timeout expired. A map containing one item, with the
               key being  the name of the key where an element was popped and the second element being the value of the
               popped element, or `error` if an error occurs
     }
-    public native function bRPop(int timeOut, string[] keys) returns (map|error);
+    public native function bRPop(int timeOut, string[] keys) returns (map?|error);
 
     documentation {
         Get an element from a list by its index.
@@ -378,9 +378,9 @@ public type CallerActions object {
         Remove and get the last element in a list.
 
         P{{key}} The key of the list
-        R{{}} The value of the last element, or null when key does not exist or `error` if an error occurs
+        R{{}} The value of the last element, or `nil` when key does not exist or `error` if an error occurs
     }
-    public native function rPop(string key) returns (string|error);
+    public native function rPop(string key) returns (string?|error);
 
     documentation {
         Remove the last element in a list, append it to another list and return it.
@@ -502,18 +502,18 @@ public type CallerActions object {
 
         P{{key}} The source key
         P{{count}} Number of members to pop
-        R{{}} Array of removed elements or null if key does not exist or `error` if an error occurs
+        R{{}} Array of removed elements or `nil` if key does not exist or `error` if an error occurs
     }
-    public native function sPop(string key, int count) returns (string[]|error);
+    public native function sPop(string key, int count) returns (string[]?|error);
 
     documentation {
         Get one or multiple random members from a set.
 
         P{{key}} The key of the set
         P{{count}} Number of members to obtain
-        R{{}} Array of the randomly selected elements, or null when key does not exist or `error` if an error occurs
+        R{{}} Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
     }
-    public native function sRandMember(string key, int count) returns (string[]|error);
+    public native function sRandMember(string key, int count) returns (string[]?|error);
 
     documentation {
         Remove one or more members from a set.
@@ -964,9 +964,9 @@ public type CallerActions object {
     documentation {
         Return a random key from the keyspace.
 
-        R{{}} The random key, or null when the database is empty or `error` if an error occurs
+        R{{}} The random key, or `nil` when the database is empty or `error` if an error occurs
     }
-    public native function randomKey() returns (string|error);
+    public native function randomKey() returns (string?|error);
 
     documentation {
         Rename a key.

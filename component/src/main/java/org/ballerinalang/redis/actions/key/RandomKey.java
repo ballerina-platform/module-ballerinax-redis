@@ -48,7 +48,7 @@ public class RandomKey extends AbstractRedisAction {
 
         BString result = randomKey(redisDataSource);
         try {
-            context.setReturnValues(result);
+            setNullableReturnValues(result, context);
         } catch (Throwable e) {
             context.setReturnValues(RedisDataSourceUtils.getRedisConnectorError(context, e));
         }

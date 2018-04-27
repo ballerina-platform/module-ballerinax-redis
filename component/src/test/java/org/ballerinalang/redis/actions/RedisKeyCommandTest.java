@@ -163,6 +163,12 @@ public class RedisKeyCommandTest extends RedisCommandsBaseTest {
     }
 
     @Test
+    public void testRandomKeyCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testRandomKeyNilOutput");
+        assertNil(result);
+    }
+
+    @Test
     public void testRenameCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testRename");
         Assert.assertEquals(result.length, 1);
