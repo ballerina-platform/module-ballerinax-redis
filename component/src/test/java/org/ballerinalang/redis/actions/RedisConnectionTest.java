@@ -54,4 +54,11 @@ public class RedisConnectionTest extends RedisCommandsBaseTest {
         Assert.assertEquals(result.length, 1);
         Assert.assertEquals(result[0].stringValue().toUpperCase(), PONG);
     }
+
+    @Test
+    public void testConnectionRelease() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testConnectionRelease");
+        Assert.assertEquals(result.length, 1);
+        Assert.assertEquals(result[0].stringValue().toUpperCase(), PONG);
+    }
 }

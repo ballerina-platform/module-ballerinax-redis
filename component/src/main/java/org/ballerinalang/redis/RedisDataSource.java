@@ -282,6 +282,14 @@ public class RedisDataSource<K, V> implements BValue {
         }
     }
 
+    public void releaseResources(Object redisCommands) {
+        if (isClusterConnection) {
+            objectPool.returnObject(((RedisAdvancedClusterCommands<K, V>) redisCommands).getStatefulConnection());
+        } else {
+            objectPool.returnObject(((RedisCommands<K, V>) redisCommands).getStatefulConnection());
+        }
+    }
+
     private static class ServerAddress {
         private String host;
         private int port;

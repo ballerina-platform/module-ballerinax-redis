@@ -25,7 +25,7 @@ endpoint redis:Client conn {
         host: "localhost",
         password: "redis",
         options: { connectionPooling: true, isClusterConnection: false, ssl: false,
-            startTls: false, verifyPeer: false, database: 0, connectionTimeout: 500 }
+        startTls: false, verifyPeer: false, database: 0, connectionTimeout: 500 }
     };
 ```
 

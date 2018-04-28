@@ -72,13 +72,15 @@ public type ClientEndpointConfiguration {
 documentation {
     Connection options for Redis Client Endpoint.
 
-	F{{clientName}} The clientName of the connection
-	F{{connectionPooling}} Boolean value depending on whether the connection pooling is enabled or not
-	F{{ssl}} Boolean value depending on whether SSL is enabled or not
-	F{{startTls}} Boolean value depending on whether startTLS is enabled or not
-	F{{verifyPeer}} Boolean value depending on whether peer verification is enabled or not
-	F{{database}} The database to be used with the connection
-	F{{connectionTimeout}} The timeout value for the connection
+    F{{clientName}} The clientName of the connection
+    F{{connectionPooling}} Boolean value depending on whether the connection
+    pooling is enabled or not
+    F{{ssl}} Boolean value depending on whether SSL is enabled or not
+    F{{startTls}} Boolean value depending on whether startTLS is enabled or not
+    F{{verifyPeer}} Boolean value depending on whether peer verification is
+    enabled or not
+    F{{database}} The database to be used with the connection
+    F{{connectionTimeout}} The timeout value for the connection
 }
 public type Options {
     string clientName,

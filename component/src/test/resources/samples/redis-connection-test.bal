@@ -51,3 +51,20 @@ function testEcho() returns (any) {
     conn.stop();
     return result;
 }
+
+function testConnectionRelease() returns (string) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: { connectionPooling: true }
+    };
+    int i = 0;
+    while(i < 8) {
+        _ = check conn -> ping();
+        i++;
+    }
+    string result = check conn->ping();
+    conn.stop();
+    return result;
+}
+
