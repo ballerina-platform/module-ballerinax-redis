@@ -37,7 +37,7 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  *
  * @since 0.5.0
  */
-@BallerinaFunction(orgName = "ballerina",
+@BallerinaFunction(orgName = "wso2",
                    packageName = "redis",
                    functionName = "bRPop",
                    receiver = @Receiver(type = TypeKind.STRUCT,

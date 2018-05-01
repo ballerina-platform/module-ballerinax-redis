@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/redis;
+import wso2/redis;
 
 @final string REDIS_HOST = "localhost";
 
