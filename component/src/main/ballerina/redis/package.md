@@ -22,11 +22,12 @@ Once the endpoint is created, redis commands can be executed through that endpoi
 
 ```ballerina
 endpoint redis:Client conn {
-        host: "localhost",
-        password: "redis",
-        options: { connectionPooling: true, isClusterConnection: false, ssl: false,
-        startTls: false, verifyPeer: false, database: 0, connectionTimeout: 500 }
-    };
+    host: "localhost",
+    password: "redis",
+    options: { connectionPooling: true, isClusterConnection: false, ssl: false,
+        startTls: false, verifyPeer: false, database: 0, connectionTimeout: 
+        500 }
+};
 ```
 
 This package provides API functions for manipulating Redis String, Hash, List, Set and Sorted Set data types and
