@@ -40,13 +40,13 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis",
                    functionName = "mSetNx",
                    receiver = @Receiver(type = TypeKind.STRUCT,
-                                        structType = Constants.REDIS_CLIENT))
+                                        structType = Constants.CALLER_ACTIONS))
 public class MSetNx extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BStruct bConnector = (BStruct) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.REDIS_CLIENT);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
 
         BMap<String, BString> bMap = (BMap<String, BString>) context.getRefArgument(1);
         BBoolean result = mSetnx(createMapFromBMap(bMap), redisDataSource);

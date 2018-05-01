@@ -23,7 +23,9 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.redis.util.CustomRedisServer;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import redis.embedded.RedisServer;
@@ -80,5 +82,10 @@ public class RedisCommandsBaseTest {
         Set<String> set = new HashSet<>(array.length);
         Collections.addAll(set, array);
         return set;
+    }
+
+    protected void assertNil(BValue[] result) {
+        Assert.assertEquals(result.length, 1);
+        Assert.assertEquals(result[0], null);
     }
 }

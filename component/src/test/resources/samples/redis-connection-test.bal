@@ -18,36 +18,53 @@ import ballerina/redis;
 
 @final string REDIS_HOST = "localhost";
 
-function testInitWithConnectionParam () returns (any) {
+function testInitWithConnectionParam() returns (any) {
     endpoint redis:Client conn {
-        host:REDIS_HOST,
-        password:"",
-        options:{poolingEnabled:true, isClusterConnection:false, sslEnabled:false,
-                    startTlsEnabled:false, verifyPeerEnabled:false, database:0, connectionTimeout:500}
+        host: REDIS_HOST,
+        password: "",
+        options: { connectionPooling: true, isClusterConnection: false, ssl: false,
+            startTls: false, verifyPeer: false, database: 0, connectionTimeout: 500 }
     };
-    var result = conn -> ping();
-    conn -> close();
+    var result = conn->ping();
+    conn.stop();
     return result;
 }
 
-function testPing () returns (any) {
+function testPing() returns (any) {
     endpoint redis:Client conn {
-        host:REDIS_HOST,
-        password:"",
-        options:{}
+        host: REDIS_HOST,
+        password: "",
+        options: {}
     };
-    var result = conn -> ping();
-    _ = conn -> quit();
+    var result = conn->ping();
+    conn.stop();
     return result;
 }
 
-function testEcho () returns (any) {
+function testEcho() returns (any) {
     endpoint redis:Client conn {
-        host:REDIS_HOST,
-        password:"",
-        options:{}
+        host: REDIS_HOST,
+        password: "",
+        options: {}
     };
-    var result = conn -> echo("Manuri");
-    _ = conn -> quit();
+    var result = conn->echo("Manuri");
+    conn.stop();
     return result;
 }
+
+function testConnectionRelease() returns (string) {
+    endpoint redis:Client conn {
+        host: REDIS_HOST,
+        password: "",
+        options: { connectionPooling: true }
+    };
+    int i = 0;
+    while(i < 8) {
+        _ = check conn -> ping();
+        i++;
+    }
+    string result = check conn->ping();
+    conn.stop();
+    return result;
+}
+

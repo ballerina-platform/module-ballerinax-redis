@@ -71,10 +71,22 @@ public class RedisListCommandTest extends RedisCommandsBaseTest {
     }
 
     @Test
+    public void testBLPopCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testBLPopNilOutput");
+        assertNil(result);
+    }
+
+    @Test
     public void testBRPopCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testBRPop");
         Assert.assertEquals(result.length, 1);
         Assert.assertEquals(((BMap) result[0]).get("testBRPopKey").stringValue(), "testBRPopValue1");
+    }
+
+    @Test
+    public void testBRPopCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testBRPopNilOutput");
+        assertNil(result);
     }
 
     @Test
@@ -101,6 +113,12 @@ public class RedisListCommandTest extends RedisCommandsBaseTest {
         BValue[] result = BRunUtil.invoke(compileResult, "testLPop");
         Assert.assertEquals(result.length, 1);
         Assert.assertEquals(result[0].stringValue(), "testLPopValue2");
+    }
+
+    @Test
+    public void testLPopCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testLPopNilOutput");
+        assertNil(result);
     }
 
     @Test
@@ -153,6 +171,12 @@ public class RedisListCommandTest extends RedisCommandsBaseTest {
         BValue[] result = BRunUtil.invoke(compileResult, "testRPop");
         Assert.assertEquals(result.length, 1);
         Assert.assertEquals(result[0].stringValue(), "testRPopValue1");
+    }
+
+    @Test
+    public void testRPopCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testRPopNilOutput");
+        assertNil(result);
     }
 
     @Test

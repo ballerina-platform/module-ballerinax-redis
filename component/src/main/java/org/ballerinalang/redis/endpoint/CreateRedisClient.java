@@ -42,7 +42,7 @@ import org.ballerinalang.util.exceptions.BallerinaException;
 @BallerinaFunction(
         orgName = "ballerina",
         packageName = "redis",
-        functionName = "createRedisClient",
+        functionName = "createClient",
         args = {
                 @Argument(name = "clientEndpointConfig",
                           type = TypeKind.STRUCT,
@@ -72,8 +72,8 @@ public class CreateRedisClient extends BlockingNativeCallableUnit {
         redisDataSource.init(host, password, options);
 
         BStruct redisClient = BLangConnectorSPIUtil
-                .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.REDIS_CLIENT);
-        redisClient.addNativeData(Constants.REDIS_CLIENT, redisDataSource);
+                .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.CALLER_ACTIONS);
+        redisClient.addNativeData(Constants.CALLER_ACTIONS, redisDataSource);
         context.setReturnValues(redisClient);
 
     }

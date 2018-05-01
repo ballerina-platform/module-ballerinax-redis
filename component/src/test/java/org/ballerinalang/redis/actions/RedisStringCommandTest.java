@@ -128,6 +128,12 @@ public class RedisStringCommandTest extends RedisCommandsBaseTest {
     }
 
     @Test
+    public void testGetSetCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testGetSetNilOutput");
+        assertNil(result);
+    }
+
+    @Test
     public void testIncrCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testIncr");
         Assert.assertEquals(((BInteger) result[0]).intValue(), 7);
@@ -232,5 +238,11 @@ public class RedisStringCommandTest extends RedisCommandsBaseTest {
     public void testGetCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testGet");
         Assert.assertEquals(result[0].stringValue(), "GetTestValue");
+    }
+
+    @Test
+    public void testGetCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testGetNilOutput");
+        assertNil(result);
     }
 }

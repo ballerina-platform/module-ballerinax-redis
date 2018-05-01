@@ -147,57 +147,93 @@ Sample
 import ballerina/redis;
 import ballerina/io;
 
-function main (string[] args) {
-    endpoint redis:Client conn {
-        host:"localhost",
-        password:"",
-        options:{}
-    };
-    
+function main(string... args) {
+     endpoint redis:Client conn {
+        host: "localhost",
+        password: "",
+        options: { connectionPooling: true, isClusterConnection: false, ssl: false,
+            startTls: false, verifyPeer: false, connectionTimeout: 500 }
+     };
+
     io:println("Pinging Redis Server...");
     //Ping Server
-    string result = check conn -> ping();
+    string result = check conn->ping();
     io:println(result);
-    
-    io:println("===Executing sample string oprerations===");
+
+    io:println("\n===Executing sample string oprerations===");
     //Sample String Operations
     io:println("Setting value of the key \"Project\" as \"Ballerina\"");
-    string stringSetresult = check conn -> setVal("Project", "Ballerina");
-    io:println("Querying the server for the value of the key \"Project\"");
-    string value = check conn -> get("Project");
-    io:println("Reply from the server: " + value);
-    
-    io:println("===Executing sample list oprerations===");
+    var stringSetresult = conn->setVal("Project", "Ballerina");
+
+    match stringSetresult {
+        string s => io:println("Reply from the server: " + s);
+        error e => io:println("Error occurred while calling `setVal`");
+    }
+
+    io:println("\nQuerying the server for the value of the key \"Project\"");
+    var value = conn->get("Project");
+
+    match value {
+        string s => io:println("Reply from the server: " + s);
+        () => io:println("Key does not exist");
+        error e => io:println("Error occurred while calling `get`");
+    }
+
+    io:println("\n===Executing sample list oprerations===");
     //Sample List Operations
     io:println("Pushing 3 elements to NumberList");
-    int listPushresult = check conn -> lPush("NumberList", ["One", "Two"]);
-    io:println("Reply from server: " + listPushresult);
-    
-    io:println("Poping an element from NumberList");
-    string poppedElement = check conn -> lPop("NumberList");
-    io:println("Popped Element: " + poppedElement);
-    
-    io:println("===Executing sample set oprerations===");
+    var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
+
+    match listPushresult {
+        int count => io:println("Number of elements pushed: " + count);
+        error e => io:println("Error occurred while calling `lPush`");
+    }
+
+    io:println("\nPoping an element from NumberList");
+    var lPopResult = conn->lPop("NumberList");
+
+    match lPopResult {
+        string poppedElement => io:println("Popped element: " + poppedElement);
+        () => io:println("Key does not exist");
+        error e => io:println("Error occurred while calling `lPop`");
+    }
+
+    io:println("\n===Executing sample set oprerations===");
     //Sample Set Operations
     io:println("Adding 3 elements to NumberSet");
-    int setAddResult = check conn -> sAdd("NumberSet", ["1", "2", "3"]);
-    io:println("Reply from server: " + setAddResult);
+    var setAddResult = conn->sAdd("NumberSet", ["1", "2", "3"]);
 
-    io:println("Querying number of elemenets in the Set");
-    int numberOfMembers = check conn -> sCard("NumberSet");
-    io:println("Number of members: " + numberOfMembers);
-        
-    io:println("===Executing sample hash oprerations===");
+    match setAddResult {
+        int count => io:println("Number of elements added: " + count);
+        error e => io:println("Error occurred while calling `sAdd`");
+    }
+
+    io:println("\nQuerying number of elemenets in the Set");
+    var setCardResult = conn->sCard("NumberSet");
+
+    match setCardResult {
+        int numberOfMembers => io:println("Number of memebers in the set: " + numberOfMembers);
+        error e => io:println("Error occurred while calling `sCard`");
+    }
+    io:println("\n===Executing sample hash oprerations===");
     //Sample Hash operations
     io:println("Adding a key value pair to a hash");
-    boolean hashSetResult = check conn -> hSet("HashKey", "Name", "Manuri");
-    io:println("Reply from server: " + hashSetResult);
-    
-    io:println("Querying the value of the hash field Name");
-    string hashGetResult = check conn -> hGet("HashKey", "Name");
-    io:println("Value of the hash field \"Name\": " + hashGetResult);
-    
-    _ = check conn -> quit();
-    io:println("Redis connection closed!");
+    var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
+
+    match hashSetResult {
+        boolean hashSetStatus => io:println("Hash set status: " + hashSetStatus);
+        error e => io:println("Error occurred while calling `hSet`");
+    }
+
+    io:println("\nQuerying the value of the hash field Name");
+    var hashGetResult = conn->hGet("HashKey", "Name");
+
+    match hashGetResult {
+        string value => io:println("Value of the hash field: " + value);
+        error e => io:println("Error occurred while calling `hGet`");
+    }
+
+    conn.stop();
+    io:println("\nRedis connection closed!");
 }
 ```

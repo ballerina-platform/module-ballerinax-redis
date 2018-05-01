@@ -30,8 +30,8 @@ public class Constants {
     public static final int DEFAULT_REDIS_PORT = 6379;
     public static final String REDIS_PACKAGE_PATH = "ballerina.redis";
     public static final String REDIS_CONNECTOR_ERROR = "RedisConnectorError";
-    public static final String REDIS_CLIENT = "RedisClient";
-    public static final String REDIS_EXCEPTION_OCCURED = "Exception Occurred while executing Redis action";
+    public static final String CALLER_ACTIONS = "CallerActions";
+    public static final String REDIS_EXCEPTION_OCCURRED = "Exception Occurred while executing Redis action";
 
     /**
      * Endpoint configuration constants.
@@ -41,7 +41,7 @@ public class Constants {
         public static final String PASSWORD = "password";
         public static final String OPTIONS = "options";
         public static final String CLUSTERING_ENABLED = "isClusterConnection";
-        public static final String POOLING_ENABLED = "poolingEnabled";
+        public static final String POOLING_ENABLED = "connectionPooling";
     }
 
     /**

@@ -148,6 +148,12 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     }
 
     @Test
+    public void testSPopCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testSPopNilOutput");
+        assertNil(result);
+    }
+
+    @Test
     public void testRandMemberCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSRandMember");
         Assert.assertEquals(result.length, 1);
@@ -157,6 +163,12 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
         String[] memberArray = { "testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3" };
         Set<String> set = createSetFromArray(memberArray);
         Assert.assertTrue(set.contains(members.get(0)) && set.contains(members.get(1)));
+    }
+
+    @Test
+    public void testRandMemberCommandNilOutput() throws Exception {
+        BValue[] result = BRunUtil.invoke(compileResult, "testSRandMemberNilOutput");
+        assertNil(result);
     }
 
     @Test
