@@ -212,7 +212,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/dist.xml</descriptor>
                     </descriptors>
-                    <finalName>wso2-redis-${project.version}</finalName>
+                    <finalName>wso2-redis-package-${project.version}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>

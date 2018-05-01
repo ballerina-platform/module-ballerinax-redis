@@ -127,7 +127,7 @@ following actions are supported.
 Steps to Configure
 ==================================
 
-Extract ballerina-redis-connector-<version>.zip and copy containing jars in to <BRE_HOME>/bre/lib/
+Extract wso2-redis-<version>.zip and copy containing jars in to <BRE_HOME>/bre/lib/
 
 Building from the source
 ==================================
@@ -137,7 +137,7 @@ If you want to build Ballerina Redis Connector from the source code:
     https://github.com/wso2-ballerina/package-redis
 2. Run the following Maven command from the ballerina directory: 
     mvn clean install
-3. Copy and extract the distribution created at `/component/target/target/ballerina-redis-connector-<version>.zip`  
+3. Copy and extract the distribution created at `/component/target/target/wso2-redis-package-<version>.zip`
 into <BRE_HOME>/bre/lib/.
 
 Sample
