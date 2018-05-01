@@ -40,7 +40,7 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  * @since 0.5.0
  */
 @BallerinaFunction(
-        orgName = "ballerina",
+        orgName = "wso2",
         packageName = "redis",
         functionName = "createClient",
         args = {

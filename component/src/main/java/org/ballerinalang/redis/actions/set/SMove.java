@@ -34,7 +34,7 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
  *
  * @since 0.5.0
  */
-@BallerinaFunction(orgName = "ballerina",
+@BallerinaFunction(orgName = "wso2",
                    packageName = "redis",
                    functionName = "sMove",
                    receiver = @Receiver(type = TypeKind.STRUCT,

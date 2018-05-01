@@ -32,12 +32,12 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
  *
  * @since 0.5.0
  */
-@BallerinaFunction(orgName = "ballerina",
+@BallerinaFunction(orgName = "wso2",
                    packageName = "redis",
                    functionName = "close",
                    args = {
                            @Argument(name = "parameters", type = TypeKind.STRUCT, structType = Constants.CALLER_ACTIONS,
-                                     structPackage = "ballerina.redis")}
+                                     structPackage = "wso2.redis")}
 )
 public class Close extends AbstractRedisAction {
     @Override

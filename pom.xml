@@ -247,7 +247,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
-        <connectors.source.temp.dir>${basedir}/target/classes/META-INF/ballerina</connectors.source.temp.dir>
+        <connectors.source.temp.dir>${basedir}/target/classes/META-INF/wso2</connectors.source.temp.dir>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <wso2.maven.compiler.source>1.8</wso2.maven.compiler.source>
         <wso2.maven.compiler.target>1.8</wso2.maven.compiler.target>
@@ -263,7 +263,7 @@
         <reactor.version>3.1.4.RELEASE</reactor.version>
         <reactive.streams.version>1.0.0</reactive.streams.version>
         <embedded.redis.version>0.6</embedded.redis.version>
-        <generated.ballerina.source.directory>${project.build.directory}/../src/main/ballerina</generated.ballerina.source.directory>
+        <generated.ballerina.source.directory>${project.build.directory}/../src/main/wso2</generated.ballerina.source.directory>
     </properties>
 
     <modules>
