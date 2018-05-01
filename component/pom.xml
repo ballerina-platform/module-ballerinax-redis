@@ -24,7 +24,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ballerina-redis</artifactId>
+    <artifactId>wso2-redis</artifactId>
     <packaging>jar</packaging>
     <name>Ballerina - Redis Component</name>
     <url>http://ballerinalang.org</url>
@@ -212,7 +212,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/dist.xml</descriptor>
                     </descriptors>
-                    <finalName>ballerina-redis-connector-${project.version}</finalName>
+                    <finalName>wso2-redis-${project.version}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
