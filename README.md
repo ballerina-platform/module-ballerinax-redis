@@ -144,7 +144,7 @@ Sample
 ==================================
 
 ```ballerina
-import ballerina/redis;
+import wso2/redis;
 import ballerina/io;
 
 function main(string... args) {
