@@ -728,9 +728,8 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
     protected <K> BStringArray sMembers(K key, RedisDataSource<K, String> redisDataSource) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
-            Set<String> result = isClusterConnection(redisDataSource) ?
-                    redisDataSource.getRedisClusterCommands().smembers(key) :
-                    redisDataSource.getRedisCommands().smembers(key);
+            redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
+            Set<String> result = redisCommands.smembers(key);
             return createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
