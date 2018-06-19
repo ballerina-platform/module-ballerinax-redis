@@ -37,9 +37,9 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
  * @since 0.5.0
  */
 @BallerinaFunction(orgName = "wso2",
-                   packageName = "redis",
+                   packageName = "redis:0.0.0",
                    functionName = "mSetNx",
-                   receiver = @Receiver(type = TypeKind.STRUCT,
+                   receiver = @Receiver(type = TypeKind.OBJECT,
                                         structType = Constants.CALLER_ACTIONS))
 public class MSetNx extends AbstractRedisAction {
 

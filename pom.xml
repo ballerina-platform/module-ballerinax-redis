@@ -137,6 +137,14 @@
                 <artifactId>ballerina-builtin</artifactId>
                 <version>${ballerina.version}</version>
             </dependency>
+            <!-- Following ballerina-binary-repo dependency is required to obtain balos -->
+            <dependency>
+                <groupId>org.ballerinalang</groupId>
+                <artifactId>ballerina-builtin</artifactId>
+                <version>${ballerina.version}</version>
+                <type>zip</type>
+                <classifier>ballerina-binary-repo</classifier>
+            </dependency>
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
@@ -236,13 +244,33 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${maven.jacoco.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>${maven.properties.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-remote-resources-plugin</artifactId>
+                    <version>${maven.remote.resources.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${maven.exec.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resources.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <properties>
         <project.scm.id>my-scm-server</project.scm.id>
-        <ballerina.version>0.970.0</ballerina.version>
+        <ballerina.version>0.975.0</ballerina.version>
         <mvn.processor.plugin.version>2.2.4</mvn.processor.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
@@ -258,6 +286,10 @@
         <maven.surefire.plugin.version>2.12</maven.surefire.plugin.version>
         <maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
         <maven.findbugsplugin.version>3.0.5</maven.findbugsplugin.version>
+        <maven.properties.plugin.version>1.0.0</maven.properties.plugin.version>
+        <maven.remote.resources.plugin.version>1.5</maven.remote.resources.plugin.version>
+        <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
+        <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
         <lettuce.version>5.0.1.RELEASE</lettuce.version>
         <apache.commons.version>2.4.3</apache.commons.version>
         <reactor.version>3.1.4.RELEASE</reactor.version>

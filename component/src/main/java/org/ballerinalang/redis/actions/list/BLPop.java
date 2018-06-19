@@ -38,9 +38,9 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  * @since 0.5.0
  */
 @BallerinaFunction(orgName = "wso2",
-                   packageName = "redis",
+                   packageName = "redis:0.0.0",
                    functionName = "bLPop",
-                   receiver = @Receiver(type = TypeKind.STRUCT,
+                   receiver = @Receiver(type = TypeKind.OBJECT,
                                         structType = Constants.CALLER_ACTIONS))
 public class BLPop extends AbstractRedisAction {
 

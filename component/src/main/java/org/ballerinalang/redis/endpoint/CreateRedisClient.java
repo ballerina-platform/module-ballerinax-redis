@@ -41,11 +41,11 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  */
 @BallerinaFunction(
         orgName = "wso2",
-        packageName = "redis",
+        packageName = "redis:0.0.0",
         functionName = "createClient",
         args = {
                 @Argument(name = "clientEndpointConfig",
-                          type = TypeKind.STRUCT,
+                          type = TypeKind.RECORD,
                           structType = "ClientEndpointConfiguration")
         },
         isPublic = true
