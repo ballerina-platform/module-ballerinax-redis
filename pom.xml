@@ -295,7 +295,7 @@
         <reactor.version>3.1.4.RELEASE</reactor.version>
         <reactive.streams.version>1.0.0</reactive.streams.version>
         <embedded.redis.version>0.6</embedded.redis.version>
-        <generated.ballerina.source.directory>${project.build.directory}/../src/main/wso2</generated.ballerina.source.directory>
+        <generated.ballerina.source.directory>${project.build.directory}/../src/main/ballerina</generated.ballerina.source.directory>
     </properties>
 
     <modules>
