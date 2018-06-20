@@ -41,9 +41,9 @@ import java.util.Map;
  * @since 0.5.0
  */
 @BallerinaFunction(orgName = "wso2",
-                   packageName = "redis",
+                   packageName = "redis:0.0.0",
                    functionName = "zAdd",
-                   receiver = @Receiver(type = TypeKind.STRUCT,
+                   receiver = @Receiver(type = TypeKind.OBJECT,
                                         structType = Constants.CALLER_ACTIONS))
 public class ZAdd extends AbstractRedisAction {
 

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class Constants {
     public static final int DEFAULT_REDIS_PORT = 6379;
-    public static final String REDIS_PACKAGE_PATH = "wso2.redis";
+    public static final String REDIS_PACKAGE_PATH = "wso2/redis:0.0.0";
     public static final String CALLER_ACTIONS = "CallerActions";
     public static final String REDIS_EXCEPTION_OCCURRED = "Exception Occurred while executing Redis action";
 
