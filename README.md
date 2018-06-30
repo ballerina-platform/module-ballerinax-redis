@@ -137,8 +137,8 @@ If you want to build Ballerina Redis Connector from the source code:
     https://github.com/wso2-ballerina/package-redis
 2. Run the following Maven command from the ballerina directory: 
     mvn clean install
-3. Copy and extract the distribution created at `/component/target/target/wso2-redis-package-<version>.zip`
-into <BRE_HOME>/bre/lib/.
+3. Extract the distribution created at `/component/target/wso2-redis-<version>.zip`. Run the install.{sh/bat} script to install the package.
+You can uninstall the package by running uninstall.{sh/bat}.
 
 Sample
 ==================================
