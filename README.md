@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wso2-ballerina/package-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/package-redis)
+
 # package-redis
 
 Ballerina Redis Connector is used to connect Ballerina with a Redis data source. With the Ballerina Redis Connector 
