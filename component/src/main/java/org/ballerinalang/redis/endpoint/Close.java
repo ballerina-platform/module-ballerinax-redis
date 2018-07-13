@@ -20,12 +20,14 @@ package org.ballerinalang.redis.endpoint;
 
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.model.values.BMap;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.natives.annotations.Argument;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
+import org.mvel2.util.Make;
 
 /**
  * {@code Close} action is used to close the Redis connection pool.
@@ -42,7 +44,7 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
 public class Close extends AbstractRedisAction {
     @Override
     public void execute(Context context) {
-        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        BMap<Make.String, BValue> bConnector = (BMap<Make.String, BValue>) context.getRefArgument(0);
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
         close(redisDataSource);
     }

@@ -24,7 +24,7 @@ function testZAdd() returns (any) {
         password: "",
         options: {}
     };
-    map valueScoreMap = { testZAddValue2: 2f };
+    map valueScoreMap = { testZAddValue2: 2.0 };
     var result = conn->zAdd("testZAddKey", valueScoreMap);
     conn.stop();
     return result;
@@ -47,7 +47,7 @@ function testZCount() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zCount("testZCountKey", 2f, 5f);
+    var result = conn->zCount("testZCountKey", 2.0, 5.0);
     conn.stop();
     return result;
 }
@@ -58,7 +58,7 @@ function testZIncrBy() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zIncrBy("testZIncrByKey", 1f, "testZIncrByValue1");
+    var result = conn->zIncrBy("testZIncrByKey", 1, "testZIncrByValue1");
     conn.stop();
     return result;
 }

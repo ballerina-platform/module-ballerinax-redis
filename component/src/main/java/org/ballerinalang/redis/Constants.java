@@ -31,6 +31,7 @@ public class Constants {
     public static final String REDIS_PACKAGE_PATH = "wso2/redis:0.0.0";
     public static final String CALLER_ACTIONS = "CallerActions";
     public static final String REDIS_EXCEPTION_OCCURRED = "Exception Occurred while executing Redis action";
+    public static final String ERROR_MESSAGE_FIELD = "message";
 
     /**
      * Endpoint configuration constants.

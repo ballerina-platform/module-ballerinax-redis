@@ -80,7 +80,7 @@ function testHIncrByFloat() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2f);
+    var result = conn->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
     conn.stop();
     return result;
 }

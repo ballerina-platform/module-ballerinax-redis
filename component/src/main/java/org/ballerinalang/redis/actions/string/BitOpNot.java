@@ -21,7 +21,8 @@ package org.ballerinalang.redis.actions.string;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BInteger;
-import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.model.values.BMap;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -43,7 +44,7 @@ public class BitOpNot extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
-        BStruct bConnector = (BStruct) context.getRefArgument(0);
+        BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
 
         String destination = context.getStringArgument(0);

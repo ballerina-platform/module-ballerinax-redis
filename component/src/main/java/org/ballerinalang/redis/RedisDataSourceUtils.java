@@ -20,7 +20,9 @@ package org.ballerinalang.redis;
 
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.bre.bvm.BLangVMErrors;
-import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.model.values.BMap;
+import org.ballerinalang.model.values.BString;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.util.BLangConstants;
 import org.ballerinalang.util.codegen.PackageInfo;
 import org.ballerinalang.util.codegen.StructureTypeInfo;
@@ -29,14 +31,14 @@ import org.ballerinalang.util.codegen.StructureTypeInfo;
  * This class contains utility methods for Redis package.
  */
 public class RedisDataSourceUtils {
-    public static BStruct getRedisConnectorError(Context context, Throwable throwable) {
+    public static BMap<?, ?> getRedisConnectorError(Context context, Throwable throwable) {
         PackageInfo builtinPackage = context.getProgramFile().getPackageInfo(BLangConstants.BALLERINA_BUILTIN_PKG);
         StructureTypeInfo errorStructInfo = builtinPackage.getStructInfo(BLangVMErrors.STRUCT_GENERIC_ERROR);
-        BStruct redisConnectorError = new BStruct(errorStructInfo.getType());
+        BMap<String, BValue> redisConnectorError = new BMap<>(errorStructInfo.getType());
         if (throwable.getMessage() == null) {
-            redisConnectorError.setStringField(0, Constants.REDIS_EXCEPTION_OCCURRED);
+            redisConnectorError.put(Constants.ERROR_MESSAGE_FIELD, new BString(Constants.REDIS_EXCEPTION_OCCURRED));
         } else {
-            redisConnectorError.setStringField(0, throwable.getMessage());
+            redisConnectorError.put(Constants.ERROR_MESSAGE_FIELD, new BString(throwable.getMessage()));
         }
         return redisConnectorError;
     }

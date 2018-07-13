@@ -18,10 +18,9 @@ documentation {
     Represents Redis client endpoint.
 }
 public type Client object {
-    private {
-        ClientEndpointConfiguration clientEndpointConfig;
-        CallerActions callerActions;
-    }
+
+    private ClientEndpointConfiguration clientEndpointConfig;
+    private CallerActions callerActions;
 
     documentation {
         Gets called when the endpoint is being initialized during the package initialization.
@@ -63,7 +62,7 @@ documentation {
     F{{password}} Password for the database connection
     F{{options}} Properties for the connection configuration
 }
-public type ClientEndpointConfiguration {
+public type ClientEndpointConfiguration record {
     string host,
     string password,
     Options options,
@@ -82,7 +81,7 @@ documentation {
     F{{database}} The database to be used with the connection
     F{{connectionTimeout}} The timeout value for the connection
 }
-public type Options {
+public type Options record {
     string clientName,
 
     boolean connectionPooling,
