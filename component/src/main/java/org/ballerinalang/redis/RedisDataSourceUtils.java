@@ -31,7 +31,7 @@ import org.ballerinalang.util.codegen.StructureTypeInfo;
  * This class contains utility methods for Redis package.
  */
 public class RedisDataSourceUtils {
-    public static BMap<?, ?> getRedisConnectorError(Context context, Throwable throwable) {
+    public static BMap<String, BValue> getRedisConnectorError(Context context, Throwable throwable) {
         PackageInfo builtinPackage = context.getProgramFile().getPackageInfo(BLangConstants.BALLERINA_BUILTIN_PKG);
         StructureTypeInfo errorStructInfo = builtinPackage.getStructInfo(BLangVMErrors.STRUCT_GENERIC_ERROR);
         BMap<String, BValue> redisConnectorError = new BMap<>(errorStructInfo.getType());
