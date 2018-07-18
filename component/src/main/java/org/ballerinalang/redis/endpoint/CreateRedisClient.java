@@ -27,7 +27,8 @@ import org.ballerinalang.bre.bvm.BlockingNativeCallableUnit;
 import org.ballerinalang.connector.api.BLangConnectorSPIUtil;
 import org.ballerinalang.connector.api.Struct;
 import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BStruct;
+import org.ballerinalang.model.values.BMap;
+import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.natives.annotations.Argument;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.redis.Constants;
@@ -54,7 +55,7 @@ public class CreateRedisClient extends BlockingNativeCallableUnit {
 
     @Override
     public void execute(Context context) {
-        BStruct configBStruct = (BStruct) context.getRefArgument(0);
+        BMap<String, BValue> configBStruct = (BMap<String, BValue>) context.getRefArgument(0);
         Struct clientEndpointConfig = BLangConnectorSPIUtil.toStruct(configBStruct);
 
         //Extract parameters from the endpoint config
@@ -71,7 +72,7 @@ public class CreateRedisClient extends BlockingNativeCallableUnit {
         redisDataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
         redisDataSource.init(host, password, options);
 
-        BStruct redisClient = BLangConnectorSPIUtil
+        BMap<String, BValue> redisClient = BLangConnectorSPIUtil
                 .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.CALLER_ACTIONS);
         redisClient.addNativeData(Constants.CALLER_ACTIONS, redisDataSource);
         context.setReturnValues(redisClient);

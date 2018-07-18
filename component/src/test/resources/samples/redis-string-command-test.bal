@@ -233,7 +233,7 @@ function testIncrByFloat() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->incrByFloat("testIncrByKey", 0.2f);
+    var result = conn->incrByFloat("testIncrByKey", 0.2);
     conn.stop();
     return result;
 }
