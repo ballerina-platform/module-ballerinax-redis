@@ -231,7 +231,7 @@ function main(string... args) {
     var hashGetResult = conn->hGet("HashKey", "Name");
 
     match hashGetResult {
-        string value => io:println("Value of the hash field: " + value);
+        string returnedValue => io:println("Value of the hash field: " + returnedValue);
         error e => io:println("Error occurred while calling `hGet`");
     }
 
