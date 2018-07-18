@@ -27,7 +27,6 @@ import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
-import org.mvel2.util.Make;
 
 /**
  * {@code Close} action is used to close the Redis connection pool.
@@ -44,7 +43,7 @@ import org.mvel2.util.Make;
 public class Close extends AbstractRedisAction {
     @Override
     public void execute(Context context) {
-        BMap<Make.String, BValue> bConnector = (BMap<Make.String, BValue>) context.getRefArgument(0);
+        BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
         close(redisDataSource);
     }
