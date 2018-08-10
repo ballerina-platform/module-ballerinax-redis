@@ -51,9 +51,9 @@ documentation {
 
 	P{{callerActions}} CallerActions object that encapsulates the connection/connection pool
 }
-native function close (CallerActions callerActions);
+extern function close (CallerActions callerActions);
 
-native function createClient(ClientEndpointConfiguration clientEndpointConfig) returns CallerActions;
+extern function createClient(ClientEndpointConfiguration clientEndpointConfig) returns CallerActions;
 
 documentation {
     The Client endpoint configuration for Redis databases.

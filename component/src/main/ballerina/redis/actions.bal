@@ -26,7 +26,7 @@ public type CallerActions object {
         P{{value}} The string value to be appended
         R{{}} Length of the string after the operation or `error` if an error occurs
     }
-    public native function append(string key, string value) returns (int|error);
+    public extern function append(string key, string value) returns (int|error);
 
     documentation {
         Count set bits in a string.
@@ -34,7 +34,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The number of bits set to 1 or `error` if an error occurs
     }
-    public native function bitCount(string key) returns (int|error);
+    public extern function bitCount(string key) returns (int|error);
 
     documentation {
         Perform bitwise AND between strings.
@@ -44,7 +44,7 @@ public type CallerActions object {
         R{{}} The size of the string stored in the destination key, that is equal to the size of the longest input
               string or `error` if an error occurs
     }
-    public native function bitOpAnd(string destination, string[] keys)
+    public extern function bitOpAnd(string destination, string[] keys)
         returns (int|error);
 
     documentation {
@@ -55,7 +55,7 @@ public type CallerActions object {
         R{{}} The size of the string stored in the destination key, that is equal to the size of the longest input
               string or `error` if an error occurs
     }
-    public native function bitOpOr(string destination, string[] keys)
+    public extern function bitOpOr(string destination, string[] keys)
         returns (int|error);
 
     documentation {
@@ -65,7 +65,7 @@ public type CallerActions object {
         P{{key}} Input keys to perform AND between
         R{{}} The size of the string stored in the destination key or `error` if an error occurs
     }
-    public native function bitOpNot(string destination, string key)
+    public extern function bitOpNot(string destination, string key)
         returns (int|error);
 
     documentation {
@@ -76,7 +76,7 @@ public type CallerActions object {
         R{{}} The size of the string stored in the destination key, that is equal to the size of the longest input
               string or `error` if an error occurs
     }
-    public native function bitOpXor(string destination, string[] key)
+    public extern function bitOpXor(string destination, string[] key)
         returns (int|error);
 
     documentation {
@@ -85,7 +85,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The value of the key after the decrement or `error` if an error occurs
     }
-    public native function decr(string key) returns (int|error);
+    public extern function decr(string key) returns (int|error);
 
     documentation {
         Decrement the integer value of a key by the given number.
@@ -94,7 +94,7 @@ public type CallerActions object {
         P{{value}} The value to be decremented
         R{{}} The value of the key after the decrement or `error` if an error occurs
     }
-    public native function decrBy(string key, int value) returns (int|error);
+    public extern function decrBy(string key, int value) returns (int|error);
 
     documentation {
         Returns the bit value at offset in the string value stored at key.
@@ -103,7 +103,7 @@ public type CallerActions object {
         P{{offset}} The offset
         R{{}} The bit value stored at offset or `error` if an error occurs
     }
-    public native function getBit(string key, int offset) returns (int|error);
+    public extern function getBit(string key, int offset) returns (int|error);
 
     documentation {
         Get a substring of the string stored at a key.
@@ -113,7 +113,7 @@ public type CallerActions object {
         P{{end}} The end point of the substring
         R{{}} The substring or `error` if an error occurs
     }
-    public native function getRange(string key, int startPos, int end)
+    public extern function getRange(string key, int startPos, int end)
         returns (string|error);
 
     documentation {
@@ -123,7 +123,7 @@ public type CallerActions object {
         P{{value}} The value to be set
         R{{}} The old value stored at key, or nil when key does not exist or `error` if an error occurs
     }
-    public native function getSet(string key, string value) returns (string?|error);
+    public extern function getSet(string key, string value) returns (string?|error);
 
     documentation {
         Get the value of a key.
@@ -131,7 +131,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The value of the key, or nil when key does not exist or `error` if an error occurs
     }
-    public native function get(string key) returns (string?|error);
+    public extern function get(string key) returns (string?|error);
 
     documentation {
         Increment the integer value of a key by one.
@@ -139,7 +139,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The value of the key after increment or `error` if an error occurs
     }
-    public native function incr(string key) returns (int|error);
+    public extern function incr(string key) returns (int|error);
 
     documentation {
 	    Increment the integer value of a key by the given amount.
@@ -148,7 +148,7 @@ public type CallerActions object {
         P{{value}} The amount to increment
         R{{}} The value of the key after increment or `error` if an error occurs
     }
-    public native function incrBy(string key, int value) returns (int|error);
+    public extern function incrBy(string key, int value) returns (int|error);
 
     documentation {
         Increment the integer value of a key by the given amount.
@@ -157,7 +157,7 @@ public type CallerActions object {
         P{{value}} The amount to increment
         R{{}} The value of the key after increment or `error` if an error occurs
      }
-    public native function incrByFloat(string key, float value) returns (float|error);
+    public extern function incrByFloat(string key, float value) returns (float|error);
 
     documentation {
         Get the values of all the given keys.
@@ -165,7 +165,7 @@ public type CallerActions object {
         P{{keys}} The keys of which the values need to be retrieved
         R{{}} Array of values at the specified keys or `error` if an error occurs
     }
-    public native function mGet(string[] keys) returns (string[]|error);
+    public extern function mGet(string[] keys) returns (string[]|error);
 
     documentation {
         Set multiple keys to multiple values.
@@ -173,7 +173,7 @@ public type CallerActions object {
         P{{keyValueMap}} A map of key-value pairs to be set
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function mSet(map keyValueMap) returns (string|error);
+    public extern function mSet(map keyValueMap) returns (string|error);
 
     documentation {
         Set multiple keys to multiple values, only if none of the keys exist.
@@ -181,7 +181,7 @@ public type CallerActions object {
         P{{keyValueMap}} A map of key-value pairs to be set
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function mSetNx(map keyValueMap) returns (boolean|error);
+    public extern function mSetNx(map keyValueMap) returns (boolean|error);
 
     documentation {
         Set the value and expiration in milliseconds of a key.
@@ -191,7 +191,7 @@ public type CallerActions object {
         P{{expirationTime}} Expiration time in milli seconds
         R{{}} New value of the key or `error` if an error occurs
     }
-    public native function pSetEx(string key, string value, int expirationTime)
+    public extern function pSetEx(string key, string value, int expirationTime)
         returns (string|error);
 
     documentation {
@@ -202,7 +202,7 @@ public type CallerActions object {
         P{{offset}} The offset at which the value should be set
         R{{}} The original bit value stored at offset or `error` if an error occurs
     }
-    public native function setBit(string key, int value, int offset) returns (int|error);
+    public extern function setBit(string key, int value, int offset) returns (int|error);
 
     documentation {
         Set the value and expiration of a key.
@@ -212,7 +212,7 @@ public type CallerActions object {
         P{{expirationPeriodSeconds}} Expiration time to be set, in seconds
         R{{}} New value of the key or `error` if an error occurs
     }
-    public native function setEx(string key, string value, int expirationPeriodSeconds)
+    public extern function setEx(string key, string value, int expirationPeriodSeconds)
         returns (string|error);
 
     documentation {
@@ -222,7 +222,7 @@ public type CallerActions object {
         P{{value}} The value to be set
         R{{}} New value of the key or `error` if an error occurs
     }
-    public native function setNx(string key, string value) returns (boolean|error);
+    public extern function setNx(string key, string value) returns (boolean|error);
 
     documentation {
         Overwrite part of a string at key starting at the specified offset.
@@ -232,7 +232,7 @@ public type CallerActions object {
         P{{value}} The value to be set
         R{{}} The length of the string after it was modified or `error` if an error occurs
     }
-    public native function setRange(string key, int offset, string value)
+    public extern function setRange(string key, int offset, string value)
         returns (int|error);
 
     documentation {
@@ -241,7 +241,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} the length of the string at key, or 0 when key does not exist or `error` if an error occurs
     }
-    public native function strln(string key) returns (int|error);
+    public extern function strln(string key) returns (int|error);
 
     documentation {
         Set the value of a key.
@@ -250,7 +250,7 @@ public type CallerActions object {
         P{{value}} The value to be set
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function setVal(string key, string value) returns (string|error);
+    public extern function setVal(string key, string value) returns (string|error);
 
     //list operations
 
@@ -261,7 +261,7 @@ public type CallerActions object {
         P{{values}} The values to be prepended
         R{{}} The length of the list after the push operation(s) or `error` if an error occurs
     }
-    public native function lPush(string key, string[] values) returns (int|error);
+    public extern function lPush(string key, string[] values) returns (int|error);
 
     documentation {
         Remove and get the first element in a list.
@@ -269,7 +269,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The value of the first element, or nil when key does not exist or `error` if an error occurs
     }
-    public native function lPop(string key) returns (string?|error);
+    public extern function lPop(string key) returns (string?|error);
 
     documentation {
         Prepend one or multiple values to a list, only if the list exists.
@@ -278,7 +278,7 @@ public type CallerActions object {
         P{{values}} The values to be prepended
         R{{}} The length of the list after the push operation(s) or `error` if an error occurs
     }
-    public native function lPushX(string key, string[] values) returns (int|error);
+    public extern function lPushX(string key, string[] values) returns (int|error);
 
     documentation {
         Remove and get the first element in a list, or block until one is available.
@@ -289,7 +289,7 @@ public type CallerActions object {
               key being  the name of the key where an element was popped and the second element  being the value of the
               popped element, or `error` if an error occurs
     }
-    public native function bLPop(int timeOut, string[] keys) returns (map?|error);
+    public extern function bLPop(int timeOut, string[] keys) returns (map?|error);
 
     documentation {
         Remove and get the last element in a list, or block until one is available.
@@ -300,7 +300,7 @@ public type CallerActions object {
               key being  the name of the key where an element was popped and the second element being the value of the
               popped element, or `error` if an error occurs
     }
-    public native function bRPop(int timeOut, string[] keys) returns (map?|error);
+    public extern function bRPop(int timeOut, string[] keys) returns (map?|error);
 
     documentation {
         Get an element from a list by its index.
@@ -309,7 +309,7 @@ public type CallerActions object {
         P{{index}} The index from which the element should be retrieved
         R{{}} The value at the given index or `error` if an error occurs
     }
-    public native function lIndex(string key, int index) returns (string|error);
+    public extern function lIndex(string key, int index) returns (string|error);
 
     documentation {
         Insert an element before or after another element in a list.
@@ -321,7 +321,7 @@ public type CallerActions object {
         R{{}} the length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
         an error occurs
     }
-    public native function lInsert(string key, boolean before, string pivot, string value)
+    public extern function lInsert(string key, boolean before, string pivot, string value)
         returns (int|error);
 
     documentation {
@@ -330,7 +330,7 @@ public type CallerActions object {
         P{{key}} The key
         R{{}} The length of the list at key or `error` if an error occurs
     }
-    public native function lLen(string key) returns (int|error);
+    public extern function lLen(string key) returns (int|error);
 
     documentation {
         Get a range of elements from a list.
@@ -340,7 +340,7 @@ public type CallerActions object {
         P{{stopPos}} The last index of the range
         R{{}} Array of elements in the specified range or `error` if an error occurs
     }
-    public native function lRange(string key, int startPos, int stopPos)
+    public extern function lRange(string key, int startPos, int stopPos)
         returns (string[]|error);
 
     documentation {
@@ -351,7 +351,7 @@ public type CallerActions object {
         P{{value}} The value which the elements to be removed should be equal to
         R{{}} Number of elements removed or `error` if an error occurs
     }
-    public native function lRem(string key, int count, string value) returns (int|error);
+    public extern function lRem(string key, int count, string value) returns (int|error);
 
     documentation {
         Set the value of an element in a list by its index.
@@ -361,7 +361,7 @@ public type CallerActions object {
         P{{value}} The value to be set
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function lSet(string key, int index, string value)
+    public extern function lSet(string key, int index, string value)
         returns (string|error);
 
     documentation {
@@ -372,7 +372,7 @@ public type CallerActions object {
         P{{stopPos}} The end index of the range
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function lTrim(string key, int startPos, int stopPos) returns (string|error);
+    public extern function lTrim(string key, int startPos, int stopPos) returns (string|error);
 
     documentation {
         Remove and get the last element in a list.
@@ -380,7 +380,7 @@ public type CallerActions object {
         P{{key}} The key of the list
         R{{}} The value of the last element, or `nil` when key does not exist or `error` if an error occurs
     }
-    public native function rPop(string key) returns (string?|error);
+    public extern function rPop(string key) returns (string?|error);
 
     documentation {
         Remove the last element in a list, append it to another list and return it.
@@ -389,7 +389,7 @@ public type CallerActions object {
         P{{destination}} The destination key
         R{{}} The element being popped and pushed or `error` if an error occurs
     }
-    public native function rPopLPush(string source, string destination)
+    public extern function rPopLPush(string source, string destination)
         returns (string|error);
 
     documentation {
@@ -399,7 +399,7 @@ public type CallerActions object {
         P{{values}} Array of values to be appended
         R{{}} The length of the list after the push operation or `error` if an error occurs
     }
-    public native function rPush(string key, string[] values) returns (int|error);
+    public extern function rPush(string key, string[] values) returns (int|error);
 
     documentation {
         Append one or multiple values to a list, only if the list exists.
@@ -408,7 +408,7 @@ public type CallerActions object {
         P{{values}} Array of values to be appended
         R{{}} The length of the list after the push operation or `error` if an error occurs
     }
-    public native function rPushX(string key, string[] values) returns (int|error);
+    public extern function rPushX(string key, string[] values) returns (int|error);
 
     // Set Commands
     documentation {
@@ -419,7 +419,7 @@ public type CallerActions object {
         R{{}} The number of elements that were added to the set, not including all the elements which were
               already present in the set, or `error` if an error occurs
     }
-    public native function sAdd(string key, string[] values) returns (int|error);
+    public extern function sAdd(string key, string[] values) returns (int|error);
 
     documentation {
         Get the number of members in a set
@@ -427,7 +427,7 @@ public type CallerActions object {
         P{{key}} The key of the set
         R{{}} The cardinality (number of elements) of the set or `error` if an error occurs
     }
-    public native function sCard(string key) returns (int|error);
+    public extern function sCard(string key) returns (int|error);
 
     documentation {
         Return set resulting from the difference between the first set and all the successive sets
@@ -435,7 +435,7 @@ public type CallerActions object {
         P{{keys}} The keys of the sets
         R{{}} An array of members of the resulting set or `error` if an error occurs
     }
-    public native function sDiff(string[] keys) returns (string[]|error);
+    public extern function sDiff(string[] keys) returns (string[]|error);
 
     documentation {
         Obtain the set resulting from the difference between the first set and all the successive.
@@ -445,7 +445,7 @@ public type CallerActions object {
         P{{keys}} The keys of the sets to find the difference of
         R{{}} The number of members in the resulting set or `error` if an error occurs
     }
-    public native function sDiffStore(string destination, string[] keys)
+    public extern function sDiffStore(string destination, string[] keys)
         returns (int|error);
 
     documentation {
@@ -454,7 +454,7 @@ public type CallerActions object {
         P{{keys}} The keys of the sets to be intersected
         R{{}} An array of members of the resulting set or `error` if an error occurs
     }
-    public native function sInter(string[] keys) returns (string[]|error);
+    public extern function sInter(string[] keys) returns (string[]|error);
 
     documentation {
         Obtain the intersection of the provided sets and store at the provided destination.
@@ -463,7 +463,7 @@ public type CallerActions object {
         P{{keys}} The keys of the sets to be intersected
         R{{}} An array of members of the resulting set or `error` if an error occurs
     }
-    public native function sInterStore(string destination, string[] keys)
+    public extern function sInterStore(string destination, string[] keys)
         returns (int|error);
 
     documentation {
@@ -474,7 +474,7 @@ public type CallerActions object {
         R{{}} boolean true/false depending on whether the value is a member of the set or not, or `error` if an error
               occurs
     }
-    public native function sIsMember(string key, string value) returns (boolean|error);
+    public extern function sIsMember(string key, string value) returns (boolean|error);
 
     documentation {
         Get all the members in a set.
@@ -482,7 +482,7 @@ public type CallerActions object {
         P{{key}} The key of the set
         R{{}} Array of all members in the set or `error` if an error occurs
     }
-    public native function sMembers(string key) returns (string[]|error);
+    public extern function sMembers(string key) returns (string[]|error);
 
     documentation {
         Move a member from one set to another.
@@ -493,7 +493,7 @@ public type CallerActions object {
         R{{}} `true` if the element is moved. `false` if the element is not a member of source and no
                operation was performed or `error` if an error occurs
     }
-    public native function sMove(string source, string destination, string member)
+    public extern function sMove(string source, string destination, string member)
         returns (boolean|error);
 
 
@@ -504,7 +504,7 @@ public type CallerActions object {
         P{{count}} Number of members to pop
         R{{}} Array of removed elements or `nil` if key does not exist or `error` if an error occurs
     }
-    public native function sPop(string key, int count) returns (string[]?|error);
+    public extern function sPop(string key, int count) returns (string[]?|error);
 
     documentation {
         Get one or multiple random members from a set.
@@ -513,7 +513,7 @@ public type CallerActions object {
         P{{count}} Number of members to obtain
         R{{}} Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
     }
-    public native function sRandMember(string key, int count) returns (string[]?|error);
+    public extern function sRandMember(string key, int count) returns (string[]?|error);
 
     documentation {
         Remove one or more members from a set.
@@ -523,7 +523,7 @@ public type CallerActions object {
         R{{}} The number of members that were removed from the set, not including non existing members or `error` if
               an error occurs
     }
-    public native function sRem(string key, string[] members) returns (int|error);
+    public extern function sRem(string key, string[] members) returns (int|error);
 
     documentation {
         Return the union of multiple sets.
@@ -531,7 +531,7 @@ public type CallerActions object {
         P{{keys}} Array of keys of sets
         R{{}} Array of members of the resulting set or `error` if an error occurs
     }
-    public native function sUnion(string[] keys) returns (string[]|error);
+    public extern function sUnion(string[] keys) returns (string[]|error);
 
     documentation {
         Return the union of multiple sets.
@@ -540,7 +540,7 @@ public type CallerActions object {
         P{{keys}} Array of keys of sets
         R{{}} Number of members of the resulting set or `error` if an error occurs
     }
-    public native function sUnionStore(string destination, string[] keys)
+    public extern function sUnionStore(string destination, string[] keys)
         returns (int|error);
 
     //Sorted set Commands
@@ -552,7 +552,7 @@ public type CallerActions object {
         R{{}} The number of elements that were added to the sorted set, not including all the elements which were
               already present in the set for which the score was updated, or `error` if an error occurs
     }
-    public native function zAdd(string key, map memberScoreMap) returns (int|error);
+    public extern function zAdd(string key, map memberScoreMap) returns (int|error);
 
     documentation {
         Get the number of members in a sorted set.
@@ -560,7 +560,7 @@ public type CallerActions object {
         P{{key}} The key of the sorted set
         R{{}} The cardinality (number of elements) of the sorted set or `error` if an error occurs
     }
-    public native function zCard(string key) returns (int|error);
+    public extern function zCard(string key) returns (int|error);
 
     documentation {
         Count the members in a sorted set with scores within the given range.
@@ -570,7 +570,7 @@ public type CallerActions object {
         P{{max}} The maximum score of the range
         R{{}} The number of elements in the specified score range or `error` if an error occurs
     }
-    public native function zCount(string key, float min, float max) returns (int|error);
+    public extern function zCount(string key, float min, float max) returns (int|error);
 
     documentation {
         Increment the score of a member in a sorted set.
@@ -580,7 +580,7 @@ public type CallerActions object {
         P{{member}} The member whose score to be incremented
         R{{}} The new score of the member or `error` if an error occurs
     }
-    public native function zIncrBy(string key, float amount, string member)
+    public extern function zIncrBy(string key, float amount, string member)
         returns (float|error);
 
     documentation {
@@ -590,7 +590,7 @@ public type CallerActions object {
         P{{keys}} The keys of the sorted sets to be intersected
         R{{}} The number of elements in the resulting sorted set or `error` if an error occurs
     }
-    public native function zInterStore(string destination, string[] keys)
+    public extern function zInterStore(string destination, string[] keys)
         returns (int|error);
 
     documentation {
@@ -601,7 +601,7 @@ public type CallerActions object {
         P{{max}} The maximum lexicographical value of the range
         R{{}} The number of elements in the specified lexicographical value range or `error` if an error occurs
     }
-    public native function zLexCount(string key, string min, string max)
+    public extern function zLexCount(string key, string min, string max)
         returns (int|error);
 
     documentation {
@@ -612,7 +612,7 @@ public type CallerActions object {
         P{{max}} The maximum index of the range
         R{{}} The range of members in a sorted set, by index, or `error` if an error occurs
     }
-    public native function zRange(string key, int min, int max) returns (string[]|error);
+    public extern function zRange(string key, int min, int max) returns (string[]|error);
 
     documentation {
         Return a range of members in a sorted set, by lexicographical range from lowest to highest.
@@ -623,7 +623,7 @@ public type CallerActions object {
         R{{}} Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
               if an error occurs
     }
-    public native function zRangeByLex(string key, string min, string max)
+    public extern function zRangeByLex(string key, string min, string max)
         returns (string[]|error);
 
     documentation {
@@ -636,7 +636,7 @@ public type CallerActions object {
         R{{}} Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
               if an error occurs
     }
-    public native function zRevRangeByLex(string key, string min, string max)
+    public extern function zRevRangeByLex(string key, string min, string max)
         returns (string[]|error);
 
     documentation {
@@ -647,7 +647,7 @@ public type CallerActions object {
         P{{max}} The maximum score of the range
         R{{}} Array of members in the specified score range ordered from lowest to highest or `error` if an error occurs
     }
-    public native function zRangeByScore(string key, float min, float max)
+    public extern function zRangeByScore(string key, float min, float max)
         returns (string[]|error);
 
     documentation {
@@ -657,7 +657,7 @@ public type CallerActions object {
         P{{member}} The member of which the index needs to be obtained
         R{{}} The index of the member or `error` if an error occurs
     }
-    public native function zRank(string key, string member) returns (int|error);
+    public extern function zRank(string key, string member) returns (int|error);
 
     documentation {
         Remove one or more members from a sorted set
@@ -667,7 +667,7 @@ public type CallerActions object {
         R{{}} The number of members removed from the sorted set, not including non existing members or `error` if an
               error occurs
     }
-    public native function zRem(string key, string[] members) returns (int|error);
+    public extern function zRem(string key, string[] members) returns (int|error);
 
     documentation {
         Remove all members in a sorted set between the given lexicographical range.
@@ -677,7 +677,7 @@ public type CallerActions object {
         P{{max}} The maximum lexicographical value of the range
         R{{}} The number of members removed from the sorted set or `error` if an error occurs
     }
-    public native function zRemRangeByLex(string key, string min, string max)
+    public extern function zRemRangeByLex(string key, string min, string max)
         returns (int|error);
 
     documentation {
@@ -688,7 +688,7 @@ public type CallerActions object {
         P{{max}} The maximum index of the range
         R{{}} The number of members removed from the sorted set or `error` if an error occurs
     }
-    public native function zRemRangeByRank(string key, int min, int max)
+    public extern function zRemRangeByRank(string key, int min, int max)
         returns (int|error);
 
     documentation {
@@ -699,7 +699,7 @@ public type CallerActions object {
         P{{max}} The maximum score of the range
         R{{}} The number of members removed from the sorted set or `error` if an error occurs
     }
-    public native function zRemRangeByScore(string key, float min, float max)
+    public extern function zRemRangeByScore(string key, float min, float max)
         returns (int|error);
 
     documentation {
@@ -710,7 +710,7 @@ public type CallerActions object {
         P{{max}} The maximum index of the range
         R{{}} The number of elements in the specified index range or `error` if an error occurs
     }
-    public native function zRevRange(string key, int min, int max)
+    public extern function zRevRange(string key, int min, int max)
         returns (string[]|error);
 
     documentation {
@@ -721,7 +721,7 @@ public type CallerActions object {
         P{{max}} The maximum score of the range
         R{{}} Array of members in the specified score range ordered from highest to lowest or `error` if an error occurs
     }
-    public native function zRevRangeByScore(string key, float min, float max)
+    public extern function zRevRangeByScore(string key, float min, float max)
         returns (string[]|error);
 
     documentation {
@@ -731,7 +731,7 @@ public type CallerActions object {
         P{{member}} The member of which the index needs to be obtained
         R{{}} The index of the member or `error` if an error occurs
 }
-    public native function zRevRank(string key, string member) returns (int|error);
+    public extern function zRevRank(string key, string member) returns (int|error);
 
     documentation {
         Determine the score of a member in a sorted set
@@ -740,7 +740,7 @@ public type CallerActions object {
         P{{member}} The member of which the score needs to be obtained
         R{{}} The score of the member or `error` if an error occurs
 }
-    public native function zScore(string key, string member) returns (float|error);
+    public extern function zScore(string key, string member) returns (float|error);
 
     documentation {
         Return the union of multiple sorted sets
@@ -749,7 +749,7 @@ public type CallerActions object {
         P{{keys}} Array of keys of sorted sets
         R{{}} Number of members of the resulting sorted set or `error` if an error occurs
 }
-    public native function zUnionStore(string destination, string[] keys) returns (int|error);
+    public extern function zUnionStore(string destination, string[] keys) returns (int|error);
 
     //Hash Commands
 
@@ -761,7 +761,7 @@ public type CallerActions object {
         R{{}} Number of fields that were removed from the hash, not including specified but non existing fields or
              `error` if an error occurs
     }
-    public native function hDel(string key, string[] fields) returns (int|error);
+    public extern function hDel(string key, string[] fields) returns (int|error);
 
     documentation {
         Determine if a hash field exists.
@@ -771,7 +771,7 @@ public type CallerActions object {
         R{{}} boolean `true` if the hash contains the field. boolean false if the hash does not contain
               field or key does not exist or `error` if an error occurs
     }
-    public native function hExists(string key, string field) returns (boolean|error);
+    public extern function hExists(string key, string field) returns (boolean|error);
 
     documentation {
         Get the value of a hash field.
@@ -780,7 +780,7 @@ public type CallerActions object {
         P{{field}} The field
         R{{}} The value of the field or `error` if an error occurs
     }
-    public native function hGet(string key, string field) returns (string|error);
+    public extern function hGet(string key, string field) returns (string|error);
 
     documentation {
         Get the all values of a hash.
@@ -788,7 +788,7 @@ public type CallerActions object {
         P{{key}} The key of the hash
         R{{}} Map of field-value pairs or `error` if an error occurs
     }
-    public native function hGetAll(string key) returns (map|error);
+    public extern function hGetAll(string key) returns (map|error);
 
     documentation {
         Increment the integer value of a hash field by the given number.
@@ -798,7 +798,7 @@ public type CallerActions object {
         P{{amount}} The amount to increment
         R{{}} The value of the field or `error` if an error occurs
     }
-    public native function hIncrBy(string key, string field, int amount)
+    public extern function hIncrBy(string key, string field, int amount)
         returns (int|error);
 
     documentation {
@@ -809,7 +809,7 @@ public type CallerActions object {
         P{{amount}} The amount to increment
         R{{}} The value of the field or `error` if an error occurs
     }
-    public native function hIncrByFloat(string key, string field, float amount)
+    public extern function hIncrByFloat(string key, string field, float amount)
         returns (float|error);
 
     documentation {
@@ -818,7 +818,7 @@ public type CallerActions object {
         P{{key}} The key of the hash
         R{{}} Array of hash fields or `error` if an error occurs
     }
-    public native function hKeys(string key) returns (string[]|error);
+    public extern function hKeys(string key) returns (string[]|error);
 
     documentation {
         Get the number of fields in a hash.
@@ -826,7 +826,7 @@ public type CallerActions object {
         P{{key}} The key of the hash
         R{{}} Number of fields or `error` if an error occurs
     }
-    public native function hLen(string key) returns (int|error);
+    public extern function hLen(string key) returns (int|error);
 
     documentation {
         Get the values of all the given hash fields.
@@ -835,7 +835,7 @@ public type CallerActions object {
         P{{fields}} Array of hash fields
         R{{}} Map of field-value pairs or `error` if an error occurs
     }
-    public native function hMGet(string key, string[] fields) returns (map|error);
+    public extern function hMGet(string key, string[] fields) returns (map|error);
 
     documentation {
         Set multiple hash fields to multiple values.
@@ -844,7 +844,7 @@ public type CallerActions object {
         P{{fieldValueMap}} Map of field-value pairs
         R{{}} A string with the value `OK` if the operation was successful, or `error` if an error occurs
 }
-    public native function hMSet(string key, map fieldValueMap) returns (string|error);
+    public extern function hMSet(string key, map fieldValueMap) returns (string|error);
 
     documentation {
         Set the string value of a hash field.
@@ -855,7 +855,7 @@ public type CallerActions object {
         R{{}} boolean `true` if field is a new field in the hash and value was set. boolean false if
               field already exists in the hash and the value was updated, or `error` if an error occurs
     }
-    public native function hSet(string key, string field, string value)
+    public extern function hSet(string key, string field, string value)
         returns (boolean|error);
 
     documentation {
@@ -867,7 +867,7 @@ public type CallerActions object {
         R{{}} boolean `true` if field is a new field in the hash and value was set. boolean false if
               field already exists in the hash and no operation was performed, or `error` if an error occurs
    }
-    public native function hSetNx(string key, string field, string value)
+    public extern function hSetNx(string key, string field, string value)
         returns (boolean|error);
 
     documentation {
@@ -878,7 +878,7 @@ public type CallerActions object {
         R{{}} The length of the field value, or 0 when field is not present in the hash or key does
               not exist at all, or `error` if an error occurs
     }
-    public native function hStrln(string key, string field) returns (int|error);
+    public extern function hStrln(string key, string field) returns (int|error);
 
     documentation {
         Get all the values in a hash.
@@ -886,7 +886,7 @@ public type CallerActions object {
         P{{key}} The key of the hash
         R{{}} Array of values in the hash, or an empty array when key does not exist or `error` if an error occurs
     }
-    public native function hVals(string key) returns (string[]|error);
+    public extern function hVals(string key) returns (string[]|error);
 
     //Key Commands
 
@@ -896,7 +896,7 @@ public type CallerActions object {
         P{{keys}} The key to be deleted
         R{{}} The number of keys that were removed or `error` if an error occurs
     }
-    public native function del(string[] keys) returns (int|error);
+    public extern function del(string[] keys) returns (int|error);
 
     documentation {
         Determine how many keys exist.
@@ -904,7 +904,7 @@ public type CallerActions object {
         P{{keys}} The keys of which existence to be found out
         R{{}} The number of existing keys or `error` if an error occurs
     }
-    public native function exists(string[] keys) returns (int|error);
+    public extern function exists(string[] keys) returns (int|error);
 
     documentation {
         Set a key's time to live in seconds.
@@ -914,7 +914,7 @@ public type CallerActions object {
         R{{}} true if the timeout was set. false if key does not exist or the timeout could not be set or `error` if
               an error occurs
     }
-    public native function expire(string key, int seconds) returns (boolean|error);
+    public extern function expire(string key, int seconds) returns (boolean|error);
 
     documentation {
         Find all keys matching the given pattern.
@@ -922,7 +922,7 @@ public type CallerActions object {
         P{{pattern}} The pattern to match
         R{{}} Array of keys matching the given pattern or `error` if an error occurs
     }
-    public native function keys(string pattern) returns (string[]|error);
+    public extern function keys(string pattern) returns (string[]|error);
 
     documentation {
         Move a key to another database.
@@ -931,7 +931,7 @@ public type CallerActions object {
         P{{database}} The database to which the key needs to be moved
         R{{}} boolean true if key was succesfully moved, boolean false otherwise or `error` if an error occurs
     }
-    public native function move(string key, int database) returns (boolean|error);
+    public extern function move(string key, int database) returns (boolean|error);
 
     documentation {
         Remove the expiration from a key.
@@ -940,7 +940,7 @@ public type CallerActions object {
         R{{}} boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
               an associated timeout, or `error` if an error occurs
     }
-    public native function persist(string key) returns (boolean|error);
+    public extern function persist(string key) returns (boolean|error);
 
     documentation {
         Set a key's time to live in milliseconds..
@@ -950,7 +950,7 @@ public type CallerActions object {
         R{{}} boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
               be set, or `error` if an error occurs
     }
-    public native function pExpire(string key, int timeMilliSeconds)
+    public extern function pExpire(string key, int timeMilliSeconds)
         returns (boolean|error);
 
     documentation {
@@ -959,14 +959,14 @@ public type CallerActions object {
         P{{key}} The key of which time-to-live should be obtained
         R{{}} time-to-live of the key, in milli seconds or `error` if an error occurs
     }
-    public native function pTtl(string key) returns (int|error);
+    public extern function pTtl(string key) returns (int|error);
 
     documentation {
         Return a random key from the keyspace.
 
         R{{}} The random key, or `nil` when the database is empty or `error` if an error occurs
     }
-    public native function randomKey() returns (string?|error);
+    public extern function randomKey() returns (string?|error);
 
     documentation {
         Rename a key.
@@ -975,7 +975,7 @@ public type CallerActions object {
         P{{newName}} The new name of the key
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function rename(string key, string newName) returns (string|error);
+    public extern function rename(string key, string newName) returns (string|error);
 
     documentation {
         Rename a key, only if the new key does not exist.
@@ -985,7 +985,7 @@ public type CallerActions object {
         R{{}} boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
               error occurs
     }
-    public native function renameNx(string key, string newName) returns (boolean|error);
+    public extern function renameNx(string key, string newName) returns (boolean|error);
 
     documentation {
         Sort the elements in a list, set or sorted set.
@@ -993,7 +993,7 @@ public type CallerActions object {
         P{{key}} The key of the data typeure to be sorted
         R{{}} Sorted array containing the members of the sorted data type or `error` if an error occurs
     }
-    public native function sort(string key) returns (string[]|error);
+    public extern function sort(string key) returns (string[]|error);
 
     documentation {
         Get the time to live for a key.
@@ -1003,7 +1003,7 @@ public type CallerActions object {
               Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
               level or the driver level
     }
-    public native function ttl(string key) returns (int|error);
+    public extern function ttl(string key) returns (int|error);
 
     documentation {
         Determine the type stored at key.
@@ -1013,7 +1013,7 @@ public type CallerActions object {
               Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
               level or the driver level
     }
-    public native function redisType(string key) returns (string|error);
+    public extern function redisType(string key) returns (string|error);
 
     //Connection commands
 
@@ -1023,7 +1023,7 @@ public type CallerActions object {
         P{{password}} The password
         R{{}} A string with the value `OK` if the operation was successful or `error` if an error occurs
     }
-    public native function auth(string password) returns (string|error);
+    public extern function auth(string password) returns (string|error);
 
     documentation {
         Echo the given string.
@@ -1031,13 +1031,13 @@ public type CallerActions object {
         P{{message}} The message to be echo-ed
         R{{}} The message itself if the operation was successful or `error` if an error occurs
     }
-    public native function echo(string message) returns (string|error);
+    public extern function echo(string message) returns (string|error);
 
     documentation {
         Ping the server.
 
         R{{}} A string with the value `PONG` if the operation was successful or `error` if an error occurs
     }
-    public native function ping() returns (string|error);
+    public extern function ping() returns (string|error);
 
 };
