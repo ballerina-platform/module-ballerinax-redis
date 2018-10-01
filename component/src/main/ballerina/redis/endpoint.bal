@@ -51,9 +51,9 @@ extern function createClient(ClientEndpointConfiguration clientEndpointConfig) r
 # + password - Password for the database connection
 # + options - Properties for the connection configuration
 public type ClientEndpointConfiguration record {
-    string host,
-    string password,
-    Options options,
+    string host;
+    string password;
+    Options options;
 };
 
 # Connection options for Redis Client Endpoint.
@@ -61,6 +61,7 @@ public type ClientEndpointConfiguration record {
 # + clientName - The clientName of the connection
 # + connectionPooling - Boolean value depending on whether the connection
 #   pooling is enabled or not
+# + isClusterConnection - Whether to enable cluster connection or not
 # + ssl - Boolean value depending on whether SSL is enabled or not
 # + startTls - Boolean value depending on whether startTLS is enabled or not
 # + verifyPeer - Boolean value depending on whether peer verification is
@@ -68,14 +69,12 @@ public type ClientEndpointConfiguration record {
 # + database - The database to be used with the connection
 # + connectionTimeout - The timeout value for the connection
 public type Options record {
-    string clientName,
-
-    boolean connectionPooling,
-    boolean isClusterConnection,
-    boolean ssl,
-    boolean startTls,
-    boolean verifyPeer,
-
-    int database = -1,
-    int connectionTimeout = -1,
+    string clientName;
+    boolean connectionPooling;
+    boolean isClusterConnection;
+    boolean ssl;
+    boolean startTls;
+    boolean verifyPeer;
+    int database = -1;
+    int connectionTimeout = -1;
 };
