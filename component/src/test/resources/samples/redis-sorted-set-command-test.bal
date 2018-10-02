@@ -58,7 +58,7 @@ function testZIncrBy() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zIncrBy("testZIncrByKey", 1, "testZIncrByValue1");
+    var result = conn->zIncrBy("testZIncrByKey", 1.0, "testZIncrByValue1");
     conn.stop();
     return result;
 }
@@ -113,7 +113,7 @@ function testZRangeByScore() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zRangeByScore("testZRangeKey", 2, 4);
+    var result = conn->zRangeByScore("testZRangeKey", 2.0, 4.0);
     conn.stop();
     return result;
 }
@@ -168,7 +168,7 @@ function testZRemRangeByScore() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zRemRangeByScore("testZRemRangeByScoreKey", 2, 5);
+    var result = conn->zRemRangeByScore("testZRemRangeByScoreKey", 2.0, 5.0);
     conn.stop();
     return result;
 }
@@ -201,7 +201,7 @@ function testZRevRangeByScore() returns (any) {
         password: "",
         options: {}
     };
-    var result = conn->zRangeByScore("testZRangeKey", 2, 4);
+    var result = conn->zRangeByScore("testZRangeKey", 2.0, 4.0);
     conn.stop();
     return result;
 }

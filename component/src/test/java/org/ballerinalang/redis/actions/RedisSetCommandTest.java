@@ -78,8 +78,8 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
         Assert.assertEquals(resultingElements.size(), 2);
         String element1 = resultingElements.get(0);
         String element2 = resultingElements.get(1);
-        Assert.assertTrue("Three".equals(element1) && "Four".equals(element2) || "Four".equals(element2) && "Three"
-                .equals(element1));
+        Assert.assertTrue("Three".equals(element1) && "Four".equals(element2) || "Four".equals(element1) && "Three"
+                .equals(element2));
     }
 
     @Test
