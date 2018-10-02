@@ -36,8 +36,7 @@ public type CallerActions object {
     # + keys - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string or `error` if an error occurs
-    public extern function bitOpAnd(string destination, string[] keys)
-        returns (int|error);
+    public extern function bitOpAnd(string destination, string[] keys) returns (int|error);
 
     # Perform bitwise OR between strings.
     #
@@ -45,16 +44,14 @@ public type CallerActions object {
     # + keys - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string or `error` if an error occurs
-    public extern function bitOpOr(string destination, string[] keys)
-        returns (int|error);
+    public extern function bitOpOr(string destination, string[] keys) returns (int|error);
 
     # Perform bitwise NOT on a string.
     #
     # + destination - Result key of the operation
     # + key - Input keys to perform AND between
     # + return - The size of the string stored in the destination key or `error` if an error occurs
-    public extern function bitOpNot(string destination, string key)
-        returns (int|error);
+    public extern function bitOpNot(string destination, string key) returns (int|error);
 
     # Perform bitwise XOR between strings.
     #
@@ -62,8 +59,7 @@ public type CallerActions object {
     # + key - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string or `error` if an error occurs
-    public extern function bitOpXor(string destination, string[] key)
-        returns (int|error);
+    public extern function bitOpXor(string destination, string[] key) returns (int|error);
 
     # Decrement the integer value of a key by one.
     #
@@ -91,8 +87,7 @@ public type CallerActions object {
     # + startPos - The starting point of the substring
     # + end - The end point of the substring
     # + return - The substring or `error` if an error occurs
-    public extern function getRange(string key, int startPos, int end)
-        returns (string|error);
+    public extern function getRange(string key, int startPos, int end) returns (string|error);
 
     # Set the string value of a key and return its old value.
     #
@@ -151,8 +146,7 @@ public type CallerActions object {
     # + value - The value to be set
     # + expirationTime - Expiration time in milli seconds
     # + return - New value of the key or `error` if an error occurs
-    public extern function pSetEx(string key, string value, int expirationTime)
-        returns (string|error);
+    public extern function pSetEx(string key, string value, int expirationTime) returns (string|error);
 
     # Sets or clears the bit at offset in the string value stored at key.
     #
@@ -168,8 +162,7 @@ public type CallerActions object {
     # + value - The value to be set
     # + expirationPeriodSeconds - Expiration time to be set, in seconds
     # + return - New value of the key or `error` if an error occurs
-    public extern function setEx(string key, string value, int expirationPeriodSeconds)
-        returns (string|error);
+    public extern function setEx(string key, string value, int expirationPeriodSeconds) returns (string|error);
 
     # Set the value of a key, only if the key does not exist.
     #
@@ -184,13 +177,12 @@ public type CallerActions object {
     # + offset - The offset at which the value should be set
     # + value - The value to be set
     # + return - The length of the string after it was modified or `error` if an error occurs
-    public extern function setRange(string key, int offset, string value)
-        returns (int|error);
+    public extern function setRange(string key, int offset, string value) returns (int|error);
 
     # Get the length of the value stored in a key.
     #
     # + key - The key
-    # + return - the length of the string at key, or 0 when key does not exist or `error` if an error occurs
+    # + return - The length of the string at key, or 0 when key does not exist or `error` if an error occurs
     public extern function strln(string key) returns (int|error);
 
     # Set the value of a key.
@@ -253,10 +245,9 @@ public type CallerActions object {
     # + before - boolean value representing Whether element should be inserted before or after the pivot
     # + pivot - The pivot
     # + value - The value
-    # + return - the length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
-    #   an error occurs
-    public extern function lInsert(string key, boolean before, string pivot, string value)
-        returns (int|error);
+    # + return - The length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
+    #           an error occurs
+    public extern function lInsert(string key, boolean before, string pivot, string value) returns (int|error);
 
     # Get the length of a list.
     #
@@ -270,8 +261,7 @@ public type CallerActions object {
     # + startPos - The begining index of the range
     # + stopPos - The last index of the range
     # + return - Array of elements in the specified range or `error` if an error occurs
-    public extern function lRange(string key, int startPos, int stopPos)
-        returns (string[]|error);
+    public extern function lRange(string key, int startPos, int stopPos) returns (string[]|error);
 
     # Remove elements from a list.
     #
@@ -287,8 +277,7 @@ public type CallerActions object {
     # + index - The index of the element of which the value needs to be set
     # + value - The value to be set
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public extern function lSet(string key, int index, string value)
-        returns (string|error);
+    public extern function lSet(string key, int index, string value) returns (string|error);
 
     # Trim a list to the specified range.
     #
@@ -309,8 +298,7 @@ public type CallerActions object {
     # + source - The source key
     # + destination - The destination key
     # + return - The element being popped and pushed or `error` if an error occurs
-    public extern function rPopLPush(string source, string destination)
-        returns (string|error);
+    public extern function rPopLPush(string source, string destination) returns (string|error);
 
     # Append one or multiple values to a list.
     #
@@ -353,8 +341,7 @@ public type CallerActions object {
     # + destination - The destination key of the resulting set
     # + keys - The keys of the sets to find the difference of
     # + return - The number of members in the resulting set or `error` if an error occurs
-    public extern function sDiffStore(string destination, string[] keys)
-        returns (int|error);
+    public extern function sDiffStore(string destination, string[] keys) returns (int|error);
 
     # Return the intersection of the provided sets.
     #
@@ -367,8 +354,7 @@ public type CallerActions object {
     # + destination - The destination key of the resulting set
     # + keys - The keys of the sets to be intersected
     # + return - An array of members of the resulting set or `error` if an error occurs
-    public extern function sInterStore(string destination, string[] keys)
-        returns (int|error);
+    public extern function sInterStore(string destination, string[] keys) returns (int|error);
 
     # Determine if a given value is a member of a set.
     #
@@ -391,8 +377,7 @@ public type CallerActions object {
     # + member - The member to be moved
     # + return - `true` if the element is moved. `false` if the element is not a member of source and no
     #             operation was performed or `error` if an error occurs
-    public extern function sMove(string source, string destination, string member)
-        returns (boolean|error);
+    public extern function sMove(string source, string destination, string member) returns (boolean|error);
 
 
     # Remove and return a random member from a set.
@@ -428,8 +413,7 @@ public type CallerActions object {
     # + destination - The destination key of the resulting set
     # + keys - Array of keys of sets
     # + return - Number of members of the resulting set or `error` if an error occurs
-    public extern function sUnionStore(string destination, string[] keys)
-        returns (int|error);
+    public extern function sUnionStore(string destination, string[] keys) returns (int|error);
 
     //Sorted set Commands
     # Add one or more members to a sorted set, or update its score if it already exist.
@@ -460,16 +444,14 @@ public type CallerActions object {
     # + amount - The amount to increment
     # + member - The member whose score to be incremented
     # + return - The new score of the member or `error` if an error occurs
-    public extern function zIncrBy(string key, float amount, string member)
-        returns (float|error);
+    public extern function zIncrBy(string key, float amount, string member) returns (float|error);
 
     # Intersect multiple sorted sets and store the resulting sorted set in a new key.
     #
     # + destination - The destination key of the resulting sorted set
     # + keys - The keys of the sorted sets to be intersected
     # + return - The number of elements in the resulting sorted set or `error` if an error occurs
-    public extern function zInterStore(string destination, string[] keys)
-        returns (int|error);
+    public extern function zInterStore(string destination, string[] keys) returns (int|error);
 
     # Count the members in a sorted set within the given lexicographical range.
     #
@@ -477,8 +459,7 @@ public type CallerActions object {
     # + min - The minimum lexicographical value of the range
     # + max - The maximum lexicographical value of the range
     # + return - The number of elements in the specified lexicographical value range or `error` if an error occurs
-    public extern function zLexCount(string key, string min, string max)
-        returns (int|error);
+    public extern function zLexCount(string key, string min, string max) returns (int|error);
 
     # Return a range of members in a sorted set, by index.
     #
@@ -495,8 +476,7 @@ public type CallerActions object {
     # + max - The maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
     #            if an error occurs
-    public extern function zRangeByLex(string key, string min, string max)
-        returns (string[]|error);
+    public extern function zRangeByLex(string key, string min, string max) returns (string[]|error);
 
     # Return a range of members in a sorted set, by lexicographical range ordered from highest to
     # lowest.
@@ -506,8 +486,7 @@ public type CallerActions object {
     # + max - The maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
     #            if an error occurs
-    public extern function zRevRangeByLex(string key, string min, string max)
-        returns (string[]|error);
+    public extern function zRevRangeByLex(string key, string min, string max) returns (string[]|error);
 
     # Return a range of members in a sorted set, by score from lowest to highest.
     #
@@ -515,8 +494,7 @@ public type CallerActions object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - Array of members in the specified score range ordered from lowest to highest or `error` if an error occurs
-    public extern function zRangeByScore(string key, float min, float max)
-        returns (string[]|error);
+    public extern function zRangeByScore(string key, float min, float max) returns (string[]|error);
 
     # Determine the index of a member in a sorted set.
     #
@@ -539,8 +517,7 @@ public type CallerActions object {
     # + min - The minimum lexicographical value of the range
     # + max - The maximum lexicographical value of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public extern function zRemRangeByLex(string key, string min, string max)
-        returns (int|error);
+    public extern function zRemRangeByLex(string key, string min, string max) returns (int|error);
 
     # Remove all members in a sorted set within the given indices.
     #
@@ -548,8 +525,7 @@ public type CallerActions object {
     # + min - The minimum index of the range
     # + max - The maximum index of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public extern function zRemRangeByRank(string key, int min, int max)
-        returns (int|error);
+    public extern function zRemRangeByRank(string key, int min, int max) returns (int|error);
 
     # Remove all members in a sorted set within the given scores.
     #
@@ -557,8 +533,7 @@ public type CallerActions object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public extern function zRemRangeByScore(string key, float min, float max)
-        returns (int|error);
+    public extern function zRemRangeByScore(string key, float min, float max) returns (int|error);
 
     # Return a range of members in a sorted set, by index, ordered highest to lowest.
     #
@@ -566,8 +541,7 @@ public type CallerActions object {
     # + min - The minimum index of the range
     # + max - The maximum index of the range
     # + return - The number of elements in the specified index range or `error` if an error occurs
-    public extern function zRevRange(string key, int min, int max)
-        returns (string[]|error);
+    public extern function zRevRange(string key, int min, int max) returns (string[]|error);
 
     # Return a range of members in a sorted set, by score from highest to lowest.
     #
@@ -575,8 +549,7 @@ public type CallerActions object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - Array of members in the specified score range ordered from highest to lowest or `error` if an error occurs
-    public extern function zRevRangeByScore(string key, float min, float max)
-        returns (string[]|error);
+    public extern function zRevRangeByScore(string key, float min, float max) returns (string[]|error);
 
     # Determine the index of a member in a sorted set
     #
@@ -636,8 +609,7 @@ public type CallerActions object {
     # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `error` if an error occurs
-    public extern function hIncrBy(string key, string field, int amount)
-        returns (int|error);
+    public extern function hIncrBy(string key, string field, int amount) returns (int|error);
 
     # Increment the float value of a hash field by the given number.
     #
@@ -645,8 +617,7 @@ public type CallerActions object {
     # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `error` if an error occurs
-    public extern function hIncrByFloat(string key, string field, float amount)
-        returns (float|error);
+    public extern function hIncrByFloat(string key, string field, float amount) returns (float|error);
 
     # Get all the fields in a hash.
     #
@@ -681,8 +652,7 @@ public type CallerActions object {
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #         field already exists in the hash and the value was updated, or `error` if an error occurs
-    public extern function hSet(string key, string field, string value)
-        returns (boolean|error);
+    public extern function hSet(string key, string field, string value) returns (boolean|error);
 
 	# Set the string value of a hash field, only if the field does not exist.
     #
@@ -691,8 +661,7 @@ public type CallerActions object {
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #            field already exists in the hash and no operation was performed, or `error` if an error occurs
-    public extern function hSetNx(string key, string field, string value)
-        returns (boolean|error);
+    public extern function hSetNx(string key, string field, string value) returns (boolean|error);
 
     # Get the string length of the field value in a hash.
     #
@@ -726,8 +695,8 @@ public type CallerActions object {
     #
     # + key - The keys of which expiry time to be set
     # + seconds - Expiry in seconds
-    # + return - true if the timeout was set. false if key does not exist or the timeout could not be set or `error` if
-    #            an error occurs
+    # + return - boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set or
+    # `error` if an error occurs
     public extern function expire(string key, int seconds) returns (boolean|error);
 
     # Find all keys matching the given pattern.
@@ -756,8 +725,7 @@ public type CallerActions object {
     # + timeMilliSeconds - The expiry time in milli seconds
     # + return - boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
     #         be set, or `error` if an error occurs
-    public extern function pExpire(string key, int timeMilliSeconds)
-        returns (boolean|error);
+    public extern function pExpire(string key, int timeMilliSeconds) returns (boolean|error);
 
     # Get the time to live for a key in milliseconds
     #
@@ -783,7 +751,7 @@ public type CallerActions object {
     # + newName - The new name of the key
     # + return - boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
     #            error occurs
-        public extern function renameNx(string key, string newName) returns (boolean|error);
+    public extern function renameNx(string key, string newName) returns (boolean|error);
 
     # Sort the elements in a list, set or sorted set.
     #
@@ -797,7 +765,7 @@ public type CallerActions object {
     # + return - Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
     #         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
     #         level or the driver level
-        public extern function ttl(string key) returns (int|error);
+    public extern function ttl(string key) returns (int|error);
 
     # Determine the type stored at key.
     #
