@@ -149,7 +149,7 @@ Sample
 import wso2/redis;
 import ballerina/io;
 
-function main(string... args) {
+public function main(string... args) {
      endpoint redis:Client conn {
         host: "localhost",
         password: "",
