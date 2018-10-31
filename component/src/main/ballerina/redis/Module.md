@@ -1,8 +1,8 @@
-## Package Overview
+## Module Overview
 
-This package provides the functionality required to access and manipulate key-value data stored in a Redis database.
+This module provides the functionality required to access and manipulate key-value data stored in a Redis database.
 Currently the provided functionality is limited to usage Redis as a database/cache. Broker functionality of Redis is
-not yet exposed through this package.
+not yet exposed through this module.
 
 ### Endpoint
 
@@ -30,7 +30,7 @@ endpoint redis:Client conn {
 };
 ```
 
-This package provides API functions for manipulating Redis String, Hash, List, Set and Sorted Set data types and
+This module provides API functions for manipulating Redis String, Hash, List, Set and Sorted Set data types and
 basic Redis key/connection commands. For the full list of available configuration options refer the API docs of the
 endpoint.
 
