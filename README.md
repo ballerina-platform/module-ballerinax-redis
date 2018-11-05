@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/wso2-ballerina/package-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/package-redis)
+[![Build Status](https://travis-ci.org/wso2-ballerina/module-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-redis)
 
-# package-redis
+# module-redis
 
-Ballerina Redis Connector is used to connect Ballerina with a Redis data source. With the Ballerina Redis Connector 
+Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
 following actions are supported.
 
 **Basic Commands**
@@ -136,11 +136,11 @@ Building from the source
 If you want to build Ballerina Redis Connector from the source code:
 
 1. Get a clone or download the source from this repository:
-    https://github.com/wso2-ballerina/package-redis
+    https://github.com/wso2-ballerina/module-redis
 2. Run the following Maven command from the ballerina directory: 
     mvn clean install
-3. Extract the distribution created at `/component/target/wso2-redis-<version>.zip`. Run the install.{sh/bat} script to install the package.
-You can uninstall the package by running uninstall.{sh/bat}.
+3. Extract the distribution created at `/component/target/wso2-redis-<version>.zip`. Run the install.{sh/bat} script to install the module.
+You can uninstall the module by running uninstall.{sh/bat}.
 
 Sample
 ==================================
@@ -149,7 +149,7 @@ Sample
 import wso2/redis;
 import ballerina/io;
 
-public function main(string... args) {
+public function main() {
      endpoint redis:Client conn {
         host: "localhost",
         password: "",
