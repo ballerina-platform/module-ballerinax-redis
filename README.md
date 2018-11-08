@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/wso2-ballerina/package-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/package-redis)
+[![Build Status](https://travis-ci.org/wso2-ballerina/module-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-redis)
 
 # package-redis
 
