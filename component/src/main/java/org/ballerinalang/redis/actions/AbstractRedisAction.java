@@ -875,7 +875,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K, V> BFloat zIncrBy(K key, double amount, K member, RedisDataSource<K, V> redisDataSource) {
+    protected <K, V> BFloat zIncrBy(K key, double amount, V member, RedisDataSource<K, V> redisDataSource) {
         RedisSortedSetCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);

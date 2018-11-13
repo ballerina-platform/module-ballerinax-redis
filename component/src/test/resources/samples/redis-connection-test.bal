@@ -61,7 +61,7 @@ function testConnectionRelease() returns (string) {
     int i = 0;
     while(i < 8) {
         _ = check conn -> ping();
-        i++;
+        i += 1;
     }
     string result = check conn->ping();
     conn.stop();
