@@ -40,13 +40,13 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis:0.0.0",
                    functionName = "bitOpXor",
                    receiver = @Receiver(type = TypeKind.OBJECT,
-                                        structType = Constants.CALLER_ACTIONS))
+                                        structType = Constants.CLIENT))
 public class BitOpXor extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
         String destination = context.getStringArgument(0);
         BStringArray keys = (BStringArray) context.getRefArgument(1);

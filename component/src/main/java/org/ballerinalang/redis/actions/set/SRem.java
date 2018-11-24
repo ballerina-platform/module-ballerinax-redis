@@ -41,13 +41,13 @@ import org.ballerinalang.util.exceptions.BallerinaException;
                    packageName = "redis:0.0.0",
                    functionName = "sRem",
                    receiver = @Receiver(type = TypeKind.OBJECT,
-                                        structType = Constants.CALLER_ACTIONS))
+                                        structType = Constants.CLIENT))
 public class SRem extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
         String key = context.getStringArgument(0);
         BStringArray members = (BStringArray) context.getRefArgument(1);

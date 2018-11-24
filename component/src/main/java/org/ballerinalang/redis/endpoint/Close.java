@@ -37,14 +37,14 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis:0.0.0",
                    functionName = "close",
                    args = {
-                           @Argument(name = "parameters", type = TypeKind.RECORD, structType = Constants.CALLER_ACTIONS,
+                           @Argument(name = "parameters", type = TypeKind.RECORD, structType = Constants.CLIENT,
                                      structPackage = "wso2.redis")}
 )
 public class Close extends AbstractRedisAction {
     @Override
     public void execute(Context context) {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
         close(redisDataSource);
     }
 }

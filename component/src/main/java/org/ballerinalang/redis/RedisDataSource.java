@@ -38,6 +38,7 @@ import org.ballerinalang.util.exceptions.BallerinaException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -256,7 +257,12 @@ public class RedisDataSource<K, V> implements BValue {
     }
 
     @Override
-    public BValue copy() {
+    public void stamp(BType bType) {
+
+    }
+
+    @Override
+    public BValue copy(Map<BValue, BValue> map) {
         return null;
     }
 
