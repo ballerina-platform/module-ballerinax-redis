@@ -21,13 +21,13 @@ Once the endpoint is created, redis commands can be executed through that endpoi
 ### Creating an endpoint
 
 ```ballerina
-endpoint redis:Client conn {
+redis:Client conn = new(
     host: "localhost",
     password: "redis",
     options: { connectionPooling: true, isClusterConnection: false, ssl: false,
         startTls: false, verifyPeer: false, database: 0, connectionTimeout: 
         500 }
-};
+});
 ```
 
 This module provides API functions for manipulating Redis String, Hash, List, Set and Sorted Set data types and
@@ -43,66 +43,76 @@ io:println(result);
 // String Operations
 var stringSetresult = conn->setVal("Project", "Ballerina");
 
-match stringSetresult {
-    string s => io:println("Reply from the server: " + s);
-    error e => io:println("Error occurred while calling `setVal`");
+if (stringSetresult is string) {
+    io:println("Reply from the server: " + stringSetresult);
+} else {
+    io:println("Error occurred while calling `setVal`");
 }
 
 var value = conn->get("Project");
 
-match value {
-	string s => io:println("Reply from the server: " + s);
-	() => io:println("Key does not exist");
-	error e => io:println("Error occurred while calling `get`");
+if (value is string) {
+    io:println("Reply from the server: " + value);
+} else if (value is ()) {
+    io:println("Key does not exist");
+} else {
+    io:println("Error occurred while calling `get`");
 }
 
 // List Operations
 
 var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
 
-match listPushresult {
-	int count => io:println("Number of elements pushed: " + count);
-	error e => io:println("Error occurred while calling `lPush`");
+if (listPushresult is int) {
+    io:println("Number of elements pushed: " + listPushresult);
+} else {
+    io:println("Error occurred while calling `lPush`");
 }
 
 var lPopResult = conn->lPop("NumberList");
 
-match lPopResult {
-	string poppedElement => io:println("Popped element: " + poppedElement);
-	() => io:println("Key does not exist");
-	error e => io:println("Error occurred while calling `lPop`");
+if (lPopResult is string) {
+    io:println("Popped element: " + lPopResult);
+} else if (lPopResult is ()) {
+    io:println("Key does not exist");
+} else {
+    io:println("Error occurred while calling `lPop`");
 }
 
 // Set Oprerations
 
 var setAddResult = conn->sAdd("NumberSet", ["1", "2", "3"]);
 
-match setAddResult {
-	int count => io:println("Number of elements added: " + count);
-	error e => io:println("Error occurred while calling `sAdd`");
+if (setAddResult is int) {
+    io:println("Number of elements added: " + setAddResult);
+} else {
+    io:println("Error occurred while calling `sAdd`");
 }
 
 var setCardResult = conn->sCard("NumberSet");
 
-match setCardResult {
-	int numberOfMembers => io:println("Number of memebers in the set: " + numberOfMembers);
-	error e => io:println("Error occurred while calling `sCard`");
+if (setCardResult is int) {
+    io:println("Number of memebers in the set: " + setCardResult);
+} else {
+    io:println("Error occurred while calling `sCard`");
 }
 
 // Hash Operations
 
 var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
 
-match hashSetResult {
-	boolean hashSetStatus => io:println("Hash set status: " + hashSetStatus);
-	error e => io:println("Error occurred while calling `hSet`");
+if (hashSetResult is boolean) {
+    io:println("Hash set status: " + hashSetStatus);
+} else {
+    io:println("Error occurred while calling `hSet`");
 }
 
 var hashGetResult = conn->hGet("HashKey", "Name");
 
-match hashGetResult {
-	string value => io:println("Value of the hash field: " + value);
-	error e => io:println("Error occurred while calling `hGet`");
+if (hashGetResult is string) {
+    io:println("Value of the hash field: " + hashGetResult);
+} else {
+    io:println("Error occurred while calling `hGet`");
 }
 
 // Closing the client
