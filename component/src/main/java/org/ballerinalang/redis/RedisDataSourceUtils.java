@@ -20,26 +20,23 @@ package org.ballerinalang.redis;
 
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.bre.bvm.BLangVMErrors;
+import org.ballerinalang.connector.api.BLangConnectorSPIUtil;
+import org.ballerinalang.model.types.BTypes;
+import org.ballerinalang.model.values.BError;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.model.values.BValue;
-import org.ballerinalang.util.BLangConstants;
-import org.ballerinalang.util.codegen.PackageInfo;
-import org.ballerinalang.util.codegen.StructureTypeInfo;
 
 /**
  * This class contains utility methods for Redis package.
  */
 public class RedisDataSourceUtils {
-    public static BMap<String, BValue> getRedisConnectorError(Context context, Throwable throwable) {
-        PackageInfo builtinPackage = context.getProgramFile().getPackageInfo(BLangConstants.BALLERINA_BUILTIN_PKG);
-        StructureTypeInfo errorStructInfo = builtinPackage.getStructInfo(BLangVMErrors.STRUCT_GENERIC_ERROR);
-        BMap<String, BValue> redisConnectorError = new BMap<>(errorStructInfo.getType());
-        if (throwable.getMessage() == null) {
-            redisConnectorError.put(Constants.ERROR_MESSAGE_FIELD, new BString(Constants.REDIS_EXCEPTION_OCCURRED));
-        } else {
-            redisConnectorError.put(Constants.ERROR_MESSAGE_FIELD, new BString(throwable.getMessage()));
-        }
-        return redisConnectorError;
+    public static BError getRedisConnectorError(Context context, Throwable throwable) {
+        String detailedErrorMessage =
+                throwable.getMessage() != null ? throwable.getMessage() : Constants.REDIS_EXCEPTION_OCCURRED;
+        BMap<String, BValue> sqlClientErrorDetailRecord = BLangConnectorSPIUtil
+                .createBStruct(context, Constants.REDIS_PACKAGE_PATH, Constants.DATABASE_ERROR_DATA_RECORD_NAME,
+                        detailedErrorMessage);
+        return BLangVMErrors.createError(context, true, BTypes.typeError, Constants.DATABASE_ERROR_CODE,
+                sqlClientErrorDetailRecord);
     }
 }

@@ -43,7 +43,7 @@ import org.ballerinalang.util.exceptions.BallerinaException;
 @BallerinaFunction(
         orgName = "wso2",
         packageName = "redis:0.0.0",
-        functionName = "createClient",
+        functionName = "initClient",
         args = {
                 @Argument(name = "clientEndpointConfig",
                           type = TypeKind.RECORD,
@@ -51,11 +51,11 @@ import org.ballerinalang.util.exceptions.BallerinaException;
         },
         isPublic = true
 )
-public class CreateRedisClient extends BlockingNativeCallableUnit {
+public class InitRedisClient extends BlockingNativeCallableUnit {
 
     @Override
     public void execute(Context context) {
-        BMap<String, BValue> configBStruct = (BMap<String, BValue>) context.getRefArgument(0);
+        BMap<String, BValue> configBStruct = (BMap<String, BValue>) context.getRefArgument(1);
         Struct clientEndpointConfig = BLangConnectorSPIUtil.toStruct(configBStruct);
 
         //Extract parameters from the endpoint config
@@ -72,9 +72,8 @@ public class CreateRedisClient extends BlockingNativeCallableUnit {
         redisDataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
         redisDataSource.init(host, password, options);
 
-        BMap<String, BValue> redisClient = BLangConnectorSPIUtil
-                .createBStruct(context.getProgramFile(), Constants.REDIS_PACKAGE_PATH, Constants.CALLER_ACTIONS);
-        redisClient.addNativeData(Constants.CALLER_ACTIONS, redisDataSource);
+        BMap<String, BValue> redisClient = (BMap<String, BValue>) context.getRefArgument(0);
+        redisClient.addNativeData(Constants.CLIENT, redisDataSource);
         context.setReturnValues(redisClient);
 
     }

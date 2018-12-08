@@ -21,8 +21,8 @@ package org.ballerinalang.redis.actions.set;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -40,19 +40,19 @@ import org.ballerinalang.util.exceptions.BallerinaException;
                    packageName = "redis:0.0.0",
                    functionName = "sInter",
                    receiver = @Receiver(type = TypeKind.OBJECT,
-                                        structType = Constants.CALLER_ACTIONS))
+                                        structType = Constants.CLIENT))
 public class SInter extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
-        BStringArray keys = (BStringArray) context.getRefArgument(1);
+        BValueArray keys =  (BValueArray) context.getRefArgument(1);
         if (keys == null) {
             throw new BallerinaException("Key array " + MUST_NOT_BE_NULL);
         }
-        BStringArray result = sInter(redisDataSource, createArrayFromBStringArray(keys));
+        BValueArray result = sInter(redisDataSource, createArrayFromBStringArray(keys));
         try {
             context.setReturnValues(result);
         } catch (Throwable e) {
