@@ -22,8 +22,8 @@ import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -50,7 +50,7 @@ public class BLPop extends AbstractRedisAction {
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
         long timeout = (int) context.getIntArgument(0);
-        BStringArray keys = (BStringArray) context.getRefArgument(1);
+        BValueArray keys =  (BValueArray) context.getRefArgument(1);
         if (keys == null) {
             throw new BallerinaException("Key array" + MUST_NOT_BE_NULL);
         }

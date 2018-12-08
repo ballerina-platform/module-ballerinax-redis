@@ -124,7 +124,7 @@ function testHMSet() returns (any) {
         password: "",
         options: {}
     });
-    map fieldValueMap = { testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2" };
+    map<any> fieldValueMap = { testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2" };
     var result = conn->hMSet("testHMSetKey", fieldValueMap);
     conn.stop();
     return result;

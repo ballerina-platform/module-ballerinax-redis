@@ -29,7 +29,7 @@ function testBLPop() returns (any) {
     return result;
 }
 
-function testBLPopNilOutput() returns (map?|error) {
+function testBLPopNilOutput() returns (map<any>?|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -37,11 +37,7 @@ function testBLPopNilOutput() returns (map?|error) {
     });
     var result = conn->bLPop(1, ["testBLPopKeyNonExistent"]);
     conn.stop();
-    match result {
-        () => return ();
-        map m => return m;
-        error e => return e;
-    }
+    return result;
 }
 
 function testBRPop() returns (any) {
@@ -55,7 +51,7 @@ function testBRPop() returns (any) {
     return result;
 }
 
-function testBRPopNilOutput() returns (map?|error) {
+function testBRPopNilOutput() returns (map<any>?|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -63,11 +59,7 @@ function testBRPopNilOutput() returns (map?|error) {
     });
     var result = conn->bRPop(1, ["testBRPopKeyNonExistent"]);
     conn.stop();
-    match result {
-        () => return ();
-        map m => return m;
-        error e => return e;
-    }
+    return result;
 }
 
 function testLIndex() returns (any) {
@@ -122,11 +114,7 @@ function testLPopNilOutput() returns (string?|error) {
     });
     var result = conn->lPop("testLPopKeyNonExistent");
     conn.stop();
-    match result {
-        () => return ();
-        string s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testLPush() returns (any) {
@@ -215,11 +203,7 @@ function testRPopNilOutput() returns (string?|error) {
     });
     var result = conn->rPop("testRPopKeyNonExistent");
     conn.stop();
-    match result {
-        () => return ();
-        string s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testRPopLPush() returns (any) {

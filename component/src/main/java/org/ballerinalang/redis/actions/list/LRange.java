@@ -21,8 +21,8 @@ package org.ballerinalang.redis.actions.list;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -50,7 +50,7 @@ public class LRange extends AbstractRedisAction {
         String key = context.getStringArgument(0);
         long start = (int) context.getIntArgument(0);
         long stop = context.getIntArgument(1);
-        BStringArray result = lRange(key, start, stop, redisDataSource);
+        BValueArray result = lRange(key, start, stop, redisDataSource);
         try {
             context.setReturnValues(result);
         } catch (Throwable e) {

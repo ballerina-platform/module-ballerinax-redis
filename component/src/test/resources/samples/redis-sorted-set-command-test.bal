@@ -24,7 +24,7 @@ function testZAdd() returns (any) {
         password: "",
         options: {}
     });
-    map valueScoreMap = { testZAddValue2: 2.0 };
+    map<any> valueScoreMap = { testZAddValue2: 2.0 };
     var result = conn->zAdd("testZAddKey", valueScoreMap);
     conn.stop();
     return result;

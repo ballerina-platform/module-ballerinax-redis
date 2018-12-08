@@ -22,8 +22,8 @@ import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -49,7 +49,7 @@ public class HMGet extends AbstractRedisAction {
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
         String key = context.getStringArgument(0);
-        BStringArray fields = (BStringArray) context.getRefArgument(1);
+        BValueArray fields = (BValueArray) context.getRefArgument(1);
         BMap<String, BString> result = hMGet(key, redisDataSource, createArrayFromBStringArray(fields));
         try {
             context.setReturnValues(result);

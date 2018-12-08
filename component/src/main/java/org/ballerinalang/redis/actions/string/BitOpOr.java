@@ -22,8 +22,8 @@ import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -48,10 +48,10 @@ public class BitOpOr extends AbstractRedisAction {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
         RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
         String destination = context.getStringArgument(0);
-        BStringArray keys = (BStringArray) context.getRefArgument(1);
+        BValueArray keys = (BValueArray) context.getRefArgument(1);
         String[] keysArray = new String[(int) keys.size()];
         for (int i = 0; i < keys.size(); i++) {
-            keysArray[i] = keys.get(i);
+            keysArray[i] = keys.getString(i);
         }
         BInteger result = bitopOr(destination, redisDataSource, keysArray);
         try {

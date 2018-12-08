@@ -114,11 +114,7 @@ function testSPopNilOutput() returns (string[]?|error) {
     });
     var result = conn->sPop("testSPopKeyNonExistent", 2);
     conn.stop();
-    match result {
-        () => return ();
-        string[] s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testSRandMember() returns (any) {
@@ -140,11 +136,7 @@ function testSRandMemberNilOutput() returns (string[]?|error) {
     });
     var result = conn->sRandMember("testSRandMemberKeyNonExistent", 2);
     conn.stop();
-    match result {
-        () => return ();
-        string[] s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testSRem() returns (any) {

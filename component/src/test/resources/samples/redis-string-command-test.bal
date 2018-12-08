@@ -48,11 +48,7 @@ function testGetNilOutput() returns (string?|error) {
     });
     var result = conn->get("GetTestKeyNonExistent");
     conn.stop();
-    match result {
-        () => return ();
-        string s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testAppend() returns (any) {
@@ -197,11 +193,7 @@ function testGetSetNilOutput() returns (string?|error) {
     });
     var result = conn->getSet("testGetSetKeyNonExistent", "testGetSetNewValue");
     conn.stop();
-    match result {
-        () => return ();
-        string s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testIncr() returns (any) {
@@ -255,7 +247,7 @@ function testMSet() returns (any) {
         password: "",
         options: {}
     });
-    map keyValueMap = { testMSetKey1: "testMSetValue1", testMSetKey2: "testMSetValue2", testMSetKey3: "testMSetValue3" }
+    map<any> keyValueMap = { testMSetKey1: "testMSetValue1", testMSetKey2: "testMSetValue2", testMSetKey3: "testMSetValue3" }
     ;
     var result = conn->mSet(keyValueMap);
     conn.stop();
@@ -268,7 +260,7 @@ function testMSetNx() returns (any) {
         password: "",
         options: {}
     });
-    map keyValueMap = { testMSetNxKey1: "testMSetNxNewValue1", testMSetNxKey2: "testMSetNxValue2", testMSetNxKey3:
+    map<any> keyValueMap = { testMSetNxKey1: "testMSetNxNewValue1", testMSetNxKey2: "testMSetNxValue2", testMSetNxKey3:
     "testMSetNxValue3" };
     var result = conn->mSetNx(keyValueMap);
     conn.stop();

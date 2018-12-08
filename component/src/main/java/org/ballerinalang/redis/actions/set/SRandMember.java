@@ -21,8 +21,8 @@ package org.ballerinalang.redis.actions.set;
 import org.ballerinalang.bre.Context;
 import org.ballerinalang.model.types.TypeKind;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.natives.annotations.BallerinaFunction;
 import org.ballerinalang.natives.annotations.Receiver;
 import org.ballerinalang.redis.Constants;
@@ -49,7 +49,7 @@ public class SRandMember extends AbstractRedisAction {
 
         String key = context.getStringArgument(0);
         int count = (int) context.getIntArgument(0);
-        BStringArray result = sRandMember(key, count, redisDataSource);
+        BValueArray result = sRandMember(key, count, redisDataSource);
         try {
             setNullableReturnValues(result, context);
         } catch (Throwable e) {

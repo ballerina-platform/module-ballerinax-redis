@@ -139,13 +139,13 @@ public type Client client object {
     #
     # + keyValueMap - A map of key-value pairs to be set
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public remote extern function mSet(map keyValueMap) returns (string|error);
+    public remote extern function mSet(map<any> keyValueMap) returns (string|error);
 
     # Set multiple keys to multiple values, only if none of the keys exist.
     #
     # + keyValueMap - A map of key-value pairs to be set
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public remote extern function mSetNx(map keyValueMap) returns (boolean|error);
+    public remote extern function mSetNx(map<any> keyValueMap) returns (boolean|error);
 
     # Set the value and expiration in milliseconds of a key.
     #
@@ -228,7 +228,7 @@ public type Client client object {
     # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
     #         key being  the name of the key where an element was popped and the second element  being the value of the
     #         popped element, or `error` if an error occurs
-    public remote extern function bLPop(int timeOut, string[] keys) returns (map?|error);
+    public remote extern function bLPop(int timeOut, string[] keys) returns (map<any>?|error);
 
     # Remove and get the last element in a list, or block until one is available.
     #
@@ -237,7 +237,7 @@ public type Client client object {
     # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
     #         key being  the name of the key where an element was popped and the second element being the value of the
     #         popped element, or `error` if an error occurs
-    public remote extern function bRPop(int timeOut, string[] keys) returns (map?|error);
+    public remote extern function bRPop(int timeOut, string[] keys) returns (map<any>?|error);
 
     # Get an element from a list by its index.
     #
@@ -429,7 +429,7 @@ public type Client client object {
     # + memberScoreMap - A map of members and corresponding scores
     # + return - The number of elements that were added to the sorted set, not including all the elements which were
     #            already present in the set for which the score was updated, or `error` if an error occurs
-    public remote extern function zAdd(string key, map memberScoreMap) returns (int|error);
+    public remote extern function zAdd(string key, map<any> memberScoreMap) returns (int|error);
 
     # Get the number of members in a sorted set.
     #
@@ -608,7 +608,7 @@ public type Client client object {
     #
     # + key - The key of the hash
     # + return - Map of field-value pairs or `error` if an error occurs
-    public remote extern function hGetAll(string key) returns (map|error);
+    public remote extern function hGetAll(string key) returns (map<any>|error);
 
     # Increment the integer value of a hash field by the given number.
     #
@@ -643,14 +643,14 @@ public type Client client object {
     # + key - The key of the hash
     # + fields - Array of hash fields
     # + return - Map of field-value pairs or `error` if an error occurs
-    public remote extern function hMGet(string key, string[] fields) returns (map|error);
+    public remote extern function hMGet(string key, string[] fields) returns (map<any>|error);
 
     # Set multiple hash fields to multiple values.
     #
     # + key - The key of the hash
     # + fieldValueMap - Map of field-value pairs
     # + return - A string with the value `OK` if the operation was successful, or `error` if an error occurs
-    public remote extern function hMSet(string key, map fieldValueMap) returns (string|error);
+    public remote extern function hMSet(string key, map<any> fieldValueMap) returns (string|error);
 
     # Set the string value of a hash field.
     #

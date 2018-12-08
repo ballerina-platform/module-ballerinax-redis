@@ -35,8 +35,8 @@ import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
@@ -527,7 +527,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray lRange(K key, long start, long stop, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray lRange(K key, long start, long stop, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
@@ -659,12 +659,12 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sDiff(RedisDataSource<K, String> redisDataSource, K... keys) {
+    protected <K> BValueArray sDiff(RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
             Set<String> result = redisCommands.sdiff(keys);
-            BStringArray valueArray = createBStringArrayFromSet(result);
+            BValueArray valueArray = createBStringArrayFromSet(result);
             return valueArray;
         } catch (IllegalArgumentException e) {
             throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
@@ -686,7 +686,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sInter(RedisDataSource<K, String> redisDataSource, K... keys) {
+    protected <K> BValueArray sInter(RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -725,7 +725,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sMembers(K key, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray sMembers(K key, RedisDataSource<K, String> redisDataSource) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -751,7 +751,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sPop(K key, int count, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray sPop(K key, int count, RedisDataSource<K, String> redisDataSource) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -764,7 +764,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sRandMember(K key, int count, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray sRandMember(K key, int count, RedisDataSource<K, String> redisDataSource) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -790,7 +790,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sUnion(RedisDataSource<K, String> redisDataSource, K... keys) {
+    protected <K> BValueArray sUnion(RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -915,7 +915,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRange(K key, long min, long max, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray zRange(K key, long min, long max, RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -928,7 +928,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRangeByLex(K key, String min, String max, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray zRangeByLex(K key, String min, String max, RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -942,7 +942,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRevRangeByLex(K key, String min, String max,
+    protected <K> BValueArray zRevRangeByLex(K key, String min, String max,
             RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
@@ -957,7 +957,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRangeByScore(K key, double min, double max,
+    protected <K> BValueArray zRangeByScore(K key, double min, double max,
             RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
@@ -1037,7 +1037,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRevRange(K key, long min, long max, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray zRevRange(K key, long min, long max, RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1050,7 +1050,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray zRevRangeByScore(K key, double min, double max,
+    protected <K> BValueArray zRevRangeByScore(K key, double min, double max,
             RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
@@ -1184,7 +1184,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected BStringArray hKeys(String key, RedisDataSource<String, String> redisDataSource) {
+    protected BValueArray hKeys(String key, RedisDataSource<String, String> redisDataSource) {
         RedisHashCommands<String, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<String, String>) getRedisCommands(redisDataSource);
@@ -1275,7 +1275,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray hVals(K key, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray hVals(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1342,7 +1342,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <V> BStringArray keys(String pattern, RedisDataSource<String, V> redisDataSource) {
+    protected <V> BValueArray keys(String pattern, RedisDataSource<String, V> redisDataSource) {
         RedisKeyCommands<String, V> redisCommands = null;
         try {
             redisCommands = (RedisKeyCommands<String, V>) getRedisCommands(redisDataSource);
@@ -1446,7 +1446,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         }
     }
 
-    protected <K> BStringArray sort(K key, RedisDataSource<K, String> redisDataSource) {
+    protected <K> BValueArray sort(K key, RedisDataSource<K, String> redisDataSource) {
         RedisKeyCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisKeyCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1526,8 +1526,8 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         return redisDataSource.isClusterConnection();
     }
 
-    private BStringArray createBStringArrayFromSet(Set<String> set) {
-        BStringArray bStringArray = new BStringArray();
+    private BValueArray createBStringArrayFromSet(Set<String> set) {
+        BValueArray bStringArray = new BValueArray(new String[set.size()]);
         int i = 0;
         for (String item : set) {
             bStringArray.add(i, item);
@@ -1536,8 +1536,8 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         return bStringArray;
     }
 
-    private BStringArray createBStringArrayFromList(List<String> list) {
-        BStringArray bStringArray = new BStringArray();
+    private BValueArray createBStringArrayFromList(List<String> list) {
+        BValueArray bStringArray = new BValueArray(new String[list.size()]);
         int i = 0;
         for (String item : list) {
             bStringArray.add(i, item);
@@ -1576,10 +1576,10 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
         return bMap;
     }
 
-    protected String[] createArrayFromBStringArray(BStringArray bStringArray) {
+    protected String[] createArrayFromBStringArray(BValueArray bStringArray) {
         String[] stringArray = new String[(int) bStringArray.size()];
         for (int i = 0; i < bStringArray.size(); i++) {
-            stringArray[i] = bStringArray.get(i);
+            stringArray[i] = bStringArray.getString(i);
         }
         return stringArray;
     }

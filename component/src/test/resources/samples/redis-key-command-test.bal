@@ -126,11 +126,7 @@ function testRandomKeyNilOutput() returns (string?|error) {
     });
     var result = conn->randomKey();
     conn.stop();
-    match result {
-        () => return ();
-        string s => return s;
-        error e => return e;
-    }
+    return result;
 }
 
 function testRename() returns (any) {

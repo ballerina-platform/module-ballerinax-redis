@@ -26,8 +26,8 @@ import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -135,7 +135,7 @@ public class RedisHashCommandsTest extends RedisCommandsBaseTest {
     public void testHKeysCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testHKeys");
         Assert.assertEquals(result.length, 1);
-        BStringArray fields = (BStringArray) result[0];
+        BValueArray fields = (BValueArray) result[0];
         Assert.assertEquals(fields.size(), 3);
 
         List<String> fieldsList = new ArrayList<>(3);
@@ -145,7 +145,7 @@ public class RedisHashCommandsTest extends RedisCommandsBaseTest {
 
         boolean allFieldsRetrieved = true;
         for (int i = 0; i < 3; i++) {
-            if (!fieldsList.contains(fields.get(i))) {
+            if (!fieldsList.contains(fields.getString(i))) {
                 allFieldsRetrieved = false;
                 break;
             }
@@ -220,7 +220,7 @@ public class RedisHashCommandsTest extends RedisCommandsBaseTest {
     public void testHValsCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testHVals");
         Assert.assertEquals(result.length, 1);
-        BStringArray values = (BStringArray) result[0];
+        BValueArray values = (BValueArray) result[0];
         Assert.assertEquals(values.size(), 3);
 
         List<String> valueList = new ArrayList<>(3);
@@ -230,7 +230,7 @@ public class RedisHashCommandsTest extends RedisCommandsBaseTest {
 
         boolean allValuesRetrieved = true;
         for (int i = 0; i < 3; i++) {
-            if (!valueList.contains(values.get(i))) {
+            if (!valueList.contains(values.getString(i))) {
                 allValuesRetrieved = false;
                 break;
             }
