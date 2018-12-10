@@ -3,7 +3,7 @@
 # module-redis
 
 Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
-following actions are supported.
+following operations are supported.
 
 **Basic Commands**
 
@@ -150,35 +150,42 @@ import wso2/redis;
 import ballerina/io;
 
 public function main() {
-     endpoint redis:Client conn {
+    redis:Client conn = new({
         host: "localhost",
         password: "",
         options: { connectionPooling: true, isClusterConnection: false, ssl: false,
             startTls: false, verifyPeer: false, connectionTimeout: 500 }
-     };
+    });
 
     io:println("Pinging Redis Server...");
     //Ping Server
-    string result = check conn->ping();
-    io:println(result);
+    var result = conn->ping();
+    if (result is string) {
+        io:println(result);
+    } else if (result is error) {
+        io:println(result.reason());
+    }
 
     io:println("\n===Executing sample string oprerations===");
     //Sample String Operations
     io:println("Setting value of the key \"Project\" as \"Ballerina\"");
     var stringSetresult = conn->setVal("Project", "Ballerina");
 
-    match stringSetresult {
-        string s => io:println("Reply from the server: " + s);
-        error e => io:println("Error occurred while calling `setVal`");
+    if (stringSetresult is string) {
+        io:println("Reply from the server: " + stringSetresult);
+    } else {
+        io:println("Error occurred while calling `setVal`");
     }
 
     io:println("\nQuerying the server for the value of the key \"Project\"");
     var value = conn->get("Project");
 
-    match value {
-        string s => io:println("Reply from the server: " + s);
-        () => io:println("Key does not exist");
-        error e => io:println("Error occurred while calling `get`");
+    if (value is string) {
+        io:println("Reply from the server: " + value);
+    } else if (value is ()) {
+        io:println("Key does not exist");
+    } else {
+        io:println("Error occurred while calling `get`");
     }
 
     io:println("\n===Executing sample list oprerations===");
@@ -186,56 +193,64 @@ public function main() {
     io:println("Pushing 3 elements to NumberList");
     var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
 
-    match listPushresult {
-        int count => io:println("Number of elements pushed: " + count);
-        error e => io:println("Error occurred while calling `lPush`");
+    if (listPushresult is int) {
+        io:println("Number of elements pushed: " + listPushresult);
+    } else {
+        io:println("Error occurred while calling `lPush`");
     }
 
     io:println("\nPoping an element from NumberList");
     var lPopResult = conn->lPop("NumberList");
 
-    match lPopResult {
-        string poppedElement => io:println("Popped element: " + poppedElement);
-        () => io:println("Key does not exist");
-        error e => io:println("Error occurred while calling `lPop`");
+    if (lPopResult is string) {
+        io:println("Popped element: " + lPopResult);
+    } else if (lPopResult is ()) {
+        io:println("Key does not exist");
+    } else {
+        io:println("Error occurred while calling `lPop`");
     }
-
     io:println("\n===Executing sample set oprerations===");
     //Sample Set Operations
     io:println("Adding 3 elements to NumberSet");
     var setAddResult = conn->sAdd("NumberSet", ["1", "2", "3"]);
 
-    match setAddResult {
-        int count => io:println("Number of elements added: " + count);
-        error e => io:println("Error occurred while calling `sAdd`");
+    if (setAddResult is int) {
+        io:println("Number of elements added: " + setAddResult);
+    } else {
+        io:println("Error occurred while calling `sAdd`");
     }
 
     io:println("\nQuerying number of elemenets in the Set");
     var setCardResult = conn->sCard("NumberSet");
 
-    match setCardResult {
-        int numberOfMembers => io:println("Number of memebers in the set: " + numberOfMembers);
-        error e => io:println("Error occurred while calling `sCard`");
+    if (setCardResult is int) {
+        io:println("Number of memebers in the set: " + setCardResult);
+    } else {
+        io:println("Error occurred while calling `sCard`");
     }
+
     io:println("\n===Executing sample hash oprerations===");
     //Sample Hash operations
     io:println("Adding a key value pair to a hash");
     var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
 
-    match hashSetResult {
-        boolean hashSetStatus => io:println("Hash set status: " + hashSetStatus);
-        error e => io:println("Error occurred while calling `hSet`");
+    if (hashSetResult is boolean) {
+        io:println("Hash set status: " + hashSetStatus);
+    } else {
+        io:println("Error occurred while calling `hSet`");
     }
 
     io:println("\nQuerying the value of the hash field Name");
     var hashGetResult = conn->hGet("HashKey", "Name");
 
-    match hashGetResult {
-        string returnedValue => io:println("Value of the hash field: " + returnedValue);
-        error e => io:println("Error occurred while calling `hGet`");
+    if (hashGetResult is string) {
+        io:println("Value of the hash field: " + hashGetResult);
+    } else {
+        io:println("Error occurred while calling `hGet`");
     }
 
     conn.stop();
     io:println("\nRedis connection closed!");
 }
+
 ```

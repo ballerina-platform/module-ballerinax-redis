@@ -39,13 +39,13 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
                    packageName = "redis:0.0.0",
                    functionName = "zRank",
                    receiver = @Receiver(type = TypeKind.OBJECT,
-                                        structType = Constants.CALLER_ACTIONS))
+                                        structType = Constants.CLIENT))
 public class ZRank extends AbstractRedisAction {
 
     @Override
     public void execute(Context context) {
         BMap<String, BValue> bConnector = (BMap<String, BValue>) context.getRefArgument(0);
-        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CALLER_ACTIONS);
+        RedisDataSource redisDataSource = (RedisDataSource) bConnector.getNativeData(Constants.CLIENT);
 
         String key = context.getStringArgument(0);
         String member = context.getStringArgument(1);

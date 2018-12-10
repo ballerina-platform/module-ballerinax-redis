@@ -16,55 +16,61 @@
 
 import wso2/redis;
 
-@final string REDIS_HOST = "localhost";
+final string REDIS_HOST = "localhost";
 
 function testInitWithConnectionParam() returns (any) {
-    endpoint redis:Client conn {
+    redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
         options: { connectionPooling: true, isClusterConnection: false, ssl: false,
             startTls: false, verifyPeer: false, database: 0, connectionTimeout: 500 }
-    };
+    });
     var result = conn->ping();
     conn.stop();
     return result;
 }
 
 function testPing() returns (any) {
-    endpoint redis:Client conn {
+    redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
         options: {}
-    };
+    });
     var result = conn->ping();
     conn.stop();
     return result;
 }
 
 function testEcho() returns (any) {
-    endpoint redis:Client conn {
+    redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
         options: {}
-    };
+    });
     var result = conn->echo("Manuri");
     conn.stop();
     return result;
 }
 
 function testConnectionRelease() returns (string) {
-    endpoint redis:Client conn {
+    redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
         options: { connectionPooling: true }
-    };
+    });
     int i = 0;
     while(i < 8) {
-        _ = check conn -> ping();
+        _ = conn -> ping();
         i += 1;
     }
-    string result = check conn->ping();
+    var result = conn->ping();
+    string retVal = "";
+    if (result is string) {
+        retVal = result;
+    } else if (result is error) {
+        retVal = <string>result.detail().message;
+    }
     conn.stop();
-    return result;
+    return retVal;
 }
 

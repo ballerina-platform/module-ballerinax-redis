@@ -22,8 +22,8 @@ import org.ballerinalang.launcher.util.BCompileUtil;
 import org.ballerinalang.launcher.util.BRunUtil;
 import org.ballerinalang.launcher.util.CompileResult;
 import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -137,7 +137,7 @@ public class RedisListCommandTest extends RedisCommandsBaseTest {
     public void testLRangeCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testLRange");
         Assert.assertEquals(result.length, 1);
-        Assert.assertEquals(((BStringArray) result[0]).size(), 3);
+        Assert.assertEquals(((BValueArray) result[0]).size(), 3);
     }
 
     @Test

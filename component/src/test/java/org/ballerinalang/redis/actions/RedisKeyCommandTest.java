@@ -24,8 +24,8 @@ import org.ballerinalang.launcher.util.BRunUtil;
 import org.ballerinalang.launcher.util.CompileResult;
 import org.ballerinalang.model.values.BBoolean;
 import org.ballerinalang.model.values.BInteger;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -98,7 +98,7 @@ public class RedisKeyCommandTest extends RedisCommandsBaseTest {
     public void testKeysCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testKeys");
         Assert.assertEquals(result.length, 1);
-        BStringArray keys = (BStringArray) result[0];
+        BValueArray keys = (BValueArray) result[0];
         Assert.assertEquals(keys.size(), 3);
         List<String> matchingKeyList = new ArrayList<>(3);
         matchingKeyList.add("testKeysKey1");
@@ -107,7 +107,7 @@ public class RedisKeyCommandTest extends RedisCommandsBaseTest {
 
         boolean allMatchingKeysRetrieved = true;
         for (int i = 0; i < 3; i++) {
-            allMatchingKeysRetrieved = matchingKeyList.contains(keys.get(i));
+            allMatchingKeysRetrieved = matchingKeyList.contains(keys.getString(i));
             if (!allMatchingKeysRetrieved) {
                 break;
             }
@@ -195,11 +195,11 @@ public class RedisKeyCommandTest extends RedisCommandsBaseTest {
         BValue[] args = {};
         BValue[] result = BRunUtil.invokeFunction(compileResult, "testSort", args);
         Assert.assertEquals(result.length, 1);
-        BStringArray sortedArray = (BStringArray) result[0];
+        BValueArray sortedArray = (BValueArray) result[0];
         String[] listValues = { "0", "1", "2", "3", "4", "8" };
         boolean elementsInOrder = true;
         for (int i = 0; i < 6; i++) {
-            elementsInOrder = listValues[i].equals(sortedArray.get(i));
+            elementsInOrder = listValues[i].equals(sortedArray.getString(i));
             if (!elementsInOrder) {
                 break;
             }

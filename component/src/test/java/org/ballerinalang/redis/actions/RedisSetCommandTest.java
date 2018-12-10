@@ -23,8 +23,8 @@ import org.ballerinalang.launcher.util.BRunUtil;
 import org.ballerinalang.launcher.util.CompileResult;
 import org.ballerinalang.model.values.BBoolean;
 import org.ballerinalang.model.values.BInteger;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -74,10 +74,10 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     public void testSDiffCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSDiff");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 2);
-        String element1 = resultingElements.get(0);
-        String element2 = resultingElements.get(1);
+        String element1 = resultingElements.getString(0);
+        String element2 = resultingElements.getString(1);
         Assert.assertTrue("Three".equals(element1) && "Four".equals(element2) || "Four".equals(element1) && "Three"
                 .equals(element2));
     }
@@ -95,10 +95,10 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     public void testSInterCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSInter");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 2);
-        String element1 = resultingElements.get(0);
-        String element2 = resultingElements.get(1);
+        String element1 = resultingElements.getString(0);
+        String element2 = resultingElements.getString(1);
         Assert.assertTrue(
                 "Two".equals(element1) && "One".equals(element2) || "Two".equals(element2) && "One".equals(element1));
     }
@@ -123,28 +123,29 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     public void testSMembersCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSMembers");
         Assert.assertEquals(result.length, 1);
-        BStringArray members = (BStringArray) result[0];
+        BValueArray members = (BValueArray) result[0];
         Assert.assertEquals(members.size(), 3);
 
         String[] memberArray = { "testSMembersValue1", "testSMembersValue2", "testSMembersValue3" };
         Set<String> set = createSetFromArray(memberArray);
 
-        Assert.assertTrue(set.contains(members.get(0)) && set.contains(members.get(1)) && set.contains(members.get(2)));
+        Assert.assertTrue(set.contains(members.getString(0)) && set.contains(members.getString(1)) && set
+                .contains(members.getString(2)));
     }
 
     @Test
     public void testSPopCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSPop");
         Assert.assertEquals(result.length, 1);
-        BStringArray members = (BStringArray) result[0];
+        BValueArray members = (BValueArray) result[0];
         Assert.assertEquals(members.size(), 2);
 
         String[] memberArray = { "testSPopValue1", "testSPopValue2", "testSPopValue3" };
         Set<String> set = createSetFromArray(memberArray);
 
-        Assert.assertTrue(set.contains(members.get(0)) && set.contains(members.get(1)));
-        Assert.assertFalse(redisCommands.sismember("testSPopKey", members.get(0)));
-        Assert.assertFalse(redisCommands.sismember("testSPopKey", members.get(1)));
+        Assert.assertTrue(set.contains(members.getString(0)) && set.contains(members.getString(1)));
+        Assert.assertFalse(redisCommands.sismember("testSPopKey", members.getString(0)));
+        Assert.assertFalse(redisCommands.sismember("testSPopKey", members.getString(1)));
     }
 
     @Test
@@ -157,12 +158,12 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     public void testRandMemberCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSRandMember");
         Assert.assertEquals(result.length, 1);
-        BStringArray members = (BStringArray) result[0];
+        BValueArray members = (BValueArray) result[0];
         Assert.assertEquals(members.size(), 2);
 
         String[] memberArray = { "testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3" };
         Set<String> set = createSetFromArray(memberArray);
-        Assert.assertTrue(set.contains(members.get(0)) && set.contains(members.get(1)));
+        Assert.assertTrue(set.contains(members.getString(0)) && set.contains(members.getString(1)));
     }
 
     @Test
@@ -184,14 +185,13 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
     public void testSUnionCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testSUnion");
         Assert.assertEquals(result.length, 1);
-        BStringArray members = (BStringArray) result[0];
+        BValueArray members = (BValueArray) result[0];
         Assert.assertEquals(members.size(), 4);
 
         String[] memberArray = { "testUnionValue1", "testUnionValue2", "testUnionValue3", "testUnionValue4" };
         Set<String> set = createSetFromArray(memberArray);
-        Assert.assertTrue(
-                set.contains(members.get(0)) && set.contains(members.get(1)) && set.contains(members.get(2)) && set
-                        .contains(members.get(3)));
+        Assert.assertTrue(set.contains(members.getString(0)) && set.contains(members.getString(1)) && set
+                .contains(members.getString(2)) && set.contains(members.getString(3)));
     }
 
     @Test

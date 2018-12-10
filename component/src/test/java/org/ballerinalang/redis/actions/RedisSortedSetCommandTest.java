@@ -24,8 +24,8 @@ import org.ballerinalang.launcher.util.BRunUtil;
 import org.ballerinalang.launcher.util.CompileResult;
 import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
-import org.ballerinalang.model.values.BStringArray;
 import org.ballerinalang.model.values.BValue;
+import org.ballerinalang.model.values.BValueArray;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -233,11 +233,11 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRangeCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRange");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 3);
-        String element1 = resultingElements.get(0);
-        String element2 = resultingElements.get(1);
-        String element3 = resultingElements.get(2);
+        String element1 = resultingElements.getString(0);
+        String element2 = resultingElements.getString(1);
+        String element3 = resultingElements.getString(2);
         String[] memberArray = { "d", "b", "e" };
         Set<String> set = createSetFromArray(memberArray);
         Assert.assertTrue(set.contains(element1) && set.contains(element2) && set.contains(element3));
@@ -247,12 +247,12 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRangeByLexCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRangeByLex");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 6);
         String[] memberArray = { "b", "c", "d", "e", "f", "g" };
         boolean correctOrder = true;
         for (int i = 0; i < 6; i++) {
-            correctOrder = memberArray[i].equals(resultingElements.get(i));
+            correctOrder = memberArray[i].equals(resultingElements.getString(i));
             if (!correctOrder) {
                 break;
             }
@@ -264,12 +264,12 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRangeByScoreCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRangeByScore");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 3);
         String[] memberArray = { "b", "e", "f" };
         boolean correctOrder = true;
         for (int i = 0; i < 3; i++) {
-            correctOrder = memberArray[i].equals(resultingElements.get(i));
+            correctOrder = memberArray[i].equals(resultingElements.getString(i));
             if (!correctOrder) {
                 break;
             }
@@ -316,11 +316,11 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRevRangeCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRevRange");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 3);
-        String element1 = resultingElements.get(0);
-        String element2 = resultingElements.get(1);
-        String element3 = resultingElements.get(2);
+        String element1 = resultingElements.getString(0);
+        String element2 = resultingElements.getString(1);
+        String element3 = resultingElements.getString(2);
         String[] memberArray = { "f", "e", "c" };
         Set<String> set = createSetFromArray(memberArray);
         Assert.assertTrue(set.contains(element1) && set.contains(element2) && set.contains(element3));
@@ -330,12 +330,12 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRevRangeByLexCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRevRangeByLex");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 6);
         String[] memberArray = { "g", "f", "e", "d", "c", "b" };
         boolean correctOrder = true;
         for (int i = 0; i < 6; i++) {
-            correctOrder = memberArray[i].equals(resultingElements.get(i));
+            correctOrder = memberArray[i].equals(resultingElements.getString(i));
             if (!correctOrder) {
                 break;
             }
@@ -347,12 +347,12 @@ public class RedisSortedSetCommandTest extends RedisCommandsBaseTest {
     public void testZRevRangeByScoreCommand() throws Exception {
         BValue[] result = BRunUtil.invoke(compileResult, "testZRevRangeByScore");
         Assert.assertEquals(result.length, 1);
-        BStringArray resultingElements = (BStringArray) result[0];
+        BValueArray resultingElements = (BValueArray) result[0];
         Assert.assertEquals(resultingElements.size(), 3);
         String[] memberArray = { "b", "e", "f" };
         boolean correctOrder = true;
         for (int i = 0; i < 3; i++) {
-            correctOrder = memberArray[i].equals(resultingElements.get(i));
+            correctOrder = memberArray[i].equals(resultingElements.getString(i));
             if (!correctOrder) {
                 break;
             }
