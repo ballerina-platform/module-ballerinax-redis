@@ -4,21 +4,20 @@ This module provides the functionality required to access and manipulate key-val
 Currently the provided functionality is limited to usage Redis as a database/cache. Broker functionality of Redis is
 not yet exposed through this module.
 
-### Endpoint
+### Client
 
-To access a Redis datasource, you must first create an `endpoint`, which is a virtual representation of the physical
-endpoint of the Redis database that you are trying to connect to. Create an endpoint of the redis client type
+To access a Redis datasource, you must first create a `client`object. Create a client of the redis client type
 (i.e. `redis:Client`) and provide the necessary connection parameters. This will create a connection/pool of
-connections to the given Redis database. A sample for creating an endpoint with a Redis client can be found
+connections to the given Redis database. A sample for creating a client with a Redis client can be found
 below.
 
 ### Database operations
 
-Once the endpoint is created, redis commands can be executed through that endpoint.
+Once the client is created, redis commands can be executed through that client.
 
 ## Samples
 
-### Creating an endpoint
+### Creating a Client
 
 ```ballerina
 redis:Client conn = new(
@@ -32,7 +31,7 @@ redis:Client conn = new(
 
 This module provides API functions for manipulating Redis String, Hash, List, Set and Sorted Set data types and
 basic Redis key/connection commands. For the full list of available configuration options refer the API docs of the
-endpoint.
+client.
 
 ## Example Usage
 ```ballerina

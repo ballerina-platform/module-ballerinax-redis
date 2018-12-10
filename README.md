@@ -3,7 +3,7 @@
 # module-redis
 
 Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
-following actions are supported.
+following operations are supported.
 
 **Basic Commands**
 
