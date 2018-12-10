@@ -21,14 +21,14 @@
 
     <groupId>org.ballerinalang</groupId>
     <artifactId>connector-redis-parent</artifactId>
-    <version>0.7.1-SNAPSHOT</version>
+    <version>0.8.0</version>
     <packaging>pom</packaging>
 
     <scm>
         <url>https://github.com/ballerinalang/connector-redis.git</url>
         <developerConnection>scm:git:https://github.com/wso2-ballerina/package-redis.git</developerConnection>
         <connection>scm:git:https://github.com/wso2-ballerina/package-redis.git</connection>
-        <tag>HEAD</tag>
+        <tag>v0.8.0</tag>
     </scm>
 
     <repositories>
