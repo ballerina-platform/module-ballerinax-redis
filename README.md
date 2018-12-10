@@ -235,7 +235,7 @@ public function main() {
     var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
 
     if (hashSetResult is boolean) {
-        io:println("Hash set status: " + hashSetStatus);
+        io:println("Hash set status: " + hashSetResult);
     } else {
         io:println("Error occurred while calling `hSet`");
     }
