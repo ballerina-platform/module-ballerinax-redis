@@ -823,7 +823,7 @@ public type ClientEndpointConfiguration record {
     string host = "";
     string password = "";
     Options options = {};
-    !...
+    !...;
 };
 
 # Connection options for Redis Client Endpoint.
@@ -847,5 +847,5 @@ public type Options record {
     boolean verifyPeer = false;
     int database = -1;
     int connectionTimeout = -1;
-    !...
+    !...;
 };

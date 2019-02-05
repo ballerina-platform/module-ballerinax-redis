@@ -30,6 +30,7 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.ballerinalang.bre.bvm.BVM;
 import org.ballerinalang.connector.api.Struct;
 import org.ballerinalang.model.types.BType;
 import org.ballerinalang.model.values.BValue;
@@ -257,7 +258,7 @@ public class RedisDataSource<K, V> implements BValue {
     }
 
     @Override
-    public void stamp(BType bType) {
+    public void stamp(BType bType, List<BVM.TypeValuePair> list) {
 
     }
 
