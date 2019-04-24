@@ -18,7 +18,7 @@ import wso2/redis;
 
 final string REDIS_HOST = "localhost";
 
-function testInitWithConnectionParam() returns (any) {
+function testInitWithConnectionParam() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -30,7 +30,7 @@ function testInitWithConnectionParam() returns (any) {
     return result;
 }
 
-function testPing() returns (any) {
+function testPing() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -41,7 +41,7 @@ function testPing() returns (any) {
     return result;
 }
 
-function testEcho() returns (any) {
+function testEcho() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -60,14 +60,14 @@ function testConnectionRelease() returns (string) {
     });
     int i = 0;
     while(i < 8) {
-        _ = conn -> ping();
+        _ = checkpanic conn->ping();
         i += 1;
     }
     var result = conn->ping();
     string retVal = "";
     if (result is string) {
         retVal = result;
-    } else if (result is error) {
+    } else {
         retVal = <string>result.detail().message;
     }
     conn.stop();

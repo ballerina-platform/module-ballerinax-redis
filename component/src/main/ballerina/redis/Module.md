@@ -20,7 +20,7 @@ Once the client is created, redis commands can be executed through that client.
 ### Creating a Client
 
 ```ballerina
-redis:Client conn = new(
+redis:Client conn = new({
     host: "localhost",
     password: "redis",
     options: { connectionPooling: true, isClusterConnection: false, ssl: false,
@@ -36,7 +36,7 @@ client.
 ## Example Usage
 ```ballerina
 // Ping Server
-string result = check conn->ping();
+string result = checkpanic conn->ping();
 io:println(result);
 
 // String Operations
@@ -101,7 +101,7 @@ if (setCardResult is int) {
 var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
 
 if (hashSetResult is boolean) {
-    io:println("Hash set status: " + hashSetStatus);
+    io:println("Hash set status: " + hashSetResult);
 } else {
     io:println("Error occurred while calling `hSet`");
 }

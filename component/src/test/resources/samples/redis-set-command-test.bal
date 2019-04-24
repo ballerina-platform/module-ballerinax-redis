@@ -18,7 +18,7 @@ import wso2/redis;
 
 final string REDIS_HOST = "localhost";
 
-function testSAdd() returns (any) {
+function testSAdd() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -29,7 +29,7 @@ function testSAdd() returns (any) {
     return result;
 }
 
-function testSDiff() returns (any) {
+function testSDiff() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -40,7 +40,7 @@ function testSDiff() returns (any) {
     return result;
 }
 
-function testSDiffStore() returns (any) {
+function testSDiffStore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -51,7 +51,7 @@ function testSDiffStore() returns (any) {
     return result;
 }
 
-function testSInter() returns (any) {
+function testSInter() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -62,7 +62,7 @@ function testSInter() returns (any) {
     return result;
 }
 
-function testSInterStore() returns (any) {
+function testSInterStore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -73,7 +73,7 @@ function testSInterStore() returns (any) {
     return result;
 }
 
-function testSIsMember() returns (any) {
+function testSIsMember() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -84,7 +84,7 @@ function testSIsMember() returns (any) {
     return result;
 }
 
-function testSMembers() returns (any) {
+function testSMembers() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -95,7 +95,7 @@ function testSMembers() returns (any) {
     return result;
 }
 
-function testSPop() returns (any) {
+function testSPop() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -117,7 +117,7 @@ function testSPopNilOutput() returns (string[]?|error) {
     return result;
 }
 
-function testSRandMember() returns (any) {
+function testSRandMember() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -139,7 +139,7 @@ function testSRandMemberNilOutput() returns (string[]?|error) {
     return result;
 }
 
-function testSRem() returns (any) {
+function testSRem() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -150,7 +150,7 @@ function testSRem() returns (any) {
     return result;
 }
 
-function testSUnion() returns (any) {
+function testSUnion() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -161,7 +161,7 @@ function testSUnion() returns (any) {
     return result;
 }
 
-function testSUnionStore() returns (any) {
+function testSUnionStore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",

@@ -57,7 +57,7 @@ public class ZAdd extends AbstractRedisAction {
         if (bMap == null) {
             throw new BallerinaException("Member Map " + MUST_NOT_BE_NULL);
         }
-        Map<String, Double> valueScoreMap = new HashMap<>(bMap.size());
+        Map<String, Double> valueScoreMap = new HashMap<>();
         bMap.getMap().keySet().forEach(value -> valueScoreMap.put(value, (bMap.get(value).floatValue())));
 
         BInteger result = zAdd(key, redisDataSource, valueScoreMap);
