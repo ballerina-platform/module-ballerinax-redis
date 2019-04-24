@@ -162,7 +162,7 @@ public function main() {
     var result = conn->ping();
     if (result is string) {
         io:println(result);
-    } else if (result is error) {
+    } else {
         io:println(result.reason());
     }
 

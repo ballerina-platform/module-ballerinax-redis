@@ -18,7 +18,7 @@ import wso2/redis;
 
 final string REDIS_HOST = "localhost";
 
-function testZAdd() returns (any) {
+function testZAdd() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -30,7 +30,7 @@ function testZAdd() returns (any) {
     return result;
 }
 
-function testZCard() returns (any) {
+function testZCard() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -41,7 +41,7 @@ function testZCard() returns (any) {
     return result;
 }
 
-function testZCount() returns (any) {
+function testZCount() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -52,7 +52,7 @@ function testZCount() returns (any) {
     return result;
 }
 
-function testZIncrBy() returns (any) {
+function testZIncrBy() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -63,7 +63,7 @@ function testZIncrBy() returns (any) {
     return result;
 }
 
-function testZInterStore() returns (any) {
+function testZInterStore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -74,7 +74,7 @@ function testZInterStore() returns (any) {
     return result;
 }
 
-function testZLexCount() returns (any) {
+function testZLexCount() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -85,7 +85,7 @@ function testZLexCount() returns (any) {
     return result;
 }
 
-function testZRange() returns (any) {
+function testZRange() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -96,7 +96,7 @@ function testZRange() returns (any) {
     return result;
 }
 
-function testZRangeByLex() returns (any) {
+function testZRangeByLex() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -107,7 +107,7 @@ function testZRangeByLex() returns (any) {
     return result;
 }
 
-function testZRangeByScore() returns (any) {
+function testZRangeByScore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -118,7 +118,7 @@ function testZRangeByScore() returns (any) {
     return result;
 }
 
-function testZRank() returns (any) {
+function testZRank() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -129,7 +129,7 @@ function testZRank() returns (any) {
     return result;
 }
 
-function testZRem() returns (any) {
+function testZRem() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -140,7 +140,7 @@ function testZRem() returns (any) {
     return result;
 }
 
-function testZRemRangeByLex() returns (any) {
+function testZRemRangeByLex() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -151,7 +151,7 @@ function testZRemRangeByLex() returns (any) {
     return result;
 }
 
-function testZRemRangeByRank() returns (any) {
+function testZRemRangeByRank() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -162,7 +162,7 @@ function testZRemRangeByRank() returns (any) {
     return result;
 }
 
-function testZRemRangeByScore() returns (any) {
+function testZRemRangeByScore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -173,7 +173,7 @@ function testZRemRangeByScore() returns (any) {
     return result;
 }
 
-function testZRevRange() returns (any) {
+function testZRevRange() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -184,7 +184,7 @@ function testZRevRange() returns (any) {
     return result;
 }
 
-function testZRevRangeByLex() returns (any) {
+function testZRevRangeByLex() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -195,7 +195,7 @@ function testZRevRangeByLex() returns (any) {
     return result;
 }
 
-function testZRevRangeByScore() returns (any) {
+function testZRevRangeByScore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -206,7 +206,7 @@ function testZRevRangeByScore() returns (any) {
     return result;
 }
 
-function testZRevRank() returns (any) {
+function testZRevRank() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -217,7 +217,7 @@ function testZRevRank() returns (any) {
     return result;
 }
 
-function testZScore() returns (any) {
+function testZScore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -228,7 +228,7 @@ function testZScore() returns (any) {
     return result;
 }
 
-function testZUnionStore() returns (any) {
+function testZUnionStore() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",

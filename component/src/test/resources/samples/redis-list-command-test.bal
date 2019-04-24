@@ -18,7 +18,7 @@ import wso2/redis;
 
 final string REDIS_HOST = "localhost";
 
-function testBLPop() returns (any) {
+function testBLPop() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -40,7 +40,7 @@ function testBLPopNilOutput() returns (map<any>?|error) {
     return result;
 }
 
-function testBRPop() returns (any) {
+function testBRPop() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -62,7 +62,7 @@ function testBRPopNilOutput() returns (map<any>?|error) {
     return result;
 }
 
-function testLIndex() returns (any) {
+function testLIndex() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -73,7 +73,7 @@ function testLIndex() returns (any) {
     return result;
 }
 
-function testLInsert() returns (any) {
+function testLInsert() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -84,7 +84,7 @@ function testLInsert() returns (any) {
     return result;
 }
 
-function testLLen() returns (any) {
+function testLLen() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -95,7 +95,7 @@ function testLLen() returns (any) {
     return result;
 }
 
-function testLPop() returns (any) {
+function testLPop() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -117,7 +117,7 @@ function testLPopNilOutput() returns (string?|error) {
     return result;
 }
 
-function testLPush() returns (any) {
+function testLPush() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -128,7 +128,7 @@ function testLPush() returns (any) {
     return result;
 }
 
-function testLPushX() returns (any) {
+function testLPushX() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -139,7 +139,7 @@ function testLPushX() returns (any) {
     return result;
 }
 
-function testLRange() returns (any) {
+function testLRange() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -150,7 +150,7 @@ function testLRange() returns (any) {
     return result;
 }
 
-function testLRem() returns (any) {
+function testLRem() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -161,7 +161,7 @@ function testLRem() returns (any) {
     return result;
 }
 
-function testLSet() returns (any) {
+function testLSet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -173,7 +173,7 @@ function testLSet() returns (any) {
 
 }
 
-function testLTrim() returns (any) {
+function testLTrim() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -184,7 +184,7 @@ function testLTrim() returns (any) {
     return result;
 }
 
-function testRPop() returns (any) {
+function testRPop() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -206,7 +206,7 @@ function testRPopNilOutput() returns (string?|error) {
     return result;
 }
 
-function testRPopLPush() returns (any) {
+function testRPopLPush() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -217,7 +217,7 @@ function testRPopLPush() returns (any) {
     return result;
 }
 
-function testRPush() returns (any) {
+function testRPush() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -228,7 +228,7 @@ function testRPush() returns (any) {
     return result;
 }
 
-function testRPushX() returns (any) {
+function testRPushX() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",

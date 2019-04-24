@@ -1585,7 +1585,7 @@ public abstract class AbstractRedisAction extends BlockingNativeCallableUnit {
     }
 
     protected Map<String, String> createMapFromBMap(BMap<String, BString> bMap) {
-        Map<String, String> map = new HashMap<>(bMap.size());
+        Map<String, String> map = new HashMap<>();
         bMap.getMap().keySet().forEach(item -> map.put(item, bMap.get(item).stringValue()));
         return map;
     }

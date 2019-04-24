@@ -18,7 +18,7 @@ import wso2/redis;
 
 final string REDIS_HOST = "localhost";
 
-function testSet() returns (any) {
+function testSet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -29,7 +29,7 @@ function testSet() returns (any) {
     return result;
 }
 
-function testGet() returns (any) {
+function testGet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -51,7 +51,7 @@ function testGetNilOutput() returns (string?|error) {
     return result;
 }
 
-function testAppend() returns (any) {
+function testAppend() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -62,7 +62,7 @@ function testAppend() returns (any) {
     return result;
 }
 
-function testBitCount() returns (any) {
+function testBitCount() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -73,7 +73,7 @@ function testBitCount() returns (any) {
     return result;
 }
 
-function tesBitOpAnd() returns (any) {
+function tesBitOpAnd() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -85,7 +85,7 @@ function tesBitOpAnd() returns (any) {
     return result;
 }
 
-function tesBitOpOr() returns (any) {
+function tesBitOpOr() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -97,7 +97,7 @@ function tesBitOpOr() returns (any) {
     return result;
 }
 
-function testSetBit() returns (any) {
+function testSetBit() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -108,7 +108,7 @@ function testSetBit() returns (any) {
     return result;
 }
 
-function tesBitOpNot() returns (any) {
+function tesBitOpNot() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -119,7 +119,7 @@ function tesBitOpNot() returns (any) {
     return result;
 }
 
-function tesBitOpXor() returns (any) {
+function tesBitOpXor() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -130,7 +130,7 @@ function tesBitOpXor() returns (any) {
     return result;
 }
 
-function testDecr() returns (any) {
+function testDecr() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -141,7 +141,7 @@ function testDecr() returns (any) {
     return result;
 }
 
-function testDecrBy() returns (any) {
+function testDecrBy() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -152,7 +152,7 @@ function testDecrBy() returns (any) {
     return result;
 }
 
-function testGetBit() returns (any) {
+function testGetBit() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -163,7 +163,7 @@ function testGetBit() returns (any) {
     return result;
 }
 
-function testGetRange() returns (any) {
+function testGetRange() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -174,7 +174,7 @@ function testGetRange() returns (any) {
     return result;
 }
 
-function testGetSet() returns (any) {
+function testGetSet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -196,7 +196,7 @@ function testGetSetNilOutput() returns (string?|error) {
     return result;
 }
 
-function testIncr() returns (any) {
+function testIncr() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -208,7 +208,7 @@ function testIncr() returns (any) {
 }
 
 
-function testIncrBy() returns (any) {
+function testIncrBy() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -219,7 +219,7 @@ function testIncrBy() returns (any) {
     return result;
 }
 
-function testIncrByFloat() returns (any) {
+function testIncrByFloat() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -230,7 +230,7 @@ function testIncrByFloat() returns (any) {
     return result;
 }
 
-function testMGet() returns (any) {
+function testMGet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -241,7 +241,7 @@ function testMGet() returns (any) {
     return result;
 }
 
-function testMSet() returns (any) {
+function testMSet() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -254,7 +254,7 @@ function testMSet() returns (any) {
     return result;
 }
 
-function testMSetNx() returns (any) {
+function testMSetNx() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -267,7 +267,7 @@ function testMSetNx() returns (any) {
     return result;
 }
 
-function testPSetEx() returns (any) {
+function testPSetEx() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -278,7 +278,7 @@ function testPSetEx() returns (any) {
     return result;
 }
 
-function testSetEx() returns (any) {
+function testSetEx() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -289,7 +289,7 @@ function testSetEx() returns (any) {
     return result;
 }
 
-function testSetNx() returns (any) {
+function testSetNx() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -300,7 +300,7 @@ function testSetNx() returns (any) {
     return result;
 }
 
-function testSetRange() returns (any) {
+function testSetRange() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
@@ -311,7 +311,7 @@ function testSetRange() returns (any) {
     return result;
 }
 
-function testStrln() returns (any) {
+function testStrln() returns (any|error) {
     redis:Client conn = new({
         host: REDIS_HOST,
         password: "",
