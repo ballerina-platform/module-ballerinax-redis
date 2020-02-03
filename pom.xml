@@ -132,24 +132,24 @@
                 <artifactId>ballerina-core</artifactId>
                 <version>${ballerina.version}</version>
             </dependency>
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-builtin</artifactId>
                 <version>${ballerina.version}</version>
-            </dependency>
+            </dependency> -->
             <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-runtime-api</artifactId>
                 <version>${ballerina.version}</version>
             </dependency>
             <!-- Following ballerina-binary-repo dependency is required to obtain balos -->
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-builtin</artifactId>
                 <version>${ballerina.version}</version>
                 <type>zip</type>
                 <classifier>ballerina-binary-repo</classifier>
-            </dependency>
+            </dependency> -->
             <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-runtime-api</artifactId>
@@ -157,7 +157,7 @@
                 <type>zip</type>
                 <classifier>ballerina-binary-repo</classifier>
             </dependency>
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-utils</artifactId>
                 <version>${ballerina.version}</version>
@@ -168,7 +168,7 @@
                 <type>zip</type>
                 <classifier>ballerina-binary-repo</classifier>
                 <version>${ballerina.version}</version>
-            </dependency>
+            </dependency> -->
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
@@ -185,15 +185,20 @@
                 <artifactId>commons-pool2</artifactId>
                 <version>${apache.commons.version}</version>
             </dependency>
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-launcher</artifactId>
                 <version>${ballerina.version}</version>
-            </dependency>
+            </dependency> -->
             <dependency>
                 <groupId>com.github.kstyrc</groupId>
                 <artifactId>embedded-redis</artifactId>
                 <version>${embedded.redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ballerinalang</groupId>
+                <artifactId>ballerina-runtime</artifactId>
+                <version>${ballerina.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -300,7 +305,7 @@
 
     <properties>
         <project.scm.id>my-scm-server</project.scm.id>
-        <ballerina.version>0.991.0</ballerina.version>
+        <ballerina.version>1.1.0</ballerina.version>
         <mvn.processor.plugin.version>2.2.4</mvn.processor.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
@@ -326,10 +331,11 @@
         <reactor.version>3.1.4.RELEASE</reactor.version>
         <reactive.streams.version>1.0.0</reactive.streams.version>
         <embedded.redis.version>0.6</embedded.redis.version>
-        <generated.ballerina.source.directory>${project.build.directory}/../src/main/ballerina</generated.ballerina.source.directory>
+        <generated.ballerina.source.directory>${project.build.directory}/../redis/src/redis</generated.ballerina.source.directory>
     </properties>
 
     <modules>
-        <module>component</module>
+        <!--module>component</module-->
+        <module>redis-utils</module>
     </modules>
 </project>
