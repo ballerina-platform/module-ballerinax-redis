@@ -18,13 +18,13 @@
 
 package org.ballerinalang.redis.actions;
 
-import org.ballerinalang.launcher.util.BCompileUtil;
-import org.ballerinalang.launcher.util.BRunUtil;
-import org.ballerinalang.launcher.util.CompileResult;
 import org.ballerinalang.model.values.BBoolean;
 import org.ballerinalang.model.values.BInteger;
 import org.ballerinalang.model.values.BValue;
 import org.ballerinalang.model.values.BValueArray;
+import org.ballerinalang.test.util.BCompileUtil;
+import org.ballerinalang.test.util.BRunUtil;
+import org.ballerinalang.test.util.CompileResult;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -179,6 +179,11 @@ public class RedisSetCommandTest extends RedisCommandsBaseTest {
         Assert.assertEquals(((BInteger) result[0]).intValue(), 2);
         Assert.assertFalse(redisCommands.sismember("testSRemKey", "testSRemValue1"));
         Assert.assertFalse(redisCommands.sismember("testSRemKey", "testSRemValue3"));
+    }
+
+    @Test
+    public void testHello() throws Exception {
+        Assert.assertEquals(1, 1);
     }
 
     @Test

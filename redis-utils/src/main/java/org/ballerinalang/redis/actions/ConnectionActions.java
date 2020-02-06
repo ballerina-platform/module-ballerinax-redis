@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,35 +16,26 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.actions.connection;
+package org.ballerinalang.redis.actions;
 
-import org.ballerinalang.bre.Context;
+import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
-import org.ballerinalang.model.types.TypeKind;
-import org.ballerinalang.model.values.BMap;
-import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BValue;
-import org.ballerinalang.natives.annotations.BallerinaFunction;
-import org.ballerinalang.natives.annotations.Receiver;
-import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.redis.actions.AbstractRedisAction;
-import org.ballerinalang.util.exceptions.BallerinaException;
 
-/**
- * {@code {@link Ping}} Maps with "PING" operation of Redis.
- *
- * @since 0.5.0
- */
-public class Ping extends AbstractRedisAction {
+import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
 
+public class ConnectionActions extends AbstractRedisAction {
+    /**
+     * Ping the redis database server.
+     *
+     * @param redisDataSourceHandleValue handleValue
+     */
     public static void ping(HandleValue redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             ping(redisDataSource);
         } catch (Throwable e) {
-            // Todo throw proper exception
-            throw new BallerinaException("fail");
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 }

@@ -18,14 +18,6 @@
 
 package org.ballerinalang.redis;
 
-import org.ballerinalang.util.exceptions.BallerinaException;
-
-public class BallerinaRedisDbException extends BallerinaException {
-    public BallerinaRedisDbException(String message) {
-        super(message);
-    }
-
-    public BallerinaRedisDbException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class BallerinaRedisDbException {
+    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerina/module-redis}Exception Occurred while executing Redis action";
 }

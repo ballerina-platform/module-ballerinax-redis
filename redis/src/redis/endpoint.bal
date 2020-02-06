@@ -811,8 +811,6 @@ public type Client client object {
     //public remote function ping() returns (string | error) = external;
 
     # Ping the server.
-    #
-    # + return - `error` if an error occurs
     public remote function ping() {
         ping(self.datasource);
     }
@@ -858,15 +856,14 @@ public type ClientEndpointConfiguration record {|
 # + value - The string value to be appended
 # + return - Length of the string after the operation or `error` if an error occurs
 function append(handle datasource, handle key, handle value) returns handle = @java:Method {
-    class: "org.ballerinalang.redis.actions.string.Append"
+    class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 # Ping the server.
 # 
 # + datasource - redis datasource
-# + return - `error` if an error occurs
 public function ping(handle datasource) = @java:Method {
-    class: "org.ballerinalang.redis.actions.connection.Ping"
+    class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
 # Get the value of a key.
@@ -875,7 +872,7 @@ public function ping(handle datasource) = @java:Method {
 # + datasource - redis datasource
 # + return - The value of the key, or nil when key does not exist or `error` if an error occurs
 public function get(handle datasource, handle key) returns handle = @java:Method {
-    class: "org.ballerinalang.redis.actions.string.Get"
+    class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 # Set the value of a key.
@@ -884,7 +881,7 @@ public function get(handle datasource, handle key) returns handle = @java:Method
 # + value - The value
 # + datasource - redis datasource
 public function set(handle datasource, handle key, handle value) = @java:Method {
-    class: "org.ballerinalang.redis.actions.string.Set"
+    class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 # Connection options for Redis Client Endpoint.

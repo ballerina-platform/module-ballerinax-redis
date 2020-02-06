@@ -191,6 +191,11 @@
                 <version>${ballerina.version}</version>
             </dependency> -->
             <dependency>
+                <groupId>org.ballerinalang</groupId>
+                <artifactId>ballerina-test-utils</artifactId>
+                <version>${ballerina.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.github.kstyrc</groupId>
                 <artifactId>embedded-redis</artifactId>
                 <version>${embedded.redis.version}</version>
