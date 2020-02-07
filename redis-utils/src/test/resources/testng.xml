@@ -21,13 +21,13 @@
 <suite name="RedisConnector_IntegrationTest_Suite" verbose="1">
     <test name="Redis Commands Test Suite" preserve-order="true" parallel="false">
         <classes>
-            <class name="org.ballerinalang.redis.actions.RedisConnectionTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisStringCommandTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisListCommandTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisSetCommandTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisSortedSetCommandTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisHashCommandsTest"/>
-            <class name="org.ballerinalang.redis.actions.RedisKeyCommandTest"/>
+            <!--<class name="org.ballerinalang.redis.actions.RedisConnectionTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisStringCommandTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisListCommandTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisSetCommandTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisSortedSetCommandTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisHashCommandsTest"/>-->
+            <!--<class name="org.ballerinalang.redis.actions.RedisKeyCommandTest"/>-->
         </classes>
     </test>
 </suite>

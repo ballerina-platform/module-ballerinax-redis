@@ -30,7 +30,7 @@ public class StringActions extends AbstractRedisAction {
     /**
      * Get a string value from redis database.
      *
-     * @param redisDataSourceHandleValue handleValue
+     * @param redisDataSourceHandleValue redis datasource
      * @param redisKey key
      * @return value
      */
@@ -46,7 +46,7 @@ public class StringActions extends AbstractRedisAction {
     /**
      * Set a string value for a given key value.
      *
-     * @param redisDataSourceHandleValue handleValue
+     * @param redisDataSourceHandleValue redis datasource
      * @param redisKey key
      * @param redisValue value
      */
@@ -62,7 +62,7 @@ public class StringActions extends AbstractRedisAction {
     /**
      * Append a string to a value of a given key.
      *
-     * @param redisDataSourceHandleValue handleValue
+     * @param redisDataSourceHandleValue redis datasource
      * @param redisKey key
      * @param redisValue value
      * @return size of the new string
@@ -71,6 +71,22 @@ public class StringActions extends AbstractRedisAction {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return append(redisKey, redisValue, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    /**
+     * Count set bits in a string.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param redisKey key
+     * @return bit count
+     */
+    public static long bitCount(HandleValue redisDataSourceHandleValue, String redisKey)  {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return bitCount(redisKey, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

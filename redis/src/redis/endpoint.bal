@@ -27,21 +27,23 @@ public type Client client object {
         self.datasource = initClient(config);
     }
 
-    // // String operations
-    // # Append a value to a key.
-    // #
-    // # + key - The key
-    // # + value - The string value to be appended
-    // # + return - Length of the string after the operation or `error` if an error occurs
-    // public remote function append(string key, string value) returns (int|error) {
-    //     return nativeAppend(self, key, value);
-    // }
+    // String operations
+    # Append a value to a key.
+    #
+    # + key - The key
+    # + value - The string value to be appended
+    # + return - Length of the string after the operation or `error` if an error occurs
+    public remote function append(string key, string value) returns handle {
+        return append(self.datasource, java:fromString(key), java:fromString(value));
+    }
 
-    // # Count set bits in a string.
-    // #
-    // # + key - The key
-    // # + return - The number of bits set to 1 or `error` if an error occurs
-    // public remote function bitCount(string key) returns (int|error) =  external;
+    # Count set bits in a string.
+    #
+    # + key - The key
+    # + return - The number of bits set to 1
+    public remote function bitCount(string key) returns int {
+        return bitCount(self.datasource, java:fromString(key));
+    }
 
     // # Perform bitwise AND between strings.
     // #
@@ -858,6 +860,16 @@ public type ClientEndpointConfiguration record {|
 function append(handle datasource, handle key, handle value) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
+
+# Append a value to a key.
+#
+# + datasource - redis datasource
+# + key - The key
+# + return - Length of the string after the operation or `error` if an error occurs
+function bitCount(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
 
 # Ping the server.
 # 

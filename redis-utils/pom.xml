@@ -91,7 +91,6 @@
         <dependency>
             <groupId>com.github.kstyrc</groupId>
             <artifactId>embedded-redis</artifactId>
-            <scope>test</scope>
         </dependency>
         <!-- <dependency>
             <groupId>org.ballerinalang</groupId>
@@ -123,6 +122,7 @@
                                     <include>io.projectreactor:reactor-core</include>
                                     <include>org.reactivestreams:reactive-streams</include>
                                     <include>org.apache.commons:commons-pool2</include>
+                                    <include>com.github.kstyrc:embedded-redis</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

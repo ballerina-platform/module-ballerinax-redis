@@ -109,7 +109,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected BInteger bitCount(String key, RedisDataSource<String, String> redisDataSource) {
+    protected static BInteger bitCount(String key, RedisDataSource<String, String> redisDataSource) {
         RedisStringCommands<String, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<String, String>) getRedisCommands(redisDataSource);
