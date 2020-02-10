@@ -32,84 +32,102 @@ public type Client client object {
     #
     # + key - The key
     # + value - The string value to be appended
-    # + return - Length of the string after the operation or `error` if an error occurs
-    public remote function append(string key, string value) returns handle {
+    # + return - Length of the string after the operation
+    public remote function append(string key, string value) returns int {
         return append(self.datasource, java:fromString(key), java:fromString(value));
     }
 
     # Count set bits in a string.
     #
     # + key - The key
-    # + return - The number of bits set to 1
+    # + return - The number of bits of the value
     public remote function bitCount(string key) returns int {
         return bitCount(self.datasource, java:fromString(key));
     }
 
-    // # Perform bitwise AND between strings.
-    // #
-    // # + destination - Result key of the operation
-    // # + keys - Input keys to perform AND between
-    // # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
-    // #            string or `error` if an error occurs
-    // public remote function bitOpAnd(string destination, string[] keys) returns (int|error) =  external;
+    # Perform bitwise AND between strings.
+    #
+    # + destination - Result key of the operation
+    # + keys - Input keys to perform AND between
+    # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
+    #            string
+    public remote function bitOpAnd(string destination, string[] keys) returns int {
+        return bitOpAnd(self.datasource, java:fromString(destination), keys);
+    }
 
-    // # Perform bitwise OR between strings.
-    // #
-    // # + destination - Result key of the operation
-    // # + keys - Input keys to perform AND between
-    // # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
-    // #            string or `error` if an error occurs
-    // public remote function bitOpOr(string destination, string[] keys) returns (int|error) =  external;
+    # Perform bitwise OR between strings.
+    #
+    # + destination - Result key of the operation
+    # + keys - Input keys to perform AND between
+    # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
+    #            string or `error` if an error occurs
+    public remote function bitOpOr(string destination, string[] keys) returns int {
+        return bitOpOr(self.datasource, java:fromString(destination), keys);
+    }
 
-    // # Perform bitwise NOT on a string.
-    // #
-    // # + destination - Result key of the operation
-    // # + key - Input keys to perform AND between
-    // # + return - The size of the string stored in the destination key or `error` if an error occurs
-    // public remote function bitOpNot(string destination, string key) returns (int|error) =  external;
+    # Perform bitwise NOT on a string.
+    #
+    # + destination - Result key of the operation
+    # + key - Input keys to perform AND between
+    # + return - The size of the string stored in the destination key or `error` if an error occurs
+    public remote function bitOpNot(string destination, string key) returns int {
+        return bitOpNot(self.datasource, java:fromString(destination), java:fromString(key));
+    }
 
-    // # Perform bitwise XOR between strings.
-    // #
-    // # + destination - Result key of the operation
-    // # + key - Input keys to perform AND between
-    // # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
-    // #            string or `error` if an error occurs
-    // public remote function bitOpXor(string destination, string[] key) returns (int|error) =  external;
+    # Perform bitwise XOR between strings.
+    #
+    # + destination - Result key of the operation
+    # + keys - Input keys to perform AND between
+    # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
+    #            string or `error` if an error occurs
+    public remote function bitOpXor(string destination, string[] keys) returns int {
+        return bitOpXor(self.datasource, java:fromString(destination), keys);
+    }
 
-    // # Decrement the integer value of a key by one.
-    // #
-    // # + key - The key
-    // # + return - The value of the key after the decrement or `error` if an error occurs
-    // public remote function decr(string key) returns (int|error) =  external;
+    # Decrement the integer value of a key by one.
+    #
+    # + key - The key
+    # + return - The value of the key after the decrement
+    public remote function decr(string key) returns int {
+        return decr(self.datasource, java:fromString(key));
+    }
 
-    // # Decrement the integer value of a key by the given number.
-    // #
-    // # + key - The key
-    // # + value - The value to be decremented
-    // # + return - The value of the key after the decrement or `error` if an error occurs
-    // public remote function decrBy(string key, int value) returns (int|error) =  external;
+    # Decrement the integer value of a key by the given number.
+    #
+    # + key - The key
+    # + value - The value to be decremented
+    # + return - The value of the key after the decrement or `error` if an error occurs
+    public remote function decrBy(string key, int value) returns int {
+        return decrBy(self.datasource, java:fromString(key), value);
+    }
 
-    // # Returns the bit value at offset in the string value stored at key.
-    // #
-    // # + key - The key
-    // # + offset - The offset
-    // # + return - The bit value stored at offset or `error` if an error occurs
-    // public remote function getBit(string key, int offset) returns (int|error) =  external;
+    # Returns the bit value at offset in the string value stored at key.
+    #
+    # + key - The key
+    # + offset - The offset
+    # + return - The bit value stored at offset or `error` if an error occurs
+    public remote function getBit(string key, int offset) returns int {
+        return getBit(self.datasource, java:fromString(key), offset);
+    }
 
-    // # Get a substring of the string stored at a key.
-    // #
-    // # + key - The key
-    // # + startPos - The starting point of the substring
-    // # + end - The end point of the substring
-    // # + return - The substring or `error` if an error occurs
-    // public remote function getRange(string key, int startPos, int end) returns (string|error) =  external;
+    # Get a substring of the string stored at a key.
+    #
+    # + key - The key
+    # + startPos - The starting point of the substring
+    # + end - The end point of the substring
+    # + return - The substring or `error` if an error occurs
+    public remote function getRange(string key, int startPos, int end) returns string {
+        return getRange(self.datasource, java:fromString(key), startPos, end).toString();
+    }
 
-    // # Set the string value of a key and return its old value.
-    // #
-    // # + key - The key
-    // # + value - The value to be set
-    // # + return - The old value stored at key, or nil when key does not exist or `error` if an error occurs
-    // public remote function getSet(string key, string value) returns (string?|error) =  external;
+    # Set the string value of a key and return its old value.
+    #
+    # + key - The key
+    # + value - The value to be set
+    # + return - The old value stored at key, or nil when key does not exist or `error` if an error occurs
+    public remote function getSet(string key, string value) returns string  {
+        return getSet(self.datasource, java:fromString(key), java:fromString(value)).toString();
+    }
 
     # Get the value of a key.
     #
@@ -119,88 +137,111 @@ public type Client client object {
         return get(self.datasource, java:fromString(key)).toString();
     }
 
-    // # Increment the integer value of a key by one.
-    // #
-    // # + key - The key
-    // # + return - The value of the key after increment or `error` if an error occurs
-    // public remote function incr(string key) returns (int|error) =  external;
+    # Increment the integer value of a key by one.
+    #
+    # + key - The key
+    # + return - The value of the key after increment
+    public remote function incr(string key) returns int {
+        return incr(self.datasource, java:fromString(key));
+    }
 
-    // # Increment the integer value of a key by the given amount.
-    // #
-    // # + key - The key
-    // # + value - The amount to increment
-    // # + return - The value of the key after increment or `error` if an error occurs
-    // public remote function incrBy(string key, int value) returns (int|error) =  external;
-
-    // # Increment the integer value of a key by the given amount.
-    // #
-    // # + key - The key
-    // # + value - The amount to increment
-    // # + return - The value of the key after increment or `error` if an error occurs
-    // public remote function incrByFloat(string key, float value) returns (float|error) =  external;
+    # Increment the integer value of a key by the given amount.
+    #
+    # + key - The key
+    # + value - The amount to increment
+    # + return - The value of the key after increment
+    public remote function incrBy(string key, int value) returns int {
+        return incrBy(self.datasource, java:fromString(key), value);
+    }
+    # Increment the integer value of a key by the given amount.
+    #
+    # + key - The key
+    # + value - The amount to increment
+    # + return - The value of the key after increment
+    public remote function incrByFloat(string key, float value) returns float {
+        return incrByFloat(self.datasource, java:fromString(key), value);
+    }
 
     // # Get the values of all the given keys.
     // #
     // # + keys - The keys of which the values need to be retrieved
-    // # + return - Array of values at the specified keys or `error` if an error occurs
-    // public remote function mGet(string[] keys) returns (string[]|error) =  external;
+    // # + return - Array of values at the specified keys
+    // public remote function mGet(string[] keys) returns string[] {
+    //     return mGet(self.datasource, keys);
+    // }
 
     // # Set multiple keys to multiple values.
     // #
     // # + keyValueMap - A map of key-value pairs to be set
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function mSet(map<any> keyValueMap) returns (string|error) = external;
+    // # + return - A string with the value `OK` if the operation was successful
+    // public remote function mSet(map<any> keyValueMap) returns string {
+    //     return mSet(self.datasource, keyValueMap);
+    // }
 
     // # Set multiple keys to multiple values, only if none of the keys exist.
     // #
     // # + keyValueMap - A map of key-value pairs to be set
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function mSetNx(map<any> keyValueMap) returns (boolean|error) = external;
+    // # + return - A string with the value `OK` if the operation was successful
+    // public remote function mSetNx(map<any> keyValueMap) returns boolean {
+    //     return mSetNx(self.datasource, keyValueMap);
+    // }
 
-    // # Set the value and expiration in milliseconds of a key.
-    // #
-    // # + key - The key
-    // # + value - The value to be set
-    // # + expirationTime - Expiration time in milli seconds
-    // # + return - New value of the key or `error` if an error occurs
-    // public remote function pSetEx(string key, string value, int expirationTime) returns (string|error) = external;
+    # Set the value and expiration in milliseconds of a key.
+    #
+    # + key - The key
+    # + value - The value to be set
+    # + expirationTime - Expiration time in milli seconds
+    # + return - New value of the key or `error` if an error occurs
+    public remote function pSetEx(string key, string value, int expirationTime) returns string {
+        return pSetEx(self.datasource, java:fromString(key), java:fromString(value), expirationTime).toString();
+    }
 
-    // # Sets or clears the bit at offset in the string value stored at key.
-    // #
-    // # + key - The key
-    // # + value - The value to be set
-    // # + offset - The offset at which the value should be set
-    // # + return - The original bit value stored at offset or `error` if an error occurs
-    // public remote function setBit(string key, int value, int offset) returns (int|error) = external;
+    # Sets or clears the bit at offset in the string value stored at key.
+    #
+    # + key - The key
+    # + value - The value to be set
+    # + offset - The offset at which the value should be set
+    # + return - The original bit value stored at offset or `error` if an error occurs
+    public remote function setBit(string key, int value, int offset) returns int {
+        return setBit(self.datasource, java:fromString(key), value, offset);
+    }
 
-    // # Set the value and expiration of a key.
-    // #
-    // # + key - The key
-    // # + value - The value to be set
-    // # + expirationPeriodSeconds - Expiration time to be set, in seconds
-    // # + return - New value of the key or `error` if an error occurs
-    // public remote function setEx(string key, string value, int expirationPeriodSeconds) returns (string|error) = external;
+    # Set the value and expiration of a key.
+    #
+    # + key - The key
+    # + value - The value to be set
+    # + expirationPeriodSeconds - Expiration time to be set, in seconds
+    # + return - New value of the key or `error` if an error occurs
+    public remote function setEx(string key, string value, int expirationPeriodSeconds) returns string {
+        return setEx(self.datasource, java:fromString(key), java:fromString(value), expirationPeriodSeconds).toString();
+    }
 
-    // # Set the value of a key, only if the key does not exist.
-    // #
-    // # + key - The key
-    // # + value - The value to be set
-    // # + return - New value of the key or `error` if an error occurs
-    // public remote function setNx(string key, string value) returns (boolean|error) = external;
+    # Set the value of a key, only if the key does not exist.
+    #
+    # + key - The key
+    # + value - The value to be set
+    # + return - New value of the key or `error` if an error occurs
+    public remote function setNx(string key, string value) returns boolean {
+        return setNx(self.datasource, java:fromString(key), java:fromString(value));
+    }
 
-    // # Overwrite part of a string at key starting at the specified offset.
-    // #
-    // # + key - The key
-    // # + offset - The offset at which the value should be set
-    // # + value - The value to be set
-    // # + return - The length of the string after it was modified or `error` if an error occurs
-    // public remote function setRange(string key, int offset, string value) returns (int|error) = external;
+    # Overwrite part of a string at key starting at the specified offset.
+    #
+    # + key - The key
+    # + offset - The offset at which the value should be set
+    # + value - The value to be set
+    # + return - The length of the string after it was modified or `error` if an error occurs
+    public remote function setRange(string key, int offset, string value) returns int {
+        return setRange(self.datasource, java:fromString(key), offset, java:fromString(value));
+    }
 
-    // # Get the length of the value stored in a key.
-    // #
-    // # + key - The key
-    // # + return - The length of the string at key, or 0 when key does not exist or `error` if an error occurs
-    // public remote function strln(string key) returns (int|error) = external;
+    # Get the length of the value stored in a key.
+    #
+    # + key - The key
+    # + return - The length of the string at key, or 0 when key does not exist or `error` if an error occurs
+    public remote function strln(string key) returns int {
+        return strln(self.datasource, java:fromString(key));
+    }
 
     # Get the value of a key.
     #
@@ -225,12 +266,14 @@ public type Client client object {
     // # + return - The value of the first element, or nil when key does not exist or `error` if an error occurs
     // public remote function lPop(string key) returns (string?|error) = external;
 
-    // # Prepend one or multiple values to a list, only if the list exists.
-    // #
-    // # + key - The key
-    // # + values - The values to be prepended
-    // # + return - The length of the list after the push operation(s) or `error` if an error occurs
-    // public remote function lPushX(string key, string[] values) returns (int|error) = external;
+    # Prepend one or multiple values to a list, only if the list exists.
+    #
+    # + key - The key
+    # + values - The values to be prepended
+    # + return - The length of the list after the push operation(s)
+    public remote function lPushX(string key, string[] values) returns int {
+        return lPushX(self.datasource, java:fromString(key), values);
+    }
 
     // # Remove and get the first element in a list, or block until one is available.
     // #
@@ -697,11 +740,13 @@ public type Client client object {
 
     // //Key Commands
 
-    // # Delete one or more keys.
-    // #
-    // # + keys - The key to be deleted
-    // # + return - The number of keys that were removed or `error` if an error occurs
-    // public remote function del(string[] keys) returns (int|error) = external;
+    # Delete one or more keys.
+    #
+    # + keys - The key to be deleted
+    # + return - The number of keys that were removed
+    public remote function del(string[] keys) returns int {
+        return del(self.datasource, keys);
+    }
 
     // # Determine how many keys exist.
     // #
@@ -857,25 +902,36 @@ public type ClientEndpointConfiguration record {|
 # + key - The key
 # + value - The string value to be appended
 # + return - Length of the string after the operation or `error` if an error occurs
-function append(handle datasource, handle key, handle value) returns handle = @java:Method {
+function append(handle datasource, handle key, handle value) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-# Append a value to a key.
-#
-# + datasource - redis datasource
-# + key - The key
-# + return - Length of the string after the operation or `error` if an error occurs
 function bitCount(handle datasource, handle key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
+function bitOpAnd(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
 
-# Ping the server.
-# 
-# + datasource - redis datasource
-public function ping(handle datasource) = @java:Method {
-    class: "org.ballerinalang.redis.actions.ConnectionActions"
+function bitOpOr(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function bitOpNot(handle datasource, handle destination, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function bitOpXor(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function decr(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function decrBy(handle datasource, handle key, int value) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 # Get the value of a key.
@@ -885,6 +941,84 @@ public function ping(handle datasource) = @java:Method {
 # + return - The value of the key, or nil when key does not exist or `error` if an error occurs
 public function get(handle datasource, handle key) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function getBit(handle datasource, handle key, int offset) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function getRange(handle datasource, handle key, int startPos, int end) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function getSet(handle datasource, handle key, handle value) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function incr(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function incrBy(handle datasource, handle key, int value) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function incrByFloat(handle datasource, handle key, float value) returns float = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+// public function mGet(handle datasource, string[] keys) returns string[] = @java:Method {
+//     class: "org.ballerinalang.redis.actions.StringActions"
+// } external;
+
+// public function mSet(handle datasource, map<any> keyValueMap) returns string = @java:Method {
+//     class: "org.ballerinalang.redis.actions.StringActions"
+// } external;
+
+// public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean = @java:Method {
+//     class: "org.ballerinalang.redis.actions.StringActions"
+// } external;
+
+function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+
+function setBit(handle datasource, handle key, int value, int offset) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function setEx(handle datasource, handle key, handle value, int expirationPeriodSeconds) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function setNx(handle datasource, handle key, handle value) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function setRange(handle datasource, handle key, int offset, handle value) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+function strln(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+
+function lPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+
+public function del(handle datasource, string[] key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+# Ping the server.
+# 
+# + datasource - redis datasource
+public function ping(handle datasource) = @java:Method {
+    class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
 # Set the value of a key.
