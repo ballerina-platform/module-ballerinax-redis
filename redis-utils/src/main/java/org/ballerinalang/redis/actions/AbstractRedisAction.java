@@ -29,6 +29,7 @@ import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import org.ballerinalang.bre.Context;
+import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.model.values.BBoolean;
 import org.ballerinalang.model.values.BFloat;
 import org.ballerinalang.model.values.BInteger;
@@ -409,7 +410,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString lPop(K key, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString lPop(K key, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
@@ -487,7 +488,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString lIndex(K key, long index, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString lIndex(K key, long index, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
@@ -500,7 +501,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BInteger lInsert(K key, boolean before, V pivot, V value, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BInteger lInsert(K key, boolean before, V pivot, V value, RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -513,7 +514,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BInteger lLen(K key, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BInteger lLen(K key, RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -539,7 +540,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BInteger lRem(K key, long count, V value, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BInteger lRem(K key, long count, V value, RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -552,7 +553,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BString lSet(K key, long index, V value, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BString lSet(K key, long index, V value, RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -565,7 +566,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BString lTrim(K key, long start, long stop, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BString lTrim(K key, long start, long stop, RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -578,7 +579,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString rPop(K key, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString rPop(K key, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
@@ -591,7 +592,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString rPopLPush(K src, K destination, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString rPopLPush(K src, K destination, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
@@ -604,7 +605,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BInteger rPush(K key, RedisDataSource<K, V> redisDataSource, V... values) {
+    protected static <K, V> BInteger rPush(K key, RedisDataSource<K, V> redisDataSource, V... values) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -1105,7 +1106,7 @@ public abstract class AbstractRedisAction {
 
     // Hash Commands
 
-    protected <K, V> BInteger hDel(K key, RedisDataSource<K, V> redisDataSource, K... fields) {
+    protected static <K, V> BInteger hDel(K key, RedisDataSource<K, V> redisDataSource, K... fields) {
         RedisHashCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
@@ -1118,7 +1119,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BBoolean hExists(K key, K field, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BBoolean hExists(K key, K field, RedisDataSource<K, V> redisDataSource) {
         RedisHashCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
@@ -1131,7 +1132,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString hGet(K key, K field, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString hGet(K key, K field, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1144,7 +1145,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BMap<K, BString> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BMap<K, BString> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1157,7 +1158,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BInteger hIncrBy(K key, K field, long amount, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BInteger hIncrBy(K key, K field, long amount, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1170,7 +1171,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BFloat hIncrByFloat(K key, K field, double amount, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BFloat hIncrByFloat(K key, K field, double amount, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1183,7 +1184,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected BValueArray hKeys(String key, RedisDataSource<String, String> redisDataSource) {
+    protected static BValueArray hKeys(String key, RedisDataSource<String, String> redisDataSource) {
         RedisHashCommands<String, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<String, String>) getRedisCommands(redisDataSource);
@@ -1196,7 +1197,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BInteger hLen(K key, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BInteger hLen(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1235,7 +1236,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> BBoolean hSet(K key, K field, V value, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BBoolean hSet(K key, K field, V value, RedisDataSource<K, V> redisDataSource) {
         RedisHashCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
@@ -1486,7 +1487,7 @@ public abstract class AbstractRedisAction {
 
     //Connection commands
 
-    protected <K, V> BString auth(String password, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BString auth(String password, RedisDataSource<K, V> redisDataSource) {
         RedisCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisCommands<K, V>) getRedisCommands(redisDataSource);
@@ -1499,7 +1500,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> BString echo(String message, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BString echo(String message, RedisDataSource<K, String> redisDataSource) {
         RedisCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1535,7 +1536,7 @@ public abstract class AbstractRedisAction {
         return bStringArray;
     }
 
-    private BValueArray createBStringArrayFromList(List<String> list) {
+    private static BValueArray createBStringArrayFromList(List<String> list) {
         BValueArray bStringArray = new BValueArray(new String[list.size()]);
         int i = 0;
         for (String item : list) {
@@ -1555,7 +1556,7 @@ public abstract class AbstractRedisAction {
         return scoredValues;
     }
 
-    private <K> BMap<K, BString> createBMapFromMap(Map<K, String> map) {
+    private static <K> BMap<K, BString> createBMapFromMap(Map<K, String> map) {
         BMap<K, BString> bMap = new BMap<>();
         map.forEach((key, value) -> bMap.put(key, new BString(value)));
         return bMap;
@@ -1575,7 +1576,7 @@ public abstract class AbstractRedisAction {
         return bMap;
     }
 
-    protected String[] createArrayFromBStringArray(BValueArray bStringArray) {
+    protected static String[] createStringArrayFromBArray(BArray bStringArray) {
         String[] stringArray = new String[(int) bStringArray.size()];
         for (int i = 0; i < bStringArray.size(); i++) {
             stringArray[i] = bStringArray.getString(i);
@@ -1583,7 +1584,7 @@ public abstract class AbstractRedisAction {
         return stringArray;
     }
 
-    protected Map<String, String> createMapFromBMap(BMap<String, BString> bMap) {
+    protected static Map<String, String> createMapFromBMap(BMap<String, BString> bMap) {
         Map<String, String> map = new HashMap<>();
         bMap.getMap().keySet().forEach(item -> map.put(item, bMap.get(item).stringValue()));
         return map;

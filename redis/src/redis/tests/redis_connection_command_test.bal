@@ -15,16 +15,17 @@
 // under the License.
 
 import ballerina/test;
-import ballerinax/java;
 
 @test:Config {
 }
-function testDel() {
-   var result = conn->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
-   test:assertEquals(result, 3);
+function testPing() {
+    var result = conn->ping();
+    test:assertEquals(result, "PONG");
 }
 
-function setupRedisKeyDatabase() = @java:Method{
-    name: "setupKeyDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
+@test:Config {
+}
+function testEcho() {
+    var result = conn->echo("Manuri");
+    test:assertEquals(result, "Manuri");
+}

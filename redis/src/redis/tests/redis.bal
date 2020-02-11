@@ -32,6 +32,7 @@ public function initDb() {
     setupRedisStringDatabase();
     setupRedisKeyDatabase();
     setupRedisListDatabase();
+    setupRedisHashDatabase();
 }
 
 @test:AfterSuite

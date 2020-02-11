@@ -247,8 +247,9 @@ public type Client client object {
     #
     # + key - The key
     # + value - The values
-    public remote function set(string key, string value) {
-        return set(self.datasource, java:fromString(key), java:fromString(value));
+    # + return - `OK` if successful
+    public remote function set(string key, string value) returns string {
+        return set(self.datasource, java:fromString(key), java:fromString(value)).toString();
     }
 
     // //list operations
@@ -260,11 +261,13 @@ public type Client client object {
     // # + return - The length of the list after the push operation(s) or `error` if an error occurs
     // public remote function lPush(string key, string[] values) returns (int|error) = external;
 
-    // # Remove and get the first element in a list.
-    // #
-    // # + key - The key
-    // # + return - The value of the first element, or nil when key does not exist or `error` if an error occurs
-    // public remote function lPop(string key) returns (string?|error) = external;
+    # Remove and get the first element in a list.
+    #
+    # + key - The key
+    # + return - The value of the first element, or nil when key does not exist or `error` if an error occurs
+    public remote function lPop(string key) returns string {
+        return lPop(self.datasource, java:fromString(key)).toString();
+    }
 
     # Prepend one or multiple values to a list, only if the list exists.
     #
@@ -293,28 +296,34 @@ public type Client client object {
     // #         popped element, or `error` if an error occurs
     // public remote function bRPop(int timeOut, string[] keys) returns (map<any>?|error) = external;
 
-    // # Get an element from a list by its index.
-    // #
-    // # + key - The key
-    // # + index - The index from which the element should be retrieved
-    // # + return - The value at the given index or `error` if an error occurs
-    // public remote function lIndex(string key, int index) returns (string|error) = external;
+    # Get an element from a list by its index.
+    #
+    # + key - The key
+    # + index - The index from which the element should be retrieved
+    # + return - The value at the given index
+    public remote function lIndex(string key, int index) returns string { 
+        return lIndex(self.datasource, java:fromString(key), index).toString();
+    } 
 
-    // # Insert an element before or after another element in a list.
-    // #
-    // # + key - The key
-    // # + before - boolean value representing Whether element should be inserted before or after the pivot
-    // # + pivot - The pivot
-    // # + value - The value
-    // # + return - The length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
-    // #           an error occurs
-    // public remote function lInsert(string key, boolean before, string pivot, string value) returns (int|error) = external;
+    # Insert an element before or after another element in a list.
+    #
+    # + key - The key
+    # + before - boolean value representing Whether element should be inserted before or after the pivot
+    # + pivot - The pivot
+    # + value - The value
+    # + return - The length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
+    #           an error occurs
+    public remote function lInsert(string key, boolean before, string pivot, string value) returns int { 
+        return lInsert(self.datasource, java:fromString(key), before, java:fromString(pivot), java:fromString(value));
+    } 
 
-    // # Get the length of a list.
-    // #
-    // # + key - The key
-    // # + return - The length of the list at key or `error` if an error occurs
-    // public remote function lLen(string key) returns (int|error) = external;
+    # Get the length of a list.
+    #
+    # + key - The key
+    # + return - The length of the list at key or `error` if an error occurs
+    public remote function lLen(string key) returns int { 
+        return lLen(self.datasource, java:fromString(key));
+    } 
 
     // # Get a range of elements from a list.
     // #
@@ -324,56 +333,70 @@ public type Client client object {
     // # + return - Array of elements in the specified range or `error` if an error occurs
     // public remote function lRange(string key, int startPos, int stopPos) returns (string[]|error) = external;
 
-    // # Remove elements from a list.
-    // #
-    // # + key - The key
-    // # + count - The number of elements to be removed
-    // # + value - The value which the elements to be removed should be equal to
-    // # + return - Number of elements removed or `error` if an error occurs
-    // public remote function lRem(string key, int count, string value) returns (int|error) = external;
+    # Remove elements from a list.
+    #
+    # + key - The key
+    # + count - The number of elements to be removed
+    # + value - The value which the elements to be removed should be equal to
+    # + return - Number of elements removed or `error` if an error occurs
+    public remote function lRem(string key, int count, string value) returns int { 
+        return lRem(self.datasource, java:fromString(key), count, java:fromString(value));
+    } 
 
-    // # Set the value of an element in a list by its index.
-    // #
-    // # + key - The key of the list
-    // # + index - The index of the element of which the value needs to be set
-    // # + value - The value to be set
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function lSet(string key, int index, string value) returns (string|error) = external;
+    # Set the value of an element in a list by its index.
+    #
+    # + key - The key of the list
+    # + index - The index of the element of which the value needs to be set
+    # + value - The value to be set
+    # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
+    public remote function lSet(string key, int index, string value) returns string { 
+        return lSet(self.datasource, java:fromString(key), index, java:fromString(value)).toString();
+    } 
 
-    // # Trim a list to the specified range.
-    // #
-    // # + key - The key of the list
-    // # + startPos - The starting index of the range
-    // # + stopPos - The end index of the range
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function lTrim(string key, int startPos, int stopPos) returns (string|error) = external;
+    # Trim a list to the specified range.
+    #
+    # + key - The key of the list
+    # + startPos - The starting index of the range
+    # + stopPos - The end index of the range
+    # + return - A string with the value `OK` if the operation was successful
+    public remote function lTrim(string key, int startPos, int stopPos) returns string { 
+        return lTrim(self.datasource, java:fromString(key), startPos, stopPos).toString();
+    } 
 
-    // # Remove and get the last element in a list.
-    // #
-    // # + key - The key of the list
-    // # + return - The value of the last element, or `nil` when key does not exist or `error` if an error occurs
-    // public remote function rPop(string key) returns (string?|error) = external;
+    # Remove and get the last element in a list.
+    #
+    # + key - The key of the list
+    # + return - The value of the last element, or `nil` when key does not exist or `error` if an error occurs
+    public remote function rPop(string key) returns string { 
+        return rPop(self.datasource, java:fromString(key)).toString();
+    } 
 
-    // # Remove the last element in a list, append it to another list and return it.
-    // #
-    // # + src - The source key
-    // # + destination - The destination key
-    // # + return - The element being popped and pushed or `error` if an error occurs
-    // public remote function rPopLPush(string src, string destination) returns (string|error) = external;
+    # Remove the last element in a list, append it to another list and return it.
+    #
+    # + src - The source key
+    # + destination - The destination key
+    # + return - The element being popped and pushed or `error` if an error occurs
+    public remote function rPopLPush(string src, string destination) returns string { 
+        return rPopLPush(self.datasource, java:fromString(src), java:fromString(destination)).toString();
+    } 
 
-    // # Append one or multiple values to a list.
-    // #
-    // # + key - The key of the list
-    // # + values - Array of values to be appended
-    // # + return - The length of the list after the push operation or `error` if an error occurs
-    // public remote function rPush(string key, string[] values) returns (int|error) = external;
+    # Append one or multiple values to a list.
+    #
+    # + key - The key of the list
+    # + values - Array of values to be appended
+    # + return - The length of the list after the push operation or `error` if an error occurs
+    public remote function rPush(string key, string[] values) returns int { 
+        return rPush(self.datasource, java:fromString(key), values);
+    } 
 
-    // # Append one or multiple values to a list, only if the list exists.
-    // #
-    // # + key - The key of the list
-    // # + values - Array of values to be appended
-    // # + return - The length of the list after the push operation or `error` if an error occurs
-    // public remote function rPushX(string key, string[] values) returns (int|error) = external;
+    # Append one or multiple values to a list, only if the list exists.
+    #
+    # + key - The key of the list
+    # + values - Array of values to be appended
+    # + return - The length of the list after the push operation or `error` if an error occurs
+    public remote function rPushX(string key, string[] values) returns int { 
+        return rPushX(self.datasource, java:fromString(key), values);
+    } 
 
     // // Set Commands
     // # Add one or more members to a set.
@@ -635,62 +658,74 @@ public type Client client object {
 
     // //Hash Commands
 
-    // # Delete one or more hash fields.
-    // #
-    // # + key - The key of the hash
-    // # + fields - Array of fields to be deleted
-    // # + return - Number of fields that were removed from the hash, not including specified but non existing fields or
-    // #            `error` if an error occurs
-    // public remote function hDel(string key, string[] fields) returns (int|error) = external;
+    # Delete one or more hash fields.
+    #
+    # + key - The key of the hash
+    # + fields - Array of fields to be deleted
+    # + return - Number of fields that were removed from the hash, not including specified but non existing fields or
+    #            `error` if an error occurs
+    public remote function hDel(string key, string[] fields) returns int { 
+        return hDel(self.datasource, java:fromString(key), fields);
+    } 
 
-    // # Determine if a hash field exists.
-    // #
-    // # + key - The key of the hash
-    // # + field - Array of fields to be deleted
-    // # + return - boolean `true` if the hash contains the field. boolean false if the hash does not contain
-    // #            field or key does not exist or `error` if an error occurs
-    // public remote function hExists(string key, string field) returns (boolean|error) = external;
-
-    // # Get the value of a hash field.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + return - The value of the field or `error` if an error occurs
-    // public remote function hGet(string key, string field) returns (string|error) = external;
+    # Determine if a hash field exists.
+    #
+    # + key - The key of the hash
+    # + field - Array of fields to be deleted
+    # + return - boolean `true` if the hash contains the field. boolean false if the hash does not contain
+    #            field or key does not exist or `error` if an error occurs
+    public remote function hExists(string key, string field) returns boolean { 
+        return hExists(self.datasource, java:fromString(key), java:fromString(field));
+    } 
+    # Get the value of a hash field.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + return - The value of the field or `error` if an error occurs
+    public remote function hGet(string key, string field) returns string { 
+        return hGet(self.datasource, java:fromString(key), java:fromString(field)).toString();
+    } 
 
     // # Get the all values of a hash.
     // #
     // # + key - The key of the hash
     // # + return - Map of field-value pairs or `error` if an error occurs
-    // public remote function hGetAll(string key) returns (map<any>|error) = external;
+    // public remote function hGetAll(string key) returns map<any> { 
+    //     return hGetAll(self.datasource, java:fromString(key));
+    // } 
 
-    // # Increment the integer value of a hash field by the given number.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + amount - The amount to increment
-    // # + return - The value of the field or `error` if an error occurs
-    // public remote function hIncrBy(string key, string field, int amount) returns (int|error) = external;
-
-    // # Increment the float value of a hash field by the given number.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + amount - The amount to increment
-    // # + return - The value of the field or `error` if an error occurs
-    // public remote function hIncrByFloat(string key, string field, float amount) returns (float|error) = external;
-
+    # Increment the integer value of a hash field by the given number.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + amount - The amount to increment
+    # + return - The value of the field or `error` if an error occurs
+    public remote function hIncrBy(string key, string field, int amount) returns int { 
+        return hIncrBy(self.datasource, java:fromString(key), java:fromString(field), amount);
+    } 
+    # Increment the float value of a hash field by the given number.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + amount - The amount to increment
+    # + return - The value of the field or `error` if an error occurs
+    public remote function hIncrByFloat(string key, string field, float amount) returns float { 
+        return hIncrByFloat(self.datasource, java:fromString(key), java:fromString(field), amount);
+    } 
     // # Get all the fields in a hash.
     // #
     // # + key - The key of the hash
     // # + return - Array of hash fields or `error` if an error occurs
-    // public remote function hKeys(string key) returns (string[]|error) = external;
-
-    // # Get the number of fields in a hash.
-    // #
-    // # + key - The key of the hash
-    // # + return - Number of fields or `error` if an error occurs
-    // public remote function hLen(string key) returns (int|error) = external;
+    // public remote function hKeys(string key) returns string[] { 
+    //     return hKeys(self.datasource, java:fromString(key));
+    // } 
+    # Get the number of fields in a hash.
+    #
+    # + key - The key of the hash
+    # + return - Number of fields or `error` if an error occurs
+    public remote function hLen(string key) returns int { 
+        return hLen(self.datasource, java:fromString(key));
+    } 
 
     // # Get the values of all the given hash fields.
     // #
@@ -706,14 +741,16 @@ public type Client client object {
     // # + return - A string with the value `OK` if the operation was successful, or `error` if an error occurs
     // public remote function hMSet(string key, map<any> fieldValueMap) returns (string|error) = external;
 
-    // # Set the string value of a hash field.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + value - The value to be set to the field
-    // # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
-    // #         field already exists in the hash and the value was updated, or `error` if an error occurs
-    // public remote function hSet(string key, string field, string value) returns (boolean|error) = external;
+    # Set the string value of a hash field.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + value - The value to be set to the field
+    # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
+    #         field already exists in the hash and the value was updated, or `error` if an error occurs
+    public remote function hSet(string key, string field, string value) returns boolean { 
+        return hSet(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
+    } 
 
     // # Set the string value of a hash field, only if the field does not exist.
     // #
@@ -840,26 +877,27 @@ public type Client client object {
 
     // //Connection commands
 
-    // # Authenticate to the server.
-    // #
-    // # + password - The password
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function auth(string password) returns (string|error) = external;
-
-    // # Echo the given string.
-    // #
-    // # + message - The message to be echo-ed
-    // # + return - The message itself if the operation was successful or `error` if an error occurs
-    // public remote function echo(string message) returns (string|error) = external;
-
-    //# Ping the server.
-    //#
-    //# + return - A string with the value `PONG` if the operation was successful or `error` if an error occurs
-    //public remote function ping() returns (string | error) = external;
-
     # Ping the server.
-    public remote function ping() {
-        ping(self.datasource);
+    # 
+    # + return - A string with the value `PONG` if the operation was successful
+    public remote function ping() returns string {
+        return ping(self.datasource).toString();
+    }
+
+    # Authenticate to the server.
+    #
+    # + password - The password
+    # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
+    public remote function auth(string password) returns string {
+        return auth(self.datasource, java:fromString(password)).toString();
+    }
+
+    # Echo the given string.
+    #
+    # + message - The message to be echo-ed
+    # + return - The message itself if the operation was successful or `error` if an error occurs
+    public remote function echo(string message) returns string {
+        return echo(self.datasource, java:fromString(message)).toString();
     }
 
     # Stops the registered service.
@@ -939,7 +977,7 @@ function decrBy(handle datasource, handle key, int value) returns int = @java:Me
 # + key - The key
 # + datasource - redis datasource
 # + return - The value of the key, or nil when key does not exist or `error` if an error occurs
-public function get(handle datasource, handle key) returns handle = @java:Method {
+function get(handle datasource, handle key) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
@@ -983,6 +1021,9 @@ function pSetEx(handle datasource, handle key, handle value, int expirationTime)
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
+function set(handle datasource, handle key, handle value) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
 
 function setBit(handle datasource, handle key, int value, int offset) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
@@ -1004,30 +1045,104 @@ function strln(handle datasource, handle key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
+function lPop(handle datasource, handle key) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
 
 function lPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
+function lIndex(handle datasource, handle key, int index) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
 
-public function del(handle datasource, string[] key) returns int = @java:Method {
+function lInsert(handle datasource, handle key, boolean before, handle pivot, handle value) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function lLen(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function lRem(handle datasource, handle key, int count, handle value) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function lSet(handle datasource, handle key, int index, handle value) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function lTrim(handle datasource, handle key, int startPos, int stopPos) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function rPop(handle datasource, handle key) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function rPopLPush(handle datasource, handle src, handle destination) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function rPush(handle datasource, handle key, string[] values) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function rPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function del(handle datasource, string[] key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-# Ping the server.
-# 
-# + datasource - redis datasource
-public function ping(handle datasource) = @java:Method {
+function ping(handle datasource) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
-# Set the value of a key.
-#
-# + key - The key
-# + value - The value
-# + datasource - redis datasource
-public function set(handle datasource, handle key, handle value) = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+function auth(handle datasource, handle password) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ConnectionActions"
+} external;
+
+function echo(handle datasource, handle message) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.ConnectionActions"
+} external;
+
+function hDel(handle datasource, handle key, string[] fields) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hExists(handle datasource, handle key, handle field) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hGet(handle datasource, handle key, handle field) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+// function hGetAll(handle datasource, handle key) returns map<any> = @java:Method {
+//     class: "org.ballerinalang.redis.actions.HashActions"
+// } external;
+
+function hIncrBy(handle datasource, handle key, handle field, int amount) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hIncrByFloat(handle datasource, handle key, handle field, float amount) returns float = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hLen(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+// function hKeys(handle datasource, handle key) returns string[] = @java:Method {
+//     class: "org.ballerinalang.redis.actions.HashActions"
+// } external;
+
+function hSet(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 # Connection options for Redis Client Endpoint.

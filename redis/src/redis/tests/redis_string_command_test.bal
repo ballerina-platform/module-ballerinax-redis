@@ -21,6 +21,7 @@ import ballerinax/java;
 }
 public function testSet() {
     var result = conn->set("Name", "Manuri");
+    test:assertEquals(result, "OK");
 }
 
 @test:Config {
@@ -37,34 +38,35 @@ public function testBitCount() {
     test:assertEquals(result, 69);
 }
 
-//@test:Config {
-//}
-//public function tesBitOpAnd() {
-//    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-//    var result = conn->bitOpAnd("tesBitOpAndDest", keys);
-//    test:assertEquals(result, 69);
-//}
+@test:Config {
+}
+public function tesBitOpAnd() {
+   string[] keys = ["testBitOpKey1", "testBitOpKey2"];
+   var result = conn->bitOpAnd("tesBitOpAndDest", keys);
+   test:assertEquals(result, 3);
+}
 
-//@test:Config {
-//}
-//public function tesBitOpOr() {
-//    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-//    var result = conn->bitOpOr("tesBitOpOrDest", keys);
-//    test:assertEquals(result, 69);
-//}
-//
-//@test:Config {
-//}
-//public function tesBitOpNot() {
-//    var result = conn->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
-//    test:assertEquals(result, 69);
-//}
-//
-//@test:Config {
-//}
-//function tesBitOpXor() {
-//    var result = conn->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
-//}
+@test:Config {
+}
+public function tesBitOpOr() {
+   string[] keys = ["testBitOpKey1", "testBitOpKey2"];
+   var result = conn->bitOpOr("tesBitOpOrDest", keys);
+   test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+public function tesBitOpNot() {
+   var result = conn->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
+   test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+function tesBitOpXor() {
+   var result = conn->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
+   test:assertEquals(result, 3);
+}
 
 @test:Config {
 }
@@ -130,21 +132,21 @@ public function testIncrByFloat() {
     test:assertEquals(result, 7.200000002980232);
 }
 
-//function testMGet() {
+// function testMGet() {
 //    var result = conn->mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
-//}
-//
-//function testMSet() {
+// }
+
+// function testMSet() {
 //    map<any> keyValueMap = { testMSetKey1: "testMSetValue1", testMSetKey2: "testMSetValue2", testMSetKey3: "testMSetValue3" }
 //    ;
 //    var result = conn->mSet(keyValueMap);
-//}
-//
-//function testMSetNx() {
+// }
+
+// function testMSetNx() {
 //    map<any> keyValueMap = { testMSetNxKey1: "testMSetNxNewValue1", testMSetNxKey2: "testMSetNxValue2", testMSetNxKey3:
 //    "testMSetNxValue3" };
 //    var result = conn->mSetNx(keyValueMap);
-//}
+// }
 
 @test:Config {
 }

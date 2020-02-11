@@ -19,8 +19,84 @@ import ballerinax/java;
 
 @test:Config {
 }
-function testLPushX() returns (any|error) {
+function testLPop() {
+    var result = conn->lPop("testLPopKey");
+}
+
+@test:Config {
+}
+function testLPushX() {
     var result = conn->lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
+    test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+function testLIndex() {
+    var result = conn->lIndex("testLIndexKey", 0);
+    test:assertEquals(result, "testLIndexValue2");
+}
+
+@test:Config {
+}
+function testLInsert() {
+    var result = conn->lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
+    test:assertEquals(result, 5);
+}
+
+@test:Config {
+}
+function testLLen() {
+    var result = conn->lLen("testLLenKey");
+    test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+function testLRem() {
+    var result = conn->lRem("testLRemKey", 0, "toBeRemovedValue");
+    test:assertEquals(result, 2);
+}
+
+@test:Config {
+}
+function testLSet() {
+    var result = conn->lSet("testLSetKey", 1, "testLSetValue2New");
+    test:assertEquals(result, "OK");
+}
+
+@test:Config {
+}
+function testLTrim() {
+    var result = conn->lTrim("testLTrimKey", 1, -1);
+    test:assertEquals(result, "OK");
+}
+
+@test:Config {
+}
+function testRPop() {
+    var result = conn->rPop("testRPopKey");
+    test:assertEquals(result, "testRPopValue1");
+}
+
+@test:Config {
+}
+function testRPopLPush() {
+    var result = conn->rPopLPush("testRPopLPushKey1", "testRPopLPushKey2");
+    test:assertEquals(result, "One");
+}
+
+@test:Config {
+}
+function testRPush() {
+    var result = conn->rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
+    test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+function testRPushX() {
+    var result = conn->rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
     test:assertEquals(result, 3);
 }
 

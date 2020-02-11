@@ -20,6 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
+import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
@@ -30,10 +31,28 @@ public class ConnectionActions extends AbstractRedisAction {
      *
      * @param redisDataSourceHandleValue handleValue
      */
-    public static void ping(HandleValue redisDataSourceHandleValue) {
+    public static BString ping(HandleValue redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            ping(redisDataSource);
+            return ping(redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BString auth(HandleValue redisDataSourceHandleValue, String password) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return auth(password, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BString echo(HandleValue redisDataSourceHandleValue, String message) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return echo(message, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

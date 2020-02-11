@@ -27,6 +27,8 @@ import redis.embedded.RedisServer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RedisDbUtils {
     private static RedisServer redisServer;
@@ -109,6 +111,41 @@ public class RedisDbUtils {
 
         for (int i = 0; i < keyArray.length; i++) {
             redisCommands.lpush(keyArray[i], valueArray[i]);
+        }
+    }
+
+    public static void setupHashDatabase() {
+        setUpClient();
+        String[] hashKeyArray = {
+                "testHDelKey", "testHGetKey", "testHExistsKey", "testHGetAllKey", "testHIncrByKey",
+                "testHIncrByFloatKey", "testHKeysKey", "testHLenKey", "testHMGetKey", "testHStrlnKey", "testHValsKey"
+        };
+
+        String[][] hashFieldArray = {
+                { "testHDelField1", "testHDelField2", "testHDelField3" }, { "testHGetField1", "testHGetField2" },
+                { "testHExistsField1", "testHExistsField2" }, { "testHGetAllField1", "testHGetAllField2" },
+                { "testHIncrByField1" }, { "testHIncrByFloatField1" },
+                { "testHKeysField1", "testHKeysField2", "testHKeysField3" },
+                { "testHLenField1", "testHLenField2", "testHLenField3" },
+                { "testHMGetField1", "testHMGetField2", "testHMGetField3" }, { "testHStrlnField1" },
+                { "testHValsField1", "testHValsField2", "testHValsField3" }
+        };
+
+        String[][] hashValueArray = {
+                { "testHDelValue1", "testHDelValue2", "testHDelValue3" }, { "testHGetValue1", "testHGetValue2" },
+                { "testHExistsValue1", "testHExistsValue2" }, { "testHGetAllValue1", "testHGetAllValue2" }, { "6" },
+                { "7" }, { "testHKeysValue1", "testHKeysValue2", "testHKeysValue3" },
+                { "testHLenValue1", "testHLenValue2", "testHLenValue3" },
+                { "testHMGetValue1", "testHMGetValue2", "testHMGetValue3" }, { "testHStrlnValue1" },
+                { "testHValsValue1", "testHValsValue2", "testHValsValue3" }
+        };
+
+        for (int i = 0; i < hashKeyArray.length; i++) {
+            Map<String, String> map = new HashMap<>(hashFieldArray[i].length);
+            for (int j = 0; j < hashFieldArray[i].length; j++) {
+                map.put(hashFieldArray[i][j], hashValueArray[i][j]);
+            }
+            redisCommands.hmset(hashKeyArray[i], map);
         }
     }
 

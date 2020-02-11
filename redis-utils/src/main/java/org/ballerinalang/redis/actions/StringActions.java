@@ -25,27 +25,9 @@ import org.ballerinalang.model.values.BMap;
 import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
-import java.util.Map;
-
 import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
 
 public class StringActions extends AbstractRedisAction {
-
-    /**
-     * Set a string value for a given key value.
-     *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param redisKey key
-     * @param redisValue value
-     */
-    public static void set(HandleValue redisDataSourceHandleValue, String redisKey, String redisValue) {
-        try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            set(redisKey, redisValue, redisDataSource);
-        } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
-        }
-    }
 
     /**
      * Append a string to a value of a given key.
@@ -83,7 +65,7 @@ public class StringActions extends AbstractRedisAction {
     public static long bitOpAnd(HandleValue redisDataSourceHandleValue, String destination, BArray keysArray)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopAnd(destination, redisDataSource, keysArray).intValue();
+            return bitopAnd(destination, redisDataSource, createStringArrayFromBArray(keysArray)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -92,7 +74,7 @@ public class StringActions extends AbstractRedisAction {
     public static long bitOpOr(HandleValue redisDataSourceHandleValue, String destination, BArray keysArray)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopOr(destination, redisDataSource, keysArray).intValue();
+            return bitopOr(destination, redisDataSource, createStringArrayFromBArray(keysArray)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -110,7 +92,7 @@ public class StringActions extends AbstractRedisAction {
     public static long bitOpXor(HandleValue redisDataSourceHandleValue, String destination, BArray keysArray)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopXor(destination, redisDataSource, keysArray).intValue();
+            return bitopXor(destination, redisDataSource, createStringArrayFromBArray(keysArray)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -207,25 +189,25 @@ public class StringActions extends AbstractRedisAction {
     public static BMap mGet(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mGet(redisDataSource, keys);
+            return mGet(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static String mSet(HandleValue redisDataSourceHandleValue, Map keys) {
+    public static String mSet(HandleValue redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mSet(keys, redisDataSource).stringValue();
+            return mSet(createMapFromBMap(keys), redisDataSource).stringValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static Boolean mSetNx(HandleValue redisDataSourceHandleValue, Map keys) {
+    public static Boolean mSetNx(HandleValue redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mSetnx(keys, redisDataSource).booleanValue();
+            return mSetnx(createMapFromBMap(keys), redisDataSource).booleanValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -235,6 +217,23 @@ public class StringActions extends AbstractRedisAction {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pSetex(redisKey, value, expirationTime, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    /**
+     * Set a string value for a given key value.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param redisKey key
+     * @param redisValue value
+     * @return `OK` if successful
+     */
+    public static BString set(HandleValue redisDataSourceHandleValue, String redisKey, String redisValue) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return set(redisKey, redisValue, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

@@ -30,7 +30,7 @@ public class KeyActions extends AbstractRedisAction {
     public static long del(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return del(redisDataSource, keys).intValue();
+            return del(redisDataSource, createStringArrayFromBArray(keys)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
