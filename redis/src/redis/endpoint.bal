@@ -400,106 +400,129 @@ public type Client client object {
         return rPushX(self.datasource, java:fromString(key), values);
     } 
 
-    // // Set Commands
-    // # Add one or more members to a set.
-    // #
-    // # + key - The key of the set
-    // # + values - Array of values to be added
-    // # + return - The number of elements that were added to the set, not including all the elements which were
-    // #            already present in the set, or `error` if an error occurs
-    // public remote function sAdd(string key, string[] values) returns (int|error) = external;
+    // Set Commands
+    # Add one or more members to a set.
+    #
+    # + key - The key of the set
+    # + values - Array of values to be added
+    # + return - The number of elements that were added to the set, not including all the elements which were
+    #            already present in the set, or `error` if an error occurs
+    public remote function sAdd(string key, string[] values) returns int { 
+        return sAdd(self.datasource, java:fromString(key), values);
+    } 
 
-    // # Get the number of members in a set
-    // #
-    // # + key - The key of the set
-    // # + return - The cardinality (number of elements) of the set or `error` if an error occurs
-    // public remote function sCard(string key) returns (int|error) = external;
+    # Get the number of members in a set
+    #
+    # + key - The key of the set
+    # + return - The cardinality (number of elements) of the set or `error` if an error occurs
+    public remote function sCard(string key) returns int { 
+        return sCard(self.datasource, java:fromString(key));
+    } 
+    # Return set resulting from the difference between the first set and all the successive sets
+    #
+    # + keys - The keys of the sets
+    # + return - An array of members of the resulting set or `error` if an error occurs
+    public remote function sDiff(string[] keys) returns string[] { 
+        return sDiff(self.datasource, keys);
+    } 
+    # Obtain the set resulting from the difference between the first set and all the successive.
+    # sets and store at the provided destination.
+    #
+    # + destination - The destination key of the resulting set
+    # + keys - The keys of the sets to find the difference of
+    # + return - The number of members in the resulting set or `error` if an error occurs
+    public remote function sDiffStore(string destination, string[] keys) returns int { 
+        return sDiffStore(self.datasource, java:fromString(destination), keys);
+    }  
 
-    // # Return set resulting from the difference between the first set and all the successive sets
-    // #
-    // # + keys - The keys of the sets
-    // # + return - An array of members of the resulting set or `error` if an error occurs
-    // public remote function sDiff(string[] keys) returns (string[]|error) = external;
+    # Return the intersection of the provided sets.
+    #
+    # + keys - The keys of the sets to be intersected
+    # + return - An array of members of the resulting set or `error` if an error occurs
+    public remote function sInter(string[] keys) returns string[] { 
+        return sInter(self.datasource, keys);
+    } 
 
-    // # Obtain the set resulting from the difference between the first set and all the successive.
-    // # sets and store at the provided destination.
-    // #
-    // # + destination - The destination key of the resulting set
-    // # + keys - The keys of the sets to find the difference of
-    // # + return - The number of members in the resulting set or `error` if an error occurs
-    // public remote function sDiffStore(string destination, string[] keys) returns (int|error) = external;
+    # Obtain the intersection of the provided sets and store at the provided destination.
+    #
+    # + destination - The destination key of the resulting set
+    # + keys - The keys of the sets to be intersected
+    # + return - An array of members of the resulting set or `error` if an error occurs
+    public remote function sInterStore(string destination, string[] keys) returns int { 
+        return sInterStore(self.datasource, java:fromString(destination), keys);
+    } 
 
-    // # Return the intersection of the provided sets.
-    // #
-    // # + keys - The keys of the sets to be intersected
-    // # + return - An array of members of the resulting set or `error` if an error occurs
-    // public remote function sInter(string[] keys) returns (string[]|error) = external;
+    # Determine if a given value is a member of a set.
+    #
+    # + key - The key of the set
+    # + value - The value
+    # + return - boolean true/false depending on whether the value is a member of the set or not, or `error` if an error
+    #            occurs
+    public remote function sIsMember(string key, string value) returns boolean { 
+        return sIsMember(self.datasource, java:fromString(key), java:fromString(value));
+    } 
 
-    // # Obtain the intersection of the provided sets and store at the provided destination.
-    // #
-    // # + destination - The destination key of the resulting set
-    // # + keys - The keys of the sets to be intersected
-    // # + return - An array of members of the resulting set or `error` if an error occurs
-    // public remote function sInterStore(string destination, string[] keys) returns (int|error) = external;
+    # Get all the members in a set.
+    #
+    # + key - The key of the set
+    # + return - Array of all members in the set or `error` if an error occurs
+    public remote function sMembers(string key) returns string[] { 
+        return sMembers(self.datasource, java:fromString(key));
+    } 
 
-    // # Determine if a given value is a member of a set.
-    // #
-    // # + key - The key of the set
-    // # + value - The value
-    // # + return - boolean true/false depending on whether the value is a member of the set or not, or `error` if an error
-    // #            occurs
-    // public remote function sIsMember(string key, string value) returns (boolean|error) = external;
-
-    // # Get all the members in a set.
-    // #
-    // # + key - The key of the set
-    // # + return - Array of all members in the set or `error` if an error occurs
-    // public remote function sMembers(string key) returns (string[]|error) = external;
-
-    // # Move a member from one set to another.
-    // #
-    // # + src - The source key
-    // # + destination - The destination key
-    // # + member - The member to be moved
-    // # + return - `true` if the element is moved. `false` if the element is not a member of source and no
-    // #             operation was performed or `error` if an error occurs
-    // public remote function sMove(string src, string destination, string member) returns (boolean|error) = external;
+    # Move a member from one set to another.
+    #
+    # + src - The source key
+    # + destination - The destination key
+    # + member - The member to be moved
+    # + return - `true` if the element is moved. `false` if the element is not a member of source and no
+    #             operation was performed or `error` if an error occurs
+    public remote function sMove(string src, string destination, string member) returns boolean { 
+        return sMove(self.datasource, java:fromString(src), java:fromString(destination), java:fromString(member));
+    } 
 
 
-    // # Remove and return a random member from a set.
-    // #
-    // # + key - The source key
-    // # + count - Number of members to pop
-    // # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
-    // public remote function sPop(string key, int count) returns (string[]?|error) = external;
+    # Remove and return a random member from a set.
+    #
+    # + key - The source key
+    # + count - Number of members to pop
+    # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
+    public remote function sPop(string key, int count) returns string[] { 
+        return sPop(self.datasource, java:fromString(key), count);
+    } 
+    # Get one or multiple random members from a set.
+    #
+    # + key - The key of the set
+    # + count - Number of members to obtain
+    # + return - Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
+    public remote function sRandMember(string key, int count) returns string[] { 
+        return sMembers(self.datasource, java:fromString(key));
+    } 
 
-    // # Get one or multiple random members from a set.
-    // #
-    // # + key - The key of the set
-    // # + count - Number of members to obtain
-    // # + return - Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
-    // public remote function sRandMember(string key, int count) returns (string[]?|error) = external;
-
-    // # Remove one or more members from a set.
-    // #
-    // # + key - The key of the set
-    // # + members - Array of members to remove
-    // # + return - The number of members that were removed from the set, not including non existing members or `error` if
-    // #            an error occurs
-    // public remote function sRem(string key, string[] members) returns (int|error) = external;
-
-    // # Return the union of multiple sets.
-    // #
-    // # + keys - Array of keys of sets
-    // # + return - Array of members of the resulting set or `error` if an error occurs
-    // public remote function sUnion(string[] keys) returns (string[]|error) = external;
-
-    // # Return the union of multiple sets.
-    // #
-    // # + destination - The destination key of the resulting set
-    // # + keys - Array of keys of sets
-    // # + return - Number of members of the resulting set or `error` if an error occurs
-    // public remote function sUnionStore(string destination, string[] keys) returns (int|error) = external;
+    # Remove one or more members from a set.
+    #
+    # + key - The key of the set
+    # + members - Array of members to remove
+    # + return - The number of members that were removed from the set, not including non existing members or `error` if
+    #            an error occurs
+    public remote function sRem(string key, string[] members) returns int { 
+        return sRem(self.datasource, java:fromString(key), members);
+    } 
+    # Return the union of multiple sets.
+    #
+    # + keys - Array of keys of sets
+    # + return - Array of members of the resulting set or `error` if an error occurs
+    public remote function sUnion(string[] keys) returns string[] { 
+        return sUnion(self.datasource, keys);
+    } 
+    # Return the union of multiple sets.
+    #
+    # + destination - The destination key of the resulting set
+    # + keys - Array of keys of sets
+    # + return - Number of members of the resulting set or `error` if an error occurs
+    public remote function sUnionStore(string destination, string[] keys) returns int { 
+        return sUnionStore(self.datasource, java:fromString(destination), keys);
+    } 
 
     // //Sorted set Commands
     // # Add one or more members to a sorted set, or update its score if it already exist.
@@ -1121,6 +1144,62 @@ function rPush(handle datasource, handle key, string[] values) returns int = @ja
 
 function rPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function sAdd(handle datasource, handle key, string[] values) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sCard(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sDiff(handle datasource, string[] keys) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sDiffStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sInter(handle datasource, string[] keys) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sInterStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sIsMember(handle datasource, handle key, handle value) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sMembers(handle datasource, handle key) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sMove(handle datasource, handle src, handle destination, handle member) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sPop(handle datasource, handle key, int count) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sRandMember(handle datasource, handle key, int count) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sRem(handle datasource, handle key, string[] members) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sUnion(handle datasource, string[] keys) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
+} external;
+
+function sUnionStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function del(handle datasource, string[] key) returns int = @java:Method {

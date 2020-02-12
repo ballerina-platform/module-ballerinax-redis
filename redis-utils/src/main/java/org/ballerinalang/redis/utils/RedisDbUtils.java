@@ -149,6 +149,27 @@ public class RedisDbUtils {
         }
     }
 
+    public static void setupSetDatabase() {
+        setUpClient();
+        String[] keyArray = {
+                "testSAddKey", "testSDiffKey1", "testSDiffKey2", "testSInterKey1", "testSInterKey2", "testSIsMemberKey",
+                "testSMembersKey", "testSPopKey", "testSRandMemberKey", "testSRemKey", "testUnionKey1", "testUnionKey2"
+
+        };
+        String[][] valueArray = {
+                { "testSAddValue1", "testSAddValue2" }, { "One", "Two", "Three", "Four" }, { "One", "Two" },
+                { "One", "Two", "Three", "Four" }, { "One", "Two" }, { "testSIsMemberValue" },
+                { "testSMembersValue1", "testSMembersValue2", "testSMembersValue3" },
+                { "testSPopValue1", "testSPopValue2", "testSPopValue3" },
+                { "testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3" },
+                { "testSRemValue1", "testSRemValue2", "testSRemValue3" }, { "testUnionValue1", "testUnionValue2" },
+                { "testUnionValue2", "testUnionValue3", "testUnionValue4" }
+        };
+        for (int i = 0; i < keyArray.length; i++) {
+            redisCommands.sadd(keyArray[i], valueArray[i]);
+        }
+    }
+
     private static void setUpClient() {
         StatefulRedisConnection<String, String> statefulRedisConnection;
         RedisURI redisURI = RedisURI.Builder.redis(REDIS_HOST, REDIS_PORT).build();
