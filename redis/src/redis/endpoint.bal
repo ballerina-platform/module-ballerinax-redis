@@ -254,12 +254,14 @@ public type Client client object {
 
     // //list operations
 
-    // # Prepend one or multiple values to a list.
-    // #
-    // # + key - The key
-    // # + values - The values to be prepended
-    // # + return - The length of the list after the push operation(s) or `error` if an error occurs
-    // public remote function lPush(string key, string[] values) returns (int|error) = external;
+    # Prepend one or multiple values to a list.
+    #
+    # + key - The key
+    # + values - The values to be prepended
+    # + return - The length of the list after the push operation(s) or `error` if an error occurs
+    public remote function lPush(string key, string[] values) returns int {
+        return lPush(self.datasource, java:fromString(key), values);
+    }
 
     # Remove and get the first element in a list.
     #
@@ -712,13 +714,13 @@ public type Client client object {
     public remote function hIncrByFloat(string key, string field, float amount) returns float { 
         return hIncrByFloat(self.datasource, java:fromString(key), java:fromString(field), amount);
     } 
-    // # Get all the fields in a hash.
-    // #
-    // # + key - The key of the hash
-    // # + return - Array of hash fields or `error` if an error occurs
-    // public remote function hKeys(string key) returns string[] { 
-    //     return hKeys(self.datasource, java:fromString(key));
-    // } 
+    # Get all the fields in a hash.
+    #
+    # + key - The key of the hash
+    # + return - Array of hash fields or `error` if an error occurs
+    public remote function hKeys(string key) returns string[] { 
+        return hKeys(self.datasource, java:fromString(key));
+    } 
     # Get the number of fields in a hash.
     #
     # + key - The key of the hash
@@ -785,95 +787,119 @@ public type Client client object {
         return del(self.datasource, keys);
     }
 
-    // # Determine how many keys exist.
-    // #
-    // # + keys - The keys of which existence to be found out
-    // # + return - The number of existing keys or `error` if an error occurs
-    // public remote function exists(string[] keys) returns (int|error) = external;
+    # Determine how many keys exist.
+    #
+    # + keys - The keys of which existence to be found out
+    # + return - The number of existing keys or `error` if an error occurs
+    public remote function exists(string[] keys) returns int {
+        return del(self.datasource, keys);
+    }
 
-    // # Set a key's time to live in seconds.
-    // #
-    // # + key - The keys of which expiry time to be set
-    // # + seconds - Expiry in seconds
-    // # + return - boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set or
-    // # `error` if an error occurs
-    // public remote function expire(string key, int seconds) returns (boolean|error) = external;
+    # Set a key's time to live in seconds.
+    #
+    # + key - The keys of which expiry time to be set
+    # + seconds - Expiry in seconds
+    # + return - boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set or
+    # `error` if an error occurs
+    public remote function expire(string key, int seconds) returns boolean {
+        return expire(self.datasource, java:fromString(key), seconds);
+    }
 
-    // # Find all keys matching the given pattern.
-    // #
-    // # + pattern - The pattern to match
-    // # + return - Array of keys matching the given pattern or `error` if an error occurs
-    // public remote function keys(string pattern) returns (string[]|error) = external;
+    # Find all keys matching the given pattern.
+    #
+    # + pattern - The pattern to match
+    # + return - Array of keys matching the given pattern or `error` if an error occurs
+    public remote function keys(string pattern) returns string[] {
+        return keys(self.datasource, java:fromString(pattern));
+    }
 
-    // # Move a key to another database.
-    // #
-    // # + key - The key to be moved
-    // # + database - The database to which the key needs to be moved
-    // # + return - boolean true if key was succesfully moved, boolean false otherwise or `error` if an error occurs
-    // public remote function move(string key, int database) returns (boolean|error) = external;
+    # Move a key to another database.
+    #
+    # + key - The key to be moved
+    # + database - The database to which the key needs to be moved
+    # + return - boolean true if key was succesfully moved, boolean false otherwise or `error` if an error occurs
+    public remote function move(string key, int database) returns boolean {
+        return move(self.datasource, java:fromString(key), database);
+    }
 
-    // # Remove the expiration from a key.
-    // #
-    // # + key - The key of which expiry time should be removed
-    // # + return - boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
-    // #            an associated timeout, or `error` if an error occurs
-    // public remote function persist(string key) returns (boolean|error) = external;
+    # Remove the expiration from a key.
+    #
+    # + key - The key of which expiry time should be removed
+    # + return - boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
+    #            an associated timeout, or `error` if an error occurs
+    public remote function persist(string key) returns boolean {
+        return persist(self.datasource, java:fromString(key));
+    }
 
-    // # Set a key's time to live in milliseconds..
-    // #
-    // # + key - The key of which expiry time should be removed
-    // # + timeMilliSeconds - The expiry time in milli seconds
-    // # + return - boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
-    // #         be set, or `error` if an error occurs
-    // public remote function pExpire(string key, int timeMilliSeconds) returns (boolean|error) = external;
+    # Set a key's time to live in milliseconds..
+    #
+    # + key - The key of which expiry time should be removed
+    # + timeMilliSeconds - The expiry time in milli seconds
+    # + return - boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
+    #         be set, or `error` if an error occurs
+    public remote function pExpire(string key, int timeMilliSeconds) returns boolean {
+        return pExpire(self.datasource, java:fromString(key), timeMilliSeconds);
+    }
 
-    // # Get the time to live for a key in milliseconds
-    // #
-    // # + key - The key of which time-to-live should be obtained
-    // # + return - time-to-live of the key, in milli seconds or `error` if an error occurs
-    // public remote function pTtl(string key) returns (int|error) = external;
+    # Get the time to live for a key in milliseconds
+    #
+    # + key - The key of which time-to-live should be obtained
+    # + return - time-to-live of the key, in milli seconds or `error` if an error occurs
+    public remote function pTtl(string key) returns int {
+        return pTtl(self.datasource, java:fromString(key));
+    }
 
-    // # Return a random key from the keyspace.
-    // #
-    // # + return - The random key, or `nil` when the database is empty or `error` if an error occurs
-    // public remote function randomKey() returns (string?|error) = external;
+    # Return a random key from the keyspace.
+    #
+    # + return - The random key, or `nil` when the database is empty or `error` if an error occurs
+    public remote function randomKey() returns string {
+        return randomKey(self.datasource).toString();
+    }
 
-    // # Rename a key.
-    // #
-    // # + key - The key to be renamed
-    // # + newName - The new name of the key
-    // # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    // public remote function rename(string key, string newName) returns (string|error) = external;
+    # Rename a key.
+    #
+    # + key - The key to be renamed
+    # + newName - The new name of the key
+    # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
+    public remote function rename(string key, string newName) returns string {
+        return rename(self.datasource, java:fromString(key), java:fromString(newName)).toString();
+    }
 
-    // # Rename a key, only if the new key does not exist.
-    // #
-    // # + key - The key to be renamed
-    // # + newName - The new name of the key
-    // # + return - boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
-    // #            error occurs
-    // public remote function renameNx(string key, string newName) returns (boolean|error) = external;
+    # Rename a key, only if the new key does not exist.
+    #
+    # + key - The key to be renamed
+    # + newName - The new name of the key
+    # + return - boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
+    #            error occurs
+    public remote function renameNx(string key, string newName) returns boolean {
+        return renameNx(self.datasource, java:fromString(key), java:fromString(newName));
+    }
 
-    // # Sort the elements in a list, set or sorted set.
-    // #
-    // # + key - The key of the data typeure to be sorted
-    // # + return - Sorted array containing the members of the sorted data type or `error` if an error occurs
-    // public remote function sort(string key) returns (string[]|error) = external;
+    # Sort the elements in a list, set or sorted set.
+    #
+    # + key - The key of the data typeure to be sorted
+    # + return - Sorted array containing the members of the sorted data type or `error` if an error occurs
+    public remote function sort(string key) returns string[] {
+        return sort(self.datasource, java:fromString(key));
+    }
 
-    // # Get the time to live for a key.
-    // #
-    // # + key - The key of which the time to live needs to be obtained
-    // # + return - Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
-    // #         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
-    // #         level or the driver level
-    // public remote function ttl(string key) returns (int|error) = external;
+    # Get the time to live for a key.
+    #
+    # + key - The key of which the time to live needs to be obtained
+    # + return - Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
+    #         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
+    #         level or the driver level
+    public remote function ttl(string key) returns int {
+        return ttl(self.datasource, java:fromString(key));
+    }
 
-    // # Determine the type stored at key.
-    // #
-    // # + key - The key of which the type needs to be obtained
-    // # + return - Time to live in seconds or a negative value/`error` in order to signal an error in evaluating te type.
-    // #         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
-    // #         level or the driver level
-    // public remote function redisType(string key) returns (string|error) = external;
+    # Determine the type stored at key.
+    #
+    # + key - The key of which the type needs to be obtained
+    # + return - Type stored at key
+    public remote function redisType(string key) returns string {
+        return redisType(self.datasource, java:fromString(key)).toString();
+    }
 
     // //Connection commands
 
@@ -1045,6 +1071,10 @@ function strln(handle datasource, handle key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
+function lPush(handle datasource, handle key, string[] values) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
 function lPop(handle datasource, handle key) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
@@ -1097,6 +1127,58 @@ function del(handle datasource, string[] key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
+function exists(handle datasource, string[] key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function expire(handle datasource, handle key, int seconds) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function keys(handle datasource, handle pattern) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function move(handle datasource, handle key, int database) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function persist(handle datasource, handle key) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function pExpire(handle datasource, handle key, int timeMilliSeconds) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function pTtl(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function randomKey(handle datasource) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function rename(handle datasource, handle key, handle newName) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function renameNx(handle datasource, handle key, handle newName) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function sort(handle datasource, handle key) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function ttl(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
+function redisType(handle datasource, handle key) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.KeyActions"
+} external;
+
 function ping(handle datasource) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
@@ -1137,9 +1219,9 @@ function hLen(handle datasource, handle key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-// function hKeys(handle datasource, handle key) returns string[] = @java:Method {
-//     class: "org.ballerinalang.redis.actions.HashActions"
-// } external;
+function hKeys(handle datasource, handle key) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
 
 function hSet(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"

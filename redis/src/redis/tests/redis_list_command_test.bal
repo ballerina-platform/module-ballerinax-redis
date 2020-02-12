@@ -19,8 +19,16 @@ import ballerinax/java;
 
 @test:Config {
 }
+function testLPush() {
+    var result = conn->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
+    test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
 function testLPop() {
     var result = conn->lPop("testLPopKey");
+    test:assertEquals(result, "testLPopValue2");
 }
 
 @test:Config {

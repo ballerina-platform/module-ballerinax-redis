@@ -96,7 +96,7 @@ public class HashActions extends AbstractRedisAction {
         }
     }
 
-    public static BValueArray hKeys(HandleValue redisDataSourceHandleValue, String key) {
+    public static BArray hKeys(HandleValue redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hKeys(key, redisDataSource);

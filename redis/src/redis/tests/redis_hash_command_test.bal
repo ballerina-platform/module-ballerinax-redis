@@ -66,11 +66,12 @@ function testHLen() {
     test:assertEquals(result, 3);
 }
 
-// @test:Config {
-// }
-// function testHKeys() {
-//     var result = conn->hKeys("testHKeysKey");
-// }
+@test:Config {
+}
+function testHKeys() {
+    var result = conn->hKeys("testHKeysKey");
+    test:assertEquals(result.length(), 3);
+}
 
 @test:Config {
 }

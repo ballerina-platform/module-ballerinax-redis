@@ -37,6 +37,15 @@ public class ListActions extends AbstractRedisAction {
         }
     }
 
+    public static long lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
     public static <K> BString lPop(HandleValue redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
