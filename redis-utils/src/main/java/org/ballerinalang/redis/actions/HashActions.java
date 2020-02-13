@@ -20,16 +20,12 @@ package org.ballerinalang.redis.actions;
 
 import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
-import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
 import org.ballerinalang.model.values.BString;
-import org.ballerinalang.model.values.BValueArray;
 import org.ballerinalang.redis.RedisDataSource;
 
-import java.util.Map;
-
-import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
 public class HashActions extends AbstractRedisAction {
 

@@ -35,7 +35,7 @@ public class RedisDbUtils {
     private static RedisServer redisServer;
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
-    protected static RedisCommands<String, String> redisCommands;
+    private static RedisCommands<String, String> redisCommands;
 
     public static void initServer() throws IOException {
         String executablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").

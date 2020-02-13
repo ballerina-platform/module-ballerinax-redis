@@ -24,7 +24,7 @@ import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
 public class KeyActions extends AbstractRedisAction {
 
