@@ -169,12 +169,12 @@ public function main() {
     io:println("\n===Executing sample string oprerations===");
     //Sample String Operations
     io:println("Setting value of the key \"Project\" as \"Ballerina\"");
-    var stringSetresult = conn->setVal("Project", "Ballerina");
+    var stringSetresult = conn->set("Project", "Ballerina");
 
     if (stringSetresult is string) {
         io:println("Reply from the server: " + stringSetresult);
     } else {
-        io:println("Error occurred while calling `setVal`");
+        io:println("Error occurred while calling `set`");
     }
 
     io:println("\nQuerying the server for the value of the key \"Project\"");

@@ -22,153 +22,187 @@ import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbException.REDIS_EXCEPTION_OCCURRED;
 
-public class ListActions extends AbstractRedisAction {
+public class SortedSetActions extends AbstractRedisAction {
 
-    public static long lPushX(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static long zAdd(HandleValue redisDataSourceHandleValue, String key, BMap memberScoreMap) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lPushX(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return zAdd(key, redisDataSource, createMapFromBMap(memberScoreMap)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BMap bLPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static long zCard(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bLPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
+            return zCard(key, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BMap bRPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static long zCount(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bRPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
+            return zCount(key, min, max, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static double zIncrBy(HandleValue redisDataSourceHandleValue, String key, float amount, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return zIncrBy(key, amount, member, redisDataSource).floatValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static <K> BString lPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static long zInterStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lPop(redisKey, redisDataSource);
+            return zInterStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static <K> BString lIndex(HandleValue redisDataSourceHandleValue, String redisKey, int index) {
+    public static long zLexCount(HandleValue redisDataSourceHandleValue, String destination, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lIndex(redisKey, index, redisDataSource);
+            return zLexCount(destination, min, max, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lInsert(HandleValue redisDataSourceHandleValue, String key, boolean before, String pivot,
-                                      String value) {
+    public static BArray zRange(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lInsert(key, before, pivot, value, redisDataSource).intValue();
+            return zRange(key, min, max, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lLen(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static BArray zRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lLen(redisKey, redisDataSource).intValue();
+            return zRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BArray lRange(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static BArray zRevRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lRange(redisKey, startPos, stopPos, redisDataSource);
+            return zRevRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lRem(HandleValue redisDataSourceHandleValue, String redisKey, int count, String value) {
+    public static BArray zRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lRem(redisKey, count, value, redisDataSource).intValue();
+            return zRangeByScore(key, min, max, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString lSet(HandleValue redisDataSourceHandleValue, String redisKey, int index, String value) {
+    public static long zRank(HandleValue redisDataSourceHandleValue, String key, String memeber) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lSet(redisKey, index, value, redisDataSource);
+            return zRank(key, memeber, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString lTrim(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static long zRem(HandleValue redisDataSourceHandleValue, String key, BArray memebers) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lTrim(redisKey, startPos, startPos, redisDataSource);
+            return zRem(key, redisDataSource, createStringArrayFromBArray(memebers)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString rPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static long zRemRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPop(redisKey, redisDataSource);
+            return zRemRangeByLex(key, min, max, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString rPopLPush(HandleValue redisDataSourceHandleValue, String src, String destination) {
+    public static long zRemRangeByRank(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPopLPush(src, destination, redisDataSource);
+            return zRemRangeByRank(key, min, max, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long rPush(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static long zRemRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return zRemRangeByScore(key, min, max, redisDataSource).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long rPushX(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static BArray zRevRange(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return zRevRange(key, min, max, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BArray zRevRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return zRevRangeByScore(key, min, max, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static long zRevRank(HandleValue redisDataSourceHandleValue, String key, String member) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return zRevRank(key, member, redisDataSource).intValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static double zScore(HandleValue redisDataSourceHandleValue, String key, String member) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return zScore(key, member, redisDataSource).floatValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static long zUnionStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return zUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

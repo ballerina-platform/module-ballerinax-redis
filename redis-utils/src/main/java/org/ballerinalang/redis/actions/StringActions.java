@@ -21,7 +21,7 @@ package org.ballerinalang.redis.actions;
 import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
-import org.ballerinalang.model.values.BMap;
+import org.ballerinalang.jvm.values.api.BMap;
 import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
@@ -186,10 +186,10 @@ public class StringActions extends AbstractRedisAction {
         }
     }
 
-    public static BMap mGet(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static BArray mGet(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mGet(redisDataSource, createStringArrayFromBArray(keys));
+            return createBstringArrayFromBMap(mGet(redisDataSource, createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

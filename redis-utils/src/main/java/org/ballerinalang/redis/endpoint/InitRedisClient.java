@@ -42,31 +42,6 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  */
 public class InitRedisClient  {
 
-//    @Override
-//    public void execute(Context context) {
-//        BMap<String, BValue> configBStruct = (BMap<String, BValue>) context.getRefArgument(1);
-//        Struct clientEndpointConfig = BLangConnectorSPIUtil.toStruct(configBStruct);
-//
-//        //Extract parameters from the endpoint config
-//        String host = clientEndpointConfig.getStringField(Constants.EndpointConfig.HOST);
-//        String password = clientEndpointConfig.getStringField(Constants.EndpointConfig.PASSWORD);
-//        Struct options = clientEndpointConfig.getStructField(Constants.EndpointConfig.OPTIONS);
-//
-//        // TODO: Dynamic codecs
-//        RedisCodec<String, String> codec = retrieveRedisCodec(Constants.Codec.STRING_CODEC.getCodecName());
-//        boolean clusteringEnabled = options.getBooleanField(Constants.EndpointConfig.CLUSTERING_ENABLED);
-//        boolean poolingEnabled = options.getBooleanField(Constants.EndpointConfig.POOLING_ENABLED);
-//
-//        RedisDataSource<String, String> redisDataSource;
-//        redisDataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
-//        redisDataSource.init(host, password, options);
-//
-//        BMap<String, BValue> redisClient = (BMap<String, BValue>) context.getRefArgument(0);
-//        redisClient.addNativeData(Constants.CLIENT, redisDataSource);
-//        context.setReturnValues(redisClient);
-//
-//    }
-
     public static HandleValue initClient(MapValue config) {
         String host = config.getStringValue(Constants.EndpointConfig.HOST);
         String password = config.getStringValue(Constants.EndpointConfig.PASSWORD);
@@ -83,7 +58,7 @@ public class InitRedisClient  {
     }
 
 
-    private static RedisCodec retrieveRedisCodec(String codecString) {
+    protected static RedisCodec retrieveRedisCodec(String codecString) {
         Constants.Codec codec = retrieveCodec(codecString);
         switch (codec) {
         case BYTE_ARRAY_CODEC:

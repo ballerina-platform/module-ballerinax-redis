@@ -40,7 +40,7 @@ string result = checkpanic conn->ping();
 io:println(result);
 
 // String Operations
-var stringSetresult = conn->setVal("Project", "Ballerina");
+var stringSetresult = conn->set("Project", "Ballerina");
 
 if (stringSetresult is string) {
     io:println("Reply from the server: " + stringSetresult);

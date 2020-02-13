@@ -162,29 +162,29 @@ public type Client client object {
         return incrByFloat(self.datasource, java:fromString(key), value);
     }
 
-    // # Get the values of all the given keys.
-    // #
-    // # + keys - The keys of which the values need to be retrieved
-    // # + return - Array of values at the specified keys
-    // public remote function mGet(string[] keys) returns string[] {
-    //     return mGet(self.datasource, keys);
-    // }
+    # Get the values of all the given keys.
+    #
+    # + keys - The keys of which the values need to be retrieved
+    # + return - Array of values at the specified keys
+    public remote function mGet(string[] keys) returns string[] {
+        return mGet(self.datasource, keys);
+    }
 
-    // # Set multiple keys to multiple values.
-    // #
-    // # + keyValueMap - A map of key-value pairs to be set
-    // # + return - A string with the value `OK` if the operation was successful
-    // public remote function mSet(map<any> keyValueMap) returns string {
-    //     return mSet(self.datasource, keyValueMap);
-    // }
+    # Set multiple keys to multiple values.
+    #
+    # + keyValueMap - A map of key-value pairs to be set
+    # + return - A string with the value `OK` if the operation was successful
+    public remote function mSet(map<any> keyValueMap) returns string {
+        return mSet(self.datasource, keyValueMap).toString();
+    }
 
-    // # Set multiple keys to multiple values, only if none of the keys exist.
-    // #
-    // # + keyValueMap - A map of key-value pairs to be set
-    // # + return - A string with the value `OK` if the operation was successful
-    // public remote function mSetNx(map<any> keyValueMap) returns boolean {
-    //     return mSetNx(self.datasource, keyValueMap);
-    // }
+    # Set multiple keys to multiple values, only if none of the keys exist.
+    #
+    # + keyValueMap - A map of key-value pairs to be set
+    # + return - A string with the value `OK` if the operation was successful
+    public remote function mSetNx(map<any> keyValueMap) returns boolean {
+        return mSetNx(self.datasource, keyValueMap);
+    }
 
     # Set the value and expiration in milliseconds of a key.
     #
@@ -280,23 +280,27 @@ public type Client client object {
         return lPushX(self.datasource, java:fromString(key), values);
     }
 
-    // # Remove and get the first element in a list, or block until one is available.
-    // #
-    // # + timeOut - The timeout in seconds
-    // # + keys - The keys
-    // # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
-    // #         key being  the name of the key where an element was popped and the second element  being the value of the
-    // #         popped element, or `error` if an error occurs
-    // public remote function bLPop(int timeOut, string[] keys) returns (map<any>?|error) = external;
+    # Remove and get the first element in a list, or block until one is available.
+    #
+    # + timeOut - The timeout in seconds
+    # + keys - The keys
+    # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
+    #         key being  the name of the key where an element was popped and the second element  being the value of the
+    #         popped element, or `error` if an error occurs
+    public remote function bLPop(int timeOut, string[] keys) returns map<any> {
+        return bLPop(self.datasource, timeOut, keys);
+    }
 
-    // # Remove and get the last element in a list, or block until one is available.
-    // #
-    // # + timeOut - The timeout in seconds
-    // # + keys - The keys
-    // # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
-    // #         key being  the name of the key where an element was popped and the second element being the value of the
-    // #         popped element, or `error` if an error occurs
-    // public remote function bRPop(int timeOut, string[] keys) returns (map<any>?|error) = external;
+    # Remove and get the last element in a list, or block until one is available.
+    #
+    # + timeOut - The timeout in seconds
+    # + keys - The keys
+    # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
+    #         key being  the name of the key where an element was popped and the second element being the value of the
+    #         popped element, or `error` if an error occurs
+    public remote function bRPop(int timeOut, string[] keys) returns map<any> {
+        return bRPop(self.datasource, timeOut, keys);
+    }
 
     # Get an element from a list by its index.
     #
@@ -327,13 +331,15 @@ public type Client client object {
         return lLen(self.datasource, java:fromString(key));
     } 
 
-    // # Get a range of elements from a list.
-    // #
-    // # + key - The key
-    // # + startPos - The begining index of the range
-    // # + stopPos - The last index of the range
-    // # + return - Array of elements in the specified range or `error` if an error occurs
-    // public remote function lRange(string key, int startPos, int stopPos) returns (string[]|error) = external;
+    # Get a range of elements from a list.
+    #
+    # + key - The key
+    # + startPos - The begining index of the range
+    # + stopPos - The last index of the range
+    # + return - Array of elements in the specified range or `error` if an error occurs
+    public remote function lRange(string key, int startPos, int stopPos) returns string[] { 
+        return lRange(self.datasource, java:fromString(key), startPos, stopPos);
+    } 
 
     # Remove elements from a list.
     #
@@ -524,162 +530,197 @@ public type Client client object {
         return sUnionStore(self.datasource, java:fromString(destination), keys);
     } 
 
-    // //Sorted set Commands
-    // # Add one or more members to a sorted set, or update its score if it already exist.
-    // #
-    // # + key - The key of the sorted set
-    // # + memberScoreMap - A map of members and corresponding scores
-    // # + return - The number of elements that were added to the sorted set, not including all the elements which were
-    // #            already present in the set for which the score was updated, or `error` if an error occurs
-    // public remote function zAdd(string key, map<any> memberScoreMap) returns (int|error) = external;
+    //Sorted set Commands
+    # Add one or more members to a sorted set, or update its score if it already exist.
+    #
+    # + key - The key of the sorted set
+    # + memberScoreMap - A map of members and corresponding scores
+    # + return - The number of elements that were added to the sorted set, not including all the elements which were
+    #            already present in the set for which the score was updated, or `error` if an error occurs
+    public remote function zAdd(string key, map<any> memberScoreMap) returns int { 
+        return zAdd(self.datasource, java:fromString(key), memberScoreMap);
+    } 
+    # Get the number of members in a sorted set.
+    #
+    # + key - The key of the sorted set
+    # + return - The cardinality (number of elements) of the sorted set or `error` if an error occurs
+    public remote function zCard(string key) returns int { 
+        return zCard(self.datasource, java:fromString(key));
+    } 
+    # Count the members in a sorted set with scores within the given range.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum score of the range
+    # + max - The maximum score of the range
+    # + return - The number of elements in the specified score range or `error` if an error occurs
+    public remote function zCount(string key, float min, float max) returns int { 
+        return zCount(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Get the number of members in a sorted set.
-    // #
-    // # + key - The key of the sorted set
-    // # + return - The cardinality (number of elements) of the sorted set or `error` if an error occurs
-    // public remote function zCard(string key) returns (int|error) = external;
+    # Increment the score of a member in a sorted set.
+    #
+    # + key - The key of the sorted set
+    # + amount - The amount to increment
+    # + member - The member whose score to be incremented
+    # + return - The new score of the member or `error` if an error occurs
+    public remote function zIncrBy(string key, float amount, string member) returns float { 
+        return zIncrBy(self.datasource, java:fromString(key), amount, java:fromString(member));
+    } 
 
-    // # Count the members in a sorted set with scores within the given range.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum score of the range
-    // # + max - The maximum score of the range
-    // # + return - The number of elements in the specified score range or `error` if an error occurs
-    // public remote function zCount(string key, float min, float max) returns (int|error) = external;
+    # Intersect multiple sorted sets and store the resulting sorted set in a new key.
+    #
+    # + destination - The destination key of the resulting sorted set
+    # + keys - The keys of the sorted sets to be intersected
+    # + return - The number of elements in the resulting sorted set or `error` if an error occurs
+    public remote function zInterStore(string destination, string[] keys) returns int { 
+        return zInterStore(self.datasource, java:fromString(destination), keys);
+    } 
+    # Count the members in a sorted set within the given lexicographical range.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum lexicographical value of the range
+    # + max - The maximum lexicographical value of the range
+    # + return - The number of elements in the specified lexicographical value range or `error` if an error occurs
+    public remote function zLexCount(string key, string min, string max) returns int { 
+        return zLexCount(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
+    } 
+    # Return a range of members in a sorted set, by index.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum index of the range
+    # + max - The maximum index of the range
+    # + return - The range of members in a sorted set, by index, or `error` if an error occurs
+    public remote function zRange(string key, int min, int max) returns string[] { 
+        return zRange(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Increment the score of a member in a sorted set.
-    // #
-    // # + key - The key of the sorted set
-    // # + amount - The amount to increment
-    // # + member - The member whose score to be incremented
-    // # + return - The new score of the member or `error` if an error occurs
-    // public remote function zIncrBy(string key, float amount, string member) returns (float|error) = external;
+    # Return a range of members in a sorted set, by lexicographical range from lowest to highest.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum lexicographical value of the range
+    # + max - The maximum lexicographical value of the range
+    # + return - Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
+    #            if an error occurs
+    public remote function zRangeByLex(string key, string min, string max) returns string[] { 
+        return zRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
+    } 
 
-    // # Intersect multiple sorted sets and store the resulting sorted set in a new key.
-    // #
-    // # + destination - The destination key of the resulting sorted set
-    // # + keys - The keys of the sorted sets to be intersected
-    // # + return - The number of elements in the resulting sorted set or `error` if an error occurs
-    // public remote function zInterStore(string destination, string[] keys) returns (int|error) = external;
+    # Return a range of members in a sorted set, by lexicographical range ordered from highest to
+    # lowest.
+    #
+    # + key - The key of the sorted set
+    # + min - The lexicographical value of the range
+    # + max - The maximum lexicographical value of the range
+    # + return - Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
+    #            if an error occurs
+    public remote function zRevRangeByLex(string key, string min, string max) returns string[] { 
+        return zRevRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
+    } 
+    # Return a range of members in a sorted set, by score from lowest to highest.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum score of the range
+    # + max - The maximum score of the range
+    # + return - Array of members in the specified score range ordered from lowest to highest or `error` if an error occurs
+    public remote function zRangeByScore(string key, float min, float max) returns string[] { 
+        return zRangeByScore(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Count the members in a sorted set within the given lexicographical range.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum lexicographical value of the range
-    // # + max - The maximum lexicographical value of the range
-    // # + return - The number of elements in the specified lexicographical value range or `error` if an error occurs
-    // public remote function zLexCount(string key, string min, string max) returns (int|error) = external;
+    # Determine the index of a member in a sorted set.
+    #
+    # + key - The key of the sorted set
+    # + member - The member of which the index needs to be obtained
+    # + return - The index of the member or `error` if an error occurs
+    public remote function zRank(string key, string member) returns int { 
+        return zRank(self.datasource, java:fromString(key), java:fromString(member));
+    } 
 
-    // # Return a range of members in a sorted set, by index.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum index of the range
-    // # + max - The maximum index of the range
-    // # + return - The range of members in a sorted set, by index, or `error` if an error occurs
-    // public remote function zRange(string key, int min, int max) returns (string[]|error) = external;
+    # Remove one or more members from a sorted set
+    #
+    # + key - The key of the sorted set
+    # + members - The members to be removed
+    # + return - The number of members removed from the sorted set, not including non existing members or `error` if an
+    #            error occurs
+    public remote function zRem(string key, string[] members) returns int { 
+        return zRem(self.datasource, java:fromString(key), members);
+    } 
 
-    // # Return a range of members in a sorted set, by lexicographical range from lowest to highest.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum lexicographical value of the range
-    // # + max - The maximum lexicographical value of the range
-    // # + return - Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
-    // #            if an error occurs
-    // public remote function zRangeByLex(string key, string min, string max) returns (string[]|error) = external;
 
-    // # Return a range of members in a sorted set, by lexicographical range ordered from highest to
-    // # lowest.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The lexicographical value of the range
-    // # + max - The maximum lexicographical value of the range
-    // # + return - Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
-    // #            if an error occurs
-    // public remote function zRevRangeByLex(string key, string min, string max) returns (string[]|error) = external;
+    # Remove all members in a sorted set between the given lexicographical range.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum lexicographical value of the range
+    # + max - The maximum lexicographical value of the range
+    # + return - The number of members removed from the sorted set or `error` if an error occurs
+    public remote function zRemRangeByLex(string key, string min, string max) returns int { 
+        return zRemRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
+    } 
 
-    // # Return a range of members in a sorted set, by score from lowest to highest.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum score of the range
-    // # + max - The maximum score of the range
-    // # + return - Array of members in the specified score range ordered from lowest to highest or `error` if an error occurs
-    // public remote function zRangeByScore(string key, float min, float max) returns (string[]|error) = external;
+    # Remove all members in a sorted set within the given indices.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum index of the range
+    # + max - The maximum index of the range
+    # + return - The number of members removed from the sorted set or `error` if an error occurs
+    public remote function zRemRangeByRank(string key, int min, int max) returns int { 
+        return zRemRangeByRank(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Determine the index of a member in a sorted set.
-    // #
-    // # + key - The key of the sorted set
-    // # + member - The member of which the index needs to be obtained
-    // # + return - The index of the member or `error` if an error occurs
-    // public remote function zRank(string key, string member) returns (int|error) = external;
+    # Remove all members in a sorted set within the given scores.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum score of the range
+    # + max - The maximum score of the range
+    # + return - The number of members removed from the sorted set or `error` if an error occurs
+    public remote function zRemRangeByScore(string key, float min, float max) returns int { 
+        return zRemRangeByScore(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Remove one or more members from a sorted set
-    // #
-    // # + key - The key of the sorted set
-    // # + members - The members to be removed
-    // # + return - The number of members removed from the sorted set, not including non existing members or `error` if an
-    // #            error occurs
-    // public remote function zRem(string key, string[] members) returns (int|error) = external;
+    # Return a range of members in a sorted set, by index, ordered highest to lowest.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum index of the range
+    # + max - The maximum index of the range
+    # + return - The number of elements in the specified index range or `error` if an error occurs
+    public remote function zRevRange(string key, int min, int max) returns string[] { 
+        return zRevRange(self.datasource, java:fromString(key), min, max);
+    } 
 
-    // # Remove all members in a sorted set between the given lexicographical range.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum lexicographical value of the range
-    // # + max - The maximum lexicographical value of the range
-    // # + return - The number of members removed from the sorted set or `error` if an error occurs
-    // public remote function zRemRangeByLex(string key, string min, string max) returns (int|error) = external;
+    # Return a range of members in a sorted set, by score from highest to lowest.
+    #
+    # + key - The key of the sorted set
+    # + min - The minimum score of the range
+    # + max - The maximum score of the range
+    # + return - Array of members in the specified score range ordered from highest to lowest or `error` if an error occurs
+    public remote function zRevRangeByScore(string key, float min, float max) returns string[] { 
+        return zRevRangeByScore(self.datasource, java:fromString(key), min, max);
+    } 
+    # Determine the index of a member in a sorted set
+    #
+    # + key - The key of the sorted set
+    # + member - The member of which the index needs to be obtained
+    # + return - The index of the member or `error` if an error occurs
+    public remote function zRevRank(string key, string member) returns int { 
+        return zRevRank(self.datasource, java:fromString(key), java:fromString(member));
+    } 
 
-    // # Remove all members in a sorted set within the given indices.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum index of the range
-    // # + max - The maximum index of the range
-    // # + return - The number of members removed from the sorted set or `error` if an error occurs
-    // public remote function zRemRangeByRank(string key, int min, int max) returns (int|error) = external;
+    # Determine the score of a member in a sorted set
+    #
+    # + key - The key of the sorted set
+    # + member - The member of which the score needs to be obtained
+    # + return - The score of the member or `error` if an error occurs
+    public remote function zScore(string key, string member) returns float { 
+        return zScore(self.datasource, java:fromString(key), java:fromString(member));
+    } 
 
-    // # Remove all members in a sorted set within the given scores.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum score of the range
-    // # + max - The maximum score of the range
-    // # + return - The number of members removed from the sorted set or `error` if an error occurs
-    // public remote function zRemRangeByScore(string key, float min, float max) returns (int|error) = external;
-
-    // # Return a range of members in a sorted set, by index, ordered highest to lowest.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum index of the range
-    // # + max - The maximum index of the range
-    // # + return - The number of elements in the specified index range or `error` if an error occurs
-    // public remote function zRevRange(string key, int min, int max) returns (string[]|error) = external;
-
-    // # Return a range of members in a sorted set, by score from highest to lowest.
-    // #
-    // # + key - The key of the sorted set
-    // # + min - The minimum score of the range
-    // # + max - The maximum score of the range
-    // # + return - Array of members in the specified score range ordered from highest to lowest or `error` if an error occurs
-    // public remote function zRevRangeByScore(string key, float min, float max) returns (string[]|error) = external;
-
-    // # Determine the index of a member in a sorted set
-    // #
-    // # + key - The key of the sorted set
-    // # + member - The member of which the index needs to be obtained
-    // # + return - The index of the member or `error` if an error occurs
-    // public remote function zRevRank(string key, string member) returns (int|error) = external;
-
-    // # Determine the score of a member in a sorted set
-    // #
-    // # + key - The key of the sorted set
-    // # + member - The member of which the score needs to be obtained
-    // # + return - The score of the member or `error` if an error occurs
-    // public remote function zScore(string key, string member) returns (float|error) = external;
-
-    // # Return the union of multiple sorted sets
-    // #
-    // # + destination - The destination key of the resulting set
-    // # + keys - Array of keys of sorted sets
-    // # + return - Number of members of the resulting sorted set or `error` if an error occurs
-    // public remote function zUnionStore(string destination, string[] keys) returns (int|error) = external;
+    # Return the union of multiple sorted sets
+    #
+    # + destination - The destination key of the resulting set
+    # + keys - Array of keys of sorted sets
+    # + return - Number of members of the resulting sorted set or `error` if an error occurs
+    public remote function zUnionStore(string destination, string[] keys) returns int { 
+        return zUnionStore(self.datasource, java:fromString(destination), keys);
+    } 
 
     // //Hash Commands
 
@@ -711,13 +752,13 @@ public type Client client object {
         return hGet(self.datasource, java:fromString(key), java:fromString(field)).toString();
     } 
 
-    // # Get the all values of a hash.
-    // #
-    // # + key - The key of the hash
-    // # + return - Map of field-value pairs or `error` if an error occurs
-    // public remote function hGetAll(string key) returns map<any> { 
-    //     return hGetAll(self.datasource, java:fromString(key));
-    // } 
+    # Get the all values of a hash.
+    #
+    # + key - The key of the hash
+    # + return - Map of field-value pairs or `error` if an error occurs
+    public remote function hGetAll(string key) returns map<any> { 
+        return hGetAll(self.datasource, java:fromString(key));
+    } 
 
     # Increment the integer value of a hash field by the given number.
     #
@@ -752,19 +793,23 @@ public type Client client object {
         return hLen(self.datasource, java:fromString(key));
     } 
 
-    // # Get the values of all the given hash fields.
-    // #
-    // # + key - The key of the hash
-    // # + fields - Array of hash fields
-    // # + return - Map of field-value pairs or `error` if an error occurs
-    // public remote function hMGet(string key, string[] fields) returns (map<any>|error) = external;
+    # Get the values of all the given hash fields.
+    #
+    # + key - The key of the hash
+    # + fields - Array of hash fields
+    # + return - Map of field-value pairs or `error` if an error occurs
+    public remote function hMGet(string key, string[] fields) returns map<any> { 
+        return hMGet(self.datasource, java:fromString(key), fields);
+    } 
 
-    // # Set multiple hash fields to multiple values.
-    // #
-    // # + key - The key of the hash
-    // # + fieldValueMap - Map of field-value pairs
-    // # + return - A string with the value `OK` if the operation was successful, or `error` if an error occurs
-    // public remote function hMSet(string key, map<any> fieldValueMap) returns (string|error) = external;
+    # Set multiple hash fields to multiple values.
+    #
+    # + key - The key of the hash
+    # + fieldValueMap - Map of field-value pairs
+    # + return - A string with the value `OK` if the operation was successful, or `error` if an error occurs
+    public remote function hMSet(string key, map<any> fieldValueMap) returns string { 
+        return hMSet(self.datasource, java:fromString(key), fieldValueMap).toString();
+    } 
 
     # Set the string value of a hash field.
     #
@@ -777,28 +822,34 @@ public type Client client object {
         return hSet(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
     } 
 
-    // # Set the string value of a hash field, only if the field does not exist.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + value - The value to be set to the field
-    // # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
-    // #            field already exists in the hash and no operation was performed, or `error` if an error occurs
-    // public remote function hSetNx(string key, string field, string value) returns (boolean|error) = external;
+    # Set the string value of a hash field, only if the field does not exist.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + value - The value to be set to the field
+    # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
+    #            field already exists in the hash and no operation was performed, or `error` if an error occurs
+    public remote function hSetNx(string key, string field, string value) returns boolean { 
+        return hSetNx(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
+    } 
 
-    // # Get the string length of the field value in a hash.
-    // #
-    // # + key - The key of the hash
-    // # + field - The field
-    // # + return - The length of the field value, or 0 when field is not present in the hash or key does
-    // #            not exist at all, or `error` if an error occurs
-    // public remote function hStrln(string key, string field) returns (int|error) = external;
+    # Get the string length of the field value in a hash.
+    #
+    # + key - The key of the hash
+    # + field - The field
+    # + return - The length of the field value, or 0 when field is not present in the hash or key does
+    #            not exist at all, or `error` if an error occurs
+    public remote function hStrln(string key, string field) returns int { 
+        return hStrln(self.datasource, java:fromString(key), java:fromString(field));
+    } 
 
-    // # Get all the values in a hash.
-    // #
-    // # + key - The key of the hash
-    // # + return - Array of values in the hash, or an empty array when key does not exist or `error` if an error occurs
-    // public remote function hVals(string key) returns (string[]|error) = external;
+    # Get all the values in a hash.
+    #
+    # + key - The key of the hash
+    # + return - Array of values in the hash, or an empty array when key does not exist or `error` if an error occurs
+    public remote function hVals(string key) returns string[] { 
+        return hVals(self.datasource, java:fromString(key));
+    } 
 
     // //Key Commands
 
@@ -951,18 +1002,9 @@ public type Client client object {
 
     # Stops the registered service.
     public function stop() {
-    // close(self);
+        close(self.datasource);
     }
 };
-
-# An internal function used by clients to shutdown the connection/connection pool(if pooling enabled).
-//function close (Client redisClient) = external;
-
-//  function close(Client redisClient)  = @java:Method {
-//      class: "org.ballerinalang.redis.endpoint.Close"
-//  } external;
-
-//function initClient(Client redisClient, ClientEndpointConfiguration clientEndpointConfig) = external;
 
 # Initialize redis client.
 #
@@ -971,6 +1013,11 @@ public type Client client object {
 function initClient(ClientEndpointConfiguration clientEndpointConfig) returns handle = @java:Method {
     class: "org.ballerinalang.redis.endpoint.InitRedisClient"
 } external;
+
+# An internal function used by clients to shutdown the connection/connection pool(if pooling enabled).
+ function close(handle datasource)  = @java:Method {
+     class: "org.ballerinalang.redis.endpoint.Close"
+ } external;
 
 # The Client endpoint configuration for Redis databases.
 #
@@ -1054,17 +1101,17 @@ function incrByFloat(handle datasource, handle key, float value) returns float =
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-// public function mGet(handle datasource, string[] keys) returns string[] = @java:Method {
-//     class: "org.ballerinalang.redis.actions.StringActions"
-// } external;
+public function mGet(handle datasource, string[] keys) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
 
-// public function mSet(handle datasource, map<any> keyValueMap) returns string = @java:Method {
-//     class: "org.ballerinalang.redis.actions.StringActions"
-// } external;
+public function mSet(handle datasource, map<any> keyValueMap) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
 
-// public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean = @java:Method {
-//     class: "org.ballerinalang.redis.actions.StringActions"
-// } external;
+public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.StringActions"
+} external;
 
 function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
@@ -1106,6 +1153,14 @@ function lPushX(handle datasource, handle key, string[] values) returns int = @j
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
+function bLPop(handle datasource, int timeOut, string[] keys) returns map<any> = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function bRPop(handle datasource, int timeOut, string[] keys) returns map<any> = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
 function lIndex(handle datasource, handle key, int index) returns handle = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
@@ -1115,6 +1170,10 @@ function lInsert(handle datasource, handle key, boolean before, handle pivot, ha
 } external;
 
 function lLen(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.ListActions"
+} external;
+
+function lRange(handle datasource, handle key, int startPos, int stopPos) returns string[] = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
@@ -1202,6 +1261,86 @@ function sUnionStore(handle datasource, handle destination, string[] keys) retur
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
+function zAdd(handle datasource, handle key, map<any> memberScoreMap) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zCard(handle datasource, handle key) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zCount(handle datasource, handle key, float min, float max) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zIncrBy(handle datasource, handle key, float amount, handle member) returns float = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zInterStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zLexCount(handle datasource, handle destination, handle min, handle max) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRange(handle datasource, handle key, int min, int max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRevRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRangeByScore(handle datasource, handle key, float min, float max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRank(handle datasource, handle key, handle member) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRem(handle datasource, handle key, string[] members) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRemRangeByLex(handle datasource, handle key, handle min, handle max) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRemRangeByRank(handle datasource, handle key, int min, int max) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRemRangeByScore(handle datasource, handle key, float min, float max) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRevRange(handle datasource, handle key, int min, int max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRevRangeByScore(handle datasource, handle key, float min, float max) returns string[] = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zRevRank(handle datasource, handle key, handle member) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zScore(handle datasource, handle key, handle member) returns float = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
+function zUnionStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.SortedSetActions"
+} external;
+
 function del(handle datasource, string[] key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
@@ -1282,9 +1421,9 @@ function hGet(handle datasource, handle key, handle field) returns handle = @jav
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-// function hGetAll(handle datasource, handle key) returns map<any> = @java:Method {
-//     class: "org.ballerinalang.redis.actions.HashActions"
-// } external;
+function hGetAll(handle datasource, handle key) returns map<any> = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
 
 function hIncrBy(handle datasource, handle key, handle field, int amount) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
@@ -1298,11 +1437,31 @@ function hLen(handle datasource, handle key) returns int = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
+function hMGet(handle datasource, handle key, string[] fields) returns map<any> = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hMSet(handle datasource, handle key, map<any> fieldValueMap) returns handle = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
 function hKeys(handle datasource, handle key) returns string[] = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hSet(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hSetNx(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hStrln(handle datasource, handle key, handle field) returns int = @java:Method {
+    class: "org.ballerinalang.redis.actions.HashActions"
+} external;
+
+function hVals(handle datasource, handle key) returns string[] = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 

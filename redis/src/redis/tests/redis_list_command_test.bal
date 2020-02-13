@@ -19,6 +19,20 @@ import ballerinax/java;
 
 @test:Config {
 }
+function testBLPop() {
+    var result = conn->bLPop(1, ["testBLPopKey"]);
+    // test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
+}
+
+@test:Config {
+}
+function testBRPop() {
+    var result = conn->bRPop(1, ["testBRPopKey"]);
+    // test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
+}
+
+@test:Config {
+}
 function testLPush() {
     var result = conn->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
     test:assertEquals(result, 3);
@@ -57,6 +71,13 @@ function testLInsert() {
 function testLLen() {
     var result = conn->lLen("testLLenKey");
     test:assertEquals(result, 3);
+}
+
+@test:Config {
+}
+function testLRange() {
+    var result = conn->lRange("testLRangeKey", 1, 3);
+    test:assertEquals(result.length(), 3);
 }
 
 @test:Config {

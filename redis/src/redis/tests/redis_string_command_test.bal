@@ -132,21 +132,30 @@ public function testIncrByFloat() {
     test:assertEquals(result, 7.200000002980232);
 }
 
-// function testMGet() {
-//    var result = conn->mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
-// }
+@test:Config {
+}
+function testMGet() {
+   var result = conn->mGet(["testMGetKey1", "testMGetKey2", "testMGetKey3"]);
+   test:assertEquals(result.length(), 3);
+}
 
-// function testMSet() {
-//    map<any> keyValueMap = { testMSetKey1: "testMSetValue1", testMSetKey2: "testMSetValue2", testMSetKey3: "testMSetValue3" }
-//    ;
-//    var result = conn->mSet(keyValueMap);
-// }
+@test:Config {
+}
+function testMSet() {
+   map<any> keyValueMap = { testMSetKey1: "testMSetValue1", testMSetKey2: "testMSetValue2", testMSetKey3: "testMSetValue3" }
+   ;
+   var result = conn->mSet(keyValueMap);
+   test:assertEquals(result, "OK");
+}
 
-// function testMSetNx() {
-//    map<any> keyValueMap = { testMSetNxKey1: "testMSetNxNewValue1", testMSetNxKey2: "testMSetNxValue2", testMSetNxKey3:
-//    "testMSetNxValue3" };
-//    var result = conn->mSetNx(keyValueMap);
-// }
+@test:Config {
+}
+function testMSetNx() {
+   map<any> keyValueMap = { testMSetNxKey1: "testMSetNxNewValue1", testMSetNxKey2: "testMSetNxValue2", testMSetNxKey3:
+   "testMSetNxValue3" };
+   var result = conn->mSetNx(keyValueMap);
+   test:assertFalse(result);
+}
 
 @test:Config {
 }
@@ -189,16 +198,6 @@ public function testStrln() {
     var result = conn->strln("testStrlnKey");
     test:assertEquals(result, 14);
 }
-
-//function initRedisServer() returns error? = @java:Method{
-//    name: "initServer",
-//    class: "org.ballerinalang.redis.utils.RedisDbUtils"
-//} external;
-//
-//function stopRedisServer() = @java:Method{
-//    name: "stopServer",
-//    class: "org.ballerinalang.redis.utils.RedisDbUtils"
-//} external;
 
 function setupRedisStringDatabase() = @java:Method{
     name: "setupStringDatabase",

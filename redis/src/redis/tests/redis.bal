@@ -34,6 +34,7 @@ public function initDb() {
     setupRedisListDatabase();
     setupRedisHashDatabase();
     setupRedisSetDatabase();
+    setupRedisSortedSetDatabase();
 }
 
 @test:AfterSuite

@@ -38,12 +38,12 @@ function testHGet() {
     test:assertEquals(result, "testHGetValue1");
 }
 
-// @test:Config {
-// }
-// function testHGetAll() {
-//     var result = conn->hGetAll("testHGetAllKey");
-//     test:assertEquals(result.length(), 3);
-// }
+@test:Config {
+}
+function testHGetAll() {
+    var result = conn->hGetAll("testHGetAllKey");
+    test:assertEquals(result.length(), 2);
+}
 
 @test:Config {
 }
@@ -68,6 +68,21 @@ function testHLen() {
 
 @test:Config {
 }
+function testHMGet() {
+    var result = conn->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
+    test:assertEquals(result.length(), 3);
+}
+
+@test:Config {
+}
+function testHMSet() {
+    map<any> fieldValueMap = { testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2" };
+    var result = conn->hMSet("testHMSetKey", fieldValueMap);
+    test:assertEquals(result, "OK");
+}
+
+@test:Config {
+}
 function testHKeys() {
     var result = conn->hKeys("testHKeysKey");
     test:assertEquals(result.length(), 3);
@@ -78,6 +93,27 @@ function testHKeys() {
 function testHSet() {
     var result = conn->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
     test:assertTrue(result);
+}
+
+@test:Config {
+}
+function testHSetNx() {
+    var result = conn->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+    test:assertTrue(result);
+}
+
+@test:Config {
+}
+function testHStrln() {
+    var result = conn->hStrln("testHStrlnKey", "testHStrlnField1");
+    test:assertEquals(result, 16);
+}
+
+@test:Config {
+}
+function testHVals() {
+    var result = conn->hVals("testHValsKey");
+    test:assertEquals(result.length(), 3);
 }
 
 function setupRedisHashDatabase() = @java:Method{

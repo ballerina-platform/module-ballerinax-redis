@@ -60,14 +60,14 @@ public class HashActions extends AbstractRedisAction {
         }
     }
 
-//    public static BMap hGetAll(HandleValue redisDataSourceHandleValue, String key) {
-//        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-//        try {
-//            return hGetAll(key, redisDataSource);
-//        } catch (Throwable e) {
-//            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
-//        }
-//    }
+    public static BMap hGetAll(HandleValue redisDataSourceHandleValue, String key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hGetAll(key, redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
 
     public static long hIncrBy(HandleValue redisDataSourceHandleValue, String key, String field, int amount) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
@@ -91,6 +91,51 @@ public class HashActions extends AbstractRedisAction {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hLen(key, redisDataSource).intValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BMap hMGet(HandleValue redisDataSourceHandleValue, String key, BArray fields) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hMGet(key, redisDataSource, createStringArrayFromBArray(fields));
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BString hMSet(HandleValue redisDataSourceHandleValue, String key, BMap fieldValueMap) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hMSet(key, createMapFromBMap(fieldValueMap), redisDataSource);
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static boolean hSetNx(HandleValue redisDataSourceHandleValue, String key, String field, String value) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hSetNx(key, field, value, redisDataSource).booleanValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static long hStrln(HandleValue redisDataSourceHandleValue, String key, String field) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hStrln(key, field, redisDataSource).intValue();
+        } catch (Throwable e) {
+            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+    }
+
+    public static BArray hVals(HandleValue redisDataSourceHandleValue, String key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+        try {
+            return hVals(key, redisDataSource);
         } catch (Throwable e) {
             throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
