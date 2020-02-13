@@ -16,61 +16,94 @@
 
 import ballerina/test;
 import ballerinax/java;
+import ballerina/io;
 
 @test:Config {
 }
 function testHDel() {
     var result = conn->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
-    test:assertEquals(result, 3);
+    if (result is int) {
+        test:assertEquals(result, 3);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    }    
 }
 
 @test:Config {
 }
 function testHExists() {
     var result = conn->hExists("testHExistsKey", "testHExistsField1");
-    test:assertEquals(result, true);
+    if (result is boolean) {
+        test:assertEquals(result, true);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHGet() {
     var result = conn->hGet("testHGetKey", "testHGetField1");
-    test:assertEquals(result, "testHGetValue1");
+    if (result is string) {
+        test:assertEquals(result, "testHGetValue1");
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    }  
 }
 
 @test:Config {
 }
 function testHGetAll() {
     var result = conn->hGetAll("testHGetAllKey");
-    test:assertEquals(result.length(), 2);
+    if (result is map<any>) {
+        test:assertEquals(result.length(), 2);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    }  
 }
 
 @test:Config {
 }
 function testHIncrByFloat() {
     var result = conn->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
-    test:assertEquals(result, 7.2f);
+    if (result is float) {
+        test:assertEquals(result, 7.2f);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    }  
 }
 
 @test:Config {
 }
 function testHIncrBy() {
     var result = conn->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
-    test:assertEquals(result, 8);
+    if (result is int) {
+        test:assertEquals(result, 8);  
+    }  else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHLen() {
     var result = conn->hLen("testHLenKey");
-    test:assertEquals(result, 3);
+    if (result is int) {
+        test:assertEquals(result, 3);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHMGet() {
     var result = conn->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
-    test:assertEquals(result.length(), 3);
+    if (result is map<any>) {
+        test:assertEquals(result.length(), 3);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    }  
 }
 
 @test:Config {
@@ -78,42 +111,66 @@ function testHMGet() {
 function testHMSet() {
     map<any> fieldValueMap = { testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2" };
     var result = conn->hMSet("testHMSetKey", fieldValueMap);
-    test:assertEquals(result, "OK");
+    if (result is string) {
+        test:assertEquals(result, "OK");
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHKeys() {
     var result = conn->hKeys("testHKeysKey");
-    test:assertEquals(result.length(), 3);
+    if (result is string[]) {
+        test:assertEquals(result.length(), 3);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHSet() {
     var result = conn->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
-    test:assertTrue(result);
+    if (result is boolean) {
+        test:assertTrue(result);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHSetNx() {
     var result = conn->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
-    test:assertTrue(result);
+    if (result is boolean) {
+        test:assertTrue(result);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHStrln() {
     var result = conn->hStrln("testHStrlnKey", "testHStrlnField1");
-    test:assertEquals(result, 16);
+    if (result is int) {
+        test:assertEquals(result, 16);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 @test:Config {
 }
 function testHVals() {
     var result = conn->hVals("testHValsKey");
-    test:assertEquals(result.length(), 3);
+    if (result is string[]) {
+        test:assertEquals(result.length(), 3);   
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+    } 
 }
 
 function setupRedisHashDatabase() = @java:Method{

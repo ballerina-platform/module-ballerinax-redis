@@ -33,7 +33,7 @@ public type Client client object {
     # + key - The key
     # + value - The string value to be appended
     # + return - Length of the string after the operation
-    public remote function append(string key, string value) returns int {
+    public remote function append(string key, string value) returns int|error {
         return append(self.datasource, java:fromString(key), java:fromString(value));
     }
 
@@ -41,7 +41,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The number of bits of the value
-    public remote function bitCount(string key) returns int {
+    public remote function bitCount(string key) returns int|error {
         return bitCount(self.datasource, java:fromString(key));
     }
 
@@ -51,7 +51,7 @@ public type Client client object {
     # + keys - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string
-    public remote function bitOpAnd(string destination, string[] keys) returns int {
+    public remote function bitOpAnd(string destination, string[] keys) returns int|error {
         return bitOpAnd(self.datasource, java:fromString(destination), keys);
     }
 
@@ -61,7 +61,7 @@ public type Client client object {
     # + keys - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string or `error` if an error occurs
-    public remote function bitOpOr(string destination, string[] keys) returns int {
+    public remote function bitOpOr(string destination, string[] keys) returns int|error {
         return bitOpOr(self.datasource, java:fromString(destination), keys);
     }
 
@@ -70,7 +70,7 @@ public type Client client object {
     # + destination - Result key of the operation
     # + key - Input keys to perform AND between
     # + return - The size of the string stored in the destination key or `error` if an error occurs
-    public remote function bitOpNot(string destination, string key) returns int {
+    public remote function bitOpNot(string destination, string key) returns int|error {
         return bitOpNot(self.datasource, java:fromString(destination), java:fromString(key));
     }
 
@@ -80,7 +80,7 @@ public type Client client object {
     # + keys - Input keys to perform AND between
     # + return - The size of the string stored in the destination key, that is equal to the size of the longest input
     #            string or `error` if an error occurs
-    public remote function bitOpXor(string destination, string[] keys) returns int {
+    public remote function bitOpXor(string destination, string[] keys) returns int|error {
         return bitOpXor(self.datasource, java:fromString(destination), keys);
     }
 
@@ -88,7 +88,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The value of the key after the decrement
-    public remote function decr(string key) returns int {
+    public remote function decr(string key) returns int|error {
         return decr(self.datasource, java:fromString(key));
     }
 
@@ -97,7 +97,7 @@ public type Client client object {
     # + key - The key
     # + value - The value to be decremented
     # + return - The value of the key after the decrement or `error` if an error occurs
-    public remote function decrBy(string key, int value) returns int {
+    public remote function decrBy(string key, int value) returns int|error {
         return decrBy(self.datasource, java:fromString(key), value);
     }
 
@@ -106,7 +106,7 @@ public type Client client object {
     # + key - The key
     # + offset - The offset
     # + return - The bit value stored at offset or `error` if an error occurs
-    public remote function getBit(string key, int offset) returns int {
+    public remote function getBit(string key, int offset) returns int|error {
         return getBit(self.datasource, java:fromString(key), offset);
     }
 
@@ -116,7 +116,7 @@ public type Client client object {
     # + startPos - The starting point of the substring
     # + end - The end point of the substring
     # + return - The substring or `error` if an error occurs
-    public remote function getRange(string key, int startPos, int end) returns string {
+    public remote function getRange(string key, int startPos, int end) returns string|error {
         return getRange(self.datasource, java:fromString(key), startPos, end).toString();
     }
 
@@ -125,7 +125,7 @@ public type Client client object {
     # + key - The key
     # + value - The value to be set
     # + return - The old value stored at key, or nil when key does not exist or `error` if an error occurs
-    public remote function getSet(string key, string value) returns string  {
+    public remote function getSet(string key, string value) returns string |error {
         return getSet(self.datasource, java:fromString(key), java:fromString(value)).toString();
     }
 
@@ -133,7 +133,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The value of the key, or nil when key does not exist or `error` if an error occurs
-    public remote function get(string key) returns string {
+    public remote function get(string key) returns string|error {
         return get(self.datasource, java:fromString(key)).toString();
     }
 
@@ -141,7 +141,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The value of the key after increment
-    public remote function incr(string key) returns int {
+    public remote function incr(string key) returns int|error {
         return incr(self.datasource, java:fromString(key));
     }
 
@@ -150,7 +150,7 @@ public type Client client object {
     # + key - The key
     # + value - The amount to increment
     # + return - The value of the key after increment
-    public remote function incrBy(string key, int value) returns int {
+    public remote function incrBy(string key, int value) returns int|error {
         return incrBy(self.datasource, java:fromString(key), value);
     }
     # Increment the integer value of a key by the given amount.
@@ -158,7 +158,7 @@ public type Client client object {
     # + key - The key
     # + value - The amount to increment
     # + return - The value of the key after increment
-    public remote function incrByFloat(string key, float value) returns float {
+    public remote function incrByFloat(string key, float value) returns float|error {
         return incrByFloat(self.datasource, java:fromString(key), value);
     }
 
@@ -166,7 +166,7 @@ public type Client client object {
     #
     # + keys - The keys of which the values need to be retrieved
     # + return - Array of values at the specified keys
-    public remote function mGet(string[] keys) returns string[] {
+    public remote function mGet(string[] keys) returns string[]|error {
         return mGet(self.datasource, keys);
     }
 
@@ -174,7 +174,7 @@ public type Client client object {
     #
     # + keyValueMap - A map of key-value pairs to be set
     # + return - A string with the value `OK` if the operation was successful
-    public remote function mSet(map<any> keyValueMap) returns string {
+    public remote function mSet(map<any> keyValueMap) returns string|error {
         return mSet(self.datasource, keyValueMap).toString();
     }
 
@@ -182,7 +182,7 @@ public type Client client object {
     #
     # + keyValueMap - A map of key-value pairs to be set
     # + return - A string with the value `OK` if the operation was successful
-    public remote function mSetNx(map<any> keyValueMap) returns boolean {
+    public remote function mSetNx(map<any> keyValueMap) returns boolean|error {
         return mSetNx(self.datasource, keyValueMap);
     }
 
@@ -192,17 +192,26 @@ public type Client client object {
     # + value - The value to be set
     # + expirationTime - Expiration time in milli seconds
     # + return - New value of the key or `error` if an error occurs
-    public remote function pSetEx(string key, string value, int expirationTime) returns string {
+    public remote function pSetEx(string key, string value, int expirationTime) returns string|error {
         return pSetEx(self.datasource, java:fromString(key), java:fromString(value), expirationTime).toString();
     }
 
+    # Get the value of a key.
+    #
+    # + key - The key
+    # + value - The values
+    # + return - `OK` if successful
+    public remote function set(string key, string value) returns string|error {
+        return set(self.datasource, java:fromString(key), java:fromString(value)).toString();
+    }
+    
     # Sets or clears the bit at offset in the string value stored at key.
     #
     # + key - The key
     # + value - The value to be set
     # + offset - The offset at which the value should be set
     # + return - The original bit value stored at offset or `error` if an error occurs
-    public remote function setBit(string key, int value, int offset) returns int {
+    public remote function setBit(string key, int value, int offset) returns int|error {
         return setBit(self.datasource, java:fromString(key), value, offset);
     }
 
@@ -212,7 +221,7 @@ public type Client client object {
     # + value - The value to be set
     # + expirationPeriodSeconds - Expiration time to be set, in seconds
     # + return - New value of the key or `error` if an error occurs
-    public remote function setEx(string key, string value, int expirationPeriodSeconds) returns string {
+    public remote function setEx(string key, string value, int expirationPeriodSeconds) returns string|error {
         return setEx(self.datasource, java:fromString(key), java:fromString(value), expirationPeriodSeconds).toString();
     }
 
@@ -221,7 +230,7 @@ public type Client client object {
     # + key - The key
     # + value - The value to be set
     # + return - New value of the key or `error` if an error occurs
-    public remote function setNx(string key, string value) returns boolean {
+    public remote function setNx(string key, string value) returns boolean|error {
         return setNx(self.datasource, java:fromString(key), java:fromString(value));
     }
 
@@ -231,7 +240,7 @@ public type Client client object {
     # + offset - The offset at which the value should be set
     # + value - The value to be set
     # + return - The length of the string after it was modified or `error` if an error occurs
-    public remote function setRange(string key, int offset, string value) returns int {
+    public remote function setRange(string key, int offset, string value) returns int|error {
         return setRange(self.datasource, java:fromString(key), offset, java:fromString(value));
     }
 
@@ -239,17 +248,8 @@ public type Client client object {
     #
     # + key - The key
     # + return - The length of the string at key, or 0 when key does not exist or `error` if an error occurs
-    public remote function strln(string key) returns int {
+    public remote function strln(string key) returns int|error {
         return strln(self.datasource, java:fromString(key));
-    }
-
-    # Get the value of a key.
-    #
-    # + key - The key
-    # + value - The values
-    # + return - `OK` if successful
-    public remote function set(string key, string value) returns string {
-        return set(self.datasource, java:fromString(key), java:fromString(value)).toString();
     }
 
     // //list operations
@@ -259,7 +259,7 @@ public type Client client object {
     # + key - The key
     # + values - The values to be prepended
     # + return - The length of the list after the push operation(s) or `error` if an error occurs
-    public remote function lPush(string key, string[] values) returns int {
+    public remote function lPush(string key, string[] values) returns int|error {
         return lPush(self.datasource, java:fromString(key), values);
     }
 
@@ -267,7 +267,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The value of the first element, or nil when key does not exist or `error` if an error occurs
-    public remote function lPop(string key) returns string {
+    public remote function lPop(string key) returns string|error {
         return lPop(self.datasource, java:fromString(key)).toString();
     }
 
@@ -276,7 +276,7 @@ public type Client client object {
     # + key - The key
     # + values - The values to be prepended
     # + return - The length of the list after the push operation(s)
-    public remote function lPushX(string key, string[] values) returns int {
+    public remote function lPushX(string key, string[] values) returns int|error {
         return lPushX(self.datasource, java:fromString(key), values);
     }
 
@@ -287,7 +287,7 @@ public type Client client object {
     # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
     #         key being  the name of the key where an element was popped and the second element  being the value of the
     #         popped element, or `error` if an error occurs
-    public remote function bLPop(int timeOut, string[] keys) returns map<any> {
+    public remote function bLPop(int timeOut, string[] keys) returns map<any>|error {
         return bLPop(self.datasource, timeOut, keys);
     }
 
@@ -298,7 +298,7 @@ public type Client client object {
     # + return - `nil` when no element could be popped and the timeout expired. A map containing one item, with the
     #         key being  the name of the key where an element was popped and the second element being the value of the
     #         popped element, or `error` if an error occurs
-    public remote function bRPop(int timeOut, string[] keys) returns map<any> {
+    public remote function bRPop(int timeOut, string[] keys) returns map<any>|error {
         return bRPop(self.datasource, timeOut, keys);
     }
 
@@ -307,7 +307,7 @@ public type Client client object {
     # + key - The key
     # + index - The index from which the element should be retrieved
     # + return - The value at the given index
-    public remote function lIndex(string key, int index) returns string { 
+    public remote function lIndex(string key, int index) returns string|error {
         return lIndex(self.datasource, java:fromString(key), index).toString();
     } 
 
@@ -319,7 +319,7 @@ public type Client client object {
     # + value - The value
     # + return - The length of the list after the insert operation, or -1 when the value pivot not found, or `error` if
     #           an error occurs
-    public remote function lInsert(string key, boolean before, string pivot, string value) returns int { 
+    public remote function lInsert(string key, boolean before, string pivot, string value) returns int|error {
         return lInsert(self.datasource, java:fromString(key), before, java:fromString(pivot), java:fromString(value));
     } 
 
@@ -327,7 +327,7 @@ public type Client client object {
     #
     # + key - The key
     # + return - The length of the list at key or `error` if an error occurs
-    public remote function lLen(string key) returns int { 
+    public remote function lLen(string key) returns int|error {
         return lLen(self.datasource, java:fromString(key));
     } 
 
@@ -337,7 +337,7 @@ public type Client client object {
     # + startPos - The begining index of the range
     # + stopPos - The last index of the range
     # + return - Array of elements in the specified range or `error` if an error occurs
-    public remote function lRange(string key, int startPos, int stopPos) returns string[] { 
+    public remote function lRange(string key, int startPos, int stopPos) returns string[]|error {
         return lRange(self.datasource, java:fromString(key), startPos, stopPos);
     } 
 
@@ -347,7 +347,7 @@ public type Client client object {
     # + count - The number of elements to be removed
     # + value - The value which the elements to be removed should be equal to
     # + return - Number of elements removed or `error` if an error occurs
-    public remote function lRem(string key, int count, string value) returns int { 
+    public remote function lRem(string key, int count, string value) returns int|error {
         return lRem(self.datasource, java:fromString(key), count, java:fromString(value));
     } 
 
@@ -357,7 +357,7 @@ public type Client client object {
     # + index - The index of the element of which the value needs to be set
     # + value - The value to be set
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public remote function lSet(string key, int index, string value) returns string { 
+    public remote function lSet(string key, int index, string value) returns string|error {
         return lSet(self.datasource, java:fromString(key), index, java:fromString(value)).toString();
     } 
 
@@ -367,7 +367,7 @@ public type Client client object {
     # + startPos - The starting index of the range
     # + stopPos - The end index of the range
     # + return - A string with the value `OK` if the operation was successful
-    public remote function lTrim(string key, int startPos, int stopPos) returns string { 
+    public remote function lTrim(string key, int startPos, int stopPos) returns string|error {
         return lTrim(self.datasource, java:fromString(key), startPos, stopPos).toString();
     } 
 
@@ -375,7 +375,7 @@ public type Client client object {
     #
     # + key - The key of the list
     # + return - The value of the last element, or `nil` when key does not exist or `error` if an error occurs
-    public remote function rPop(string key) returns string { 
+    public remote function rPop(string key) returns string|error {
         return rPop(self.datasource, java:fromString(key)).toString();
     } 
 
@@ -384,7 +384,7 @@ public type Client client object {
     # + src - The source key
     # + destination - The destination key
     # + return - The element being popped and pushed or `error` if an error occurs
-    public remote function rPopLPush(string src, string destination) returns string { 
+    public remote function rPopLPush(string src, string destination) returns string|error {
         return rPopLPush(self.datasource, java:fromString(src), java:fromString(destination)).toString();
     } 
 
@@ -393,7 +393,7 @@ public type Client client object {
     # + key - The key of the list
     # + values - Array of values to be appended
     # + return - The length of the list after the push operation or `error` if an error occurs
-    public remote function rPush(string key, string[] values) returns int { 
+    public remote function rPush(string key, string[] values) returns int|error {
         return rPush(self.datasource, java:fromString(key), values);
     } 
 
@@ -402,7 +402,7 @@ public type Client client object {
     # + key - The key of the list
     # + values - Array of values to be appended
     # + return - The length of the list after the push operation or `error` if an error occurs
-    public remote function rPushX(string key, string[] values) returns int { 
+    public remote function rPushX(string key, string[] values) returns int|error {
         return rPushX(self.datasource, java:fromString(key), values);
     } 
 
@@ -413,7 +413,7 @@ public type Client client object {
     # + values - Array of values to be added
     # + return - The number of elements that were added to the set, not including all the elements which were
     #            already present in the set, or `error` if an error occurs
-    public remote function sAdd(string key, string[] values) returns int { 
+    public remote function sAdd(string key, string[] values) returns int|error {
         return sAdd(self.datasource, java:fromString(key), values);
     } 
 
@@ -421,14 +421,14 @@ public type Client client object {
     #
     # + key - The key of the set
     # + return - The cardinality (number of elements) of the set or `error` if an error occurs
-    public remote function sCard(string key) returns int { 
+    public remote function sCard(string key) returns int|error {
         return sCard(self.datasource, java:fromString(key));
     } 
     # Return set resulting from the difference between the first set and all the successive sets
     #
     # + keys - The keys of the sets
     # + return - An array of members of the resulting set or `error` if an error occurs
-    public remote function sDiff(string[] keys) returns string[] { 
+    public remote function sDiff(string[] keys) returns string[]|error {
         return sDiff(self.datasource, keys);
     } 
     # Obtain the set resulting from the difference between the first set and all the successive.
@@ -437,7 +437,7 @@ public type Client client object {
     # + destination - The destination key of the resulting set
     # + keys - The keys of the sets to find the difference of
     # + return - The number of members in the resulting set or `error` if an error occurs
-    public remote function sDiffStore(string destination, string[] keys) returns int { 
+    public remote function sDiffStore(string destination, string[] keys) returns int|error {
         return sDiffStore(self.datasource, java:fromString(destination), keys);
     }  
 
@@ -445,7 +445,7 @@ public type Client client object {
     #
     # + keys - The keys of the sets to be intersected
     # + return - An array of members of the resulting set or `error` if an error occurs
-    public remote function sInter(string[] keys) returns string[] { 
+    public remote function sInter(string[] keys) returns string[]|error {
         return sInter(self.datasource, keys);
     } 
 
@@ -454,7 +454,7 @@ public type Client client object {
     # + destination - The destination key of the resulting set
     # + keys - The keys of the sets to be intersected
     # + return - An array of members of the resulting set or `error` if an error occurs
-    public remote function sInterStore(string destination, string[] keys) returns int { 
+    public remote function sInterStore(string destination, string[] keys) returns int|error {
         return sInterStore(self.datasource, java:fromString(destination), keys);
     } 
 
@@ -464,7 +464,7 @@ public type Client client object {
     # + value - The value
     # + return - boolean true/false depending on whether the value is a member of the set or not, or `error` if an error
     #            occurs
-    public remote function sIsMember(string key, string value) returns boolean { 
+    public remote function sIsMember(string key, string value) returns boolean|error {
         return sIsMember(self.datasource, java:fromString(key), java:fromString(value));
     } 
 
@@ -472,7 +472,7 @@ public type Client client object {
     #
     # + key - The key of the set
     # + return - Array of all members in the set or `error` if an error occurs
-    public remote function sMembers(string key) returns string[] { 
+    public remote function sMembers(string key) returns string[]|error {
         return sMembers(self.datasource, java:fromString(key));
     } 
 
@@ -483,7 +483,7 @@ public type Client client object {
     # + member - The member to be moved
     # + return - `true` if the element is moved. `false` if the element is not a member of source and no
     #             operation was performed or `error` if an error occurs
-    public remote function sMove(string src, string destination, string member) returns boolean { 
+    public remote function sMove(string src, string destination, string member) returns boolean|error {
         return sMove(self.datasource, java:fromString(src), java:fromString(destination), java:fromString(member));
     } 
 
@@ -493,7 +493,7 @@ public type Client client object {
     # + key - The source key
     # + count - Number of members to pop
     # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
-    public remote function sPop(string key, int count) returns string[] { 
+    public remote function sPop(string key, int count) returns string[]|error {
         return sPop(self.datasource, java:fromString(key), count);
     } 
     # Get one or multiple random members from a set.
@@ -501,7 +501,7 @@ public type Client client object {
     # + key - The key of the set
     # + count - Number of members to obtain
     # + return - Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
-    public remote function sRandMember(string key, int count) returns string[] { 
+    public remote function sRandMember(string key, int count) returns string[]|error {
         return sMembers(self.datasource, java:fromString(key));
     } 
 
@@ -511,14 +511,14 @@ public type Client client object {
     # + members - Array of members to remove
     # + return - The number of members that were removed from the set, not including non existing members or `error` if
     #            an error occurs
-    public remote function sRem(string key, string[] members) returns int { 
+    public remote function sRem(string key, string[] members) returns int|error {
         return sRem(self.datasource, java:fromString(key), members);
     } 
     # Return the union of multiple sets.
     #
     # + keys - Array of keys of sets
     # + return - Array of members of the resulting set or `error` if an error occurs
-    public remote function sUnion(string[] keys) returns string[] { 
+    public remote function sUnion(string[] keys) returns string[]|error {
         return sUnion(self.datasource, keys);
     } 
     # Return the union of multiple sets.
@@ -526,7 +526,7 @@ public type Client client object {
     # + destination - The destination key of the resulting set
     # + keys - Array of keys of sets
     # + return - Number of members of the resulting set or `error` if an error occurs
-    public remote function sUnionStore(string destination, string[] keys) returns int { 
+    public remote function sUnionStore(string destination, string[] keys) returns int|error {
         return sUnionStore(self.datasource, java:fromString(destination), keys);
     } 
 
@@ -537,14 +537,14 @@ public type Client client object {
     # + memberScoreMap - A map of members and corresponding scores
     # + return - The number of elements that were added to the sorted set, not including all the elements which were
     #            already present in the set for which the score was updated, or `error` if an error occurs
-    public remote function zAdd(string key, map<any> memberScoreMap) returns int { 
+    public remote function zAdd(string key, map<any> memberScoreMap) returns int|error {
         return zAdd(self.datasource, java:fromString(key), memberScoreMap);
     } 
     # Get the number of members in a sorted set.
     #
     # + key - The key of the sorted set
     # + return - The cardinality (number of elements) of the sorted set or `error` if an error occurs
-    public remote function zCard(string key) returns int { 
+    public remote function zCard(string key) returns int|error {
         return zCard(self.datasource, java:fromString(key));
     } 
     # Count the members in a sorted set with scores within the given range.
@@ -553,7 +553,7 @@ public type Client client object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - The number of elements in the specified score range or `error` if an error occurs
-    public remote function zCount(string key, float min, float max) returns int { 
+    public remote function zCount(string key, float min, float max) returns int|error {
         return zCount(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -563,7 +563,7 @@ public type Client client object {
     # + amount - The amount to increment
     # + member - The member whose score to be incremented
     # + return - The new score of the member or `error` if an error occurs
-    public remote function zIncrBy(string key, float amount, string member) returns float { 
+    public remote function zIncrBy(string key, float amount, string member) returns float|error {
         return zIncrBy(self.datasource, java:fromString(key), amount, java:fromString(member));
     } 
 
@@ -572,7 +572,7 @@ public type Client client object {
     # + destination - The destination key of the resulting sorted set
     # + keys - The keys of the sorted sets to be intersected
     # + return - The number of elements in the resulting sorted set or `error` if an error occurs
-    public remote function zInterStore(string destination, string[] keys) returns int { 
+    public remote function zInterStore(string destination, string[] keys) returns int|error {
         return zInterStore(self.datasource, java:fromString(destination), keys);
     } 
     # Count the members in a sorted set within the given lexicographical range.
@@ -581,7 +581,7 @@ public type Client client object {
     # + min - The minimum lexicographical value of the range
     # + max - The maximum lexicographical value of the range
     # + return - The number of elements in the specified lexicographical value range or `error` if an error occurs
-    public remote function zLexCount(string key, string min, string max) returns int { 
+    public remote function zLexCount(string key, string min, string max) returns int|error {
         return zLexCount(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
     } 
     # Return a range of members in a sorted set, by index.
@@ -590,7 +590,7 @@ public type Client client object {
     # + min - The minimum index of the range
     # + max - The maximum index of the range
     # + return - The range of members in a sorted set, by index, or `error` if an error occurs
-    public remote function zRange(string key, int min, int max) returns string[] { 
+    public remote function zRange(string key, int min, int max) returns string[]|error {
         return zRange(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -601,7 +601,7 @@ public type Client client object {
     # + max - The maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
     #            if an error occurs
-    public remote function zRangeByLex(string key, string min, string max) returns string[] { 
+    public remote function zRangeByLex(string key, string min, string max) returns string[]|error {
         return zRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
     } 
 
@@ -613,7 +613,7 @@ public type Client client object {
     # + max - The maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
     #            if an error occurs
-    public remote function zRevRangeByLex(string key, string min, string max) returns string[] { 
+    public remote function zRevRangeByLex(string key, string min, string max) returns string[]|error {
         return zRevRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
     } 
     # Return a range of members in a sorted set, by score from lowest to highest.
@@ -622,7 +622,7 @@ public type Client client object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - Array of members in the specified score range ordered from lowest to highest or `error` if an error occurs
-    public remote function zRangeByScore(string key, float min, float max) returns string[] { 
+    public remote function zRangeByScore(string key, float min, float max) returns string[]|error {
         return zRangeByScore(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -631,7 +631,7 @@ public type Client client object {
     # + key - The key of the sorted set
     # + member - The member of which the index needs to be obtained
     # + return - The index of the member or `error` if an error occurs
-    public remote function zRank(string key, string member) returns int { 
+    public remote function zRank(string key, string member) returns int|error {
         return zRank(self.datasource, java:fromString(key), java:fromString(member));
     } 
 
@@ -641,7 +641,7 @@ public type Client client object {
     # + members - The members to be removed
     # + return - The number of members removed from the sorted set, not including non existing members or `error` if an
     #            error occurs
-    public remote function zRem(string key, string[] members) returns int { 
+    public remote function zRem(string key, string[] members) returns int|error {
         return zRem(self.datasource, java:fromString(key), members);
     } 
 
@@ -652,7 +652,7 @@ public type Client client object {
     # + min - The minimum lexicographical value of the range
     # + max - The maximum lexicographical value of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public remote function zRemRangeByLex(string key, string min, string max) returns int { 
+    public remote function zRemRangeByLex(string key, string min, string max) returns int|error {
         return zRemRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
     } 
 
@@ -662,7 +662,7 @@ public type Client client object {
     # + min - The minimum index of the range
     # + max - The maximum index of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public remote function zRemRangeByRank(string key, int min, int max) returns int { 
+    public remote function zRemRangeByRank(string key, int min, int max) returns int|error {
         return zRemRangeByRank(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -672,7 +672,7 @@ public type Client client object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - The number of members removed from the sorted set or `error` if an error occurs
-    public remote function zRemRangeByScore(string key, float min, float max) returns int { 
+    public remote function zRemRangeByScore(string key, float min, float max) returns int|error {
         return zRemRangeByScore(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -682,7 +682,7 @@ public type Client client object {
     # + min - The minimum index of the range
     # + max - The maximum index of the range
     # + return - The number of elements in the specified index range or `error` if an error occurs
-    public remote function zRevRange(string key, int min, int max) returns string[] { 
+    public remote function zRevRange(string key, int min, int max) returns string[]|error {
         return zRevRange(self.datasource, java:fromString(key), min, max);
     } 
 
@@ -692,7 +692,7 @@ public type Client client object {
     # + min - The minimum score of the range
     # + max - The maximum score of the range
     # + return - Array of members in the specified score range ordered from highest to lowest or `error` if an error occurs
-    public remote function zRevRangeByScore(string key, float min, float max) returns string[] { 
+    public remote function zRevRangeByScore(string key, float min, float max) returns string[]|error {
         return zRevRangeByScore(self.datasource, java:fromString(key), min, max);
     } 
     # Determine the index of a member in a sorted set
@@ -700,7 +700,7 @@ public type Client client object {
     # + key - The key of the sorted set
     # + member - The member of which the index needs to be obtained
     # + return - The index of the member or `error` if an error occurs
-    public remote function zRevRank(string key, string member) returns int { 
+    public remote function zRevRank(string key, string member) returns int|error {
         return zRevRank(self.datasource, java:fromString(key), java:fromString(member));
     } 
 
@@ -709,7 +709,7 @@ public type Client client object {
     # + key - The key of the sorted set
     # + member - The member of which the score needs to be obtained
     # + return - The score of the member or `error` if an error occurs
-    public remote function zScore(string key, string member) returns float { 
+    public remote function zScore(string key, string member) returns float|error {
         return zScore(self.datasource, java:fromString(key), java:fromString(member));
     } 
 
@@ -718,7 +718,7 @@ public type Client client object {
     # + destination - The destination key of the resulting set
     # + keys - Array of keys of sorted sets
     # + return - Number of members of the resulting sorted set or `error` if an error occurs
-    public remote function zUnionStore(string destination, string[] keys) returns int { 
+    public remote function zUnionStore(string destination, string[] keys) returns int|error {
         return zUnionStore(self.datasource, java:fromString(destination), keys);
     } 
 
@@ -730,7 +730,7 @@ public type Client client object {
     # + fields - Array of fields to be deleted
     # + return - Number of fields that were removed from the hash, not including specified but non existing fields or
     #            `error` if an error occurs
-    public remote function hDel(string key, string[] fields) returns int { 
+    public remote function hDel(string key, string[] fields) returns int|error {
         return hDel(self.datasource, java:fromString(key), fields);
     } 
 
@@ -740,7 +740,7 @@ public type Client client object {
     # + field - Array of fields to be deleted
     # + return - boolean `true` if the hash contains the field. boolean false if the hash does not contain
     #            field or key does not exist or `error` if an error occurs
-    public remote function hExists(string key, string field) returns boolean { 
+    public remote function hExists(string key, string field) returns boolean|error {
         return hExists(self.datasource, java:fromString(key), java:fromString(field));
     } 
     # Get the value of a hash field.
@@ -748,7 +748,7 @@ public type Client client object {
     # + key - The key of the hash
     # + field - The field
     # + return - The value of the field or `error` if an error occurs
-    public remote function hGet(string key, string field) returns string { 
+    public remote function hGet(string key, string field) returns string|error {
         return hGet(self.datasource, java:fromString(key), java:fromString(field)).toString();
     } 
 
@@ -756,7 +756,7 @@ public type Client client object {
     #
     # + key - The key of the hash
     # + return - Map of field-value pairs or `error` if an error occurs
-    public remote function hGetAll(string key) returns map<any> { 
+    public remote function hGetAll(string key) returns map<any>|error {
         return hGetAll(self.datasource, java:fromString(key));
     } 
 
@@ -766,7 +766,7 @@ public type Client client object {
     # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `error` if an error occurs
-    public remote function hIncrBy(string key, string field, int amount) returns int { 
+    public remote function hIncrBy(string key, string field, int amount) returns int|error {
         return hIncrBy(self.datasource, java:fromString(key), java:fromString(field), amount);
     } 
     # Increment the float value of a hash field by the given number.
@@ -775,21 +775,21 @@ public type Client client object {
     # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `error` if an error occurs
-    public remote function hIncrByFloat(string key, string field, float amount) returns float { 
+    public remote function hIncrByFloat(string key, string field, float amount) returns float|error {
         return hIncrByFloat(self.datasource, java:fromString(key), java:fromString(field), amount);
     } 
     # Get all the fields in a hash.
     #
     # + key - The key of the hash
     # + return - Array of hash fields or `error` if an error occurs
-    public remote function hKeys(string key) returns string[] { 
+    public remote function hKeys(string key) returns string[]|error {
         return hKeys(self.datasource, java:fromString(key));
     } 
     # Get the number of fields in a hash.
     #
     # + key - The key of the hash
     # + return - Number of fields or `error` if an error occurs
-    public remote function hLen(string key) returns int { 
+    public remote function hLen(string key) returns int|error {
         return hLen(self.datasource, java:fromString(key));
     } 
 
@@ -798,7 +798,7 @@ public type Client client object {
     # + key - The key of the hash
     # + fields - Array of hash fields
     # + return - Map of field-value pairs or `error` if an error occurs
-    public remote function hMGet(string key, string[] fields) returns map<any> { 
+    public remote function hMGet(string key, string[] fields) returns map<any>|error {
         return hMGet(self.datasource, java:fromString(key), fields);
     } 
 
@@ -807,7 +807,7 @@ public type Client client object {
     # + key - The key of the hash
     # + fieldValueMap - Map of field-value pairs
     # + return - A string with the value `OK` if the operation was successful, or `error` if an error occurs
-    public remote function hMSet(string key, map<any> fieldValueMap) returns string { 
+    public remote function hMSet(string key, map<any> fieldValueMap) returns string|error {
         return hMSet(self.datasource, java:fromString(key), fieldValueMap).toString();
     } 
 
@@ -818,7 +818,7 @@ public type Client client object {
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #         field already exists in the hash and the value was updated, or `error` if an error occurs
-    public remote function hSet(string key, string field, string value) returns boolean { 
+    public remote function hSet(string key, string field, string value) returns boolean|error {
         return hSet(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
     } 
 
@@ -829,7 +829,7 @@ public type Client client object {
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #            field already exists in the hash and no operation was performed, or `error` if an error occurs
-    public remote function hSetNx(string key, string field, string value) returns boolean { 
+    public remote function hSetNx(string key, string field, string value) returns boolean|error {
         return hSetNx(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
     } 
 
@@ -839,7 +839,7 @@ public type Client client object {
     # + field - The field
     # + return - The length of the field value, or 0 when field is not present in the hash or key does
     #            not exist at all, or `error` if an error occurs
-    public remote function hStrln(string key, string field) returns int { 
+    public remote function hStrln(string key, string field) returns int|error {
         return hStrln(self.datasource, java:fromString(key), java:fromString(field));
     } 
 
@@ -847,7 +847,7 @@ public type Client client object {
     #
     # + key - The key of the hash
     # + return - Array of values in the hash, or an empty array when key does not exist or `error` if an error occurs
-    public remote function hVals(string key) returns string[] { 
+    public remote function hVals(string key) returns string[]|error {
         return hVals(self.datasource, java:fromString(key));
     } 
 
@@ -857,7 +857,7 @@ public type Client client object {
     #
     # + keys - The key to be deleted
     # + return - The number of keys that were removed
-    public remote function del(string[] keys) returns int {
+    public remote function del(string[] keys) returns int|error {
         return del(self.datasource, keys);
     }
 
@@ -865,7 +865,7 @@ public type Client client object {
     #
     # + keys - The keys of which existence to be found out
     # + return - The number of existing keys or `error` if an error occurs
-    public remote function exists(string[] keys) returns int {
+    public remote function exists(string[] keys) returns int|error {
         return del(self.datasource, keys);
     }
 
@@ -875,7 +875,7 @@ public type Client client object {
     # + seconds - Expiry in seconds
     # + return - boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set or
     # `error` if an error occurs
-    public remote function expire(string key, int seconds) returns boolean {
+    public remote function expire(string key, int seconds) returns boolean|error {
         return expire(self.datasource, java:fromString(key), seconds);
     }
 
@@ -883,7 +883,7 @@ public type Client client object {
     #
     # + pattern - The pattern to match
     # + return - Array of keys matching the given pattern or `error` if an error occurs
-    public remote function keys(string pattern) returns string[] {
+    public remote function keys(string pattern) returns string[]|error {
         return keys(self.datasource, java:fromString(pattern));
     }
 
@@ -892,7 +892,7 @@ public type Client client object {
     # + key - The key to be moved
     # + database - The database to which the key needs to be moved
     # + return - boolean true if key was succesfully moved, boolean false otherwise or `error` if an error occurs
-    public remote function move(string key, int database) returns boolean {
+    public remote function move(string key, int database) returns boolean|error {
         return move(self.datasource, java:fromString(key), database);
     }
 
@@ -901,7 +901,7 @@ public type Client client object {
     # + key - The key of which expiry time should be removed
     # + return - boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
     #            an associated timeout, or `error` if an error occurs
-    public remote function persist(string key) returns boolean {
+    public remote function persist(string key) returns boolean|error {
         return persist(self.datasource, java:fromString(key));
     }
 
@@ -911,7 +911,7 @@ public type Client client object {
     # + timeMilliSeconds - The expiry time in milli seconds
     # + return - boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
     #         be set, or `error` if an error occurs
-    public remote function pExpire(string key, int timeMilliSeconds) returns boolean {
+    public remote function pExpire(string key, int timeMilliSeconds) returns boolean|error {
         return pExpire(self.datasource, java:fromString(key), timeMilliSeconds);
     }
 
@@ -919,14 +919,14 @@ public type Client client object {
     #
     # + key - The key of which time-to-live should be obtained
     # + return - time-to-live of the key, in milli seconds or `error` if an error occurs
-    public remote function pTtl(string key) returns int {
+    public remote function pTtl(string key) returns int|error {
         return pTtl(self.datasource, java:fromString(key));
     }
 
     # Return a random key from the keyspace.
     #
     # + return - The random key, or `nil` when the database is empty or `error` if an error occurs
-    public remote function randomKey() returns string {
+    public remote function randomKey() returns string|error {
         return randomKey(self.datasource).toString();
     }
 
@@ -935,7 +935,7 @@ public type Client client object {
     # + key - The key to be renamed
     # + newName - The new name of the key
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public remote function rename(string key, string newName) returns string {
+    public remote function rename(string key, string newName) returns string|error {
         return rename(self.datasource, java:fromString(key), java:fromString(newName)).toString();
     }
 
@@ -945,7 +945,7 @@ public type Client client object {
     # + newName - The new name of the key
     # + return - boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
     #            error occurs
-    public remote function renameNx(string key, string newName) returns boolean {
+    public remote function renameNx(string key, string newName) returns boolean|error {
         return renameNx(self.datasource, java:fromString(key), java:fromString(newName));
     }
 
@@ -953,7 +953,7 @@ public type Client client object {
     #
     # + key - The key of the data typeure to be sorted
     # + return - Sorted array containing the members of the sorted data type or `error` if an error occurs
-    public remote function sort(string key) returns string[] {
+    public remote function sort(string key) returns string[]|error {
         return sort(self.datasource, java:fromString(key));
     }
 
@@ -963,7 +963,7 @@ public type Client client object {
     # + return - Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
     #         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
     #         level or the driver level
-    public remote function ttl(string key) returns int {
+    public remote function ttl(string key) returns int|error {
         return ttl(self.datasource, java:fromString(key));
     }
 
@@ -971,7 +971,7 @@ public type Client client object {
     #
     # + key - The key of which the type needs to be obtained
     # + return - Type stored at key
-    public remote function redisType(string key) returns string {
+    public remote function redisType(string key) returns string|error {
         return redisType(self.datasource, java:fromString(key)).toString();
     }
 
@@ -980,7 +980,7 @@ public type Client client object {
     # Ping the server.
     # 
     # + return - A string with the value `PONG` if the operation was successful
-    public remote function ping() returns string {
+    public remote function ping() returns string|error {
         return ping(self.datasource).toString();
     }
 
@@ -988,7 +988,7 @@ public type Client client object {
     #
     # + password - The password
     # + return - A string with the value `OK` if the operation was successful or `error` if an error occurs
-    public remote function auth(string password) returns string {
+    public remote function auth(string password) returns string|error {
         return auth(self.datasource, java:fromString(password)).toString();
     }
 
@@ -996,7 +996,7 @@ public type Client client object {
     #
     # + message - The message to be echo-ed
     # + return - The message itself if the operation was successful or `error` if an error occurs
-    public remote function echo(string message) returns string {
+    public remote function echo(string message) returns string|error {
         return echo(self.datasource, java:fromString(message)).toString();
     }
 
@@ -1030,438 +1030,427 @@ public type ClientEndpointConfiguration record {|
     Options options = {};
 |};
 
-# Append a value to a key.
-#
-# + datasource - redis datasource
-# + key - The key
-# + value - The string value to be appended
-# + return - Length of the string after the operation or `error` if an error occurs
-function append(handle datasource, handle key, handle value) returns int = @java:Method {
+function append(handle datasource, handle key, handle value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function bitCount(handle datasource, handle key) returns int = @java:Method {
+function bitCount(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function bitOpAnd(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function bitOpAnd(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function bitOpOr(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function bitOpOr(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function bitOpNot(handle datasource, handle destination, handle key) returns int = @java:Method {
+function bitOpNot(handle datasource, handle destination, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function bitOpXor(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function bitOpXor(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function decr(handle datasource, handle key) returns int = @java:Method {
+function decr(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function decrBy(handle datasource, handle key, int value) returns int = @java:Method {
+function decrBy(handle datasource, handle key, int value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-# Get the value of a key.
-#
-# + key - The key
-# + datasource - redis datasource
-# + return - The value of the key, or nil when key does not exist or `error` if an error occurs
-function get(handle datasource, handle key) returns handle = @java:Method {
+function get(handle datasource, handle key) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function getBit(handle datasource, handle key, int offset) returns int = @java:Method {
+function getBit(handle datasource, handle key, int offset) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function getRange(handle datasource, handle key, int startPos, int end) returns handle = @java:Method {
+function getRange(handle datasource, handle key, int startPos, int end) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function getSet(handle datasource, handle key, handle value) returns handle = @java:Method {
+function getSet(handle datasource, handle key, handle value) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function incr(handle datasource, handle key) returns int = @java:Method {
+function incr(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function incrBy(handle datasource, handle key, int value) returns int = @java:Method {
+function incrBy(handle datasource, handle key, int value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function incrByFloat(handle datasource, handle key, float value) returns float = @java:Method {
+function incrByFloat(handle datasource, handle key, float value) returns float|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-public function mGet(handle datasource, string[] keys) returns string[] = @java:Method {
+public function mGet(handle datasource, string[] keys) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-public function mSet(handle datasource, map<any> keyValueMap) returns handle = @java:Method {
+public function mSet(handle datasource, map<any> keyValueMap) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean = @java:Method {
+public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle = @java:Method {
+function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function set(handle datasource, handle key, handle value) returns handle = @java:Method {
+function set(handle datasource, handle key, handle value) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function setBit(handle datasource, handle key, int value, int offset) returns int = @java:Method {
+function setBit(handle datasource, handle key, int value, int offset) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function setEx(handle datasource, handle key, handle value, int expirationPeriodSeconds) returns handle = @java:Method {
+function setEx(handle datasource, handle key, handle value, int expirationPeriodSeconds) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function setNx(handle datasource, handle key, handle value) returns boolean = @java:Method {
+function setNx(handle datasource, handle key, handle value) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function setRange(handle datasource, handle key, int offset, handle value) returns int = @java:Method {
+function setRange(handle datasource, handle key, int offset, handle value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function strln(handle datasource, handle key) returns int = @java:Method {
+function strln(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
-function lPush(handle datasource, handle key, string[] values) returns int = @java:Method {
+function lPush(handle datasource, handle key, string[] values) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lPop(handle datasource, handle key) returns handle = @java:Method {
+function lPop(handle datasource, handle key) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
+function lPushX(handle datasource, handle key, string[] values) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function bLPop(handle datasource, int timeOut, string[] keys) returns map<any> = @java:Method {
+function bLPop(handle datasource, int timeOut, string[] keys) returns map<any>|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function bRPop(handle datasource, int timeOut, string[] keys) returns map<any> = @java:Method {
+function bRPop(handle datasource, int timeOut, string[] keys) returns map<any>|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lIndex(handle datasource, handle key, int index) returns handle = @java:Method {
+function lIndex(handle datasource, handle key, int index) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lInsert(handle datasource, handle key, boolean before, handle pivot, handle value) returns int = @java:Method {
+function lInsert(handle datasource, handle key, boolean before, handle pivot, handle value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lLen(handle datasource, handle key) returns int = @java:Method {
+function lLen(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lRange(handle datasource, handle key, int startPos, int stopPos) returns string[] = @java:Method {
+function lRange(handle datasource, handle key, int startPos, int stopPos) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lRem(handle datasource, handle key, int count, handle value) returns int = @java:Method {
+function lRem(handle datasource, handle key, int count, handle value) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lSet(handle datasource, handle key, int index, handle value) returns handle = @java:Method {
+function lSet(handle datasource, handle key, int index, handle value) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function lTrim(handle datasource, handle key, int startPos, int stopPos) returns handle = @java:Method {
+function lTrim(handle datasource, handle key, int startPos, int stopPos) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function rPop(handle datasource, handle key) returns handle = @java:Method {
+function rPop(handle datasource, handle key) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function rPopLPush(handle datasource, handle src, handle destination) returns handle = @java:Method {
+function rPopLPush(handle datasource, handle src, handle destination) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function rPush(handle datasource, handle key, string[] values) returns int = @java:Method {
+function rPush(handle datasource, handle key, string[] values) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function rPushX(handle datasource, handle key, string[] values) returns int = @java:Method {
+function rPushX(handle datasource, handle key, string[] values) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
-function sAdd(handle datasource, handle key, string[] values) returns int = @java:Method {
+function sAdd(handle datasource, handle key, string[] values) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sCard(handle datasource, handle key) returns int = @java:Method {
+function sCard(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sDiff(handle datasource, string[] keys) returns string[] = @java:Method {
+function sDiff(handle datasource, string[] keys) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sDiffStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function sDiffStore(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sInter(handle datasource, string[] keys) returns string[] = @java:Method {
+function sInter(handle datasource, string[] keys) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sInterStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function sInterStore(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sIsMember(handle datasource, handle key, handle value) returns boolean = @java:Method {
+function sIsMember(handle datasource, handle key, handle value) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sMembers(handle datasource, handle key) returns string[] = @java:Method {
+function sMembers(handle datasource, handle key) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sMove(handle datasource, handle src, handle destination, handle member) returns boolean = @java:Method {
+function sMove(handle datasource, handle src, handle destination, handle member) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sPop(handle datasource, handle key, int count) returns string[] = @java:Method {
+function sPop(handle datasource, handle key, int count) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sRandMember(handle datasource, handle key, int count) returns string[] = @java:Method {
+function sRandMember(handle datasource, handle key, int count) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sRem(handle datasource, handle key, string[] members) returns int = @java:Method {
+function sRem(handle datasource, handle key, string[] members) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sUnion(handle datasource, string[] keys) returns string[] = @java:Method {
+function sUnion(handle datasource, string[] keys) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sUnionStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function sUnionStore(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function zAdd(handle datasource, handle key, map<any> memberScoreMap) returns int = @java:Method {
+function zAdd(handle datasource, handle key, map<any> memberScoreMap) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zCard(handle datasource, handle key) returns int = @java:Method {
+function zCard(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zCount(handle datasource, handle key, float min, float max) returns int = @java:Method {
+function zCount(handle datasource, handle key, float min, float max) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zIncrBy(handle datasource, handle key, float amount, handle member) returns float = @java:Method {
+function zIncrBy(handle datasource, handle key, float amount, handle member) returns float|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zInterStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function zInterStore(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zLexCount(handle datasource, handle destination, handle min, handle max) returns int = @java:Method {
+function zLexCount(handle datasource, handle destination, handle min, handle max) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRange(handle datasource, handle key, int min, int max) returns string[] = @java:Method {
+function zRange(handle datasource, handle key, int min, int max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] = @java:Method {
+function zRangeByLex(handle datasource, handle key, handle min, handle max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRevRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] = @java:Method {
+function zRevRangeByLex(handle datasource, handle key, handle min, handle max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRangeByScore(handle datasource, handle key, float min, float max) returns string[] = @java:Method {
+function zRangeByScore(handle datasource, handle key, float min, float max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRank(handle datasource, handle key, handle member) returns int = @java:Method {
+function zRank(handle datasource, handle key, handle member) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRem(handle datasource, handle key, string[] members) returns int = @java:Method {
+function zRem(handle datasource, handle key, string[] members) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRemRangeByLex(handle datasource, handle key, handle min, handle max) returns int = @java:Method {
+function zRemRangeByLex(handle datasource, handle key, handle min, handle max) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRemRangeByRank(handle datasource, handle key, int min, int max) returns int = @java:Method {
+function zRemRangeByRank(handle datasource, handle key, int min, int max) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRemRangeByScore(handle datasource, handle key, float min, float max) returns int = @java:Method {
+function zRemRangeByScore(handle datasource, handle key, float min, float max) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRevRange(handle datasource, handle key, int min, int max) returns string[] = @java:Method {
+function zRevRange(handle datasource, handle key, int min, int max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRevRangeByScore(handle datasource, handle key, float min, float max) returns string[] = @java:Method {
+function zRevRangeByScore(handle datasource, handle key, float min, float max) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zRevRank(handle datasource, handle key, handle member) returns int = @java:Method {
+function zRevRank(handle datasource, handle key, handle member) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zScore(handle datasource, handle key, handle member) returns float = @java:Method {
+function zScore(handle datasource, handle key, handle member) returns float|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function zUnionStore(handle datasource, handle destination, string[] keys) returns int = @java:Method {
+function zUnionStore(handle datasource, handle destination, string[] keys) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
-function del(handle datasource, string[] key) returns int = @java:Method {
+function del(handle datasource, string[] key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function exists(handle datasource, string[] key) returns int = @java:Method {
+function exists(handle datasource, string[] key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function expire(handle datasource, handle key, int seconds) returns boolean = @java:Method {
+function expire(handle datasource, handle key, int seconds) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function keys(handle datasource, handle pattern) returns string[] = @java:Method {
+function keys(handle datasource, handle pattern) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function move(handle datasource, handle key, int database) returns boolean = @java:Method {
+function move(handle datasource, handle key, int database) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function persist(handle datasource, handle key) returns boolean = @java:Method {
+function persist(handle datasource, handle key) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function pExpire(handle datasource, handle key, int timeMilliSeconds) returns boolean = @java:Method {
+function pExpire(handle datasource, handle key, int timeMilliSeconds) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function pTtl(handle datasource, handle key) returns int = @java:Method {
+function pTtl(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function randomKey(handle datasource) returns handle = @java:Method {
+function randomKey(handle datasource) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function rename(handle datasource, handle key, handle newName) returns handle = @java:Method {
+function rename(handle datasource, handle key, handle newName) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function renameNx(handle datasource, handle key, handle newName) returns boolean = @java:Method {
+function renameNx(handle datasource, handle key, handle newName) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function sort(handle datasource, handle key) returns string[] = @java:Method {
+function sort(handle datasource, handle key) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function ttl(handle datasource, handle key) returns int = @java:Method {
+function ttl(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function redisType(handle datasource, handle key) returns handle = @java:Method {
+function redisType(handle datasource, handle key) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function ping(handle datasource) returns handle = @java:Method {
+function ping(handle datasource) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
-function auth(handle datasource, handle password) returns handle = @java:Method {
+function auth(handle datasource, handle password) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
-function echo(handle datasource, handle message) returns handle = @java:Method {
+function echo(handle datasource, handle message) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
-function hDel(handle datasource, handle key, string[] fields) returns int = @java:Method {
+function hDel(handle datasource, handle key, string[] fields) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hExists(handle datasource, handle key, handle field) returns boolean = @java:Method {
+function hExists(handle datasource, handle key, handle field) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hGet(handle datasource, handle key, handle field) returns handle = @java:Method {
+function hGet(handle datasource, handle key, handle field) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hGetAll(handle datasource, handle key) returns map<any> = @java:Method {
+function hGetAll(handle datasource, handle key) returns map<any>|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hIncrBy(handle datasource, handle key, handle field, int amount) returns int = @java:Method {
+function hIncrBy(handle datasource, handle key, handle field, int amount) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hIncrByFloat(handle datasource, handle key, handle field, float amount) returns float = @java:Method {
+function hIncrByFloat(handle datasource, handle key, handle field, float amount) returns float|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hLen(handle datasource, handle key) returns int = @java:Method {
+function hLen(handle datasource, handle key) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hMGet(handle datasource, handle key, string[] fields) returns map<any> = @java:Method {
+function hMGet(handle datasource, handle key, string[] fields) returns map<any>|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hMSet(handle datasource, handle key, map<any> fieldValueMap) returns handle = @java:Method {
+function hMSet(handle datasource, handle key, map<any> fieldValueMap) returns handle|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hKeys(handle datasource, handle key) returns string[] = @java:Method {
+function hKeys(handle datasource, handle key) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hSet(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
+function hSet(handle datasource, handle key, handle field, handle value) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hSetNx(handle datasource, handle key, handle field, handle value) returns boolean = @java:Method {
+function hSetNx(handle datasource, handle key, handle field, handle value) returns boolean|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hStrln(handle datasource, handle key, handle field) returns int = @java:Method {
+function hStrln(handle datasource, handle key, handle field) returns int|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hVals(handle datasource, handle key) returns string[] = @java:Method {
+function hVals(handle datasource, handle key) returns string[]|error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 

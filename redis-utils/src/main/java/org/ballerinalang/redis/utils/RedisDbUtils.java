@@ -314,8 +314,4 @@ public class RedisDbUtils {
         statefulRedisConnection = redisClient.connect(StringCodec.UTF8);
         redisCommands = statefulRedisConnection.sync();
     }
-
-//    public static BString get(String key) {
-//       return new BString("bbb");
-//    }
 }

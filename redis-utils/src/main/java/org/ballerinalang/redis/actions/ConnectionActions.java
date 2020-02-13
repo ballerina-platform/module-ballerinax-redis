@@ -26,35 +26,50 @@ import org.ballerinalang.redis.RedisDataSource;
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
 public class ConnectionActions extends AbstractRedisAction {
+
     /**
      * Ping the redis database server.
      *
-     * @param redisDataSourceHandleValue handleValue
+     * @param redisDataSourceHandleValue redis datasource handleValue
      */
-    public static BString ping(HandleValue redisDataSourceHandleValue) {
+    public static Object ping(HandleValue redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return ping(redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString auth(HandleValue redisDataSourceHandleValue, String password) {
+    /**
+     * Authenticate to the server.
+     * 
+     * @param redisDataSourceHandleValue redis datasource
+     * @param password The password
+     * @return A string with the value `OK` if the operation was successful
+     */
+    public static Object auth(HandleValue redisDataSourceHandleValue, String password) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return auth(password, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString echo(HandleValue redisDataSourceHandleValue, String message) {
+    /**
+     * Echo the given string.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param message The message to be echo-ed
+     * @return The message itself if the operation was successful
+     */
+    public static Object echo(HandleValue redisDataSourceHandleValue, String message) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return echo(message, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 }

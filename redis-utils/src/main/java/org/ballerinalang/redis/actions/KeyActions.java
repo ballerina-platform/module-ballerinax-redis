@@ -28,129 +28,222 @@ import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCC
 
 public class KeyActions extends AbstractRedisAction {
 
-    public static long del(HandleValue redisDataSourceHandleValue, BArray keys) {
+    /**
+     * Delete one or more keys.
+     * 
+     * redisDataSourceHandleValue redis datasource
+     * @param keys The key to be deleted
+     * @return The number of keys that were removed
+     */
+    public static Object del(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return del(redisDataSource, createStringArrayFromBArray(keys)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long exists(HandleValue redisDataSourceHandleValue, BArray keys) {
+    /**
+     * Determine how many keys exist.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param keys The keys of which existence to be found out
+     * @return The number of existing keys
+     */
+    public static Object exists(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return exists(redisDataSource, createStringArrayFromBArray(keys)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static boolean expire(HandleValue redisDataSourceHandleValue, String key, int seconds) {
+    /**
+     * Set a key's time to live in seconds.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key The keys of which expiry time to be set
+     * @param seconds Expiry in seconds
+     * @return boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set
+     */
+    public static Object expire(HandleValue redisDataSourceHandleValue, String key, int seconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return expire(key, seconds, redisDataSource).booleanValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BArray keys(HandleValue redisDataSourceHandleValue, String pattern) {
+    /**
+     * Find all keys matching the given pattern.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param pattern The pattern to match
+     * @return Array of keys matching the given pattern
+     */
+    public static Object keys(HandleValue redisDataSourceHandleValue, String pattern) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return keys(pattern, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static boolean move(HandleValue redisDataSourceHandleValue, String key, int database) {
+    /**
+     * Move a key to another database.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key The key to be moved
+     * @param database The database to which the key needs to be moved
+     * @return boolean true if key was succesfully moved, boolean false otherwise
+     */
+    public static Object move(HandleValue redisDataSourceHandleValue, String key, int database) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return move(key, database, redisDataSource).booleanValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static boolean persist(HandleValue redisDataSourceHandleValue, String key) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @return
+     */
+    public static Object persist(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return persist(key, redisDataSource).booleanValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static boolean pExpire(HandleValue redisDataSourceHandleValue, String key, int timeMilliSeconds) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @param timeMilliSeconds
+     * @return
+     */
+    public static Object pExpire(HandleValue redisDataSourceHandleValue, String key, int timeMilliSeconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pExpire(key, timeMilliSeconds, redisDataSource).booleanValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long pTtl(HandleValue redisDataSourceHandleValue, String key) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @return
+     */
+    public static Object pTtl(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pTtl(key, redisDataSource).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString randomKey(HandleValue redisDataSourceHandleValue) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @return
+     */
+    public static Object randomKey(HandleValue redisDataSourceHandleValue) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return randomKey(redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString rename(HandleValue redisDataSourceHandleValue, String key, String newName) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @param newName
+     * @return
+     */
+    public static Object rename(HandleValue redisDataSourceHandleValue, String key, String newName) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rename(key, newName, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static boolean renameNx(HandleValue redisDataSourceHandleValue, String key, String newName) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @param newName
+     * @return
+     */
+    public static Object renameNx(HandleValue redisDataSourceHandleValue, String key, String newName) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return renameNx(key, newName, redisDataSource).booleanValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BArray sort(HandleValue redisDataSourceHandleValue, String key) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @return
+     */
+    public static Object sort(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sort(key, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long ttl(HandleValue redisDataSourceHandleValue, String key) {
+    /**
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @return
+     */
+    public static Object ttl(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return ttl(key, redisDataSource).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString redisType(HandleValue redisDataSourceHandleValue, String key) {
+    /**
+     * 
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key
+     * @return
+     */
+    public static Object redisType(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return type(key, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 }

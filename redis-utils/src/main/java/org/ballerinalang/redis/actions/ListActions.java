@@ -29,148 +29,148 @@ import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCC
 
 public class ListActions extends AbstractRedisAction {
 
-    public static long lPushX(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static Object lPushX(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPushX(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BMap bLPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static Object bLPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bLPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BMap bRPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static Object bRPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bRPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static Object lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static <K> BString lPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object lPop(HandleValue redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPop(redisKey, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static <K> BString lIndex(HandleValue redisDataSourceHandleValue, String redisKey, int index) {
+    public static Object lIndex(HandleValue redisDataSourceHandleValue, String redisKey, int index) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lIndex(redisKey, index, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lInsert(HandleValue redisDataSourceHandleValue, String key, boolean before, String pivot,
+    public static Object lInsert(HandleValue redisDataSourceHandleValue, String key, boolean before, String pivot,
                                       String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lInsert(key, before, pivot, value, redisDataSource).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lLen(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object lLen(HandleValue redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lLen(redisKey, redisDataSource).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BArray lRange(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static Object lRange(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lRange(redisKey, startPos, stopPos, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long lRem(HandleValue redisDataSourceHandleValue, String redisKey, int count, String value) {
+    public static Object lRem(HandleValue redisDataSourceHandleValue, String redisKey, int count, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lRem(redisKey, count, value, redisDataSource).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString lSet(HandleValue redisDataSourceHandleValue, String redisKey, int index, String value) {
+    public static Object lSet(HandleValue redisDataSourceHandleValue, String redisKey, int index, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lSet(redisKey, index, value, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString lTrim(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static Object lTrim(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lTrim(redisKey, startPos, startPos, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString rPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object rPop(HandleValue redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPop(redisKey, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static BString rPopLPush(HandleValue redisDataSourceHandleValue, String src, String destination) {
+    public static Object rPopLPush(HandleValue redisDataSourceHandleValue, String src, String destination) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPopLPush(src, destination, redisDataSource);
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long rPush(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static Object rPush(HandleValue redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
-    public static long rPushX(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static Object rPushX(HandleValue redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
         } catch (Throwable e) {
-            throw BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 }
