@@ -1,0 +1,13 @@
+[project]
+org-name="wso2"
+version="0.0.0"
+
+[platform]
+target = "java8"
+
+[[platform.libraries]]
+module = "redis"
+path = "../redis-utils/target/wso2-redis-0.8.3-SNAPSHOT.jar"
+artafactId = "wso2-redis"
+version = "0.8.3-SNAPSHOT"
+groupId = "org.ballerinalang"
