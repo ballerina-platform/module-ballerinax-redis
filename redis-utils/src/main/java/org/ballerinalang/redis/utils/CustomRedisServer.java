@@ -24,6 +24,9 @@ import redis.embedded.util.OS;
 
 import java.io.IOException;
 
+/**
+ * A custom redis server.
+ */
 public class CustomRedisServer extends RedisServer {
     private static final String REDIS_READY_PATTERN = ".*Ready to accept connections*";
 

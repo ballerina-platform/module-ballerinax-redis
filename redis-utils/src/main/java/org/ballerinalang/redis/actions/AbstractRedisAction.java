@@ -502,7 +502,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected static <K, V> BInteger lInsert(K key, boolean before, V pivot, V value, RedisDataSource<K, V> redisDataSource) {
+    protected static <K, V> BInteger lInsert(K key, boolean before, V pivot, V value,
+                                             RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -997,7 +998,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected static <K> BInteger zRemRangeByLex(K key, String min, String max, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BInteger zRemRangeByLex(K key, String min, String max,
+                                                 RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1011,7 +1013,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected static <K> BInteger zRemRangeByRank(K key, long min, long max, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BInteger zRemRangeByRank(K key, long min, long max,
+                                                  RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1024,7 +1027,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected static <K> BInteger zRemRangeByScore(K key, double min, double max, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BInteger zRemRangeByScore(K key, double min, double max,
+                                                   RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1172,7 +1176,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected static <K> BFloat hIncrByFloat(K key, K field, double amount, RedisDataSource<K, String> redisDataSource) {
+    protected static <K> BFloat hIncrByFloat(K key, K field, double amount,
+                                             RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);

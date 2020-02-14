@@ -31,6 +31,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Redis database utils to run unit tests.
+ */
 public class RedisDbUtils {
     private static RedisServer redisServer;
     private static final String REDIS_HOST = "localhost";
@@ -39,7 +42,8 @@ public class RedisDbUtils {
 
     public static void initServer() throws IOException {
         String executablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
-                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7").toString();
+                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7")
+                .toString();
         redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
         redisServer.start();
     }

@@ -20,11 +20,13 @@ package org.ballerinalang.redis.actions;
 
 import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
+/**
+ * Redis connection actions.
+ */
 public class ConnectionActions extends AbstractRedisAction {
 
     /**

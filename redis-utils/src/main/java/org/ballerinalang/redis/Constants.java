@@ -46,7 +46,7 @@ public class Constants {
     }
 
     /**
-     * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}
+     * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
      */
     public enum Codec {
         BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");

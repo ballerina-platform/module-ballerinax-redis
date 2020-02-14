@@ -25,6 +25,9 @@ import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
+/**
+ * Redis key actions.
+ */
 public class KeyActions extends AbstractRedisAction {
 
     /**
@@ -144,7 +147,7 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
-     * Get the time to live for a key in milliseconds
+     * Get the time to live for a key in milliseconds.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key The key of which time-to-live should be obtained

@@ -22,11 +22,13 @@ import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
+/**
+ * Redis string actions.
+ */
 public class StringActions extends AbstractRedisAction {
 
     /**
@@ -394,7 +396,8 @@ public class StringActions extends AbstractRedisAction {
      * @param expirationPeriodSeconds Expiration time to be set, in seconds
      * @return New value of the key or
      */
-    public static Object setEx(HandleValue redisDataSourceHandleValue, String key, String value, int expirationPeriodSeconds)  {
+    public static Object setEx(HandleValue redisDataSourceHandleValue, String key, String value,
+                               int expirationPeriodSeconds)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return setEx(key, value, expirationPeriodSeconds, redisDataSource);

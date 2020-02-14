@@ -25,6 +25,9 @@ import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
+/**
+ * Redis set actions.
+ */
 public class SetActions extends AbstractRedisAction {
 
     /**
@@ -46,7 +49,7 @@ public class SetActions extends AbstractRedisAction {
     }
 
     /**
-     * Get the number of members in a set
+     * Get the number of members in a set.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key The key of the set
@@ -62,7 +65,7 @@ public class SetActions extends AbstractRedisAction {
     }
 
     /**
-     * Return set resulting from the difference between the first set and all the successive sets
+     * Return set resulting from the difference between the first set and all the successive sets.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param keys The keys of the sets

@@ -62,7 +62,7 @@ public class RedisDataSource<K, V> {
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
 
     /**
-     * Constructor for {@link RedisDataSource}
+     * Constructor for {@link RedisDataSource}.
      *
      * @param codec The codec for transcoding keys/values between the application and the Redis DB.
      *              Instance of {@link RedisCodec}
@@ -94,7 +94,7 @@ public class RedisDataSource<K, V> {
     }
 
     /**
-     * Returns {@link RedisCommands}, an interface for Redis commands available on a Redis instance
+     * Returns {@link RedisCommands}, an interface for Redis commands available on a Redis instance.
      *
      * @return a {@link RedisCommands} instance
      */
@@ -108,7 +108,7 @@ public class RedisDataSource<K, V> {
     }
 
     /**
-     * Returns {@link RedisAdvancedClusterCommands}, an interface for Redis commands available on a Redis Cluster
+     * Returns {@link RedisAdvancedClusterCommands}, an interface for Redis commands available on a Redis Cluster.
      *
      * @return a {@link RedisAdvancedClusterCommands} instance
      */

@@ -26,6 +26,9 @@ import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
 
+/**
+ * Redis sorted set actions.
+ */
 public class SortedSetActions extends AbstractRedisAction {
 
     /**
@@ -224,7 +227,7 @@ public class SortedSetActions extends AbstractRedisAction {
     }
 
     /**
-     * Remove one or more members from a sorted set
+     * Remove one or more members from a sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key The key of the sorted set
@@ -331,7 +334,7 @@ public class SortedSetActions extends AbstractRedisAction {
     }
 
     /**
-     * Determine the index of a member in a sorted set
+     * Determine the index of a member in a sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key The key of the sorted set
@@ -364,7 +367,7 @@ public class SortedSetActions extends AbstractRedisAction {
     }
 
     /**
-     * Determine the score of a member in a sorted set
+     * Determine the score of a member in a sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param destination The key of the sorted set

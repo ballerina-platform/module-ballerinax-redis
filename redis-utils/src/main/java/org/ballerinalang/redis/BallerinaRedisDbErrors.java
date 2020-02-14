@@ -18,6 +18,10 @@
 
 package org.ballerinalang.redis;
 
+/**
+ * Creates custom ballerina errors.
+ */
 public class BallerinaRedisDbErrors {
-    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerina/module-redis}Exception Occurred while executing Redis action";
+    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerina/module-redis}Exception Occurred while " +
+            "executing Redis action";
 }
