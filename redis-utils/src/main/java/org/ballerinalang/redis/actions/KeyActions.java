@@ -21,7 +21,6 @@ package org.ballerinalang.redis.actions;
 import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
-import org.ballerinalang.model.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
@@ -111,10 +110,12 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Remove the expiration from a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @return
+     * @param key The key of which expiry time should be removed
+     * @return boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
+     *         an associated timeout
      */
     public static Object persist(HandleValue redisDataSourceHandleValue, String key) {
         try {
@@ -126,10 +127,11 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Set a key's time to live in milliseconds.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @param timeMilliSeconds
+     * @param key he key of which expiry time should be removed
+     * @param timeMilliSeconds The expiry time in milli seconds
      * @return
      */
     public static Object pExpire(HandleValue redisDataSourceHandleValue, String key, int timeMilliSeconds) {
@@ -142,10 +144,11 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Get the time to live for a key in milliseconds
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @return
+     * @param key The key of which time-to-live should be obtained
+     * @return time-to-live of the key, in milli seconds
      */
     public static Object pTtl(HandleValue redisDataSourceHandleValue, String key) {
         try {
@@ -157,9 +160,10 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Return a random key from the keyspace.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @return
+     * @return The random key
      */
     public static Object randomKey(HandleValue redisDataSourceHandleValue) {
         try {
@@ -171,11 +175,12 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Rename a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @param newName
-     * @return
+     * @param key The key to be renamed
+     * @param newName The new name of the key
+     * @return A string with the value `OK` if the operation was successful
      */
     public static Object rename(HandleValue redisDataSourceHandleValue, String key, String newName) {
         try {
@@ -187,10 +192,12 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Rename a key, only if the new key does not exist.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @param newName
+     * @param key The key to be renamed
+     * @param newName The new name of the key boolean `true` if key was renamed to newkey. boolean `false` if
+     *                newkey already exists.
      * @return
      */
     public static Object renameNx(HandleValue redisDataSourceHandleValue, String key, String newName) {
@@ -203,10 +210,11 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Sort the elements in a list, set or sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @return
+     * @param key The key of the data typeure to be sorted
+     * @return Sorted array containing the members of the sorted data type
      */
     public static Object sort(HandleValue redisDataSourceHandleValue, String key) {
         try {
@@ -218,10 +226,13 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
+     * Get the time to live for a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @return
+     * @param key The key of which the time to live needs to be obtained
+     * @return Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
+     *         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
+     *         level or the driver level
      */
     public static Object ttl(HandleValue redisDataSourceHandleValue, String key) {
         try {
@@ -233,10 +244,11 @@ public class KeyActions extends AbstractRedisAction {
     }
 
     /**
-     * 
+     * Determine the type stored at key.
+     *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @return
+     * @param key The key of which the type needs to be obtained
+     * @return Type stored at key
      */
     public static Object redisType(HandleValue redisDataSourceHandleValue, String key) {
         try {
