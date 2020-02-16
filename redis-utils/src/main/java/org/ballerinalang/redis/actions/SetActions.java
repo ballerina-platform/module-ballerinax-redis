@@ -23,7 +23,7 @@ import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis set actions.
@@ -42,7 +42,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sAdd(HandleValue redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sAdd(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return sAdd(key, redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -58,7 +58,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sCard(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sCard(key, redisDataSource).intValue();
+            return sCard(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -92,7 +92,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sDiffStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sDiffStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return sDiffStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -125,7 +125,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sInterStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sInterStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return sInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -142,7 +142,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sIsMember(HandleValue redisDataSourceHandleValue, String key, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sIsMember(key, value, redisDataSource).booleanValue();
+            return sIsMember(key, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -177,7 +177,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sMove(HandleValue redisDataSourceHandleValue, String src, String destination, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sMove(src, destination, member, redisDataSource).booleanValue();
+            return sMove(src, destination, member, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -228,7 +228,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sRem(HandleValue redisDataSourceHandleValue, String key, BArray members) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sRem(key, redisDataSource, createStringArrayFromBArray(members)).intValue();
+            return sRem(key, redisDataSource, createStringArrayFromBArray(members));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -261,7 +261,7 @@ public class SetActions extends AbstractRedisAction {
     public static Object sUnionStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return sUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

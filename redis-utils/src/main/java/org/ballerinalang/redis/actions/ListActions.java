@@ -23,7 +23,7 @@ import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis list actions.
@@ -41,7 +41,7 @@ public class ListActions extends AbstractRedisAction {
     public static Object lPushX(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lPushX(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return lPushX(redisKey, redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -96,7 +96,7 @@ public class ListActions extends AbstractRedisAction {
     public static Object lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -149,7 +149,7 @@ public class ListActions extends AbstractRedisAction {
                                       String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lInsert(key, before, pivot, value, redisDataSource).intValue();
+            return lInsert(key, before, pivot, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -159,13 +159,13 @@ public class ListActions extends AbstractRedisAction {
      * Get the length of a list.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param redisKey
-     * @return
+     * @param redisKey The key
+     * @return The length of the list at key
      */
     public static Object lLen(HandleValue redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lLen(redisKey, redisDataSource).intValue();
+            return lLen(redisKey, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -201,7 +201,7 @@ public class ListActions extends AbstractRedisAction {
     public static Object lRem(HandleValue redisDataSourceHandleValue, String redisKey, int count, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return lRem(redisKey, count, value, redisDataSource).intValue();
+            return lRem(redisKey, count, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -287,7 +287,7 @@ public class ListActions extends AbstractRedisAction {
     public static Object rPush(HandleValue redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return rPush(key, redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -304,7 +304,7 @@ public class ListActions extends AbstractRedisAction {
     public static Object rPushX(HandleValue redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rPush(key, redisDataSource, createStringArrayFromBArray(values)).intValue();
+            return rPush(key, redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

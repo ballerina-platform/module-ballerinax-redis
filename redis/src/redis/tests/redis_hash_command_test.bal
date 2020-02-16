@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 import ballerinax/java;
-import ballerina/io;
 
 @test:Config {
 }
@@ -25,8 +25,9 @@ function testHDel() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }    
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -36,8 +37,9 @@ function testHExists() {
     if (result is boolean) {
         test:assertEquals(result, true);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -47,8 +49,9 @@ function testHGet() {
     if (result is string) {
         test:assertEquals(result, "testHGetValue1");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }  
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -58,8 +61,9 @@ function testHGetAll() {
     if (result is map<any>) {
         test:assertEquals(result.length(), 2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }  
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -69,8 +73,9 @@ function testHIncrByFloat() {
     if (result is float) {
         test:assertEquals(result, 7.2f);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }  
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -78,10 +83,11 @@ function testHIncrByFloat() {
 function testHIncrBy() {
     var result = conn->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
     if (result is int) {
-        test:assertEquals(result, 8);  
-    }  else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertEquals(result, 8);
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -91,8 +97,9 @@ function testHLen() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -102,20 +109,22 @@ function testHMGet() {
     if (result is map<any>) {
         test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }  
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
 }
 function testHMSet() {
-    map<any> fieldValueMap = { testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2" };
+    map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
     var result = conn->hMSet("testHMSetKey", fieldValueMap);
     if (result is string) {
         test:assertEquals(result, "OK");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -125,8 +134,9 @@ function testHKeys() {
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -136,8 +146,9 @@ function testHSet() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -147,8 +158,9 @@ function testHSetNx() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -158,8 +170,9 @@ function testHStrln() {
     if (result is int) {
         test:assertEquals(result, 16);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -167,13 +180,14 @@ function testHStrln() {
 function testHVals() {
     var result = conn->hVals("testHValsKey");
     if (result is string[]) {
-        test:assertEquals(result.length(), 3);   
+        test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    } 
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
-function setupRedisHashDatabase() = @java:Method{
+function setupRedisHashDatabase() = @java:Method {
     name: "setupHashDatabase",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

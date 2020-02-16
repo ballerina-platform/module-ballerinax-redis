@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,12 @@ import org.ballerinalang.util.exceptions.BallerinaException;
  */
 public class InitRedisClient  {
 
+    /**
+     * Initialize a redis client.
+     *
+     * @param config configuration map
+     * @return a handle value
+     */
     public static HandleValue initClient(MapValue config) {
         String host = config.getStringValue(Constants.EndpointConfig.HOST);
         String password = config.getStringValue(Constants.EndpointConfig.PASSWORD);
@@ -51,7 +57,13 @@ public class InitRedisClient  {
     }
 
 
-    protected static RedisCodec retrieveRedisCodec(String codecString) {
+    /**
+     * Retrieve redis codec.
+     *
+     * @param codecString codec string
+     * @return redis codec
+     */
+    private static RedisCodec retrieveRedisCodec(String codecString) {
         Constants.Codec codec = retrieveCodec(codecString);
         switch (codec) {
         case BYTE_ARRAY_CODEC:
@@ -65,7 +77,13 @@ public class InitRedisClient  {
         }
     }
 
-    protected static Constants.Codec retrieveCodec(String codecString) {
+    /**
+     * Retreive a codec name.
+     *
+     * @param codecString codec string
+     * @return codec name
+     */
+    private static Constants.Codec retrieveCodec(String codecString) {
         try {
             return Constants.Codec.fromCodecName(codecString);
         } catch (IllegalArgumentException e) {

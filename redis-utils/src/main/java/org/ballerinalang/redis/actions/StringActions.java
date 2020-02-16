@@ -24,7 +24,7 @@ import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis string actions.
@@ -42,7 +42,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object append(HandleValue redisDataSourceHandleValue, String key, String redisValue)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return append(key, redisValue, redisDataSource).intValue();
+            return append(key, redisValue, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -58,7 +58,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object bitCount(HandleValue redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitCount(key, redisDataSource).intValue();
+            return bitCount(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -76,7 +76,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object bitOpAnd(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopAnd(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return bitopAnd(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -94,7 +94,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object bitOpOr(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopOr(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return bitopOr(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -111,7 +111,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object bitOpNot(HandleValue redisDataSourceHandleValue, String destination, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopNot(destination, key, redisDataSource).intValue();
+            return bitopNot(destination, key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -129,7 +129,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object bitOpXor(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return bitopXor(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return bitopXor(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -138,14 +138,14 @@ public class StringActions extends AbstractRedisAction {
     /**
      * Decrement the integer value of a key by one.
      *
-     *@param redisDataSourceHandleValue redis datasource
+     * @param redisDataSourceHandleValue redis datasource
      * @param key key
      * @return The value of the key after the decrement
      */
     public static Object decr(HandleValue redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return decr(key, redisDataSource).intValue();
+            return decr(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -162,7 +162,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object decrBy(HandleValue redisDataSourceHandleValue, String key, int redisValue)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return decrBy(key, redisValue, redisDataSource).intValue();
+            return decrBy(key, redisValue, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -195,7 +195,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object getBit(HandleValue redisDataSourceHandleValue, String key, int offset)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return getBit(key, offset, redisDataSource).intValue();
+            return getBit(key, offset, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -246,7 +246,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object incr(HandleValue redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return incr(key, redisDataSource).intValue();
+            return incr(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -263,7 +263,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object incrBy(HandleValue redisDataSourceHandleValue, String key, int value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return incrBy(key, value, redisDataSource).intValue();
+            return incrBy(key, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -280,7 +280,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object incrByFloat(HandleValue redisDataSourceHandleValue, String key, float value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return incrByFloat(key, value, redisDataSource).floatValue();
+            return incrByFloat(key, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -290,7 +290,7 @@ public class StringActions extends AbstractRedisAction {
      * Get the values of all the given keys.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param keys
+     * @param keys The keys of which the values need to be retrieved
      * @return Array of values at the specified keys
      */
     public static Object mGet(HandleValue redisDataSourceHandleValue, BArray keys) {
@@ -306,13 +306,13 @@ public class StringActions extends AbstractRedisAction {
      * Set multiple keys to multiple values.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param keys
+     * @param keys A map of key-value pairs to be set
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object mSet(HandleValue redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mSet(createMapFromBMap(keys), redisDataSource).stringValue();
+            return mSet(createMapFromBMap(keys), redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -322,13 +322,13 @@ public class StringActions extends AbstractRedisAction {
      * Set multiple keys to multiple values, only if none of the keys exist.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param keys
-     * @return A string with the value `OK` if the operation was successful
+     * @param keys A map of key-value pairs to be set
+     * @return True if the operation was successful, false if it failed
      */
     public static Object mSetNx(HandleValue redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return mSetnx(createMapFromBMap(keys), redisDataSource).booleanValue();
+            return mSetnx(createMapFromBMap(keys), redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -381,7 +381,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object setBit(HandleValue redisDataSourceHandleValue, String key, int value, int offset)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return setBit(key, value, offset, redisDataSource).intValue();
+            return setBit(key, value, offset, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -417,7 +417,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object setNx(HandleValue redisDataSourceHandleValue, String key, String value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return setNx(key, value, redisDataSource).booleanValue();
+            return setNx(key, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -428,14 +428,14 @@ public class StringActions extends AbstractRedisAction {
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key key
-     * @param offset
+     * @param offset The offset at which the value should be set
      * @param value value
      * @return The length of the string after it was modified
      */
     public static Object setRange(HandleValue redisDataSourceHandleValue, String key, int offset, String value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return setRange(key, offset, value, redisDataSource).intValue();
+            return setRange(key, offset, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -451,7 +451,7 @@ public class StringActions extends AbstractRedisAction {
     public static Object strln(HandleValue redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return strln(key, redisDataSource).intValue();
+            return strln(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

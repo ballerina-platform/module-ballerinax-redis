@@ -24,7 +24,7 @@ import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis hash actions.
@@ -42,7 +42,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hDel(HandleValue redisDataSourceHandleValue, String key, BArray fields) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hDel(key, redisDataSource, createStringArrayFromBArray(fields)).intValue();
+            return hDel(key, redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -60,7 +60,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hExists(HandleValue redisDataSourceHandleValue, String key, String field) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hExists(key, field, redisDataSource).booleanValue();
+            return hExists(key, field, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -111,7 +111,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hIncrBy(HandleValue redisDataSourceHandleValue, String key, String field, int amount) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hIncrBy(key, field, amount, redisDataSource).intValue();
+            return hIncrBy(key, field, amount, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -129,7 +129,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hIncrByFloat(HandleValue redisDataSourceHandleValue, String key, String field, double amount) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hIncrByFloat(key, field, amount, redisDataSource).floatValue();
+            return hIncrByFloat(key, field, amount, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -155,13 +155,13 @@ public class HashActions extends AbstractRedisAction {
      * Get the number of fields in a hash.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
+     * @param key The key of the hash
      * @return Number of fields
      */
     public static Object hLen(HandleValue redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hLen(key, redisDataSource).intValue();
+            return hLen(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -214,7 +214,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hSet(HandleValue redisDataSourceHandleValue, String key, String field, String value) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hSet(key, field, value, redisDataSource).booleanValue();
+            return hSet(key, field, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -233,7 +233,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hSetNx(HandleValue redisDataSourceHandleValue, String key, String field, String value) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hSetNx(key, field, value, redisDataSource).booleanValue();
+            return hSetNx(key, field, value, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -251,7 +251,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hStrln(HandleValue redisDataSourceHandleValue, String key, String field) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hStrln(key, field, redisDataSource).intValue();
+            return hStrln(key, field, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

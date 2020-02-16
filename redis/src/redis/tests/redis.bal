@@ -1,4 +1,4 @@
-// Copyright (c) 2018 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2020 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,18 +14,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerinax/java;
 import ballerina/test;
+import ballerinax/java;
 
 ClientEndpointConfiguration redisConfig = {
-        host: "localhost",
-        password: "",
-        options: { connectionPooling: true, isClusterConnection: false, ssl: false,
-            startTls: false, verifyPeer: false, connectionTimeout: 500 }
+    host: "localhost",
+    password: "",
+    options: {
+        connectionPooling: true,
+        isClusterConnection: false,
+        ssl: false,
+        startTls: false,
+        verifyPeer: false,
+        connectionTimeout: 500
+    }
 };
 
 var stringResult = initRedisServer();
-Client conn =  check new (redisConfig);
+Client conn = check new (redisConfig);
 
 @test:BeforeSuite
 public function initDb() {
@@ -42,12 +48,17 @@ public function stopServer() {
     stopRedisServer();
 }
 
-function initRedisServer() returns error? = @java:Method{
+function initRedisServer() returns error? = @java:Method {
     name: "initServer",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
-function stopRedisServer() = @java:Method{
+function stopRedisServer() = @java:Method {
     name: "stopServer",
+    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+} external;
+
+function getValue(handle key) returns handle = @java:Method {
+    name: "getValue",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

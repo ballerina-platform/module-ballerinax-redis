@@ -57,8 +57,8 @@ public class RedisDataSource<K, V> {
     private RedisCodec<K, V> codec;
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
-    private boolean isClusterConnection = false;
-    private boolean poolingEnabled = false;
+    private boolean isClusterConnection;
+    private boolean poolingEnabled;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
 
     /**
@@ -84,7 +84,6 @@ public class RedisDataSource<K, V> {
      */
     public void init(String hosts, String password, MapValue options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
-        Supplier<StatefulConnection<K, V>> supplier;
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, options);
         } else {

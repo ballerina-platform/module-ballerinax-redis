@@ -14,18 +14,29 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 
 @test:Config {
 }
 function testPing() {
     var result = conn->ping();
-    test:assertEquals(result, "PONG");
+    if (result is string) {
+        test:assertEquals(result, "PONG");
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
 }
 function testEcho() {
     var result = conn->echo("Manuri");
-    test:assertEquals(result, "Manuri");
+    if (result is string) {
+        test:assertEquals(result, "Manuri");
+    } else {
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }

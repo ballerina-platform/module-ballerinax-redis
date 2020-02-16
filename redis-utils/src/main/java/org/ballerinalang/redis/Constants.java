@@ -27,12 +27,8 @@ import java.util.Map;
  * @since 0.5.0
  */
 public class Constants {
-    public static final int DEFAULT_REDIS_PORT = 6379;
-    public static final String REDIS_PACKAGE_PATH = "wso2/redis:0.0.0";
-    public static final String CLIENT = "Client";
-    public static final String REDIS_EXCEPTION_OCCURRED = "Exception Occurred while executing Redis action";
-    public static final String DATABASE_ERROR_DATA_RECORD_NAME = "DatabaseErrorData";
-    public static final String DATABASE_ERROR_CODE = "{wso2/redis}DatabaseError";
+    static final int DEFAULT_REDIS_PORT = 6379;
+    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerina/redis}Error";
 
     /**
      * Endpoint configuration constants.

@@ -23,7 +23,7 @@ import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis key actions.
@@ -40,7 +40,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object del(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return del(redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return del(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -56,7 +56,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object exists(HandleValue redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return exists(redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return exists(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -73,7 +73,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object expire(HandleValue redisDataSourceHandleValue, String key, int seconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return expire(key, seconds, redisDataSource).booleanValue();
+            return expire(key, seconds, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -106,7 +106,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object move(HandleValue redisDataSourceHandleValue, String key, int database) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return move(key, database, redisDataSource).booleanValue();
+            return move(key, database, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -123,7 +123,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object persist(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return persist(key, redisDataSource).booleanValue();
+            return persist(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -135,12 +135,13 @@ public class KeyActions extends AbstractRedisAction {
      * @param redisDataSourceHandleValue redis datasource
      * @param key he key of which expiry time should be removed
      * @param timeMilliSeconds The expiry time in milli seconds
-     * @return
+     * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
+     *         be set
      */
     public static Object pExpire(HandleValue redisDataSourceHandleValue, String key, int timeMilliSeconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return pExpire(key, timeMilliSeconds, redisDataSource).booleanValue();
+            return pExpire(key, timeMilliSeconds, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -156,7 +157,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object pTtl(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return pTtl(key, redisDataSource).intValue();
+            return pTtl(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -201,12 +202,12 @@ public class KeyActions extends AbstractRedisAction {
      * @param key The key to be renamed
      * @param newName The new name of the key boolean `true` if key was renamed to newkey. boolean `false` if
      *                newkey already exists.
-     * @return
+     * @return boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists
      */
     public static Object renameNx(HandleValue redisDataSourceHandleValue, String key, String newName) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return renameNx(key, newName, redisDataSource).booleanValue();
+            return renameNx(key, newName, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -240,7 +241,7 @@ public class KeyActions extends AbstractRedisAction {
     public static Object ttl(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return ttl(key, redisDataSource).intValue();
+            return ttl(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

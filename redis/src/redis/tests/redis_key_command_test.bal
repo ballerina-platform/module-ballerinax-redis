@@ -14,18 +14,19 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 import ballerinax/java;
-import ballerina/io;
 
 @test:Config {
 }
 function testDel() {
-   var result = conn->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
-   if (result is int) {
+    var result = conn->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
+    if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -35,12 +36,13 @@ function testExists() {
     var result = conn->exists(["testExistsKey"]);
     var result2 = conn->exists(["nonExistentKey"]);
     if (result is int) {
-        test:assertEquals(result, 1);  
+        test:assertEquals(result, 1);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
     if (result is int) {
-        test:assertEquals(result2, 0); 
+        test:assertEquals(result2, 0);
     }
 }
 
@@ -49,9 +51,10 @@ function testExists() {
 function testExpire() {
     var result = conn->expire("testExpireKey", 3);
     if (result is boolean) {
-        test:assertTrue(result);  
+        test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -60,9 +63,10 @@ function testExpire() {
 function testKeys() {
     var result = conn->keys("testKeysKey*");
     if (result is string[]) {
-        test:assertEquals(result.length(), 3);   
+        test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -73,7 +77,8 @@ function testMove() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -84,7 +89,8 @@ function testPersist() {
     if (result is boolean) {
         test:assertFalse(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -95,7 +101,8 @@ function testPExpire() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -118,7 +125,8 @@ function testRename() {
     if (result is string) {
         test:assertEquals(result, "OK");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -130,12 +138,14 @@ function testRenameNx() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
     if (result2 is boolean) {
-        test:assertFalse(result2); 
+        test:assertFalse(result2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result2.reason(), <string> result2.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result2.reason(),
+        <string>result2.detail()["message"]));
     }
 }
 
@@ -152,7 +162,8 @@ function testSort() {
         test:assertEquals(result[4], "4");
         test:assertEquals(result[5], "8");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -169,11 +180,12 @@ function testType() {
     if (result is string) {
         test:assertEquals(result, "string");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
-function setupRedisKeyDatabase() = @java:Method{
+function setupRedisKeyDatabase() = @java:Method {
     name: "setupKeyDatabase",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

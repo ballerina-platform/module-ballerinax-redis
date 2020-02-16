@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/io;
 import ballerina/test;
 import ballerinax/java;
-import ballerina/io;
 
 @test:Config {
 }
@@ -25,7 +25,8 @@ function testSAdd() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -37,8 +38,9 @@ function testSDiff() {
         test:assertEquals(result.length(), 2);
         test:assertTrue((result[0] == "Three" && result[1] == "Four") || (result[0] == "Four" && result[1] == "Three"));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
-    }    
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
+    }
 }
 
 @test:Config {
@@ -48,7 +50,8 @@ function testSDiffStore() {
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -57,9 +60,10 @@ function testSDiffStore() {
 function testSInter() {
     var result = conn->sInter(["testSInterKey1", "testSInterKey2"]);
     if (result is string[]) {
-       test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
+        test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -70,7 +74,8 @@ function testSInterStore() {
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -81,7 +86,8 @@ function testSIsMember() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -92,7 +98,8 @@ function testSMembers() {
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -103,7 +110,8 @@ function testSPop() {
     if (result is string[]) {
         test:assertEquals(result.length(), 2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -114,7 +122,8 @@ function testSRandMember() {
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -125,18 +134,20 @@ function testSRem() {
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
 @test:Config {
 }
-function testSUnion() { 
+function testSUnion() {
     var result = conn->sUnion(["testUnionKey1", "testUnionKey2"]);
     if (result is string[]) {
         test:assertEquals(result.length(), 4);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
@@ -147,11 +158,12 @@ function testSUnionStore() {
     if (result is int) {
         test:assertEquals(result, 4);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(), <string> result.detail()["message"]));
+        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
+        <string>result.detail()["message"]));
     }
 }
 
-function setupRedisSetDatabase() = @java:Method{
+function setupRedisSetDatabase() = @java:Method {
     name: "setupSetDatabase",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

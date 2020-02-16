@@ -24,7 +24,7 @@ import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis sorted set actions.
@@ -43,7 +43,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zAdd(HandleValue redisDataSourceHandleValue, String key, BMap memberScoreMap) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zAdd(key, redisDataSource, createMapFromBMap(memberScoreMap)).intValue();
+            return zAdd(key, redisDataSource, createMapFromBMap(memberScoreMap));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -59,7 +59,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zCard(HandleValue redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zCard(key, redisDataSource).intValue();
+            return zCard(key, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -77,7 +77,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zCount(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zCount(key, min, max, redisDataSource).intValue();
+            return zCount(key, min, max, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -95,7 +95,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zIncrBy(HandleValue redisDataSourceHandleValue, String key, float amount, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zIncrBy(key, amount, member, redisDataSource).floatValue();
+            return zIncrBy(key, amount, member, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -112,7 +112,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zInterStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zInterStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return zInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -130,7 +130,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zLexCount(HandleValue redisDataSourceHandleValue, String destination, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zLexCount(destination, min, max, redisDataSource).intValue();
+            return zLexCount(destination, min, max, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -214,13 +214,13 @@ public class SortedSetActions extends AbstractRedisAction {
      *
      * @param redisDataSourceHandleValue redis datasource
      * @param key The key of the sorted set
-     * @param memeber The member of which the index needs to be obtained
+     * @param member The member of which the index needs to be obtained
      * @return  The index of the member
      */
-    public static Object zRank(HandleValue redisDataSourceHandleValue, String key, String memeber) {
+    public static Object zRank(HandleValue redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRank(key, memeber, redisDataSource).intValue();
+            return zRank(key, member, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -237,7 +237,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zRem(HandleValue redisDataSourceHandleValue, String key, BArray memebers) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRem(key, redisDataSource, createStringArrayFromBArray(memebers)).intValue();
+            return zRem(key, redisDataSource, createStringArrayFromBArray(memebers));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -255,7 +255,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zRemRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRemRangeByLex(key, min, max, redisDataSource).intValue();
+            return zRemRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -273,7 +273,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zRemRangeByRank(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRemRangeByRank(key, min, max, redisDataSource).intValue();
+            return zRemRangeByRank(key, min, max, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -291,7 +291,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zRemRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRemRangeByScore(key, min, max, redisDataSource).intValue();
+            return zRemRangeByScore(key, min, max, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -344,23 +344,24 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zRevRank(HandleValue redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zRevRank(key, member, redisDataSource).intValue();
+            return zRevRank(key, member, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
     }
 
     /**
+     * Determine the score of a member in a sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key
-     * @param member
+     * @param key The key of the sorted set
+     * @param member The member of which the score needs to be obtained
      * @return
      */
     public static Object zScore(HandleValue redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zScore(key, member, redisDataSource).floatValue();
+            return zScore(key, member, redisDataSource);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
@@ -377,7 +378,7 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zUnionStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys)).intValue();
+            return zUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

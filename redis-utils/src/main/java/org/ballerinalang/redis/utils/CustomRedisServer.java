@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2018, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,9 +30,10 @@ import java.io.IOException;
 public class CustomRedisServer extends RedisServer {
     private static final String REDIS_READY_PATTERN = ".*Ready to accept connections*";
 
-    public CustomRedisServer(String executable, Integer port) throws IOException {
+    CustomRedisServer(String macExecutable, String linuxExecutable, Integer port) throws IOException {
         //TODO: Override this for windows with a suitable executable of the latest Redis version and test
-        super(RedisExecProvider.defaultProvider().override(OS.MAC_OS_X, executable), port);
+        super(RedisExecProvider.defaultProvider().override(OS.MAC_OS_X, macExecutable)
+                .override(OS.UNIX, linuxExecutable), port);
     }
 
     protected String redisReadyPattern() {

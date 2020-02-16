@@ -22,7 +22,7 @@ import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.redis.RedisDataSource;
 
-import static org.ballerinalang.redis.BallerinaRedisDbErrors.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis connection actions.

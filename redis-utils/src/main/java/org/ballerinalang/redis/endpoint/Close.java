@@ -30,6 +30,11 @@ import org.ballerinalang.redis.actions.AbstractRedisAction;
 
 public class Close extends AbstractRedisAction {
 
+    /**
+     * Close a redis server connection.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     */
     public static void close(HandleValue redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         close(redisDataSource);

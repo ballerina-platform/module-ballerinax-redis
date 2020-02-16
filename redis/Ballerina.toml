@@ -7,7 +7,7 @@ target = "java8"
 
 [[platform.libraries]]
 module = "redis"
-path = "../redis-utils/target/wso2-redis-0.8.3-SNAPSHOT.jar"
-artafactId = "wso2-redis"
+path = "../redis-utils/target/redis-0.8.3-SNAPSHOT.jar"
+artafactId = "redis"
 version = "0.8.3-SNAPSHOT"
 groupId = "org.ballerinalang"

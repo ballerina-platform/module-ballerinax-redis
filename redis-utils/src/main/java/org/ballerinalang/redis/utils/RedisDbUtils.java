@@ -24,6 +24,7 @@ import io.lettuce.core.ScoredValue;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
+import org.ballerinalang.model.values.BString;
 import redis.embedded.RedisServer;
 
 import java.io.IOException;
@@ -41,10 +42,13 @@ public class RedisDbUtils {
     private static RedisCommands<String, String> redisCommands;
 
     public static void initServer() throws IOException {
-        String executablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
-                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7")
+        String macExecutablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7-mac")
                 .toString();
-        redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
+        String linuxExecutablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7-linux")
+                .toString();
+        redisServer = new CustomRedisServer(macExecutablePath, linuxExecutablePath, REDIS_PORT);
         redisServer.start();
     }
 
@@ -317,5 +321,13 @@ public class RedisDbUtils {
         RedisClient redisClient = RedisClient.create(redisURI);
         statefulRedisConnection = redisClient.connect(StringCodec.UTF8);
         redisCommands = statefulRedisConnection.sync();
+    }
+
+    public static BString getValue(String key) {
+        if (redisCommands.get(key) != null) {
+            return new BString(redisCommands.get(key));
+        } else {
+            return new BString("");
+        }
     }
 }
