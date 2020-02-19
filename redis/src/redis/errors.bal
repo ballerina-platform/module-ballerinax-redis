@@ -24,7 +24,7 @@ public type Detail record {
 };
 
 # Represents the reason string for the `redis:Error`
-public const REDIS_ERROR = "{ballerina/redis}Error";
+public const REDIS_ERROR = "{wso2/redis}Error";
 
 # Represents a redis generic error
 public type Error error<REDIS_ERROR, Detail>;

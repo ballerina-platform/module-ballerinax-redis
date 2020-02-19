@@ -126,25 +126,6 @@ following operations are supported.
 * TTL
 * TYPE
 
-Steps to Configure
-==================================
-
-Extract wso2-redis-<version>.zip and copy containing jars in to <BRE_HOME>/bre/lib/
-
-Building from the source
-==================================
-If you want to build Ballerina Redis Connector from the source code:
-
-1. Get a clone or download the source from this repository:
-    https://github.com/wso2-ballerina/module-redis
-2. Run the following Maven command from the ballerina directory: 
-    mvn clean install
-3. Extract the distribution created at `/component/target/wso2-redis-<version>.zip`. Run the install.{sh/bat} script to install the module.
-You can uninstall the module by running uninstall.{sh/bat}.
-
-Sample
-==================================
-
 ```ballerina
 import wso2/redis;
 import ballerina/io;

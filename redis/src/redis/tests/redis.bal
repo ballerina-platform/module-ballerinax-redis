@@ -62,3 +62,18 @@ function getValue(handle key) returns handle = @java:Method {
     name: "getValue",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
+
+function sisMember(handle key, handle value) returns boolean = @java:Method {
+    name: "sisMember",
+    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+} external;
+
+function hexists(handle key, handle field) returns boolean = @java:Method {
+    name: "hexists",
+    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+} external;
+
+function hget(handle key, handle field) returns handle = @java:Method {
+    name: "hget",
+    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+} external;

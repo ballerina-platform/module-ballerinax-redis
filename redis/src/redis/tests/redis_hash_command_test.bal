@@ -24,6 +24,9 @@ function testHDel() {
     var result = conn->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
     if (result is int) {
         test:assertEquals(result, 3);
+        test:assertTrue(!hexists(java:fromString("testHDelKey"), java:fromString("testHDelField1")) &&
+        !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField2")) &&
+        !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField3")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -121,6 +124,10 @@ function testHMSet() {
     var result = conn->hMSet("testHMSetKey", fieldValueMap);
     if (result is string) {
         test:assertEquals(result, "OK");
+        test:assertTrue(hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")) &&
+        hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")).toString() == "testHMSetValue1" &&
+        hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")) &&
+        hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")).toString() == "testHMSetValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -145,6 +152,8 @@ function testHSet() {
     var result = conn->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
     if (result is boolean) {
         test:assertTrue(result);
+        test:assertTrue(hexists(java:fromString("testHSetKey"), java:fromString("testHSetField1")) &&
+        hget(java:fromString("testHSetKey"), java:fromString("testHSetField1")).toString() == "testHSetValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -157,6 +166,8 @@ function testHSetNx() {
     var result = conn->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
     if (result is boolean) {
         test:assertTrue(result);
+        test:assertTrue(hexists(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")) &&
+        hget(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")).toString() == "testHSetNxValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));

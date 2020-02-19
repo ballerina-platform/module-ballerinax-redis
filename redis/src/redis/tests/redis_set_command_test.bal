@@ -24,6 +24,9 @@ function testSAdd() {
     var result = conn->sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
     if (result is int) {
         test:assertEquals(result, 3);
+        test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue3")));
+        test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue4")));
+        test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue5")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -49,6 +52,8 @@ function testSDiffStore() {
     var result = conn->sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
     if (result is int) {
         test:assertEquals(result, 2);
+        test:assertTrue(sisMember(java:fromString("testSDiffStoreDestKey"), java:fromString("Three")));
+        test:assertTrue(sisMember(java:fromString("testSDiffStoreDestKey"), java:fromString("Four")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -73,6 +78,10 @@ function testSInterStore() {
     var result = conn->sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
     if (result is int) {
         test:assertEquals(result, 2);
+        test:assertTrue(sisMember(java:fromString("testSInterDestKey"), java:fromString("One")));
+        test:assertTrue(sisMember(java:fromString("testSInterDestKey"), java:fromString("Two")));
+        test:assertFalse(sisMember(java:fromString("testSInterDestKey"), java:fromString("Three")));
+        test:assertFalse(sisMember(java:fromString("testSInterDestKey"), java:fromString("Four")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -109,6 +118,8 @@ function testSPop() {
     var result = conn->sPop("testSPopKey", 2);
     if (result is string[]) {
         test:assertEquals(result.length(), 2);
+        test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[0])));
+        test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[1])));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -133,6 +144,8 @@ function testSRem() {
     var result = conn->sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
     if (result is int) {
         test:assertEquals(result, 2);
+        test:assertFalse(sisMember(java:fromString("testSRemKey"), java:fromString("testSRemValue1")));
+        test:assertFalse(sisMember(java:fromString("testSRemKey"), java:fromString("testSRemValue3")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));
@@ -157,6 +170,10 @@ function testSUnionStore() {
     var result = conn->sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
     if (result is int) {
         test:assertEquals(result, 4);
+        test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue1")));
+        test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue2")));
+        test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue3")));
+        test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue4")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
         <string>result.detail()["message"]));

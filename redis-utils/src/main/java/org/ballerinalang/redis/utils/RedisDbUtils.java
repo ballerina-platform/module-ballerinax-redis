@@ -41,6 +41,11 @@ public class RedisDbUtils {
     private static final int REDIS_PORT = 6379;
     private static RedisCommands<String, String> redisCommands;
 
+    /**
+     * Initialize custom redis server.
+     *
+     * @throws IOException exception
+     */
     public static void initServer() throws IOException {
         String macExecutablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
                 resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7-mac")
@@ -52,10 +57,16 @@ public class RedisDbUtils {
         redisServer.start();
     }
 
+    /**
+     * Stop redis server.
+     */
     public static void stopServer() {
         redisServer.stop();
     }
 
+    /**
+     * Populate string database.
+     */
     public static void setupStringDatabase() {
         setUpClient();
         String[] keyArray = {
@@ -76,6 +87,9 @@ public class RedisDbUtils {
         }
     }
 
+    /**
+     * Populate key database.
+     */
     public static void setupKeyDatabase() {
         setUpClient();
         String[] keyArray = {
@@ -99,6 +113,9 @@ public class RedisDbUtils {
         redisCommands.lpush(listKey, listValues);
     }
 
+    /**
+     * Populate list database.
+     */
     public static void setupListDatabase() {
         setUpClient();
         String[] keyArray = {
@@ -123,6 +140,9 @@ public class RedisDbUtils {
         }
     }
 
+    /**
+     * Populate hash database.
+     */
     public static void setupHashDatabase() {
         setUpClient();
         String[] hashKeyArray = {
@@ -158,6 +178,9 @@ public class RedisDbUtils {
         }
     }
 
+    /**
+     * Populate set database.
+     */
     public static void setupSetDatabase() {
         setUpClient();
         String[] keyArray = {
@@ -179,6 +202,9 @@ public class RedisDbUtils {
         }
     }
 
+    /**
+     * Populate sorted set database.
+     */
     public static void setupSortedSetDatabase() {
         setUpClient();
         String[] keyArray = {
@@ -315,6 +341,9 @@ public class RedisDbUtils {
         }
     }
 
+    /**
+     * Create a redis database client.
+     */
     private static void setUpClient() {
         StatefulRedisConnection<String, String> statefulRedisConnection;
         RedisURI redisURI = RedisURI.Builder.redis(REDIS_HOST, REDIS_PORT).build();
@@ -323,11 +352,50 @@ public class RedisDbUtils {
         redisCommands = statefulRedisConnection.sync();
     }
 
+    /**
+     * Get value for a given key.
+     *
+     * @param key key
+     * @return value
+     */
     public static BString getValue(String key) {
         if (redisCommands.get(key) != null) {
             return new BString(redisCommands.get(key));
         } else {
             return new BString("");
         }
+    }
+
+    /**
+     * Check if set contains a member.
+     *
+     * @param key key
+     * @param value member
+     * @return True if member exists in set, false if not
+     */
+    public static boolean sisMember(String key, String value) {
+        return redisCommands.sismember(key, value);
+    }
+
+    /**
+     * Check if hash exists.
+     *
+     * @param key key
+     * @param field field
+     * @return True if hash exists, false if not
+     */
+    public static boolean hexists(String key, String field) {
+        return redisCommands.hexists(key, field);
+    }
+
+    /**
+     * Get a value of a hash.
+     *
+     * @param key key
+     * @param field field
+     * @return hash value
+     */
+    public static String hget(String key, String field) {
+        return redisCommands.hget(key, field);
     }
 }
