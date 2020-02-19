@@ -126,36 +126,19 @@ following operations are supported.
 * TTL
 * TYPE
 
-Steps to Configure
-==================================
-
-Extract wso2-redis-<version>.zip and copy containing jars in to <BRE_HOME>/bre/lib/
-
-Building from the source
-==================================
-If you want to build Ballerina Redis Connector from the source code:
-
-1. Get a clone or download the source from this repository:
-    https://github.com/wso2-ballerina/module-redis
-2. Run the following Maven command from the ballerina directory: 
-    mvn clean install
-3. Extract the distribution created at `/component/target/wso2-redis-<version>.zip`. Run the install.{sh/bat} script to install the module.
-You can uninstall the module by running uninstall.{sh/bat}.
-
-Sample
-==================================
-
 ```ballerina
 import wso2/redis;
 import ballerina/io;
 
-public function main() {
-    redis:Client conn = new({
+redis:ClientEndpointConfiguration redisConfig = {
         host: "localhost",
         password: "",
         options: { connectionPooling: true, isClusterConnection: false, ssl: false,
             startTls: false, verifyPeer: false, connectionTimeout: 500 }
-    });
+};
+
+public function main() returns error? {
+    redis:Client conn =  check new (redisConfig);
 
     io:println("Pinging Redis Server...");
     //Ping Server
@@ -169,12 +152,12 @@ public function main() {
     io:println("\n===Executing sample string oprerations===");
     //Sample String Operations
     io:println("Setting value of the key \"Project\" as \"Ballerina\"");
-    var stringSetresult = conn->setVal("Project", "Ballerina");
+    var stringSetresult = conn->set("Project", "Ballerina");
 
     if (stringSetresult is string) {
         io:println("Reply from the server: " + stringSetresult);
     } else {
-        io:println("Error occurred while calling `setVal`");
+        io:println("Error occurred while calling `set`");
     }
 
     io:println("\nQuerying the server for the value of the key \"Project\"");
@@ -182,8 +165,6 @@ public function main() {
 
     if (value is string) {
         io:println("Reply from the server: " + value);
-    } else if (value is ()) {
-        io:println("Key does not exist");
     } else {
         io:println("Error occurred while calling `get`");
     }
@@ -194,7 +175,7 @@ public function main() {
     var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
 
     if (listPushresult is int) {
-        io:println("Number of elements pushed: " + listPushresult);
+        io:println(io:sprintf("Number of elements pushed: %s", listPushresult));
     } else {
         io:println("Error occurred while calling `lPush`");
     }
@@ -204,8 +185,6 @@ public function main() {
 
     if (lPopResult is string) {
         io:println("Popped element: " + lPopResult);
-    } else if (lPopResult is ()) {
-        io:println("Key does not exist");
     } else {
         io:println("Error occurred while calling `lPop`");
     }
@@ -215,7 +194,7 @@ public function main() {
     var setAddResult = conn->sAdd("NumberSet", ["1", "2", "3"]);
 
     if (setAddResult is int) {
-        io:println("Number of elements added: " + setAddResult);
+        io:println(io:sprintf("Number of elements added: : %s", setAddResult));
     } else {
         io:println("Error occurred while calling `sAdd`");
     }
@@ -224,7 +203,7 @@ public function main() {
     var setCardResult = conn->sCard("NumberSet");
 
     if (setCardResult is int) {
-        io:println("Number of memebers in the set: " + setCardResult);
+        io:println(io:sprintf("Number of memebers in the set: %s", setCardResult));
     } else {
         io:println("Error occurred while calling `sCard`");
     }
@@ -235,7 +214,7 @@ public function main() {
     var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
 
     if (hashSetResult is boolean) {
-        io:println("Hash set status: " + hashSetResult);
+        io:println(io:sprintf("Hash set status: %s", hashSetResult));
     } else {
         io:println("Error occurred while calling `hSet`");
     }
