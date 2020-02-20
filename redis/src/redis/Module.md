@@ -15,6 +15,12 @@ below.
 
 Once the client is created, redis commands can be executed through that client.
 
+## Compatibility
+
+|                             |           Version           |
+|:---------------------------:|:---------------------------:|
+| Ballerina Language          |            1.1.2            |
+
 ## Samples
 
 ### Creating a Client
