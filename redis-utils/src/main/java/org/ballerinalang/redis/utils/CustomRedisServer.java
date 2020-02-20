@@ -23,6 +23,7 @@ import redis.embedded.RedisServer;
 import redis.embedded.util.OS;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * A custom redis server.
@@ -30,13 +31,22 @@ import java.io.IOException;
 public class CustomRedisServer extends RedisServer {
     private static final String REDIS_READY_PATTERN = ".*Ready to accept connections*";
 
-    CustomRedisServer(String macExecutable, String linuxExecutable, Integer port) throws IOException {
-        //TODO: Override this for windows with a suitable executable of the latest Redis version and test
-        super(RedisExecProvider.defaultProvider().override(OS.MAC_OS_X, macExecutable)
-                .override(OS.UNIX, linuxExecutable), port);
+    CustomRedisServer(String executable, Integer port) throws IOException {
+        super(RedisExecProvider.defaultProvider().override(getOs(), executable), port);
     }
 
     protected String redisReadyPattern() {
         return REDIS_READY_PATTERN;
+    }
+
+    private static OS getOs() {
+        String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+        if (os.contains("mac")) {
+            return OS.MAC_OS_X;
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            return OS.UNIX;
+        } else {
+            return OS.WINDOWS;
+        }
     }
 }
