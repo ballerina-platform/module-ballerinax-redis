@@ -126,6 +126,12 @@ following operations are supported.
 * TTL
 * TYPE
 
+## Compatibility
+
+|                             |           Version           |
+|:---------------------------:|:---------------------------:|
+| Ballerina Language          |            1.1.2            |
+
 ```ballerina
 import wso2/redis;
 import ballerina/io;
