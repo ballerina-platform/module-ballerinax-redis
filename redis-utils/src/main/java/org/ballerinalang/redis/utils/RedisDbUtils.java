@@ -24,13 +24,19 @@ import io.lettuce.core.ScoredValue;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
+import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.model.values.BString;
 import redis.embedded.RedisServer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis database utils to run unit tests.
@@ -46,22 +52,61 @@ public class RedisDbUtils {
      *
      * @throws IOException exception
      */
-    public static void initServer() throws IOException {
-        String macExecutablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
-                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7-mac")
-                .toString();
-        String linuxExecutablePath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
-                resolve("tests").resolve("resources").resolve("redis-executable").resolve("redis-server-5.0.7-linux")
-                .toString();
-        redisServer = new CustomRedisServer(macExecutablePath, linuxExecutablePath, REDIS_PORT);
-        redisServer.start();
+    public static Object initServer() throws IOException {
+        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+                resolve("tests").resolve("resources").resolve("setup.sh").toString();
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash", scriptPath);
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                StandardCharsets.UTF_8))) {
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
+                        resolve("redis-server").toString();
+                redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
+                redisServer.start();
+            } else {
+                return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
+            }
+        } catch (IOException | InterruptedException e) {
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+        process.destroy();
+        return "OK";
     }
 
     /**
      * Stop redis server.
      */
-    public static void stopServer() {
+    public static Object stopServer() throws IOException {
         redisServer.stop();
+        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+                resolve("tests").resolve("resources").resolve("cleanup.sh").toString();
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash", scriptPath);
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                StandardCharsets.UTF_8))) {
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+            int exitVal = process.waitFor();
+            if (exitVal != 0) {
+                return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
+            }
+        } catch (IOException | InterruptedException e) {
+            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+        }
+        process.destroy();
+        return "OK";
     }
 
     /**
