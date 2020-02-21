@@ -53,15 +53,14 @@ public class RedisDbUtils {
      * @throws IOException exception
      */
     public static Object initServer() throws IOException {
-        BufferedReader reader = null;
         String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
-        try {
-            Process process = processBuilder.start();
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                StandardCharsets.UTF_8))) {
             StringBuilder output = new StringBuilder();
-            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
@@ -77,11 +76,8 @@ public class RedisDbUtils {
             }
         } catch (IOException | InterruptedException e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
         }
+        process.destroy();
         return "OK";
     }
 
@@ -89,16 +85,15 @@ public class RedisDbUtils {
      * Stop redis server.
      */
     public static Object stopServer() throws IOException {
-        BufferedReader reader = null;
         redisServer.stop();
         String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
                 resolve("tests").resolve("resources").resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
-        try {
-            Process process = processBuilder.start();
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                StandardCharsets.UTF_8))) {
             StringBuilder output = new StringBuilder();
-            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
@@ -109,11 +104,8 @@ public class RedisDbUtils {
             }
         } catch (IOException | InterruptedException e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
         }
+        process.destroy();
         return "OK";
     }
 
