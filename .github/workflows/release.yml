@@ -1,0 +1,28 @@
+name: Deployment
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    -  run: mvn clean install 
+    -  run: cd redis
+    - name: Ballerina Build
+      uses: ballerina-platform/ballerina-action/@master
+      with:
+        args:
+          build -a -c --sourceroot redis
+    - name: Ballerina Push
+      uses: ballerina-platform/ballerina-action/@master
+      with:
+        args: 
+          push -a
+      env:
+        WORKING_DIR: ./redis
+        BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
