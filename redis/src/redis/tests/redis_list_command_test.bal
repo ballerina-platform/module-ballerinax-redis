@@ -16,7 +16,7 @@
 
 import ballerina/io;
 import ballerina/test;
-import ballerinax/java;
+import ballerina/java;
 
 @test:Config {
 }

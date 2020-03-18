@@ -16,7 +16,7 @@
 
 import ballerina/test;
 import ballerina/io;
-import ballerinax/java;
+import ballerina/java;
 
 ClientEndpointConfiguration redisConfig = {
     host: "localhost",
