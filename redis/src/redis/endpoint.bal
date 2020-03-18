@@ -743,19 +743,19 @@ public type Client client object {
     # Determine if a hash field exists.
     #
     # + key - The key of the hash
-    # + field - Array of fields to be deleted
+    # + 'field - Array of fields to be deleted
     # + return - boolean `true` if the hash contains the field. boolean false if the hash does not contain
     #            field or key does not exist or `Error` if an Error occurs
-    public remote function hExists(string key, string field) returns boolean | Error {
-        return hExists(self.datasource, java:fromString(key), java:fromString(field));
+    public remote function hExists(string key, string 'field) returns boolean | Error {
+        return hExists(self.datasource, java:fromString(key), java:fromString('field));
     }
     # Get the value of a hash field.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + return - The value of the field or `Error` if an Error occurs
-    public remote function hGet(string key, string field) returns string | Error {
-        return <string>java:toString(check hGet(self.datasource, java:fromString(key), java:fromString(field)));
+    public remote function hGet(string key, string 'field) returns string | Error {
+        return <string>java:toString(check hGet(self.datasource, java:fromString(key), java:fromString('field)));
     }
 
     # Get the all values of a hash.
@@ -769,20 +769,20 @@ public type Client client object {
     # Increment the integer value of a hash field by the given number.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `Error` if an Error occurs
-    public remote function hIncrBy(string key, string field, int amount) returns int | Error {
-        return hIncrBy(self.datasource, java:fromString(key), java:fromString(field), amount);
+    public remote function hIncrBy(string key, string 'field, int amount) returns int | Error {
+        return hIncrBy(self.datasource, java:fromString(key), java:fromString('field), amount);
     }
     # Increment the float value of a hash field by the given number.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `Error` if an Error occurs
-    public remote function hIncrByFloat(string key, string field, float amount) returns float | Error {
-        return hIncrByFloat(self.datasource, java:fromString(key), java:fromString(field), amount);
+    public remote function hIncrByFloat(string key, string 'field, float amount) returns float | Error {
+        return hIncrByFloat(self.datasource, java:fromString(key), java:fromString('field), amount);
     }
     # Get all the fields in a hash.
     #
@@ -820,33 +820,33 @@ public type Client client object {
     # Set the string value of a hash field.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #         field already exists in the hash and the value was updated, or `Error` if an Error occurs
-    public remote function hSet(string key, string field, string value) returns boolean | Error {
-        return hSet(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
+    public remote function hSet(string key, string 'field, string value) returns boolean | Error {
+        return hSet(self.datasource, java:fromString(key), java:fromString('field), java:fromString(value));
     }
 
     # Set the string value of a hash field, only if the field does not exist.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #            field already exists in the hash and no operation was performed, or `Error` if an Error occurs
-    public remote function hSetNx(string key, string field, string value) returns boolean | Error {
-        return hSetNx(self.datasource, java:fromString(key), java:fromString(field), java:fromString(value));
+    public remote function hSetNx(string key, string 'field, string value) returns boolean | Error {
+        return hSetNx(self.datasource, java:fromString(key), java:fromString('field), java:fromString(value));
     }
 
     # Get the string length of the field value in a hash.
     #
     # + key - The key of the hash
-    # + field - The field
+    # + 'field - The field
     # + return - The length of the field value, or 0 when field is not present in the hash or key does
     #            not exist at all, or `Error` if an Error occurs
-    public remote function hStrln(string key, string field) returns int | Error {
-        return hStrln(self.datasource, java:fromString(key), java:fromString(field));
+    public remote function hStrln(string key, string 'field) returns int | Error {
+        return hStrln(self.datasource, java:fromString(key), java:fromString('field));
     }
 
     # Get all the values in a hash.
@@ -1411,11 +1411,11 @@ function hDel(handle datasource, handle key, string[] fields) returns int | Erro
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hExists(handle datasource, handle key, handle field) returns boolean | Error = @java:Method {
+function hExists(handle datasource, handle key, handle 'field) returns boolean | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hGet(handle datasource, handle key, handle field) returns handle | Error = @java:Method {
+function hGet(handle datasource, handle key, handle 'field) returns handle | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
@@ -1423,11 +1423,11 @@ function hGetAll(handle datasource, handle key) returns map<any> | Error = @java
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hIncrBy(handle datasource, handle key, handle field, int amount) returns int | Error = @java:Method {
+function hIncrBy(handle datasource, handle key, handle 'field, int amount) returns int | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hIncrByFloat(handle datasource, handle key, handle field, float amount) returns float | Error = @java:Method {
+function hIncrByFloat(handle datasource, handle key, handle 'field, float amount) returns float | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
@@ -1447,15 +1447,15 @@ function hKeys(handle datasource, handle key) returns string[] | Error = @java:M
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hSet(handle datasource, handle key, handle field, handle value) returns boolean | Error = @java:Method {
+function hSet(handle datasource, handle key, handle 'field, handle value) returns boolean | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hSetNx(handle datasource, handle key, handle field, handle value) returns boolean | Error = @java:Method {
+function hSetNx(handle datasource, handle key, handle 'field, handle value) returns boolean | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
-function hStrln(handle datasource, handle key, handle field) returns int | Error = @java:Method {
+function hStrln(handle datasource, handle key, handle 'field) returns int | Error = @java:Method {
     class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 

@@ -73,12 +73,12 @@ function sisMember(handle key, handle value) returns boolean = @java:Method {
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
-function hexists(handle key, handle field) returns boolean = @java:Method {
+function hexists(handle key, handle 'field) returns boolean = @java:Method {
     name: "hexists",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
-function hget(handle key, handle field) returns handle = @java:Method {
+function hget(handle key, handle 'field) returns handle = @java:Method {
     name: "hget",
     class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

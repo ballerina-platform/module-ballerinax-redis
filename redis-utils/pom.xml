@@ -75,6 +75,21 @@
             <artifactId>ballerina-test-utils</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.47.Final</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -96,6 +111,9 @@
                                     <include>org.reactivestreams:reactive-streams</include>
                                     <include>org.apache.commons:commons-pool2</include>
                                     <include>com.github.kstyrc:embedded-redis</include>
+                                    <include>com.google.guava:guava</include>
+                                    <include>commons-io:commons-io</include>
+                                    <include>io.netty:netty-all</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
