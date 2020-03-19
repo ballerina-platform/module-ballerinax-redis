@@ -148,10 +148,10 @@ If you want to build Ballerina Redis Connector from the source code:
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |            1.1.2            |
+| Ballerina Language          |            1.2.0            |
 
 ```ballerina
-import wso2/redis;
+import ballerina/redis;
 import ballerina/io;
 
 redis:ClientEndpointConfiguration redisConfig = {
