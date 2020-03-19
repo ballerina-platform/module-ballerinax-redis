@@ -30,6 +30,7 @@ import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import org.ballerinalang.jvm.types.BArrayType;
 import org.ballerinalang.jvm.types.BTypes;
+import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.jvm.values.MapValueImpl;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
@@ -414,7 +415,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.blpop(timeout, keys);
             if (result != null) {
-                BMap<K, String> bMap = new MapValueImpl<>();
+                MapValue<K, String> bMap = new MapValueImpl<>();
                 bMap.put(result.getKey(), result.getValue());
                 return bMap;
             } else {
@@ -433,7 +434,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.brpop(timeout, keys);
             if (result != null) {
-                BMap<K, String> bMap = new MapValueImpl<>();
+                MapValue<K, String> bMap = new MapValueImpl<>();
                 bMap.put(result.getKey(), result.getValue());
                 return bMap;
             } else {
@@ -1472,13 +1473,13 @@ public abstract class AbstractRedisAction {
     }
 
     private static <K> BMap<K, String> createBMapFromMap(Map<K, String> map) {
-        BMap<K, String> bMap = new MapValueImpl<>();
+        MapValue<K, String> bMap = new MapValueImpl<>();
         map.forEach((key, value) -> bMap.put(key, value));
         return bMap;
     }
 
     private static <K> BMap<K, String> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
-        BMap<K, String> bMap = new MapValueImpl<>();
+        MapValue<K, String> bMap = new MapValueImpl<>();
         for (KeyValue<K, String> item : list) {
             String value;
             try {
