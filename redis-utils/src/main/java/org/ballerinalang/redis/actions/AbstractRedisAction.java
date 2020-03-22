@@ -28,13 +28,12 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.types.BArrayType;
 import org.ballerinalang.jvm.types.BTypes;
+import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.jvm.values.MapValueImpl;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
-import org.ballerinalang.jvm.values.api.BString;
 import org.ballerinalang.jvm.values.api.BValueCreator;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
@@ -410,14 +409,14 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, BString> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<K, String> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.blpop(timeout, keys);
             if (result != null) {
-                BMap<K, BString> bMap = new MapValueImpl<>();
-                bMap.put(result.getKey(), StringUtils.fromString(result.getValue()));
+                MapValue<K, String> bMap = new MapValueImpl<>();
+                bMap.put(result.getKey(), result.getValue());
                 return bMap;
             } else {
                 return null;
@@ -429,14 +428,14 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, BString> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<K, String> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.brpop(timeout, keys);
             if (result != null) {
-                BMap<K, BString> bMap = new MapValueImpl<>();
-                bMap.put(result.getKey(), StringUtils.fromString(result.getValue()));
+                MapValue<K, String> bMap = new MapValueImpl<>();
+                bMap.put(result.getKey(), result.getValue());
                 return bMap;
             } else {
                 return null;
@@ -1087,7 +1086,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, BString> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
+    static <K> BMap<K, String> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1150,7 +1149,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, BString> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
+    static <K> BMap<K, String> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1473,14 +1472,14 @@ public abstract class AbstractRedisAction {
         return scoredValues;
     }
 
-    private static <K> BMap<K, BString> createBMapFromMap(Map<K, String> map) {
-        BMap<K, BString> bMap = new MapValueImpl<>();
-        map.forEach((key, value) -> bMap.put(key, StringUtils.fromString(value)));
+    private static <K> BMap<K, String> createBMapFromMap(Map<K, String> map) {
+        MapValue<K, String> bMap = new MapValueImpl<>();
+        map.forEach((key, value) -> bMap.put(key, value));
         return bMap;
     }
 
-    private static <K> BMap<K, BString> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
-        BMap<K, BString> bMap = new MapValueImpl<>();
+    private static <K> BMap<K, String> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
+        MapValue<K, String> bMap = new MapValueImpl<>();
         for (KeyValue<K, String> item : list) {
             String value;
             try {
@@ -1488,7 +1487,7 @@ public abstract class AbstractRedisAction {
             } catch (NoSuchElementException e) {
                 value = null;
             }
-            bMap.put(item.getKey(), StringUtils.fromString(value));
+            bMap.put(item.getKey(), value);
         }
         return bMap;
     }
@@ -1510,11 +1509,11 @@ public abstract class AbstractRedisAction {
         return map;
     }
 
-    static BArray createBstringArrayFromBMap(BMap<String, BString> bMap) {
+    static BArray createBstringArrayFromBMap(BMap<String, String> bMap) {
         BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
-        for (Map.Entry<String, BString> entry : bMap.entrySet()) {
+        for (Map.Entry<String, String> entry : bMap.entrySet()) {
             // TODO: Update to entry.getValue() once ballerina syntax is updated
-            bStringArray.append(entry.getValue().getValue());
+            bStringArray.append(entry.getValue());
         }
         return bStringArray;
     }

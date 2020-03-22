@@ -19,7 +19,7 @@ Once the client is created, redis commands can be executed through that client.
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |            1.1.2            |
+| Ballerina Language          |            1.2.0            |
 
 ## Samples
 
