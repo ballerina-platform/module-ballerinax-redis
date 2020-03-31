@@ -15,8 +15,8 @@
 // under the License.
 
 import ballerina/io;
-import ballerina/test;
 import ballerina/java;
+import ballerina/test;
 
 @test:Config {
 }
@@ -29,7 +29,7 @@ function testSAdd() {
         test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue5")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -42,7 +42,7 @@ function testSDiff() {
         test:assertTrue((result[0] == "Three" && result[1] == "Four") || (result[0] == "Four" && result[1] == "Three"));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -56,7 +56,7 @@ function testSDiffStore() {
         test:assertTrue(sisMember(java:fromString("testSDiffStoreDestKey"), java:fromString("Four")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -68,7 +68,7 @@ function testSInter() {
         test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -84,7 +84,7 @@ function testSInterStore() {
         test:assertFalse(sisMember(java:fromString("testSInterDestKey"), java:fromString("Four")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -96,7 +96,7 @@ function testSIsMember() {
         test:assertTrue(result);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -106,9 +106,25 @@ function testSMembers() {
     var result = conn->sMembers("testSMembersKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
+        boolean allMembersRetrieved = true;
+        string[] memberArray = ["testSMembersValue1", "testSMembersValue2", "testSMembersValue3"];
+        foreach var m in memberArray {
+            boolean memberExists = false;
+            foreach var r in result {
+                if (m == r) {
+                    memberExists = true;
+                    break;
+                }
+            }
+            if (!memberExists) {
+                allMembersRetrieved = false;
+                break;
+            }
+        }
+        test:assertTrue(allMembersRetrieved);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -118,11 +134,27 @@ function testSPop() {
     var result = conn->sPop("testSPopKey", 2);
     if (result is string[]) {
         test:assertEquals(result.length(), 2);
+        boolean allMembersPopped = true;
+        string[] memberArray = ["testSPopValue1", "testSPopValue2", "testSPopValue3"];
+        foreach var r in result {
+            boolean memberExists = false;
+            foreach var m in memberArray {
+                if (r == m) {
+                    memberExists = true;
+                    break;
+                }
+            }
+            if (!memberExists) {
+                allMembersPopped = false;
+                break;
+            }
+        }
+        test:assertTrue(allMembersPopped);
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[0])));
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[1])));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -132,9 +164,25 @@ function testSRandMember() {
     var result = conn->sRandMember("testSRandMemberKey", 2);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
+        boolean allMembersPopped = true;
+        string[] memberArray = ["testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"];
+        foreach var r in result {
+            boolean memberExists = false;
+            foreach var m in memberArray {
+                if (r == m) {
+                    memberExists = true;
+                    break;
+                }
+            }
+            if (!memberExists) {
+                allMembersPopped = false;
+                break;
+            }
+        }
+        test:assertTrue(allMembersPopped);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -148,7 +196,7 @@ function testSRem() {
         test:assertFalse(sisMember(java:fromString("testSRemKey"), java:fromString("testSRemValue3")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -158,9 +206,25 @@ function testSUnion() {
     var result = conn->sUnion(["testUnionKey1", "testUnionKey2"]);
     if (result is string[]) {
         test:assertEquals(result.length(), 4);
+        boolean allUnionMembersExist = true;
+        string[] unionArray = ["testUnionValue1", "testUnionValue2", "testUnionValue3", "testUnionValue4"];
+        foreach var r in result {
+            boolean memberExists = false;
+            foreach var u in unionArray {
+                if (r == u) {
+                    memberExists = true;
+                    break;
+                }
+            }
+            if (!memberExists) {
+                allUnionMembersExist = false;
+                break;
+            }
+        }
+        test:assertTrue(allUnionMembersExist);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -176,7 +240,7 @@ function testSUnionStore() {
         test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue4")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 

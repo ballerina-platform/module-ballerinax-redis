@@ -443,4 +443,45 @@ public class RedisDbUtils {
     public static String hget(String key, String field) {
         return redisCommands.hget(key, field);
     }
+
+    /**
+     * Check if key exists.
+     *
+     * @param key key
+     * @return 1 if key exists, 0 if not
+     */
+    public static long exist(String key) {
+        return redisCommands.exists(key);
+    }
+
+    /**
+     * Make a key expire after a given time.
+     *
+     * @param key key
+     * @param duration duration
+     */
+    public static void pexpire(String key, int duration) {
+        redisCommands.pexpire(key, duration);
+    }
+
+    /**
+     * Get the time to live for a key.
+     *
+     * @param key key
+     * @return time to live
+     */
+    public static long pttl(String key) {
+        return redisCommands.pttl(key);
+    }
+
+    /**
+     * Get the value using an index of a set.
+     *
+     * @param key key
+     * @param index index
+     * @return value
+     */
+    public static BString lindex(String key, int index) {
+        return new BString(redisCommands.lindex(key, index));
+    }
 }

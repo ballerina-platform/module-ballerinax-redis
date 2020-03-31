@@ -15,8 +15,8 @@
 // under the License.
 
 import ballerina/io;
-import ballerina/test;
 import ballerina/java;
+import ballerina/test;
 
 @test:Config {
 }
@@ -25,11 +25,11 @@ function testHDel() {
     if (result is int) {
         test:assertEquals(result, 3);
         test:assertTrue(!hexists(java:fromString("testHDelKey"), java:fromString("testHDelField1")) &&
-        !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField2")) &&
-        !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField3")));
+            !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField2")) &&
+            !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField3")));
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -41,7 +41,7 @@ function testHExists() {
         test:assertEquals(result, true);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -53,7 +53,7 @@ function testHGet() {
         test:assertEquals(result, "testHGetValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -63,9 +63,11 @@ function testHGetAll() {
     var result = conn->hGetAll("testHGetAllKey");
     if (result is map<any>) {
         test:assertEquals(result.length(), 2);
+        test:assertTrue(result.get("testHGetAllField1").toString() == "testHGetAllValue1" &&
+            result.get("testHGetAllField2").toString() == "testHGetAllValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -77,7 +79,7 @@ function testHIncrByFloat() {
         test:assertEquals(result, 7.2f);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -89,7 +91,7 @@ function testHIncrBy() {
         test:assertEquals(result, 8);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -101,7 +103,7 @@ function testHLen() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -111,9 +113,12 @@ function testHMGet() {
     var result = conn->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
     if (result is map<any>) {
         test:assertEquals(result.length(), 3);
+        test:assertTrue(result.get("testHMGetField1").toString() == "testHMGetValue1" &&
+            result.get("testHMGetField2").toString() == "testHMGetValue2" &&
+            result.get("testHMGetField3").toString() == "testHMGetValue3");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -125,12 +130,12 @@ function testHMSet() {
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertTrue(hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")) &&
-        hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")).toString() == "testHMSetValue1" &&
-        hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")) &&
-        hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")).toString() == "testHMSetValue2");
+            hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")).toString() == "testHMSetValue1" &&
+            hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")) &&
+            hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")).toString() == "testHMSetValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -140,9 +145,25 @@ function testHKeys() {
     var result = conn->hKeys("testHKeysKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
+        boolean allFieldsRetrieved = true;
+        string[] hKeys = ["testHKeysField1", "testHKeysField2", "testHKeysField3"];
+        foreach var k in hKeys {
+            boolean keyExists = false;
+            foreach var r in result {
+                if (k == r) {
+                    keyExists = true;
+                    break;
+                }
+            }
+            if (!keyExists) {
+                allFieldsRetrieved = false;
+                break;
+            }
+        }
+        test:assertTrue(allFieldsRetrieved);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -153,10 +174,10 @@ function testHSet() {
     if (result is boolean) {
         test:assertTrue(result);
         test:assertTrue(hexists(java:fromString("testHSetKey"), java:fromString("testHSetField1")) &&
-        hget(java:fromString("testHSetKey"), java:fromString("testHSetField1")).toString() == "testHSetValue1");
+            hget(java:fromString("testHSetKey"), java:fromString("testHSetField1")).toString() == "testHSetValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -167,10 +188,10 @@ function testHSetNx() {
     if (result is boolean) {
         test:assertTrue(result);
         test:assertTrue(hexists(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")) &&
-        hget(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")).toString() == "testHSetNxValue1");
+            hget(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")).toString() == "testHSetNxValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -182,7 +203,7 @@ function testHStrln() {
         test:assertEquals(result, 16);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -192,9 +213,25 @@ function testHVals() {
     var result = conn->hVals("testHValsKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
+        boolean allValuesRetrieved = true;
+        string[] hVals = ["testHValsValue1", "testHValsValue1", "testHValsValue1"];
+        foreach var v in hVals {
+            boolean keyExists = false;
+            foreach var r in result {
+                if (v == r) {
+                    keyExists = true;
+                    break;
+                }
+            }
+            if (!keyExists) {
+                allValuesRetrieved = false;
+                break;
+            }
+        }
+        test:assertTrue(allValuesRetrieved);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
