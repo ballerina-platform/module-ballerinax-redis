@@ -15,8 +15,8 @@
 // under the License.
 
 import ballerina/io;
-import ballerina/test;
 import ballerina/java;
+import ballerina/test;
 
 @test:Config {
 }
@@ -27,7 +27,7 @@ function testZAdd() {
         test:assertEquals(result, 1);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -39,7 +39,7 @@ function testZCard() {
         test:assertEquals(result, 2);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -51,7 +51,7 @@ function testZCount() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -63,7 +63,7 @@ function testZIncrBy() {
         test:assertEquals(result, 7.0);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -75,7 +75,7 @@ function testZInterStore() {
         test:assertEquals(result, 2);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -87,7 +87,7 @@ function testZLexCount() {
         test:assertEquals(result, 5);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -102,7 +102,7 @@ function testZRange() {
         test:assertEquals(result[2], "e");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -120,7 +120,7 @@ function testZRangeByLex() {
         test:assertEquals(result[5], "g");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -138,7 +138,7 @@ function testZRevRangeByLex() {
         test:assertEquals(result[5], "b");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -153,7 +153,7 @@ function testZRangeByScore() {
         test:assertEquals(result[2], "f");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -165,7 +165,7 @@ function testZRank() {
         test:assertEquals(result, 0);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -177,7 +177,7 @@ function testZRem() {
         test:assertEquals(result, 2);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -189,7 +189,7 @@ function testZRemRangeByLex() {
         test:assertEquals(result, 6);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -201,7 +201,7 @@ function testZRemRangeByRank() {
         test:assertEquals(result, 4);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -213,7 +213,7 @@ function testZRemRangeByScore() {
         test:assertEquals(result, 4);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -223,9 +223,25 @@ function testZRevRange() {
     var result = conn->zRevRange("testZRangeKey", 1, 3);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
+        boolean allRangeRetrieved = true;
+        string[] memberArray = ["f", "e", "c"];
+        foreach var m in memberArray {
+            boolean memberExists = false;
+            foreach var r in result {
+                if (m == r) {
+                    memberExists = true;
+                    break;
+                }
+            }
+            if (!memberExists) {
+                allRangeRetrieved = false;
+                break;
+            }
+        }
+        test:assertTrue(allRangeRetrieved);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -240,7 +256,7 @@ function testZRevRangeByScore() {
         test:assertEquals(result[2], "f");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -252,7 +268,7 @@ function testZRevRank() {
         test:assertEquals(result, 0);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -264,7 +280,7 @@ function testZScore() {
         test:assertEquals(result, 1.2);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -276,7 +292,7 @@ function testZUnionStore() {
         test:assertEquals(result, 6);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 

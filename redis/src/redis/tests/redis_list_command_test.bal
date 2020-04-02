@@ -15,18 +15,18 @@
 // under the License.
 
 import ballerina/io;
-import ballerina/test;
 import ballerina/java;
+import ballerina/test;
 
 @test:Config {
 }
 function testBLPop() {
     var result = conn->bLPop(1, ["testBLPopKey"]);
     if (result is map<any>) {
-    // test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
+        test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -35,10 +35,10 @@ function testBLPop() {
 function testBRPop() {
     var result = conn->bRPop(1, ["testBRPopKey"]);
     if (result is map<any>) {
-    // test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
+        test:assertEquals(result.get("testBRPopKey"), "testBRPopValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -50,7 +50,7 @@ function testLPush() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -62,7 +62,7 @@ function testLPop() {
         test:assertEquals(result, "testLPopValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -74,7 +74,7 @@ function testLPushX() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -86,7 +86,7 @@ function testLIndex() {
         test:assertEquals(result, "testLIndexValue2");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -98,7 +98,7 @@ function testLInsert() {
         test:assertEquals(result, 5);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -110,7 +110,7 @@ function testLLen() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -122,7 +122,7 @@ function testLRange() {
         test:assertEquals(result.length(), 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -134,7 +134,7 @@ function testLRem() {
         test:assertEquals(result, 2);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -144,9 +144,10 @@ function testLSet() {
     var result = conn->lSet("testLSetKey", 1, "testLSetValue2New");
     if (result is string) {
         test:assertEquals(result, "OK");
+        test:assertEquals(lindex(java:fromString("testLSetKey"), 1).toString(), "testLSetValue2New");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -158,7 +159,7 @@ function testLTrim() {
         test:assertEquals(result, "OK");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -170,7 +171,7 @@ function testRPop() {
         test:assertEquals(result, "testRPopValue1");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -182,7 +183,7 @@ function testRPopLPush() {
         test:assertEquals(result, "One");
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -194,7 +195,7 @@ function testRPush() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
@@ -206,7 +207,7 @@ function testRPushX() {
         test:assertEquals(result, 3);
     } else {
         test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+            <string>result.detail()["message"]));
     }
 }
 
