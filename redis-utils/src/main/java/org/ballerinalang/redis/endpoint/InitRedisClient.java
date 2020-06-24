@@ -22,8 +22,10 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
+import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.MapValue;
+import org.ballerinalang.jvm.values.api.BString;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
@@ -42,16 +44,18 @@ public class InitRedisClient  {
      * @return a handle value
      */
     public static HandleValue initClient(MapValue config) {
-        String host = config.getStringValue(Constants.EndpointConfig.HOST);
-        String password = config.getStringValue(Constants.EndpointConfig.PASSWORD);
-        MapValue options = config.getMapValue(Constants.EndpointConfig.OPTIONS);
+        BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
+        BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
+        MapValue options = config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
 
         RedisCodec<String, String> codec = retrieveRedisCodec(Constants.Codec.STRING_CODEC.getCodecName());
-        boolean clusteringEnabled = options.getBooleanValue(Constants.EndpointConfig.CLUSTERING_ENABLED);
-        boolean poolingEnabled = options.getBooleanValue(Constants.EndpointConfig.POOLING_ENABLED);
+        boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(
+                Constants.EndpointConfig.CLUSTERING_ENABLED));
+        boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(
+                Constants.EndpointConfig.POOLING_ENABLED));
 
         RedisDataSource dataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
-        dataSource.init(host, password, options);
+        dataSource.init(host.toString(), password.toString(), options);
 
         return new HandleValue(dataSource);
     }
