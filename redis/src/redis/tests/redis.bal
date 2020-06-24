@@ -48,8 +48,7 @@ public function initDb() {
 public function stopServer() {
     var result = stopRedisServer();
     if (result is error) {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 

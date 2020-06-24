@@ -24,8 +24,7 @@ function testPing() {
     if (result is string) {
         test:assertEquals(result, "PONG");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -36,7 +35,6 @@ function testEcho() {
     if (result is string) {
         test:assertEquals(result, "Manuri");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-        <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }

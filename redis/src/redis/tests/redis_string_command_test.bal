@@ -33,8 +33,7 @@ public function testAppend() {
     if (result is int) {
         test:assertEquals(result, 24);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -45,8 +44,7 @@ public function testBitCount() {
     if (result is int) {
         test:assertEquals(result, 69);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -59,8 +57,7 @@ public function testBitOpAnd() {
         test:assertEquals(result, 3);
         test:assertEquals(getValue(java:fromString("tesBitOpAndDest")).toString(), "100");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -73,8 +70,7 @@ public function tesBitOpOr() {
         test:assertEquals(result, 3);
         test:assertEquals(getValue(java:fromString("tesBitOpOrDest")).toString(), "101");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -85,8 +81,7 @@ public function tesBitOpNot() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -97,8 +92,7 @@ function tesBitOpXor() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -109,8 +103,7 @@ public function testDecr() {
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -121,8 +114,7 @@ function testDecrBy() {
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -133,8 +125,7 @@ public function testGet() {
     if (result is string) {
         test:assertEquals(result, "GetTestValue");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -145,8 +136,7 @@ public function testGetBit() {
     if (result is int) {
         test:assertEquals(result, 0);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -157,8 +147,7 @@ public function testGetRange() {
     if (result is string) {
         test:assertEquals(result, "3456");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -170,8 +159,7 @@ public function testGetSet() {
         test:assertEquals(result, "testGetSetValue");
         test:assertEquals(getValue(java:fromString("testGetSetKey")).toString(), "testGetSetNewValue");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -182,8 +170,7 @@ public function testIncr() {
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -194,8 +181,7 @@ public function testIncrBy() {
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -207,8 +193,7 @@ public function testIncrByFloat() {
     if (result is float) {
         test:assertEquals(result, 7.200000002980232);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -222,8 +207,7 @@ function testMGet() {
         test:assertEquals(getValue(java:fromString("testMGetKey2")).toString(), "testMGetValue2");
         test:assertEquals(getValue(java:fromString("testMGetKey3")).toString(), "");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -242,8 +226,7 @@ function testMSet() {
         test:assertEquals(getValue(java:fromString("testMSetKey2")).toString(), "testMSetValue2");
         test:assertEquals(getValue(java:fromString("testMSetKey3")).toString(), "testMSetValue3");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -263,8 +246,7 @@ function testMSetNx() {
         test:assertEquals(getValue(java:fromString("testMSetNxKey2")).toString(), "");
         test:assertEquals(getValue(java:fromString("testMSetNxKey3")).toString(), "");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -278,8 +260,7 @@ public function testPSetEx() {
         runtime:sleep(6000);
         test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -290,8 +271,7 @@ public function testSetBit() {
     if (result is int) {
         test:assertEquals(result, 1);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -305,8 +285,7 @@ public function testSetEx() {
         runtime:sleep(6000);
         test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -318,8 +297,7 @@ public function testSetNx() {
         test:assertEquals(result, true);
         test:assertEquals(getValue(java:fromString("testSetNxKey")).toString(), "testSetNxValue");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -331,8 +309,7 @@ public function testSetRange() {
         test:assertEquals(result, 17);
         test:assertEquals(getValue(java:fromString("testSetRangeKey")).toString(), "te!!!etRangeValue");
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -343,8 +320,7 @@ public function testStrln() {
     if (result is int) {
         test:assertEquals(result, 14);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
