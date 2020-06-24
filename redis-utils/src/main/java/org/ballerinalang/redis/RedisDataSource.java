@@ -30,7 +30,9 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.values.MapValue;
+import org.ballerinalang.jvm.values.api.BString;
 import org.ballerinalang.util.exceptions.BallerinaException;
 
 import java.time.Duration;
@@ -184,13 +186,16 @@ public class RedisDataSource<K, V> {
     }
 
     private RedisURI.Builder setOptions(RedisURI.Builder builder, MapValue options) {
-        int database = options.getIntValue(ConnectionParam.DATABASE.getKey()).intValue();
-        int connectionTimeout = options.getIntValue(ConnectionParam.CONNECTION_TIMEOUT.getKey()).intValue();
-        String clientName = options.getStringValue(ConnectionParam.CLIENT_NAME.getKey());
+        int database = options.getIntValue(StringUtils.fromString(ConnectionParam.DATABASE.getKey())).intValue();
+        int connectionTimeout = options.getIntValue(StringUtils.fromString(
+                ConnectionParam.CONNECTION_TIMEOUT.getKey())).intValue();
+        BString clientName = options.getStringValue(StringUtils.fromString(ConnectionParam.CLIENT_NAME.getKey()));
 
-        boolean sslEnabled = options.getBooleanValue(ConnectionParam.SSL_ENABLED.getKey());
-        boolean startTlsEnabled = options.getBooleanValue(ConnectionParam.START_TLS_ENABLED.getKey());
-        boolean verifyPeerEnabled = options.getBooleanValue(ConnectionParam.VERIFY_PEER_ENABLED.getKey());
+        boolean sslEnabled = options.getBooleanValue(StringUtils.fromString(ConnectionParam.SSL_ENABLED.getKey()));
+        boolean startTlsEnabled = options.getBooleanValue(StringUtils.fromString
+                (ConnectionParam.START_TLS_ENABLED.getKey()));
+        boolean verifyPeerEnabled = options.getBooleanValue(StringUtils.fromString(
+                ConnectionParam.VERIFY_PEER_ENABLED.getKey()));
 
         if (database != -1) {
             builder.withDatabase(database);
@@ -198,8 +203,8 @@ public class RedisDataSource<K, V> {
         if (connectionTimeout != -1) {
             builder.withTimeout(Duration.ofMillis(connectionTimeout));
         }
-        if (!clientName.isEmpty()) {
-            builder.withClientName(clientName);
+        if (!clientName.toString().equals("")) {
+            builder.withClientName(clientName.toString());
         }
         builder.withSsl(sslEnabled);
         builder.withStartTls(startTlsEnabled);
