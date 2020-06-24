@@ -170,7 +170,7 @@ public function main() returns error? {
     if (result is string) {
         io:println(result);
     } else {
-        io:println(result.reason());
+        io:println(result.message());
     }
 
     io:println("\n===Executing sample string oprerations===");

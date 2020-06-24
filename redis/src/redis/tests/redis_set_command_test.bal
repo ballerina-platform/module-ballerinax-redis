@@ -28,8 +28,7 @@ function testSAdd() {
         test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue4")));
         test:assertTrue(sisMember(java:fromString("testSAddKey"), java:fromString("testSAddValue5")));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -41,8 +40,7 @@ function testSDiff() {
         test:assertEquals(result.length(), 2);
         test:assertTrue((result[0] == "Three" && result[1] == "Four") || (result[0] == "Four" && result[1] == "Three"));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -55,8 +53,7 @@ function testSDiffStore() {
         test:assertTrue(sisMember(java:fromString("testSDiffStoreDestKey"), java:fromString("Three")));
         test:assertTrue(sisMember(java:fromString("testSDiffStoreDestKey"), java:fromString("Four")));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -67,8 +64,7 @@ function testSInter() {
     if (result is string[]) {
         test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -83,8 +79,7 @@ function testSInterStore() {
         test:assertFalse(sisMember(java:fromString("testSInterDestKey"), java:fromString("Three")));
         test:assertFalse(sisMember(java:fromString("testSInterDestKey"), java:fromString("Four")));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -95,8 +90,7 @@ function testSIsMember() {
     if (result is boolean) {
         test:assertTrue(result);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -123,8 +117,7 @@ function testSMembers() {
         }
         test:assertTrue(allMembersRetrieved);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -153,8 +146,7 @@ function testSPop() {
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[0])));
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[1])));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -181,8 +173,7 @@ function testSRandMember() {
         }
         test:assertTrue(allMembersPopped);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -195,8 +186,7 @@ function testSRem() {
         test:assertFalse(sisMember(java:fromString("testSRemKey"), java:fromString("testSRemValue1")));
         test:assertFalse(sisMember(java:fromString("testSRemKey"), java:fromString("testSRemValue3")));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -223,8 +213,7 @@ function testSUnion() {
         }
         test:assertTrue(allUnionMembersExist);
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
@@ -239,8 +228,7 @@ function testSUnionStore() {
         test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue3")));
         test:assertTrue(sisMember(java:fromString("testSUnionStoreDestKey"), java:fromString("testUnionValue4")));
     } else {
-        test:assertFail(io:sprintf("Error from Connector: %s - %s", result.reason(),
-            <string>result.detail()["message"]));
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
 }
 
