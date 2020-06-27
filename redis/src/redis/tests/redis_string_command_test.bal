@@ -23,7 +23,11 @@ import ballerina/test;
 }
 public function testSet() {
     var result = conn->set("Name", "Manuri");
-    test:assertEquals(result, "OK");
+    if (result is string) {
+        test:assertEquals(result, "OK");
+    } else {
+        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+    }
 }
 
 @test:Config {

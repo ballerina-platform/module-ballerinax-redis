@@ -22,7 +22,11 @@ import org.ballerinalang.jvm.BallerinaErrors;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
+import org.ballerinalang.jvm.values.api.BString;
 import org.ballerinalang.redis.RedisDataSource;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
@@ -40,10 +44,15 @@ public class SortedSetActions extends AbstractRedisAction {
      * @return The number of elements that were added to the sorted set, not including all the elements which were
      *         already present in the set for which the score was updated
      */
-    public static Object zAdd(HandleValue redisDataSourceHandleValue, String key, BMap memberScoreMap) {
+    public static Object zAdd(HandleValue redisDataSourceHandleValue, String key,
+                              BMap<BString, Object> memberScoreMap) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return zAdd(key, redisDataSource, createMapFromBMap(memberScoreMap));
+            Map<String, Double> map = new LinkedHashMap<>();
+            for (Map.Entry<BString, Object> entry : memberScoreMap.entrySet()) {
+                map.put(entry.getKey().toString(), (Double) entry.getValue());
+            }
+            return zAdd(key, redisDataSource, map);
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }

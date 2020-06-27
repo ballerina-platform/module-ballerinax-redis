@@ -19,6 +19,7 @@
 package org.ballerinalang.redis.actions;
 
 import org.ballerinalang.jvm.BallerinaErrors;
+import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.values.HandleValue;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
@@ -42,7 +43,7 @@ public class HashActions extends AbstractRedisAction {
     public static Object hDel(HandleValue redisDataSourceHandleValue, String key, BArray fields) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
-            return hDel(key, redisDataSource, createStringArrayFromBArray(fields));
+            return hDel(StringUtils.fromString(key), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
         }
