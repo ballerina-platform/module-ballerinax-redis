@@ -28,12 +28,14 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
+import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.types.BArrayType;
 import org.ballerinalang.jvm.types.BTypes;
 import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.jvm.values.MapValueImpl;
 import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BMap;
+import org.ballerinalang.jvm.values.api.BString;
 import org.ballerinalang.jvm.values.api.BValueCreator;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.util.exceptions.BallerinaException;
@@ -261,7 +263,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap mGet(RedisDataSource<K, String> redisDataSource, K... key) {
+    static <K> BMap<BString, BString> mGet(RedisDataSource<K, String> redisDataSource, K... key) {
         RedisStringCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
@@ -409,14 +411,14 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, String> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<BString, BString> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.blpop(timeout, keys);
             if (result != null) {
-                MapValue<K, String> bMap = new MapValueImpl<>();
-                bMap.put(result.getKey(), result.getValue());
+                MapValue<BString, BString> bMap = new MapValueImpl<>();
+                bMap.put(StringUtils.fromString((String) result.getKey()), StringUtils.fromString(result.getValue()));
                 return bMap;
             } else {
                 return null;
@@ -428,14 +430,14 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, String> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<BString, BString> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.brpop(timeout, keys);
             if (result != null) {
-                MapValue<K, String> bMap = new MapValueImpl<>();
-                bMap.put(result.getKey(), result.getValue());
+                MapValue<BString, BString> bMap = new MapValueImpl<>();
+                bMap.put(StringUtils.fromString((String) result.getKey()), StringUtils.fromString(result.getValue()));
                 return bMap;
             } else {
                 return null;
@@ -1050,11 +1052,11 @@ public abstract class AbstractRedisAction {
 
     // Hash Commands
 
-    static <K, V> long hDel(K key, RedisDataSource<K, V> redisDataSource, K... fields) {
+    static <K, V> long hDel(BString key, RedisDataSource<K, V> redisDataSource, K... fields) {
         RedisHashCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
-            return redisCommands.hdel(key, fields);
+            return redisCommands.hdel((K) key.toString(), fields);
         } catch (IllegalArgumentException e) {
             throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
@@ -1086,7 +1088,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, String> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
+    static <K> BMap<BString, BString> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1149,7 +1151,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<K, String> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
+    static <K> BMap<BString, BString> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1449,7 +1451,7 @@ public abstract class AbstractRedisAction {
     private static BArray createBStringArrayFromSet(Set<String> set) {
         BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
         for (String item : set) {
-            bStringArray.append(item);
+            bStringArray.append(StringUtils.fromString(item));
         }
         return bStringArray;
     }
@@ -1457,7 +1459,7 @@ public abstract class AbstractRedisAction {
     private static BArray createBStringArrayFromList(List<String> list) {
         BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
         for (String item : list) {
-            bStringArray.append(item);
+            bStringArray.append(StringUtils.fromString(item));
         }
         return bStringArray;
     }
@@ -1472,14 +1474,14 @@ public abstract class AbstractRedisAction {
         return scoredValues;
     }
 
-    private static <K> BMap<K, String> createBMapFromMap(Map<K, String> map) {
-        MapValue<K, String> bMap = new MapValueImpl<>();
-        map.forEach((key, value) -> bMap.put(key, value));
+    private static <K> BMap<BString, BString> createBMapFromMap(Map<K, String> map) {
+        MapValue<BString, BString> bMap = new MapValueImpl<>();
+        map.forEach((key, value) -> bMap.put(StringUtils.fromString((String) key), StringUtils.fromString(value)));
         return bMap;
     }
 
-    private static <K> BMap<K, String> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
-        MapValue<K, String> bMap = new MapValueImpl<>();
+    private static <K> BMap<BString, BString> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
+        MapValue<BString, BString> bMap = new MapValueImpl<>();
         for (KeyValue<K, String> item : list) {
             String value;
             try {
@@ -1487,7 +1489,7 @@ public abstract class AbstractRedisAction {
             } catch (NoSuchElementException e) {
                 value = null;
             }
-            bMap.put(item.getKey(), value);
+            bMap.put(StringUtils.fromString((String) item.getKey()), StringUtils.fromString(value));
         }
         return bMap;
     }
@@ -1501,18 +1503,17 @@ public abstract class AbstractRedisAction {
         return stringArray;
     }
 
-    static Map<String, Object> createMapFromBMap(BMap<String, Object> bMap) {
+    static Map<String, Object> createMapFromBMap(BMap<BString, Object> bMap) {
         Map<String, Object> map = new LinkedHashMap<>();
-        for (Map.Entry<String, Object> entry : bMap.entrySet()) {
-            map.put(entry.getKey(), entry.getValue());
+        for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
+            map.put(entry.getKey().toString(), entry.getValue().toString());
         }
         return map;
     }
 
-    static BArray createBstringArrayFromBMap(BMap<String, String> bMap) {
+    static BArray createBstringArrayFromBMap(BMap<BString, BString> bMap) {
         BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
-        for (Map.Entry<String, String> entry : bMap.entrySet()) {
-            // TODO: Update to entry.getValue() once ballerina syntax is updated
+        for (Map.Entry<BString, BString> entry : bMap.entrySet()) {
             bStringArray.append(entry.getValue());
         }
         return bStringArray;
