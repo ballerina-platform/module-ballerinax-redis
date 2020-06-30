@@ -1,13 +1,13 @@
 [project]
 org-name="ballerina"
-version="0.9.0"
+version="0.99.0"
 
 [platform]
 target = "java8"
 
 [[platform.libraries]]
 module = "redis"
-path = "../redis-utils/target/redis-0.8.3-SNAPSHOT.jar"
+path = "../redis-utils/target/redis-0.99.0-SNAPSHOT.jar"
 artafactId = "redis"
-version = "0.8.3-SNAPSHOT"
+version = "0.99.0-SNAPSHOT"
 groupId = "org.ballerinalang"
