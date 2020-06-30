@@ -195,7 +195,7 @@ public function main() returns error? {
 
     io:println("\n===Executing sample list oprerations===");
     //Sample List Operations
-    io:println("Pushing 3 elements to NumberList");
+    io:println("Pushing 2 elements to NumberList");
     var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
 
     if (listPushresult is int) {
