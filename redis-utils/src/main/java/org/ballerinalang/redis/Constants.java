@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class Constants {
     static final int DEFAULT_REDIS_PORT = 6379;
-    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerina/redis}Error";
+    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerinax/redis}Error";
 
     /**
      * Endpoint configuration constants.

@@ -151,7 +151,7 @@ If you want to build Ballerina Redis Connector from the source code:
 | Ballerina Language          |      Swan Lake Preview1     |
 
 ```ballerina
-import ballerina/redis;
+import ballerinax/redis;
 import ballerina/io;
 
 redis:ClientEndpointConfiguration redisConfig = {
