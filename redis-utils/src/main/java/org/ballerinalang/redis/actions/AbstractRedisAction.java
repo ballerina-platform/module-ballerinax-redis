@@ -30,6 +30,7 @@ import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import org.ballerinalang.jvm.StringUtils;
 import org.ballerinalang.jvm.types.BArrayType;
+import org.ballerinalang.jvm.types.BPackage;
 import org.ballerinalang.jvm.types.BTypes;
 import org.ballerinalang.jvm.values.MapValue;
 import org.ballerinalang.jvm.values.MapValueImpl;
@@ -46,6 +47,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static org.ballerinalang.redis.Constants.REDIS_CONNECTOR_VERSION;
+
 /**
  * {@code {@link AbstractRedisAction}} is the base class for all Redis connector actions.
  *
@@ -56,6 +59,8 @@ public abstract class AbstractRedisAction {
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;
     private static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
+    static final BPackage PACKAGE_ID_REDIS = new BPackage("ballerinax", "redis",
+            REDIS_CONNECTOR_VERSION);
 
     protected AbstractRedisAction() {
     }

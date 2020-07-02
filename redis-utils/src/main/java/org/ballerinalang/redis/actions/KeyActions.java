@@ -42,7 +42,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return del(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return exists(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return expire(key, seconds, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return keys(pattern, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return move(key, database, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return persist(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -143,7 +143,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pExpire(key, timeMilliSeconds, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -159,7 +159,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pTtl(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return randomKey(redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -191,7 +191,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rename(key, newName, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -209,7 +209,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return renameNx(key, newName, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -225,7 +225,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sort(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -243,7 +243,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return ttl(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -259,7 +259,7 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return type(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 }

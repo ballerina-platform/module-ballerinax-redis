@@ -45,7 +45,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hDel(StringUtils.fromString(key), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hExists(key, field, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hGet(key, field, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -96,7 +96,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hGetAll(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hIncrBy(key, field, amount, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hIncrByFloat(key, field, amount, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hKeys(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -164,7 +164,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hLen(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -181,7 +181,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hMGet(key, redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -198,7 +198,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hMSet(key, createMapFromBMap(fieldValueMap), redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -217,7 +217,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hSet(key, field, value, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -236,7 +236,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hSetNx(key, field, value, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -254,7 +254,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hStrln(key, field, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -270,7 +270,7 @@ public class HashActions extends AbstractRedisAction {
         try {
             return hVals(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 }

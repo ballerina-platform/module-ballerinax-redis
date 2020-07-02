@@ -39,7 +39,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return ping(redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return auth(password, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return echo(message, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 }
