@@ -25,6 +25,7 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import org.ballerinalang.jvm.BallerinaErrors;
+import org.ballerinalang.jvm.types.BPackage;
 import org.ballerinalang.model.values.BString;
 import redis.embedded.RedisServer;
 
@@ -36,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ballerinalang.redis.Constants.REDIS_CONNECTOR_VERSION;
 import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
@@ -46,6 +48,8 @@ public class RedisDbUtils {
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
     private static RedisCommands<String, String> redisCommands;
+    private static final BPackage PACKAGE_ID_REDIS = new BPackage("ballerinax", "redis",
+            REDIS_CONNECTOR_VERSION);
 
     /**
      * Initialize custom redis server.
@@ -75,7 +79,7 @@ public class RedisDbUtils {
                 return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
             }
         } catch (IOException | InterruptedException e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
         process.destroy();
         return "OK";
@@ -103,7 +107,7 @@ public class RedisDbUtils {
                 return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
             }
         } catch (IOException | InterruptedException e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
         process.destroy();
         return "OK";

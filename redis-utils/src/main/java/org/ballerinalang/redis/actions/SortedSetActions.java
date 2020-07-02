@@ -54,7 +54,7 @@ public class SortedSetActions extends AbstractRedisAction {
             }
             return zAdd(key, redisDataSource, map);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zCard(key, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zCount(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zIncrBy(key, amount, member, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -141,7 +141,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zLexCount(destination, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -159,7 +159,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRange(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -177,7 +177,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -196,7 +196,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -214,7 +214,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRangeByScore(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -231,7 +231,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRank(key, member, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRem(key, redisDataSource, createStringArrayFromBArray(memebers));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -266,7 +266,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByLex(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -284,7 +284,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByRank(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -302,7 +302,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByScore(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -320,7 +320,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRange(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -338,7 +338,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRangeByScore(key, min, max, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -355,7 +355,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRank(key, member, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -372,7 +372,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zScore(key, member, redisDataSource);
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 
@@ -389,7 +389,7 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, e.getMessage());
+            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
         }
     }
 }
