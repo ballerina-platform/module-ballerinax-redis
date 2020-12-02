@@ -22,13 +22,14 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
-import org.ballerinalang.jvm.StringUtils;
-import org.ballerinalang.jvm.values.HandleValue;
-import org.ballerinalang.jvm.values.MapValue;
-import org.ballerinalang.jvm.values.api.BString;
+import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.values.HandleValue;
+import io.ballerina.runtime.values.MapValueImpl;
+import io.ballerina.runtime.api.values.BString;
+import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.util.exceptions.BallerinaException;
+import io.ballerina.runtime.util.exceptions.BallerinaException;
 
 /**
  * Creates a Redis client.
@@ -43,10 +44,11 @@ public class InitRedisClient  {
      * @param config configuration map
      * @return a handle value
      */
-    public static HandleValue initClient(MapValue config) {
+    public static HandleValue initClient(MapValueImpl config) {
         BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
         BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
-        MapValue options = config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
+        MapValueImpl options = (MapValueImpl) config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
+        
 
         RedisCodec<String, String> codec = retrieveRedisCodec(Constants.Codec.STRING_CODEC.getCodecName());
         boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(

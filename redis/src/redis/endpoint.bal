@@ -17,7 +17,7 @@
 import ballerina/java;
 
 # Represents Redis client endpoint.
-public type Client client object {
+public client class Client {
     private ClientEndpointConfiguration clientEndpointConfig = {};
 
     handle datasource;
@@ -1017,12 +1017,12 @@ public type Client client object {
 # + clientEndpointConfig - Client end point configuration
 # + return - `Error` if Error occurs
 function initClient(ClientEndpointConfiguration clientEndpointConfig) returns handle = @java:Method {
-    class: "org.ballerinalang.redis.endpoint.InitRedisClient"
+    'class: "org.ballerinalang.redis.endpoint.InitRedisClient"
 } external;
 
 # An internal function used by clients to shutdown the connection/connection pool(if pooling enabled).
 function close(handle datasource) = @java:Method {
-    class: "org.ballerinalang.redis.endpoint.Close"
+    'class: "org.ballerinalang.redis.endpoint.Close"
 } external;
 
 # The Client endpoint configuration for Redis databases.
@@ -1037,430 +1037,430 @@ public type ClientEndpointConfiguration record {|
 |};
 
 function append(handle datasource, handle key, handle value) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function bitCount(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function bitOpAnd(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function bitOpOr(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function bitOpNot(handle datasource, handle destination, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function bitOpXor(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function decr(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function decrBy(handle datasource, handle key, int value) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function get(handle datasource, handle key) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function getBit(handle datasource, handle key, int offset) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function getRange(handle datasource, handle key, int startPos, int end) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function getSet(handle datasource, handle key, handle value) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function incr(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function incrBy(handle datasource, handle key, int value) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function incrByFloat(handle datasource, handle key, float value) returns float | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 public function mGet(handle datasource, string[] keys) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 public function mSet(handle datasource, map<any> keyValueMap) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 public function mSetNx(handle datasource, map<any> keyValueMap) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function set(handle datasource, handle key, handle value) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function setBit(handle datasource, handle key, int value, int offset) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function setEx(handle datasource, handle key, handle value, int expirationPeriodSeconds) returns handle | Error =
 @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function setNx(handle datasource, handle key, handle value) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function setRange(handle datasource, handle key, int offset, handle value) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function strln(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.StringActions"
+    'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
 
 function lPush(handle datasource, handle key, string[] values) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lPop(handle datasource, handle key) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lPushX(handle datasource, handle key, string[] values) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function bLPop(handle datasource, int timeOut, string[] keys) returns map<any> | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function bRPop(handle datasource, int timeOut, string[] keys) returns map<any> | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lIndex(handle datasource, handle key, int index) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lInsert(handle datasource, handle key, boolean before, handle pivot, handle value) returns int | Error =
 @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lLen(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lRange(handle datasource, handle key, int startPos, int stopPos) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lRem(handle datasource, handle key, int count, handle value) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lSet(handle datasource, handle key, int index, handle value) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function lTrim(handle datasource, handle key, int startPos, int stopPos) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function rPop(handle datasource, handle key) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function rPopLPush(handle datasource, handle src, handle destination) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function rPush(handle datasource, handle key, string[] values) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function rPushX(handle datasource, handle key, string[] values) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ListActions"
+    'class: "org.ballerinalang.redis.actions.ListActions"
 } external;
 
 function sAdd(handle datasource, handle key, string[] values) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sCard(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sDiff(handle datasource, string[] keys) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sDiffStore(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sInter(handle datasource, string[] keys) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sInterStore(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sIsMember(handle datasource, handle key, handle value) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sMembers(handle datasource, handle key) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sMove(handle datasource, handle src, handle destination, handle member) returns boolean | Error =
 @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sPop(handle datasource, handle key, int count) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sRandMember(handle datasource, handle key, int count) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sRem(handle datasource, handle key, string[] members) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sUnion(handle datasource, string[] keys) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function sUnionStore(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SetActions"
+    'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
 function zAdd(handle datasource, handle key, map<any> memberScoreMap) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zCard(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zCount(handle datasource, handle key, float min, float max) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zIncrBy(handle datasource, handle key, float amount, handle member) returns float | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zInterStore(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zLexCount(handle datasource, handle destination, handle min, handle max) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRange(handle datasource, handle key, int min, int max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRevRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRangeByScore(handle datasource, handle key, float min, float max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRank(handle datasource, handle key, handle member) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRem(handle datasource, handle key, string[] members) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRemRangeByLex(handle datasource, handle key, handle min, handle max) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRemRangeByRank(handle datasource, handle key, int min, int max) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRemRangeByScore(handle datasource, handle key, float min, float max) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRevRange(handle datasource, handle key, int min, int max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRevRangeByScore(handle datasource, handle key, float min, float max) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zRevRank(handle datasource, handle key, handle member) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zScore(handle datasource, handle key, handle member) returns float | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function zUnionStore(handle datasource, handle destination, string[] keys) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.SortedSetActions"
+    'class: "org.ballerinalang.redis.actions.SortedSetActions"
 } external;
 
 function del(handle datasource, string[] key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function exists(handle datasource, string[] key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function expire(handle datasource, handle key, int seconds) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function keys(handle datasource, handle pattern) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function move(handle datasource, handle key, int database) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function persist(handle datasource, handle key) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function pExpire(handle datasource, handle key, int timeMilliSeconds) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function pTtl(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function randomKey(handle datasource) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function rename(handle datasource, handle key, handle newName) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function renameNx(handle datasource, handle key, handle newName) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function sort(handle datasource, handle key) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function ttl(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function redisType(handle datasource, handle key) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.KeyActions"
+    'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
 function ping(handle datasource) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ConnectionActions"
+    'class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
 function auth(handle datasource, handle password) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ConnectionActions"
+    'class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
 function echo(handle datasource, handle message) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.ConnectionActions"
+    'class: "org.ballerinalang.redis.actions.ConnectionActions"
 } external;
 
 function hDel(handle datasource, handle key, string[] fields) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hExists(handle datasource, handle key, handle 'field) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hGet(handle datasource, handle key, handle 'field) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hGetAll(handle datasource, handle key) returns map<any> | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hIncrBy(handle datasource, handle key, handle 'field, int amount) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hIncrByFloat(handle datasource, handle key, handle 'field, float amount) returns float | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hLen(handle datasource, handle key) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hMGet(handle datasource, handle key, string[] fields) returns map<any> | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hMSet(handle datasource, handle key, map<any> fieldValueMap) returns handle | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hKeys(handle datasource, handle key) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hSet(handle datasource, handle key, handle 'field, handle value) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hSetNx(handle datasource, handle key, handle 'field, handle value) returns boolean | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hStrln(handle datasource, handle key, handle 'field) returns int | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 function hVals(handle datasource, handle key) returns string[] | Error = @java:Method {
-    class: "org.ballerinalang.redis.actions.HashActions"
+    'class: "org.ballerinalang.redis.actions.HashActions"
 } external;
 
 # Connection options for Redis Client Endpoint.

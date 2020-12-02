@@ -3,7 +3,7 @@ org-name="ballerinax"
 version="0.99.0"
 
 [platform]
-target = "java8"
+target = "java11"
 
 [[platform.libraries]]
 module = "redis"

@@ -28,18 +28,19 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import org.ballerinalang.jvm.StringUtils;
-import org.ballerinalang.jvm.types.BArrayType;
-import org.ballerinalang.jvm.types.BPackage;
-import org.ballerinalang.jvm.types.BTypes;
-import org.ballerinalang.jvm.values.MapValue;
-import org.ballerinalang.jvm.values.MapValueImpl;
-import org.ballerinalang.jvm.values.api.BArray;
-import org.ballerinalang.jvm.values.api.BMap;
-import org.ballerinalang.jvm.values.api.BString;
-import org.ballerinalang.jvm.values.api.BValueCreator;
+import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.types.BArrayType;
+import io.ballerina.runtime.api.PredefinedTypes;
+import io.ballerina.runtime.api.Module;
+import org.ballerinalang.core.model.types.BTypes;
+import io.ballerina.runtime.values.MapValue;
+import io.ballerina.runtime.values.MapValueImpl;
+import io.ballerina.runtime.api.values.BArray;
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
+import io.ballerina.runtime.api.ValueCreator;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.util.exceptions.BallerinaException;
+import io.ballerina.runtime.util.exceptions.BallerinaException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,7 +60,7 @@ public abstract class AbstractRedisAction {
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;
     private static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
-    static final BPackage PACKAGE_ID_REDIS = new BPackage("ballerinax", "redis",
+    static final Module PACKAGE_ID_REDIS = new Module("ballerinax", "redis",
             REDIS_CONNECTOR_VERSION);
 
     protected AbstractRedisAction() {
@@ -1454,7 +1455,7 @@ public abstract class AbstractRedisAction {
     }
 
     private static BArray createBStringArrayFromSet(Set<String> set) {
-        BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
+        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : set) {
             bStringArray.append(StringUtils.fromString(item));
         }
@@ -1462,7 +1463,7 @@ public abstract class AbstractRedisAction {
     }
 
     private static BArray createBStringArrayFromList(List<String> list) {
-        BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
+        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : list) {
             bStringArray.append(StringUtils.fromString(item));
         }
@@ -1517,7 +1518,7 @@ public abstract class AbstractRedisAction {
     }
 
     static BArray createBstringArrayFromBMap(BMap<BString, BString> bMap) {
-        BArray bStringArray = BValueCreator.createArrayValue(new BArrayType(BTypes.typeString));
+        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
         for (Map.Entry<BString, BString> entry : bMap.entrySet()) {
             bStringArray.append(entry.getValue());
         }

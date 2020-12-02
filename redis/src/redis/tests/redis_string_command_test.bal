@@ -330,5 +330,5 @@ public function testStrln() {
 
 function setupRedisStringDatabase() = @java:Method {
     name: "setupStringDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

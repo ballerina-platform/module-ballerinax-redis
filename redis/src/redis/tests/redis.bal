@@ -44,7 +44,7 @@ public function initDb() {
     setupRedisSortedSetDatabase();
 }
 
-@test:AfterSuite
+@test:AfterSuite {}
 public function stopServer() {
     var result = stopRedisServer();
     if (result is error) {
@@ -54,50 +54,50 @@ public function stopServer() {
 
 function initRedisServer() returns handle|error = @java:Method {
     name: "initServer",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function stopRedisServer() returns handle|error = @java:Method {
     name: "stopServer",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function getValue(handle key) returns handle = @java:Method {
     name: "getValue",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function sisMember(handle key, handle value) returns boolean = @java:Method {
     name: "sisMember",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function hexists(handle key, handle 'field) returns boolean = @java:Method {
     name: "hexists",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function hget(handle key, handle 'field) returns handle = @java:Method {
     name: "hget",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function exist(handle key) returns int = @java:Method {
     name: "exist",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function pexpire(handle key, int duration) = @java:Method {
     name: "pexpire",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function pttl(handle key) returns int = @java:Method {
     name: "pttl",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
 function lindex(handle key, int index) returns handle = @java:Method {
     name: "lindex",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
