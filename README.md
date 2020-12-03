@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/wso2-ballerina/module-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-redis)
 
-# module-redis
+# module-ballerinax-redis
 
 Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
 following operations are supported.
