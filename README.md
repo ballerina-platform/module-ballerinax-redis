@@ -132,7 +132,7 @@ If you want to build Ballerina Redis Connector from the source code:
 
 1. Get a clone or download the source from this repository:
     https://github.com/ballerina-platform/module-ballerinax-redis
-2. Run the following Maven command from the module-redis directory:
+2. Run the following Maven command from the module-ballerinax-redis directory:
 
         mvn clean install
 3. Run the following ballerina command module-ballerinax-redis/redis directory:
