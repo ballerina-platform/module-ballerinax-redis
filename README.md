@@ -131,15 +131,15 @@ Building from the source
 If you want to build Ballerina Redis Connector from the source code:
 
 1. Get a clone or download the source from this repository:
-    https://github.com/wso2-ballerina/module-redis
+    https://github.com/ballerina-platform/module-ballerinax-redis
 2. Run the following Maven command from the module-redis directory:
 
         mvn clean install
-3. Run the following ballerina command from module-redis/redis directory:
+3. Run the following ballerina command module-ballerinax-redis/redis directory:
 
     3.1 If running on a Unix OS:
          
-        ballerina build redis
+        ballerina build -a
     3.2 The unit tests will not run in Windows OS. Therefore, if running on a Windows OS skip the tests using following command:
          
         ballerina build --skip-tests redis
@@ -148,7 +148,7 @@ If you want to build Ballerina Redis Connector from the source code:
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |      Swan Lake Preview1     |
+| Ballerina Language          |      Swan Lake Preview5     |
 
 ```ballerina
 import ballerinax/redis;
