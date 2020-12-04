@@ -22,5 +22,7 @@ jobs:
                       build -a -c --sourceroot redis
               
               env: 
+                  JAVA_HOME: /usr/lib/jvm/default-jvm
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+                  
                   
