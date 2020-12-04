@@ -14,14 +14,14 @@ jobs:
     -  run: mvn clean install 
     -  run: cd redis
     - name: Ballerina Build
-      uses: ballerina-platform/ballerina-action/@master
+      uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
       with:
         args:
           build -a -c --sourceroot redis
       env: 
         JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
     - name: Ballerina Push
-      uses: ballerina-platform/ballerina-action/@master
+      uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
       with:
         args: 
           push -a
