@@ -25,3 +25,6 @@ hs_err_pid*
 *.iml
 *.ipr
 *.iws
+
+Ballerina.lock
+redis-utils/dependency-reduced-pom.xml
