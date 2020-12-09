@@ -223,5 +223,5 @@ function testHVals() {
 
 function setupRedisHashDatabase() = @java:Method {
     name: "setupHashDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

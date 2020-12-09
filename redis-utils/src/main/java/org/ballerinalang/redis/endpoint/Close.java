@@ -18,7 +18,7 @@
 
 package org.ballerinalang.redis.endpoint;
 
-import org.ballerinalang.jvm.values.HandleValue;
+import io.ballerina.runtime.values.HandleValue;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
 

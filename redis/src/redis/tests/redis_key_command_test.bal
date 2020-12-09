@@ -225,5 +225,5 @@ function testType() {
 
 function setupRedisKeyDatabase() = @java:Method {
     name: "setupKeyDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

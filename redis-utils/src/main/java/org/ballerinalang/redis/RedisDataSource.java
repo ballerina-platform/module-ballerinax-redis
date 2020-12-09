@@ -30,10 +30,10 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.ballerinalang.jvm.StringUtils;
-import org.ballerinalang.jvm.values.MapValue;
-import org.ballerinalang.jvm.values.api.BString;
-import org.ballerinalang.util.exceptions.BallerinaException;
+import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.values.MapValueImpl;
+import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.core.util.exceptions.BallerinaException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class RedisDataSource<K, V> {
      * @param password The password required for authentication
      * @param options  The additional options
      */
-    public void init(String hosts, String password, MapValue options) {
+    public void init(String hosts, String password, MapValueImpl options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, options);
@@ -144,7 +144,7 @@ public class RedisDataSource<K, V> {
         objectPool.close();
     }
 
-    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, MapValue options) {
+    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
         if (serverAddresses.size() > 1) {
             throw new BallerinaException("More than one hosts have been provided for a non-cluster connection");
         }
@@ -169,7 +169,7 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, MapValue options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, MapValueImpl options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
         List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
                 RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
@@ -185,7 +185,7 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private RedisURI.Builder setOptions(RedisURI.Builder builder, MapValue options) {
+    private RedisURI.Builder setOptions(RedisURI.Builder builder, MapValueImpl options) {
         int database = options.getIntValue(StringUtils.fromString(ConnectionParam.DATABASE.getKey())).intValue();
         int connectionTimeout = options.getIntValue(StringUtils.fromString(
                 ConnectionParam.CONNECTION_TIMEOUT.getKey())).intValue();

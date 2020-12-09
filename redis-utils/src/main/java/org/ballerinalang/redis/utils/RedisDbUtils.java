@@ -24,9 +24,10 @@ import io.lettuce.core.ScoredValue;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
-import org.ballerinalang.jvm.BallerinaErrors;
-import org.ballerinalang.jvm.types.BPackage;
-import org.ballerinalang.model.values.BString;
+import io.ballerina.runtime.api.Module;
+import io.ballerina.runtime.api.ErrorCreator;
+import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.api.values.BString;
 import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
@@ -48,7 +49,7 @@ public class RedisDbUtils {
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
     private static RedisCommands<String, String> redisCommands;
-    private static final BPackage PACKAGE_ID_REDIS = new BPackage("ballerinax", "redis",
+    private static final Module PACKAGE_ID_REDIS = new Module("ballerinax", "redis",
             REDIS_CONNECTOR_VERSION);
 
     /**
@@ -76,10 +77,10 @@ public class RedisDbUtils {
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {
-                return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
+                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";
@@ -104,10 +105,10 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal != 0) {
-                return BallerinaErrors.createError(REDIS_EXCEPTION_OCCURRED, output.toString());
+                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return BallerinaErrors.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, e.getMessage());
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";
@@ -409,9 +410,9 @@ public class RedisDbUtils {
      */
     public static BString getValue(String key) {
         if (redisCommands.get(key) != null) {
-            return new BString(redisCommands.get(key));
+            return StringUtils.fromString(redisCommands.get(key));
         } else {
-            return new BString("");
+            return StringUtils.fromString("");
         }
     }
 
@@ -486,6 +487,6 @@ public class RedisDbUtils {
      * @return value
      */
     public static BString lindex(String key, int index) {
-        return new BString(redisCommands.lindex(key, index));
+        return StringUtils.fromString(redisCommands.lindex(key, index));
     }
 }

@@ -278,5 +278,5 @@ function testZUnionStore() {
 
 function setupRedisSortedSetDatabase() = @java:Method {
     name: "setupSortedSetDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

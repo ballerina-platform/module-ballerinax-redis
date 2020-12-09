@@ -23,7 +23,7 @@ import ballerina/test;
 function testBLPop() {
     var result = conn->bLPop(1, ["testBLPopKey"]);
     if (result is map<any>) {
-        test:assertEquals(result.get("testBLPopKey"), "testBLPopValue2");
+        test:assertEquals(<anydata|error> result.get("testBLPopKey"), "testBLPopValue2");
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
@@ -34,7 +34,7 @@ function testBLPop() {
 function testBRPop() {
     var result = conn->bRPop(1, ["testBRPopKey"]);
     if (result is map<any>) {
-        test:assertEquals(result.get("testBRPopKey"), "testBRPopValue1");
+        test:assertEquals(<anydata|error> result.get("testBRPopKey"), "testBRPopValue1");
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
     }
@@ -197,5 +197,5 @@ function testRPushX() {
 
 function setupRedisListDatabase() = @java:Method {
     name: "setupListDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;

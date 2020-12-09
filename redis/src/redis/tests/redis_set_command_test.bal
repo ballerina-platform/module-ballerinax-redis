@@ -234,5 +234,5 @@ function testSUnionStore() {
 
 function setupRedisSetDatabase() = @java:Method {
     name: "setupSetDatabase",
-    class: "org.ballerinalang.redis.utils.RedisDbUtils"
+    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
