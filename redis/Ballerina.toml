@@ -1,13 +1,15 @@
-[project]
-org-name="ballerinax"
-version="0.99.1"
+[package]
+org ="ballerinax"
+name = "redis"
+version ="0.99.1"
 
-[platform]
-target = "java11"
+[build-options]
+observabilityIncluded = true
 
-[[platform.libraries]]
-module = "redis"
+[[platform.java11.dependency]]
 path = "../redis-utils/target/redis-0.99.1-SNAPSHOT.jar"
-artafactId = "redis"
-version = "0.99.1-SNAPSHOT"
 groupId = "org.ballerinalang"
+artifactId = "redis-utils"
+version = "0.99.1"
+
+

@@ -18,10 +18,10 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.ErrorCreator;
-import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.api.creators.ErrorCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.values.HandleValue;
+import io.ballerina.runtime.internal.values.HandleValue;
 import org.ballerinalang.redis.RedisDataSource;
 
 import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;

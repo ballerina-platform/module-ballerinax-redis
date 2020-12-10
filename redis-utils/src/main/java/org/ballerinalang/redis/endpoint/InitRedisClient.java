@@ -22,14 +22,14 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
-import io.ballerina.runtime.api.StringUtils;
-import io.ballerina.runtime.values.HandleValue;
-import io.ballerina.runtime.values.MapValueImpl;
+import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.internal.values.MapValueImpl;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
-import io.ballerina.runtime.util.exceptions.BallerinaException;
+import io.ballerina.runtime.internal.util.exceptions.BallerinaException;
 
 /**
  * Creates a Redis client.
