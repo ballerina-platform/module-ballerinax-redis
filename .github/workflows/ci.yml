@@ -19,7 +19,7 @@ jobs:
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                   args:
-                      build -a -c --sourceroot redis
+                      build --skip-tests -c
               
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm

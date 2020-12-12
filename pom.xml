@@ -21,7 +21,7 @@
 
     <groupId>org.ballerinalang</groupId>
     <artifactId>connector-redis-parent</artifactId>
-    <version>0.99.1-SNAPSHOT</version>
+    <version>0.99.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -136,13 +136,6 @@
                 <groupId>org.ballerinalang</groupId>
                 <artifactId>ballerina-runtime-api</artifactId>
                 <version>${ballerina.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.ballerinalang</groupId>
-                <artifactId>ballerina-runtime-api</artifactId>
-                <version>2.0.0-Preview5</version>
-                <type>zip</type>
-                <classifier>ballerina-binary-repo</classifier>
             </dependency>
             <dependency>
                 <groupId>org.testng</groupId>
@@ -332,7 +325,7 @@
         <reactor.version>3.1.4.RELEASE</reactor.version>
         <reactive.streams.version>1.0.0</reactive.streams.version>
         <embedded.redis.version>0.6</embedded.redis.version>
-        <generated.ballerina.source.directory>${project.build.directory}/../redis</generated.ballerina.source.directory>
+        <generated.ballerina.source.directory>${project.build.directory}/../redis/src/redis</generated.ballerina.source.directory>
     </properties>
 
     <modules>

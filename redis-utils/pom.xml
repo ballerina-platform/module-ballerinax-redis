@@ -21,7 +21,7 @@
     <parent>
         <artifactId>connector-redis-parent</artifactId>
         <groupId>org.ballerinalang</groupId>
-        <version>0.99.1-SNAPSHOT</version>
+        <version>0.99.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -42,12 +42,6 @@
         <dependency>
             <groupId>org.ballerinalang</groupId>
             <artifactId>ballerina-runtime-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ballerinalang</groupId>
-            <artifactId>ballerina-runtime-api</artifactId>
-            <type>zip</type>
-            <classifier>ballerina-binary-repo</classifier>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>

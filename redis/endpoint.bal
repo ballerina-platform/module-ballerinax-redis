@@ -1025,17 +1025,6 @@ function close(handle datasource) = @java:Method {
     'class: "org.ballerinalang.redis.endpoint.Close"
 } external;
 
-# The Client endpoint configuration for Redis databases.
-#
-# + host - The host of the Redis database
-# + password - Password for the database connection
-# + options - Properties for the connection configuration
-public type ClientEndpointConfiguration record {|
-    string host = "";
-    string password = "";
-    Options options = {};
-|};
-
 function append(handle datasource, handle key, handle value) returns int | Error = @java:Method {
     'class: "org.ballerinalang.redis.actions.StringActions"
 } external;
@@ -1484,4 +1473,15 @@ public type Options record {|
     boolean verifyPeer = false;
     int database = -1;
     int connectionTimeout = -1;
+|};
+
+# The Client endpoint configuration for Redis databases.
+#
+# + host - The host of the Redis database
+# + password - Password for the database connection
+# + options - Properties for the connection configuration
+public type ClientEndpointConfiguration record {|
+    string host = "localhost";
+    string password = "";
+    Options options = {};
 |};
