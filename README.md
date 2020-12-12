@@ -139,7 +139,7 @@ If you want to build Ballerina Redis Connector from the source code:
 
     3.1 If running on a Unix OS:
          
-        ballerina build -a
+        ballerina build
     3.2 The unit tests will not run in Windows OS. Therefore, if running on a Windows OS skip the tests using following command:
          
         ballerina build --skip-tests -c
