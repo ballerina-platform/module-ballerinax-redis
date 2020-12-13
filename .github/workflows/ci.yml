@@ -19,7 +19,7 @@ jobs:
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                   args:
-                      build --skip-tests -c
+                      build -c
               
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
