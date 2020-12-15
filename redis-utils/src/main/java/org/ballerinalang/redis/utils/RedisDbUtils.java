@@ -79,6 +79,7 @@ public class RedisDbUtils {
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
+                System.out.println(executablePath);
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {
