@@ -63,8 +63,11 @@ public class RedisDbUtils {
         System.out.println(System.getProperty("user.dir"));
         System.out.println(scriptPath);
         ProcessBuilder processBuilder = new ProcessBuilder();
+        System.out.println(processBuilder);
         processBuilder.command("bash", scriptPath);
+        System.out.println(processBuilder.command("bash", scriptPath));
         Process process = processBuilder.start();
+        System.out.println(process);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
                 StandardCharsets.UTF_8))) {
             StringBuilder output = new StringBuilder();
