@@ -25,6 +25,6 @@ jobs:
                   JAVA_HOME: /usr/lib/jvm/default-jvm
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
             - name: wget
-            - uses: wei/wget@v1
+              uses: wei/wget@v1
               with:
                   args: -qO- https://httpbin.org/get
