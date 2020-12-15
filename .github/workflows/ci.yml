@@ -13,6 +13,7 @@ jobs:
               uses: actions/setup-java@v1
               with:
                 java-version: 11   
+            -  run: sudo apt install redis-server
             -  run: mvn clean install 
             -  run: cd redis
             - name: Ballerina Build
@@ -28,5 +29,3 @@ jobs:
               uses: wei/wget@v1
               with:
                   args: -qO- https://httpbin.org/get
-            - name: Redis Server in GitHub Actions
-              uses: supercharge/redis-github-action@1.1.0
