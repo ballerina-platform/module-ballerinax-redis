@@ -28,3 +28,5 @@ jobs:
               uses: wei/wget@v1
               with:
                   args: -qO- https://httpbin.org/get
+            - name: Redis Server in GitHub Actions
+              uses: supercharge/redis-github-action@1.1.0
