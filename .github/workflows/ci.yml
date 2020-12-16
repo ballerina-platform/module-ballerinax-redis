@@ -17,9 +17,6 @@ jobs:
             -  run: sudo apt install bash-completion
             -  run: mvn clean install 
             -  run: cd redis
-            -  run: wget http://download.redis.io/releases/redis-5.0.7.tar.gz
-            -  run: tar xzf redis-5.0.7.tar.gz
-            -  run: make all -C redis-5.0.7/src
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
