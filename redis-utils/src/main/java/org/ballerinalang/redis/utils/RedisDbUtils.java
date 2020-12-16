@@ -71,6 +71,7 @@ public class RedisDbUtils {
         System.out.println(process);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
                 StandardCharsets.UTF_8))) {
+            System.out.println("Inside try");
             StringBuilder output = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -87,6 +88,7 @@ public class RedisDbUtils {
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("inside catch");
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
