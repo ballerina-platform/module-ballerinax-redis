@@ -60,13 +60,14 @@ public class RedisDbUtils {
     public static Object initServer() throws IOException {
         String scriptPath = Paths.get(System.getProperty("user.dir")).
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
-        System.out.println(System.getProperty("user.dir"));
-        System.out.println(scriptPath);
+                        System.out.println(System.getProperty("user.dir"));
+                        System.out.println(scriptPath);
         ProcessBuilder processBuilder = new ProcessBuilder();
         System.out.println(processBuilder);
         processBuilder.command("bash", scriptPath);
         System.out.println(processBuilder.command("bash", scriptPath));
         Process process = processBuilder.start();
+        System.out.println(process);
         System.out.println(process);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
                 StandardCharsets.UTF_8))) {
@@ -74,13 +75,12 @@ public class RedisDbUtils {
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
-                System.out.println(line);
             }
             int exitVal = process.waitFor();
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
-                System.out.println(executablePath);
+                                        System.out.println(executablePath);
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {
