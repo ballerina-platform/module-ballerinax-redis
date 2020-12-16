@@ -76,6 +76,7 @@ public class RedisDbUtils {
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
+                System.out.println(output.append(line).append("\n"));
             }
             int exitVal = process.waitFor();
             if (exitVal == 0) {
