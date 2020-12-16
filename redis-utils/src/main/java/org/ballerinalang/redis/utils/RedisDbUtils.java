@@ -74,11 +74,13 @@ public class RedisDbUtils {
             System.out.println("Inside try");
             StringBuilder output = new StringBuilder();
             String line;
+            System.out.println(reader.readLine());
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
                 System.out.println(output.append(line).append("\n"));
             }
             int exitVal = process.waitFor();
+            System.out.println(exitVal);
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
