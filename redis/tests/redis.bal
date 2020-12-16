@@ -19,7 +19,7 @@ import ballerina/java;
 import ballerina/test;
 
 ClientEndpointConfiguration redisConfig = {
-    host: "172.17.0.1",
+    host: "localhost",
     password: "",
     options: {
         connectionPooling: true,
