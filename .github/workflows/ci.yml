@@ -16,11 +16,13 @@ jobs:
             -  run: sudo apt install redis-server
             -  run: sudo apt install bash-completion
             -  run: mvn clean install 
+            -  run: ls
+            -  run: cd redis
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                   args:
-                      build -c redis
+                      build -c
               
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
