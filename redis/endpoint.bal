@@ -743,7 +743,7 @@ public client class Client {
     # Determine if a hash field exists.
     #
     # + key - The key of the hash
-    # + 'field - Array of fields to be deleted
+    # + field - Array of fields to be deleted
     # + return - boolean `true` if the hash contains the field. boolean false if the hash does not contain
     #            field or key does not exist or `Error` if an Error occurs
     public remote function hExists(string key, string 'field) returns boolean | Error {
@@ -752,7 +752,7 @@ public client class Client {
     # Get the value of a hash field.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + return - The value of the field or `Error` if an Error occurs
     public remote function hGet(string key, string 'field) returns string | Error {
         return <string>java:toString(check hGet(self.datasource, java:fromString(key), java:fromString('field)));
@@ -769,7 +769,7 @@ public client class Client {
     # Increment the integer value of a hash field by the given number.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `Error` if an Error occurs
     public remote function hIncrBy(string key, string 'field, int amount) returns int | Error {
@@ -778,7 +778,7 @@ public client class Client {
     # Increment the float value of a hash field by the given number.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + amount - The amount to increment
     # + return - The value of the field or `Error` if an Error occurs
     public remote function hIncrByFloat(string key, string 'field, float amount) returns float | Error {
@@ -820,7 +820,7 @@ public client class Client {
     # Set the string value of a hash field.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #         field already exists in the hash and the value was updated, or `Error` if an Error occurs
@@ -831,7 +831,7 @@ public client class Client {
     # Set the string value of a hash field, only if the field does not exist.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + value - The value to be set to the field
     # + return - boolean `true` if field is a new field in the hash and value was set. boolean false if
     #            field already exists in the hash and no operation was performed, or `Error` if an Error occurs
@@ -842,7 +842,7 @@ public client class Client {
     # Get the string length of the field value in a hash.
     #
     # + key - The key of the hash
-    # + 'field - The field
+    # + field - The field
     # + return - The length of the field value, or 0 when field is not present in the hash or key does
     #            not exist at all, or `Error` if an Error occurs
     public remote function hStrln(string key, string 'field) returns int | Error {
@@ -1010,7 +1010,7 @@ public client class Client {
     public function stop() {
         close(self.datasource);
     }
-};
+}
 
 # Initialize redis client.
 #
@@ -1024,17 +1024,6 @@ function initClient(ClientEndpointConfiguration clientEndpointConfig) returns ha
 function close(handle datasource) = @java:Method {
     'class: "org.ballerinalang.redis.endpoint.Close"
 } external;
-
-# The Client endpoint configuration for Redis databases.
-#
-# + host - The host of the Redis database
-# + password - Password for the database connection
-# + options - Properties for the connection configuration
-public type ClientEndpointConfiguration record {|
-    string host = "";
-    string password = "";
-    Options options = {};
-|};
 
 function append(handle datasource, handle key, handle value) returns int | Error = @java:Method {
     'class: "org.ballerinalang.redis.actions.StringActions"
@@ -1484,4 +1473,15 @@ public type Options record {|
     boolean verifyPeer = false;
     int database = -1;
     int connectionTimeout = -1;
+|};
+
+# The Client endpoint configuration for Redis databases.
+#
+# + host - The host of the Redis database
+# + password - Password for the database connection
+# + options - Properties for the connection configuration
+public type ClientEndpointConfiguration record {|
+    string host = "localhost";
+    string password = "";
+    Options options = {};
 |};

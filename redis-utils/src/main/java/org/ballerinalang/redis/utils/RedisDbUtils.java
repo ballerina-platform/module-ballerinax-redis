@@ -25,8 +25,8 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.ballerina.runtime.api.Module;
-import io.ballerina.runtime.api.ErrorCreator;
-import io.ballerina.runtime.api.StringUtils;
+import io.ballerina.runtime.api.creators.ErrorCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
 import redis.embedded.RedisServer;
 
@@ -58,28 +58,40 @@ public class RedisDbUtils {
      * @throws IOException exception
      */
     public static Object initServer() throws IOException {
-        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+        String scriptPath = Paths.get(System.getProperty("user.dir")).
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
+        System.out.println(System.getProperty("user.dir"));
+        System.out.println(scriptPath);
         ProcessBuilder processBuilder = new ProcessBuilder();
+        System.out.println(processBuilder);
         processBuilder.command("bash", scriptPath);
+        System.out.println(processBuilder.command("bash", scriptPath));
         Process process = processBuilder.start();
+        System.out.println(process);
+        System.out.println(process);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
                 StandardCharsets.UTF_8))) {
+            System.out.println("Inside try");
             StringBuilder output = new StringBuilder();
             String line;
+            System.out.println(reader.readLine());
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
+                System.out.println(output.append(line).append("\n"));
             }
             int exitVal = process.waitFor();
+            System.out.println(exitVal);
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
+                                        System.out.println(executablePath);
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("inside catch");
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
@@ -91,7 +103,7 @@ public class RedisDbUtils {
      */
     public static Object stopServer() throws IOException {
         redisServer.stop();
-        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("src").resolve("redis").
+        String scriptPath = Paths.get(System.getProperty("user.dir")).
                 resolve("tests").resolve("resources").resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);

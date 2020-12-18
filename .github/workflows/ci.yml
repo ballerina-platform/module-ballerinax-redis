@@ -13,16 +13,19 @@ jobs:
               uses: actions/setup-java@v1
               with:
                 java-version: 11   
-            -  run: mvn clean install 
-            -  run: cd redis
+            -  run: sudo apt install redis-server
+            -  run: sudo apt install bash-completion
+            -  run: mvn clean package -pl redis-utils
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                   args:
-                      build -a -c --sourceroot redis
+                      build -c ./redis
               
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-                  
-                  
+            - name: wget
+              uses: wei/wget@v1
+              with:
+                  args: -qO- https://httpbin.org/get

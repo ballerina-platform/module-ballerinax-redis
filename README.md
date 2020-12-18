@@ -139,23 +139,23 @@ If you want to build Ballerina Redis Connector from the source code:
 
     3.1 If running on a Unix OS:
          
-        ballerina build -a
+        ballerina build
     3.2 The unit tests will not run in Windows OS. Therefore, if running on a Windows OS skip the tests using following command:
          
-        ballerina build --skip-tests redis
+        ballerina build --skip-tests -c
          
 ## Compatibility
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |      Swan Lake Preview5     |
+| Ballerina Language          |      Swan Lake Preview7     |
 
 ```ballerina
 import ballerinax/redis;
 import ballerina/io;
 
 redis:ClientEndpointConfiguration redisConfig = {
-        host: "localhost",
+        host: "localhost:6379",
         password: "",
         options: { connectionPooling: true, isClusterConnection: false, ssl: false,
             startTls: false, verifyPeer: false, connectionTimeout: 500 }

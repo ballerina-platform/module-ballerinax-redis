@@ -19,7 +19,7 @@ Once the client is created, redis commands can be executed through that client.
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |       Swan Lake Preview5    |
+| Ballerina Language          |       Swan Lake Preview7    |
 
 ## Samples
 
@@ -27,7 +27,7 @@ Once the client is created, redis commands can be executed through that client.
 
 ```ballerina
 redis:Client conn = new({
-    host: "localhost",
+    host: "localhost:6379",
     password: "",
     options: { connectionPooling: true, isClusterConnection: false, ssl: false,
         startTls: false, verifyPeer: false, database: 0, connectionTimeout: 

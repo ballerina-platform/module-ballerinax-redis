@@ -30,10 +30,10 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import io.ballerina.runtime.api.StringUtils;
-import io.ballerina.runtime.values.MapValueImpl;
+import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.internal.values.MapValueImpl;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.core.util.exceptions.BallerinaException;
+import io.ballerina.runtime.internal.util.exceptions.BallerinaException;
 
 import java.time.Duration;
 import java.util.ArrayList;
