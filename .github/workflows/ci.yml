@@ -18,8 +18,6 @@ jobs:
             -  run: |
                 sudo apt update
                 sudo apt install redis-server
-                sudo netstat -tulpn | grep LISTEN
-                sudo lsof -i:6379 ## see a specific port such as 6379 ## 
             - uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                   args:
