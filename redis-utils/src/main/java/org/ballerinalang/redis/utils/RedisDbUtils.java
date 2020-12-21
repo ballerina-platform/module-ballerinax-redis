@@ -60,6 +60,7 @@ public class RedisDbUtils {
     public static Object initServer() throws IOException {
         String scriptPath = Paths.get(System.getProperty("user.dir")).
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
+        System.out.println(Paths.get(System.getProperty("user.dir")));
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
