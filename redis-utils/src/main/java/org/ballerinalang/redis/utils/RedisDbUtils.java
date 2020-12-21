@@ -62,7 +62,7 @@ public class RedisDbUtils {
         String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("redis").
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
                         System.out.println(Paths.get(System.getProperty("user.dir")));
-                      File directoryPath = new File(Paths.get(System.getProperty("user.dir")).toString());
+                      File directoryPath = new File(Paths.get(System.getProperty("user.dir")).resolve("redis").toString());
       //List of all files and directories
       String contents[] = directoryPath.list();
       System.out.println("List of files and directories in the specified directory:");
