@@ -6,8 +6,8 @@ org/ballerinalang/redis/actions/ListActions.class
 org/ballerinalang/redis/actions/KeyActions.class
 org/ballerinalang/redis/RedisSystemPackageRepositoryProvider.class
 org/ballerinalang/redis/Constants.class
-org/ballerinalang/redis/actions/StringActions.class
 org/ballerinalang/redis/RedisDataSource.class
+org/ballerinalang/redis/actions/StringActions.class
 org/ballerinalang/redis/utils/CustomRedisServer.class
 org/ballerinalang/redis/actions/SetActions.class
 org/ballerinalang/redis/endpoint/InitRedisClient.class
