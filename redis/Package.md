@@ -19,7 +19,7 @@ Once the client is created, redis commands can be executed through that client.
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |       Swan Lake Preview7    |
+| Ballerina Language          |       Swan Lake Preview8    |
 
 ## Samples
 
