@@ -18,7 +18,6 @@ jobs:
             -  run: sudo apt install redis-server
             -  run: sudo systemctl status redis
             -  run: sudo systemctl stop redis
-            -  run: sudo systemctl status redis
             -  run: cd redis
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
