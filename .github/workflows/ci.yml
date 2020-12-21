@@ -20,7 +20,7 @@ jobs:
                 sudo apt install redis-server
                 sudo netstat -tulpn | grep LISTEN
                 sudo lsof -i:6379 ## see a specific port such as 6379 ## 
-            - uses: SanduDS/ballerina-action/@swan-lake-connector-release
+            - uses: ballerinax/ballerina-action/@swan-lake-connector-release
               with:
                   args:
                       build -c 
