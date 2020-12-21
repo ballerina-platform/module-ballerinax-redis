@@ -13,14 +13,17 @@ jobs:
               uses: actions/setup-java@v1
               with:
                 java-version: 11   
-            -  run: sudo apt install redis-server
-            -  run: sudo apt install bash-completion
-            -  run: mvn clean package -pl redis-utils
-            - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
+            -  run: mvn clean install 
+            -  run: cd redis
+            -  run: |
+                sudo apt update
+                sudo apt install redis-server
+                sudo netstat -tulpn | grep LISTEN
+                sudo lsof -i:6379 ## see a specific port such as 6379 ## 
+            - uses: SanduDS/ballerina-action/@swan-lake-connector-release
               with:
                   args:
-                      build -c ./redis
+                      build -c 
               
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
