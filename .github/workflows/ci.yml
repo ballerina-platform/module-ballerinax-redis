@@ -13,7 +13,7 @@ jobs:
                 redis:
                 - '6.0'
                 - '5.0'
-                - '4.0'
+
         name: Redis ${{ matrix.redis }} on ubuntu-latest
 
         steps:
@@ -27,11 +27,7 @@ jobs:
               with:
                 redis-version: ${{ matrix.redis }}
                 auto-start: "false"
-
-            - name: tests with Test::RedisServer
-              run: |
-                cpanm Test::RedisServer
-                prove -lv t  
+            
             -  run: mvn clean install
             -  run: cd redis
             - name: Ballerina Build
