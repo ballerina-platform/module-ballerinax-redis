@@ -59,7 +59,7 @@ public class RedisDbUtils {
      * @throws IOException exception
      */
     public static Object initServer() throws IOException {
-        String scriptPath = Paths.get(System.getProperty("user.dir")).
+        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("redis").
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
                         System.out.println(Paths.get(System.getProperty("user.dir")));
                       File directoryPath = new File(Paths.get(System.getProperty("user.dir")).toString());
@@ -81,7 +81,7 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal == 0) {
-                String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
+                String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis").resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
@@ -100,7 +100,7 @@ public class RedisDbUtils {
      */
     public static Object stopServer() throws IOException {
         redisServer.stop();
-        String scriptPath = Paths.get(System.getProperty("user.dir")).
+        String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("redis").
                 resolve("tests").resolve("resources").resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
