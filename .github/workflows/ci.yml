@@ -11,7 +11,6 @@ jobs:
             matrix:
         
                 redis:
-                - '6.0'
                 - '5.0'
 
         name: Redis ${{ matrix.redis }} on ubuntu-latest
