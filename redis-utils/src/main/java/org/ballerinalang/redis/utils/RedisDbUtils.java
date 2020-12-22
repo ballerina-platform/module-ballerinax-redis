@@ -80,6 +80,7 @@ public class RedisDbUtils {
                 output.append(line).append("\n");
             }
             int exitVal = process.waitFor();
+            System.out.println(exitVal);
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis").resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
