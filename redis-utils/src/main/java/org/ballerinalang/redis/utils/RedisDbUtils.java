@@ -61,14 +61,6 @@ public class RedisDbUtils {
     public static Object initServer() throws IOException {
         String scriptPath = Paths.get(System.getProperty("user.dir")).resolve("redis").
                 resolve("tests").resolve("resources").resolve("setup.sh").toString();
-                        System.out.println(Paths.get(System.getProperty("user.dir")));
-                      File directoryPath = new File(Paths.get(System.getProperty("user.dir")).resolve("redis").toString());
-      //List of all files and directories
-      String contents[] = directoryPath.list();
-      System.out.println("List of files and directories in the specified directory:");
-      for(int i=0; i<contents.length; i++) {
-         System.out.println(contents[i]);
-      }
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
@@ -80,7 +72,6 @@ public class RedisDbUtils {
                 output.append(line).append("\n");
             }
             int exitVal = process.waitFor();
-            System.out.println(exitVal);
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis").resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
