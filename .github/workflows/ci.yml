@@ -16,7 +16,7 @@ jobs:
             - name: Ballerina Download
               run: sudo wget https://dist.ballerina.io/downloads/swan-lake-preview8/ballerina-swan-lake-preview8.zip
             - run: sudo apt install redis-server
-            - run: sudo service redis-server stop
+            - run: service redis-server stop
             - name: Use Ballerina zip version
               run: sudo apt-get install -y unzip
             - run: sudo unzip  ballerina-swan-lake-preview8.zip
