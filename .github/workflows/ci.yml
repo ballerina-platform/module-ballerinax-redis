@@ -4,41 +4,22 @@ on: [push]
 
 jobs:
     build:
-
         runs-on: ubuntu-latest
-        
-        strategy:
-            matrix:
-        
-                redis:
-                - '5.0'
-
-        name: Redis ${{ matrix.redis }} on ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
             - name: Set up JDK 11
               uses: actions/setup-java@v1
               with:
-                java-version: 11
-            - name: Setup redis
-              uses: shogo82148/actions-setup-redis@v1
-              with:
-                redis-version: ${{ matrix.redis }}
-                auto-start: "false"
-            
-            -  run: mvn clean install
-            -  run: cd redis
-            - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
-              with:
-                  args:
-                      build -c ./redis
-              
+                java-version: 11 
+            - name: Maven Build
+              run: mvn clean install 
+            - name: Ballerina Download
+              run: sudo wget https://dist.ballerina.io/downloads/swan-lake-preview8/ballerina-swan-lake-preview8.zip
+            - name: Use Ballerina zip version
+              run: sudo apt-get install -y unzip
+            - run: sudo unzip  ballerina-swan-lake-preview8.zip
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
-                  JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-            - name: wget
-              uses: wei/wget@v1
-              with:
-                  args: -qO- https://httpbin.org/get
+                  JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true 
+            - name: Ballerina Build 
+              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-swan-lake-preview8/bin/ballerina build redis
