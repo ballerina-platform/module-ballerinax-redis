@@ -15,8 +15,8 @@
 // under the License.
 
 import ballerina/io;
-import ballerina/java;
-import ballerina/runtime;
+import ballerina/jballerina.java;
+import ballerina/lang.runtime;
 import ballerina/test;
 
 @test:Config {
@@ -190,7 +190,7 @@ public function testIncrBy() {
 }
 
 @test:Config {
-    dependsOn: ["testIncrBy"]
+    dependsOn: [testIncrBy]
 }
 public function testIncrByFloat() {
     var result = conn->incrByFloat("testIncrByKey", 0.2);
