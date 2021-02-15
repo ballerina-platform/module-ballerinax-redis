@@ -1,6 +1,6 @@
 org/ballerinalang/redis/actions/AbstractRedisAction.class
-org/ballerinalang/redis/endpoint/InitRedisClient$1.class
 org/ballerinalang/redis/actions/SortedSetActions.class
+org/ballerinalang/redis/endpoint/InitRedisClient$1.class
 org/ballerinalang/redis/RedisDataSource$ConnectionParam.class
 org/ballerinalang/redis/actions/ListActions.class
 org/ballerinalang/redis/actions/KeyActions.class

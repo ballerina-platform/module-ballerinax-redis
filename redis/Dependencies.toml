@@ -1,6 +1,0 @@
-[[platform.java11.dependency]]
-path = "../redis-utils/target/redis-0.99.1-SNAPSHOT.jar"
-groupId = "org.ballerinalang"
-artifactId = "redis-utils"
-module = "redis-utils" 
-version="0.99.1"
