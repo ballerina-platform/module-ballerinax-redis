@@ -34,9 +34,9 @@
     <repositories>
         <!-- WSO2 released artifact repository -->
         <repository>
-            <id>wso2.releases</id>
-            <name>WSO2 Releases Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -46,9 +46,9 @@
 
         <!-- WSO2 Snapshot artifact repository -->
         <repository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -59,9 +59,9 @@
         </repository>
 
         <repository>
-            <id>wso2-nexus</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -72,9 +72,9 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>wso2.releases</id>
-            <name>WSO2 Releases Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -83,9 +83,9 @@
         </pluginRepository>
 
         <pluginRepository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -96,9 +96,9 @@
         </pluginRepository>
 
         <pluginRepository>
-            <id>wso2-nexus</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -114,15 +114,10 @@
                                   <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
                                 </repository>
       
-        <repository>
-            <id>nexus-releases</id>
-            <name>WSO2 Nexus Release Repository</name>
-            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
-        </repository>
         <snapshotRepository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
         </snapshotRepository>
     </distributionManagement>
 
