@@ -55,8 +55,6 @@ jobs:
                     cat ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
-            - name: Maven Build
-              run: mvn clean install 
             - name: Ballerina Download
               run: sudo wget https://dist.ballerina.io/downloads/swan-lake-alpha1/ballerina-swan-lake-alpha1.zip
             - name: Use Ballerina zip version
