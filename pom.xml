@@ -32,10 +32,10 @@
     </scm>
   
     <repositories>
-           <repository>
+        <repository>
             <id>github.releases</id>
-                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
-                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <name>GitHub ballerina-platform Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -81,10 +81,10 @@
     </repositories>
 
     <pluginRepositories>
-              <pluginRepository>
+         <pluginRepository>
             <id>github.releases</id>
-                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
-                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <name>GitHub ballerina-platform Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
