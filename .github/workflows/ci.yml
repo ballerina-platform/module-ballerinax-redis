@@ -13,7 +13,6 @@ jobs:
                 java-version: 11 
             - name: 'Create settings.xml'
               run: |
-                  ls -a ~/.m2/
                   echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
@@ -50,7 +49,6 @@ jobs:
                             </server>
                           </servers>
                         </settings>' > ~/.m2/settings.xml
-                    cat ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
             - name: Ballerina Download
