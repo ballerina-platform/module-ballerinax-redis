@@ -135,20 +135,20 @@ If you want to build Ballerina Redis Connector from the source code:
 2. Run the following Maven command from the module-ballerinax-redis directory:
 
         mvn clean install
-3. Run the following ballerina command module-ballerinax-redis/redis directory:
+3. Run the following ballerina command module-ballerinax-redis directory:
 
     3.1 If running on a Unix OS:
          
-        ballerina build
+        bal build redis
     3.2 The unit tests will not run in Windows OS. Therefore, if running on a Windows OS skip the tests using following command:
          
-        ballerina build --skip-tests -c
+        bal build -c --skip-tests redis
          
 ## Compatibility
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-| Ballerina Language          |      Swan Lake Preview8     |
+|      Ballerina Language     |      Swan Lake Alpha 1      |
 
 ```ballerina
 import ballerinax/redis;
