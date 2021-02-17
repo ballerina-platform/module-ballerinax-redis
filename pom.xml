@@ -116,15 +116,9 @@
             <id>gitlab-maven</id>
             <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
         </repository>
-        <repository>
-            <id>nexus-releases</id>
-            <name>WSO2 Nexus Release Repository</name>
-            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
-        </repository>
         <snapshotRepository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <id>gitlab-maven</id>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
         </snapshotRepository>
     </distributionManagement>
 
