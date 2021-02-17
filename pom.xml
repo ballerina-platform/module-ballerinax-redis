@@ -32,10 +32,6 @@
     </scm>
 
     <repositories>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
-        </repository>
         <!-- WSO2 released artifact repository -->
         <repository>
             <id>wso2.releases</id>
@@ -113,12 +109,14 @@
 
     <distributionManagement>
         <repository>
-            <id>gitlab-maven</id>
-            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <id>nexus-releases</id>
+            <name>WSO2 Nexus Release Repository</name>
+            <url>http://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>gitlab-maven</id>
-            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <id>wso2.snapshots</id>
+            <name>WSO2 Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -264,7 +262,7 @@
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>${maven.shade.plugin.version}</version>
                 </plugin>
-                            <plugin>
+                <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven.checkstyle.plugin.version}</version>
