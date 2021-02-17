@@ -50,7 +50,7 @@ jobs:
                         </server>
                         </servers>
                         </settings>' > ~/.m2/settings.xml
-                    echo ~/.m2/settings.xml
+                    cat ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
             - name: Maven Build
