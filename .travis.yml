@@ -1,4 +1,10 @@
 language: java
+install: true
+
+jdk:
+  - openjdk11
 
 cache:
-  directories: ~/.m2
+  directories:
+    - $HOME/.m2
+  
