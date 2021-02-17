@@ -108,6 +108,12 @@
     </pluginRepositories>
 
     <distributionManagement>
+                                <repository>
+                                  <id>github</id>
+                                  <name>GitHub ballerina-platform Apache Maven Packages</name>
+                                  <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+                                </repository>
+      
         <repository>
             <id>nexus-releases</id>
             <name>WSO2 Nexus Release Repository</name>
