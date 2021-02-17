@@ -113,7 +113,7 @@
             <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
           </repository>
           <snapshotRepository>
-            <id>gitlab-maven</id>
+            <id>github</id>
             <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
           </snapshotRepository>
     </distributionManagement>
