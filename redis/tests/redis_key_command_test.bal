@@ -103,7 +103,7 @@ function testMove() {
 }
 function testPersist() {
     var result = conn->persist("testPersistKey");
-    runtime:sleep(3000);
+    runtime:sleep(3);
     if (result is boolean) {
         test:assertFalse(result);
         test:assertEquals(exist(java:fromString("testPersistKey")), 1);
@@ -118,7 +118,7 @@ function testPExpire() {
     var result = conn->pExpire("testPExpireKey", 3000);
     if (result is boolean) {
         test:assertTrue(result);
-        runtime:sleep(3500);
+        runtime:sleep(3.5);
         test:assertEquals(exist(java:fromString("testPExpireKey")), 0);
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
