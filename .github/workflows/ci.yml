@@ -43,8 +43,8 @@ jobs:
                           <servers>
                             <server>
                               <id>github</id>
-                              <username>kapilraajP</username>
-                              <password>ac4013daf83afab333a2df11eeb56191a7fa61d0</password>
+                              <username>${{ secrets.USERNAME }}</username>
+                              <password>${{ secrets.PERSONAL_TOKEN }}</password>
                             </server>
                           </servers>
                         </settings>' > ~/.m2/settings.xml
