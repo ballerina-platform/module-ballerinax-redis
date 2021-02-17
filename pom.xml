@@ -80,11 +80,12 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+      
               <pluginRepository>
             <id>github.releases</id>
                                   <name>GitHub ballerina-platform Apache Maven Packages</name>
                                   <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
-    <pluginRepositories>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
