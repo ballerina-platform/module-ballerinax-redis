@@ -21,7 +21,7 @@
 
     <groupId>org.ballerinalang</groupId>
     <artifactId>connector-redis-parent</artifactId>
-    <version>0.99.1-SNAPSHOT</version>
+    <version>0.99.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -30,8 +30,18 @@
         <connection>scm:git:https://github.com/wso2-ballerina/package-redis.git</connection>
         <tag>HEAD</tag>
     </scm>
-
+  
     <repositories>
+        <repository>
+            <id>github.releases</id>
+            <name>GitHub ballerina-platform Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
         <!-- WSO2 released artifact repository -->
         <repository>
             <id>wso2.releases</id>
@@ -71,6 +81,16 @@
     </repositories>
 
     <pluginRepositories>
+         <pluginRepository>
+            <id>github.releases</id>
+            <name>GitHub ballerina-platform Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </pluginRepository>
         <pluginRepository>
             <id>wso2.releases</id>
             <name>WSO2 Releases Repository</name>
@@ -298,7 +318,7 @@
 
     <properties>
         <project.scm.id>my-scm-server</project.scm.id>
-        <ballerina.version>2.0.0-Preview8</ballerina.version>
+        <ballerina.version>2.0.0-alpha</ballerina.version>
         <mvn.processor.plugin.version>2.2.4</mvn.processor.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
@@ -332,3 +352,4 @@
         <module>redis-utils</module>
     </modules>
 </project>
+

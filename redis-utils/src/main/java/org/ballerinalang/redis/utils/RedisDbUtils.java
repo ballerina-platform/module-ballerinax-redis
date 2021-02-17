@@ -92,7 +92,7 @@ public class RedisDbUtils {
     public static Object stopServer() throws IOException {
         redisServer.stop();
         String scriptPath = Paths.get(System.getProperty("user.dir")).
-                resolve("tests").resolve("resources").resolve("cleanup.sh").toString();
+                resolve("redis/tests").resolve("resources").resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
