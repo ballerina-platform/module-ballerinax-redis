@@ -53,7 +53,7 @@ function testExpire() {
     var result = conn->expire("testExpireKey", 3);
     if (result is boolean) {
         test:assertTrue(result);
-        runtime:sleep(3000);
+        runtime:sleep(3);
         test:assertEquals(exist(java:fromString("testExpireKey")), 0);
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
