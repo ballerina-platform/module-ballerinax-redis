@@ -44,7 +44,7 @@ jobs:
                         <server>
                         <id>github</id>
                         <username>kapilraajP</username>
-                        <password>6172744657e2c72092c7fe99e7e2cd12a6929869</password>
+                        <password>ebd9260da5037b588915d08383ec01bd2f91e112</password>
                         </server>
                         </servers>
                         </settings>' > ~/.m2/settings.xml
