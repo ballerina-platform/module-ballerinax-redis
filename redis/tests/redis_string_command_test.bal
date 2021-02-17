@@ -261,7 +261,7 @@ public function testPSetEx() {
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "testPSetExNewValue");
-        runtime:sleep(6000);
+        runtime:sleep(6);
         test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "");
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
@@ -286,7 +286,7 @@ public function testSetEx() {
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "testSetExNewValue");
-        runtime:sleep(6000);
+        runtime:sleep(6);
         test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "");
     } else {
         test:assertFail(io:sprintf("error from Connector: %s", result.message()));
