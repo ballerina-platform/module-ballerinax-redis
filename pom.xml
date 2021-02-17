@@ -32,6 +32,10 @@
     </scm>
 
     <repositories>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+        </repository>
         <!-- WSO2 released artifact repository -->
         <repository>
             <id>wso2.releases</id>
@@ -108,6 +112,14 @@
     </pluginRepositories>
 
     <distributionManagement>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://maven.pkg.github.com/ballerina-platform/ballerina-lang</url>
+        </repository>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.example.com/api/v4/projects/PROJECT_ID/packages/maven</url>
+        </snapshotRepository>
         <repository>
             <id>nexus-releases</id>
             <name>WSO2 Nexus Release Repository</name>
