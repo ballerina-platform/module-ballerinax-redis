@@ -49,23 +49,6 @@ function testExists() {
 
 @test:Config {
 }
-function testExists2() {
-    var result1 = conn->exists(["testExistsKey"]);
-    var result2 = conn->exists(["nonExistentKey"]);
-    if (result1 is int) {
-        test:assertEquals(result1, 1);
-    } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result1.message()));
-    }
-    if (result2 is int) {
-        test:assertEquals(result2, 0);
-    } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result2.message()));
-    }
-}
-
-@test:Config {
-}
 function testExpire() {
     var result = conn->expire("testExpireKey", 3);
     if (result is boolean) {
