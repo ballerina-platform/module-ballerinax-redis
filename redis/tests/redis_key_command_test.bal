@@ -49,7 +49,7 @@ function testExists() {
 
 @test:Config {
 }
-function testExists() {
+function testExists2() {
     var result1 = conn->exists(["testExistsKey"]);
     var result2 = conn->exists(["nonExistentKey"]);
     if (result1 is int) {
