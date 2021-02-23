@@ -33,8 +33,8 @@ function testDel() {
 @test:Config {
 }
 function testExists() {
-    var result1 = conn->exists(["testExistsKey", "testExistsKey"]);
-    var result2 = conn->exists(["nonExistentKey","nonExistentKey"]);
+    var result1 = conn->exists(["testExistsKey"]);
+    var result2 = conn->exists(["nonExistentKey"]);
     if (result1 is int) {
         test:assertEquals(result1, 1);
     } else {
