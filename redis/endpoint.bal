@@ -872,7 +872,7 @@ public client class Client {
     # + keys - The keys of which existence to be found out
     # + return - The number of existing keys or `Error` if an Error occurs
     remote function exists(string[] keys) returns int | Error {
-        return del(self.datasource, keys);
+        return exists(self.datasource, keys);
     }
 
     # Set a key's time to live in seconds.
