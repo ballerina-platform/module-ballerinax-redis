@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/io;
 import ballerina/jballerina.java;
 import ballerina/test;
 
@@ -48,7 +47,7 @@ public function initDb() {
 public function stopServer() {
     var result = stopRedisServer();
     if (result is error) {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 

@@ -12,9 +12,7 @@
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
-// under the License.
 
-import ballerina/io;
 import ballerina/jballerina.java;
 import ballerina/lang.runtime;
 import ballerina/test;
@@ -26,7 +24,7 @@ function testDel() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -38,12 +36,12 @@ function testExists() {
     if (result1 is int) {
         test:assertEquals(result1, 1);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result1.message()));
+        test:assertFail("error from Connector: " + result1.message());
     }
     if (result2 is int) {
         test:assertEquals(result2, 0);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result2.message()));
+        test:assertFail("error from Connector: " + result2.message());
     }
 }
 
@@ -56,7 +54,7 @@ function testExpire() {
         runtime:sleep(3);
         test:assertEquals(exist(java:fromString("testExpireKey")), 0);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -83,7 +81,7 @@ function testKeys() {
         }
         test:assertTrue(allMatchingKeysRetrieved);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -95,7 +93,7 @@ function testMove() {
         test:assertTrue(result);
         test:assertEquals(exist(java:fromString("testMoveKey")), 0);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -108,7 +106,7 @@ function testPersist() {
         test:assertFalse(result);
         test:assertEquals(exist(java:fromString("testPersistKey")), 1);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -121,7 +119,7 @@ function testPExpire() {
         runtime:sleep(3.5);
         test:assertEquals(exist(java:fromString("testPExpireKey")), 0);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -155,7 +153,7 @@ function testRename() {
         test:assertEquals(exist(java:fromString("testRenameKey")), 0);
         test:assertEquals(exist(java:fromString("testRenameKey1")), 1);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -167,12 +165,12 @@ function testRenameNx() {
     if (result1 is boolean) {
         test:assertTrue(result1);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result1.message()));
+        test:assertFail("error from Connector: " + result1.message());
     }
     if (result2 is boolean) {
         test:assertFalse(result2);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result2.message()));
+        test:assertFail("error from Connector: " + result2.message());
     }
     test:assertEquals(exist(java:fromString("testRenameNxKey")), 0);
     test:assertEquals(exist(java:fromString("testRenameNxKeyRenamed")), 1);
@@ -197,7 +195,7 @@ function testSort() {
         }
         test:assertTrue(elementsInOrder);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -219,7 +217,7 @@ function testType() {
     if (result is string) {
         test:assertEquals(result, "string");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
