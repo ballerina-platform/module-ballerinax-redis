@@ -5,7 +5,7 @@
 Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
 following operations are supported.
 
-![image](docs/images/redis_connector.png)
+![image](redis/docs/images/redis_connector.png)
 
 **Basic Commands**
 
