@@ -1,9 +1,11 @@
-[![Build Status](https://travis-ci.org/wso2-ballerina/module-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-redis)
+[![Build Status](https://travis-ci.org/ballerina-platform/module-ballerinax-redis.svg?branch=master)](https://travis-ci.org/wso2-ballerina/module-redis)
 
 # module-ballerinax-redis
 
 Ballerina Redis Module is used to connect Ballerina with a Redis data source. With the Ballerina Redis Module 
 following operations are supported.
+
+![image](docs/images/redis_connector.png)
 
 **Basic Commands**
 
@@ -173,7 +175,7 @@ public function main() returns error? {
         io:println(result.message());
     }
 
-    io:println("\n===Executing sample string oprerations===");
+    io:println("===Executing sample string oprerations===");
     //Sample String Operations
     io:println("Setting value of the key \"Project\" as \"Ballerina\"");
     var stringSetresult = conn->set("Project", "Ballerina");
@@ -204,7 +206,7 @@ public function main() returns error? {
         io:println("Error occurred while calling `lPush`");
     }
 
-    io:println("\nPoping an element from NumberList");
+    io:println("Poping an element from NumberList");
     var lPopResult = conn->lPop("NumberList");
 
     if (lPopResult is string) {
@@ -212,7 +214,7 @@ public function main() returns error? {
     } else {
         io:println("Error occurred while calling `lPop`");
     }
-    io:println("\n===Executing sample set oprerations===");
+    io:println("===Executing sample set oprerations===");
     //Sample Set Operations
     io:println("Adding 3 elements to NumberSet");
     var setAddResult = conn->sAdd("NumberSet", ["1", "2", "3"]);
@@ -232,7 +234,7 @@ public function main() returns error? {
         io:println("Error occurred while calling `sCard`");
     }
 
-    io:println("\n===Executing sample hash oprerations===");
+    io:println("===Executing sample hash oprerations===");
     //Sample Hash operations
     io:println("Adding a key value pair to a hash");
     var hashSetResult = conn->hSet("HashKey", "Name", "Manuri");
@@ -243,7 +245,7 @@ public function main() returns error? {
         io:println("Error occurred while calling `hSet`");
     }
 
-    io:println("\nQuerying the value of the hash field Name");
+    io:println("Querying the value of the hash field Name");
     var hashGetResult = conn->hGet("HashKey", "Name");
 
     if (hashGetResult is string) {
@@ -253,7 +255,93 @@ public function main() returns error? {
     }
 
     conn.stop();
-    io:println("\nRedis connection closed!");
+    io:println("Redis connection closed!");
 }
 
+```
+## Client configuration
+```ballerina
+redis:ClientEndpointConfiguration redisConfig = {
+    host: "localhost:6379",
+    password: "",
+    options: { 
+        connectionPooling: true, 
+        isClusterConnection: false, 
+        ssl: false,
+        startTls: false, 
+        verifyPeer: false, 
+    }
+};
+```
+## Usage of multiple logical databses
+Redis logical database having the specified zero-based numeric index. New connections always use the database 0. Redis Cluster only supports database 0. In this redis connector we can select logical database during client initialization by providing databse number in configuration, if not specified it uses database 0. For usage of multiple logical databases have to create clients with database specified in configuration
+```ballerina
+redis:ClientEndpointConfiguration redisConfig = {
+    host: "localhost:6379",
+    password: "",
+    options: { 
+        connectionPooling: true, 
+        isClusterConnection: false, 
+        ssl: false,
+        startTls: false, 
+        verifyPeer: false, 
+        database: 1 
+    }
+};
+```
+## Client initialization
+```ballerina
+redis:Client conn =  check new (redisConfig);
+```
+## String Operations
+### Insert string value to a cache
+This section shows how to insert a string value to a cache. This can be done by specifying name of the key and value to be inserted as parameters. On successful insertion, function returns string 'OK' or else Error.
+```ballerina
+var result = conn->set("Project", "Ballerina");
+if (result is string) {
+    io:println("String value inserted);
+} else {
+    io:println("Error while set");
+}
+```
+### Fetch string value from a cache
+This section shows how to fetch a inserted string value from a cache. This can be done by specifying name of the key as parameter. On successful operation, function returns string containing value corresponding for a key or else Error.
+```ballerina
+var result = conn->get("Project");
+if (result is string) {
+    io:println(result);
+} else {
+    io:println("Error while fetching");
+}
+```
+### Fetch string value from a cache
+This section shows how to fetch a inserted string value from a cache. This can be done by specifying name of the key as parameter. On successful operation, function returns string containing value corresponding for a key or else Error.
+```ballerina
+var result = conn->get("Project");
+if (result is string) {
+    io:println(result);
+} else {
+    io:println("Error while fetching");
+}
+```
+## List operations
+### Insert list of values to a cache
+This section shows how to insert list elements to a cache. This can be done by specifying name of the key and list of values to be inserted as parameters. On successful insertion, function returns Number of list elements pushed or else Error.
+```ballerina
+var listPushresult = conn->lPush("NumberList", ["One", "Two"]);
+if (listPushresult is int) {
+    io:println("Number of elements pushed: " + listPushresult.toString());
+} else {
+    io:println("Error occurred while calling `lPush`");
+}
+```
+### Pop a last value from a list of values in a cache
+This section shows how to get and pop from list element in a cache. This can be done by specifying name of the key as parameter. On successful operation, function returns last element from list of elements or else Error.
+```ballerina
+var lPopResult = conn->lPop("NumberList");
+if (lPopResult is string) {
+    io:println("Popped element: " + lPopResult);
+} else {
+    io:println("Error occurred while calling `lPop`");
+}
 ```
