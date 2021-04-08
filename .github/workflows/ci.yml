@@ -53,6 +53,6 @@ jobs:
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                 args:
-                  build redis
+                  build -c redis
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
