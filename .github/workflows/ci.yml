@@ -49,10 +49,10 @@ jobs:
                         </settings>' > ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
-            - name: Ballerina Build W/ tests
+            - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                 args:
-                  test
+                  build -c
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
