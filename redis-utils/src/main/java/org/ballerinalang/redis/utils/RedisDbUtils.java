@@ -30,6 +30,7 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
 import redis.embedded.RedisServer;
 
+import java.io.File;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,8 +59,20 @@ public class RedisDbUtils {
      * @throws IOException exception
      */
     public static Object initServer() throws IOException {
-        String scriptPath = Paths.get(System.getProperty("user.dir")).
+                String scriptPath = Paths.get(System.getProperty("user.dir")).
                 resolve("redis/tests").resolve("resources").resolve("setup.sh").toString();
+        System.out.println(Paths.get(System.getProperty("user.dir")));
+        File folder = new File(Paths.get(System.getProperty("user.dir")).toString());
+File[] listOfFiles = folder.listFiles();
+
+for (int i = 0; i < listOfFiles.length; i++) {
+  if (listOfFiles[i].isFile()) {
+    System.out.println("File " + listOfFiles[i].getName());
+  } else if (listOfFiles[i].isDirectory()) {
+    System.out.println("Directory " + listOfFiles[i].getName());
+  }
+}
+
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
@@ -74,6 +87,17 @@ public class RedisDbUtils {
             if (exitVal == 0) {
                 String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
                         resolve("redis-server").toString();
+            File folder1 = new File(Paths.get(System.getProperty("user.dir")).toString());
+File[] listOfFiles1 = folder1.listFiles();
+
+for (int i = 0; i < listOfFiles1.length; i++) {
+  if (listOfFiles1[i].isFile()) {
+    System.out.println("File " + listOfFiles1[i].getName());
+  } else if (listOfFiles1[i].isDirectory()) {
+    System.out.println("Directory " + listOfFiles1[i].getName());
+  }
+}
+
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {

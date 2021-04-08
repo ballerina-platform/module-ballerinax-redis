@@ -150,7 +150,7 @@ If you want to build Ballerina Redis Connector from the source code:
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-|      Ballerina Language     |      Swan Lake Alpha 2      |
+|      Ballerina Language     |      Swan Lake Alpha 4      |
 
 ```ballerina
 import ballerinax/redis;
@@ -297,9 +297,9 @@ redis:Client conn =  check new (redisConfig);
 ### Insert string value to a cache
 This section shows how to insert a string value to a cache. This can be done by specifying name of the key and value to be inserted as parameters. On successful insertion, function returns string 'OK' or else Error.
 ```ballerina
-var result = conn->set("Project", "Ballerina");
-if (result is string) {
-    io:println("String value inserted);
+var setResult = conn->set("Project", "Ballerina");
+if (setResult is string) {
+    io:println("String value inserted");
 } else {
     io:println("Error while set");
 }
@@ -307,23 +307,24 @@ if (result is string) {
 ### Fetch string value from a cache
 This section shows how to fetch a inserted string value from a cache. This can be done by specifying name of the key as parameter. On successful operation, function returns string containing value corresponding for a key or else Error.
 ```ballerina
-var result = conn->get("Project");
-if (result is string) {
-    io:println(result);
+var getResult = conn->get("Project");
+if (getResult is string) {
+    io:println(getResult);
 } else {
     io:println("Error while fetching");
 }
 ```
-### Fetch string value from a cache
-This section shows how to fetch a inserted string value from a cache. This can be done by specifying name of the key as parameter. On successful operation, function returns string containing value corresponding for a key or else Error.
+### Append string value in a cache
+This section shows how to append a string value to a cache. This can be done by specifying name of the key and string to append as parameters. On successful operation, function returns length of string resulted after append or else Error.
 ```ballerina
-var result = conn->get("Project");
-if (result is string) {
-    io:println(result);
+var appendResult = conn->append("Language", "New");
+if (appendResult is int) {
+    io:println("Length of string appended: " + appendResult.toString());
 } else {
-    io:println("Error while fetching");
+    io:println("Error while appending");
 }
 ```
+
 ## List operations
 ### Insert list of values to a cache
 This section shows how to insert list elements to a cache. This can be done by specifying name of the key and list of values to be inserted as parameters. On successful insertion, function returns Number of list elements pushed or else Error.

@@ -1,14 +1,14 @@
 [package]
 org="ballerinax"
 name = "redis"
-version="0.99.3"
+version="0.99.4"
 
 [[platform.java11.dependency]]
-path = "../redis-utils/target/redis-0.99.3-SNAPSHOT.jar"
+path = "../redis-utils/target/redis-0.99.4-SNAPSHOT.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="0.99.3"
+version="0.99.4"
 
 [build-options]
 taintCheck = true

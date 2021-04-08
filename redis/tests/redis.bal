@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/jballerina.java;
+import ballerina/log;
 import ballerina/test;
 
 ClientEndpointConfiguration redisConfig = {
@@ -30,11 +31,14 @@ ClientEndpointConfiguration redisConfig = {
     }
 };
 
-var stringResult = initRedisServer();
 Client conn = check new (redisConfig);
 
 @test:BeforeSuite
 public function initDb() {
+    var stringResult = initRedisServer();
+    if(stringResult is error){
+        log:printError("Redis server initialization failed" + stringResult.toString());
+    }
     setupRedisStringDatabase();
     setupRedisKeyDatabase();
     setupRedisListDatabase();
