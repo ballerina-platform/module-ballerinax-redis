@@ -49,11 +49,12 @@ jobs:
                         </settings>' > ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
+            - name: Cd redis
+              run: cd redis 
+            - name: ls
+              run: ls
             - name: Ballerina Build
               uses: ballerina-platform/ballerina-action/@swan-lake-connector-release
               with:
                 args:
                   build -c redis
-              env:
-                JAVA_HOME: /usr/lib/jvm/default-jvm
-                JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
