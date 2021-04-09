@@ -54,3 +54,5 @@ jobs:
               with:
                   args:
                       build -c 
+              env:
+                JAVA_HOME: /usr/lib/jvm/default-jvm
