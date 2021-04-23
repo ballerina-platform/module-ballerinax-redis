@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/io;
 import ballerina/test;
 
 @test:Config {
@@ -24,7 +23,7 @@ function testPing() {
     if (result is string) {
         test:assertEquals(result, "PONG");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -35,6 +34,6 @@ function testEcho() {
     if (result is string) {
         test:assertEquals(result, "Manuri");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }

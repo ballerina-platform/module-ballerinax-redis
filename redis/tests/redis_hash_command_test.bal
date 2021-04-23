@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/io;
 import ballerina/jballerina.java;
 import ballerina/test;
 
@@ -28,7 +27,7 @@ function testHDel() {
             !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField2")) &&
             !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField3")));
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -39,7 +38,7 @@ function testHExists() {
     if (result is boolean) {
         test:assertEquals(result, true);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -50,7 +49,7 @@ function testHGet() {
     if (result is string) {
         test:assertEquals(result, "testHGetValue1");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -63,7 +62,7 @@ function testHGetAll() {
         test:assertTrue(result.get("testHGetAllField1").toString() == "testHGetAllValue1" &&
             result.get("testHGetAllField2").toString() == "testHGetAllValue2");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -74,7 +73,7 @@ function testHIncrByFloat() {
     if (result is float) {
         test:assertEquals(result, 7.2f);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -85,7 +84,7 @@ function testHIncrBy() {
     if (result is int) {
         test:assertEquals(result, 8);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -96,7 +95,7 @@ function testHLen() {
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -110,7 +109,7 @@ function testHMGet() {
             result.get("testHMGetField2").toString() == "testHMGetValue2" &&
             result.get("testHMGetField3").toString() == "testHMGetValue3");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -126,7 +125,7 @@ function testHMSet() {
             hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")) &&
             hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")).toString() == "testHMSetValue2");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -153,7 +152,7 @@ function testHKeys() {
         }
         test:assertTrue(allFieldsRetrieved);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -166,7 +165,7 @@ function testHSet() {
         test:assertTrue(hexists(java:fromString("testHSetKey"), java:fromString("testHSetField1")) &&
             hget(java:fromString("testHSetKey"), java:fromString("testHSetField1")).toString() == "testHSetValue1");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -179,7 +178,7 @@ function testHSetNx() {
         test:assertTrue(hexists(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")) &&
             hget(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")).toString() == "testHSetNxValue1");
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -190,7 +189,7 @@ function testHStrln() {
     if (result is int) {
         test:assertEquals(result, 16);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
@@ -217,7 +216,7 @@ function testHVals() {
         }
         test:assertTrue(allValuesRetrieved);
     } else {
-        test:assertFail(io:sprintf("error from Connector: %s", result.message()));
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 
