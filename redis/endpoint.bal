@@ -1285,6 +1285,8 @@ function initClient(ClientEndpointConfiguration clientEndpointConfig) returns ha
 } external;
 
 # An internal function used by clients to shutdown the connection/connection pool(if pooling enabled).
+# 
+# + datasource - data source handle
 function close(handle datasource) = @java:Method {
     'class: "org.ballerinalang.redis.endpoint.Close"
 } external;
