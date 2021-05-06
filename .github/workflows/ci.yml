@@ -11,6 +11,8 @@ jobs:
               uses: actions/setup-java@v1
               with:
                 java-version: 11 
+            - name: print mvn version
+              run: mvn -v
             - name: 'Create settings.xml'
               run: |
                   echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -20,7 +22,6 @@ jobs:
                           <activeProfiles>
                             <activeProfile>github</activeProfile>
                           </activeProfiles>
-
                           <profiles>
                             <profile>
                               <id>github</id>
@@ -28,6 +29,12 @@ jobs:
                                 <repository>
                                   <id>central</id>
                                   <url>https://repo1.maven.org/maven2</url>
+                                  <releases><enabled>true</enabled></releases>
+                                  <snapshots><enabled>true</enabled></snapshots>
+                                </repository>
+                                <repository>
+                                  <id>centralWso2</id>
+                                  <url>https://maven.wso2.org/nexus/content/repositories/wso2-public/</url>
                                   <releases><enabled>true</enabled></releases>
                                   <snapshots><enabled>true</enabled></snapshots>
                                 </repository>
@@ -46,7 +53,23 @@ jobs:
                               <password>${{ secrets.BALLERINA_BOT_TOKEN }}</password>
                             </server>
                           </servers>
+                          <mirrors>
+                            <mirror>
+                              <id>insecure-repo</id>
+                              <mirrorOf>external:http:*</mirrorOf>
+                              <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+                              <blocked>false</blocked>
+                            </mirror>
+                            <mirror>
+                              <id>insecure-repo2</id>
+                              <mirrorOf>external:http:*</mirrorOf>
+                              <url>https://maven.wso2.org/nexus/content/repositories/wso2-public/</url>
+                              <blocked>false</blocked>
+                            </mirror>
+                          </mirrors>
                         </settings>' > ~/.m2/settings.xml
+            - name: print file
+              run: cat ~/.m2/settings.xml
             - name: Maven Build
               run: mvn clean install 
             - name: Ballerina Download
