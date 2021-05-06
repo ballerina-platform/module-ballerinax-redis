@@ -28,3 +28,6 @@ hs_err_pid*
 
 Ballerina.lock
 redis-utils/dependency-reduced-pom.xml
+redis/resources/**
+redis-utils/target/**
+redis/target/**

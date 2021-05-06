@@ -152,7 +152,7 @@ If you want to build Ballerina Redis Connector from the source code:
 
 |                             |           Version           |
 |:---------------------------:|:---------------------------:|
-|      Ballerina Language     |      Swan Lake Alpha 4      |
+|      Ballerina Language     |      Swan Lake Alpha 5      |
 
 ```ballerina
 import ballerinax/redis;
