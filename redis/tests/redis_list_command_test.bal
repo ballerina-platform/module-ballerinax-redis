@@ -56,6 +56,8 @@ function testLPop() {
     var result = conn->lPop("testLPopKey");
     if (result is string) {
         test:assertEquals(result, "testLPopValue2");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
@@ -78,6 +80,8 @@ function testLIndex() {
     var result = conn->lIndex("testLIndexKey", 0);
     if (result is string) {
         test:assertEquals(result, "testLIndexValue2");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
@@ -156,6 +160,8 @@ function testRPop() {
     var result = conn->rPop("testRPopKey");
     if (result is string) {
         test:assertEquals(result, "testRPopValue1");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
