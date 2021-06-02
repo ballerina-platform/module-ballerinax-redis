@@ -21,7 +21,7 @@
 
     <groupId>org.ballerinalang</groupId>
     <artifactId>connector-redis-parent</artifactId>
-    <version>0.99.5</version>
+    <version>0.99.6</version>
     <packaging>pom</packaging>
 
     <scm>
