@@ -621,8 +621,15 @@ public client class Client {
     # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
     @display {label: "Pop random member in set"}
     remote function sPop(@display {label: "Key"} string key, @display {label: "Number of members"} int count) 
-                         returns @display {label: "Array of removed elements"} string[] | error {
-        return sPop(self.datasource, java:fromString(key), count);
+                         returns @display {label: "Array of removed elements"} string[]|()|error {
+        handle|string[]|error result = sPop(self.datasource, java:fromString(key), count);
+        if (result is handle) {
+            return ();
+        } else if (result is string[]) {
+            return result;
+        } else {
+            return result;
+        }
     }
 
     # Get one or multiple random members from a set.
@@ -1182,8 +1189,8 @@ public client class Client {
     #
     # + return - Random key, or `nil` when the database is empty or `error` if an error occurs
     @display {label: "Get a random key"}
-    remote function randomKey() returns @display {label: "Key"} string | error {
-        return <string>java:toString(check randomKey(self.datasource));
+    remote function randomKey() returns @display {label: "Key"} string|()|error {
+        return java:toString(check randomKey(self.datasource));
     }
 
     # Rename a key.
@@ -1505,7 +1512,7 @@ function sMove(handle datasource, handle src, handle destination, handle member)
     'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
-function sPop(handle datasource, handle key, int count) returns string[] | error = @java:Method {
+function sPop(handle datasource, handle key, int count) returns handle | string[] | error = @java:Method {
     'class: "org.ballerinalang.redis.actions.SetActions"
 } external;
 
@@ -1637,7 +1644,7 @@ function pTtl(handle datasource, handle key) returns int | error = @java:Method 
     'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 
-function randomKey(handle datasource) returns handle | error = @java:Method {
+function randomKey(handle datasource) returns handle|error = @java:Method {
     'class: "org.ballerinalang.redis.actions.KeyActions"
 } external;
 

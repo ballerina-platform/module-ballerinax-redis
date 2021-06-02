@@ -22,6 +22,8 @@ public function main() returns error? {
     var getResult = conn->get("Language");
     if (getResult is string) {
         io:println(getResult);  // getResult is "Ballerina"
+    } else if (result is ()) {
+        io:println("Key not found");
     } else {
         io:println("Error while fetching");
     }
