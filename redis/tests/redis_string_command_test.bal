@@ -127,6 +127,8 @@ public function testGet() {
     var result = conn->get("GetTestKey");
     if (result is string) {
         test:assertEquals(result, "GetTestValue");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
@@ -161,6 +163,8 @@ public function testGetSet() {
     if (result is string) {
         test:assertEquals(result, "testGetSetValue");
         test:assertEquals(getValue(java:fromString("testGetSetKey")).toString(), "testGetSetNewValue");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }

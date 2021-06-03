@@ -141,6 +141,10 @@ function testRandomKey() {
     var result = conn->randomKey();
     if (result is string) {
         test:assertNotEquals(result, "");
+    } else if (result is ()) {
+        test:assertFail("Key not found");
+    } else {
+        test:assertFail("error from Connector: " + result.message());
     }
 }
 

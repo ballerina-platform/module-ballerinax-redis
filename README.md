@@ -193,6 +193,8 @@ public function main() returns error? {
 
     if (value is string) {
         io:println("Reply from the server: " + value);
+    } else if (result is ()) {
+        io:println("Key not found");
     } else {
         io:println("Error occurred while calling `get`");
     }
@@ -213,6 +215,8 @@ public function main() returns error? {
 
     if (lPopResult is string) {
         io:println("Popped element: " + lPopResult);
+    } else if (result is ()) {
+        io:println("Key not found");
     } else {
         io:println("Error occurred while calling `lPop`");
     }
@@ -312,6 +316,8 @@ This section shows how to fetch a inserted string value from a cache. This can b
 var getResult = conn->get("Project");
 if (getResult is string) {
     io:println(getResult);
+} else if (result is ()) {
+        io:println("Key not found");
 } else {
     io:println("Error while fetching");
 }
@@ -344,6 +350,8 @@ This section shows how to get and pop from list element in a cache. This can be 
 var lPopResult = conn->lPop("NumberList");
 if (lPopResult is string) {
     io:println("Popped element: " + lPopResult);
+} else if (result is ()) {
+        io:println("Key not found");
 } else {
     io:println("Error occurred while calling `lPop`");
 }
