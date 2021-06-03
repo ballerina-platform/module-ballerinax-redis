@@ -152,7 +152,7 @@ public client class Client {
     # + return - Existing value stored at key, or nil when key does not exist or `error` if an error occurs
     @display {label: "Set value to key and return old value"}
     remote function getSet(@display {label: "Key"} string key, @display {label: "New value"} string value) 
-                           returns @display {label: "Old value"} string|()|error {
+                           returns @display {label: "Old value"} string?|error {
         return java:toString(check getSet(self.datasource, java:fromString(key), java:fromString(value)));
     }
 
@@ -161,7 +161,7 @@ public client class Client {
     # + key - Key
     # + return - Value of key, or nil when key does not exist or `error` if an error occurs
     @display {label: "Get value of a key"}
-    remote function get(@display {label: "Key"} string key) returns @display {label: "Value of key"} string|()|error {
+    remote function get(@display {label: "Key"} string key) returns @display {label: "Value of key"} string?|error {
         return java:toString(check get(self.datasource, java:fromString(key)));
     }
 
@@ -333,7 +333,7 @@ public client class Client {
     # + return - Value of the first element, or nil when key does not exist or `error` if an error occurs
     @display {label: "Pop value from list"}
     remote function lPop(@display {label: "Key"} string key) 
-                         returns @display {label: "Value of first element popped"} string|()|error {
+                         returns @display {label: "Value of first element popped"} string?|error {
         return java:toString(check lPop(self.datasource, java:fromString(key)));
     }
 
@@ -381,7 +381,7 @@ public client class Client {
     # + return - Value at the given index
     @display {label: "Get value in list by index"}
     remote function lIndex(@display {label: "Key"} string key, @display {label: "Index"} int index) 
-                           returns @display {label: "Value at index"} string|()|error {
+                           returns @display {label: "Value at index"} string?|error {
         return java:toString(check lIndex(self.datasource, java:fromString(key), index));
     }
 
@@ -468,7 +468,7 @@ public client class Client {
     # + return - Value of the last element, or `nil` when key does not exist or `error` if an error occurs
     @display {label: "Pop last element in list"}
     remote function rPop(@display {label: "Key"} string key) 
-                         returns @display {label: "Value of popped element"} string|()|error {
+                         returns @display {label: "Value of popped element"} string?|error {
         return java:toString(check rPop(self.datasource, java:fromString(key)));
     }
 
@@ -621,7 +621,7 @@ public client class Client {
     # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
     @display {label: "Pop random member in set"}
     remote function sPop(@display {label: "Key"} string key, @display {label: "Number of members"} int count) 
-                         returns @display {label: "Array of removed elements"} string[]|()|error {
+                         returns @display {label: "Array of removed elements"} string[]?|error {
         handle|string[]|error result = sPop(self.datasource, java:fromString(key), count);
         if (result is handle) {
             return ();
@@ -1189,7 +1189,7 @@ public client class Client {
     #
     # + return - Random key, or `nil` when the database is empty or `error` if an error occurs
     @display {label: "Get a random key"}
-    remote function randomKey() returns @display {label: "Key"} string|()|error {
+    remote function randomKey() returns @display {label: "Key"} string?|error {
         return java:toString(check randomKey(self.datasource));
     }
 
