@@ -144,6 +144,8 @@ function testSPop() {
         test:assertTrue(allMembersPopped);
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[0])));
         test:assertFalse(sisMember(java:fromString("testSPopKey"), java:fromString(result[1])));
+    } else if (result is ()) {
+        test:assertFail("Key not found");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
