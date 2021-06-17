@@ -1,18 +1,18 @@
 [package]
 org="ballerinax"
 name = "redis"
-version="0.99.6"
+version="0.99.7"
 authors = ["Ballerina"]
 keywords = ["redis", "in-memory-database"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
 [[platform.java11.dependency]]
-path = "../redis-utils/target/redis-0.99.6.jar"
+path = "../redis-utils/target/redis-0.99.7.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="0.99.6"
+version="0.99.7"
 
 [build-options]
 taintCheck = true
