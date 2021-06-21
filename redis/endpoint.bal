@@ -44,9 +44,9 @@ public client class Client {
     #
     # + key - Key referring to a value
     # + return - Number of bits of the value
-    @display {label: "Get Bits Of String"}
+    @display {label: "Get Bits of String"}
     remote function bitCount(@display {label: "Key"} string key) 
-                             returns @display {label: "Bits Of String"} int | error {
+                             returns @display {label: "Bits of String"} int | error {
         return bitCount(self.datasource, java:fromString(key));
     }
 
@@ -58,7 +58,7 @@ public client class Client {
     #            string
     @display {label: "Perform Bitwise AND"}
     remote function bitOpAnd(@display {label: "Result key"} string destination, 
-                             @display {label: "Key array to perform AND"} string[] keys) 
+                             @display {label: "Key Array To Perform AND"} string[] keys)
                              returns @display {label: "Size of string"} int | error {
         return bitOpAnd(self.datasource, java:fromString(destination), keys);
     }
@@ -71,7 +71,7 @@ public client class Client {
     #            string or `error` if an error occurs
     @display {label: "Perform Bitwise OR"}
     remote function bitOpOr(@display {label: "Result key"} string destination, 
-                            @display {label: "Key array to perform OR"} string[] keys) 
+                            @display {label: "Key Array To Perform OR"} string[] keys)
                             returns @display {label: "Size of string"} int | error {
         return bitOpOr(self.datasource, java:fromString(destination), keys);
     }
@@ -83,8 +83,8 @@ public client class Client {
     # + return - Size of the string stored in the destination key or `error` if an error occurs
     @display {label: "Perform Bitwise NOT"}
     remote function bitOpNot(@display {label: "Result key"} string destination, 
-                             @display {label: "Key to perform NOT"} string key) 
-                             returns @display {label: "Size of string"} int | error {
+                             @display {label: "Key To Perform NOT"} string key)
+                             returns @display {label: "Size of String"} int | error {
         return bitOpNot(self.datasource, java:fromString(destination), java:fromString(key));
     }
 
@@ -96,8 +96,8 @@ public client class Client {
     #            string or `error` if an error occurs
     @display {label: "Perform Bitwise XOR"}
     remote function bitOpXor(@display {label: "Result key"} string destination, 
-                             @display {label: "Key array to perform XOR"} string[] keys) 
-                             returns @display {label: "Size of string"} int | error {
+                             @display {label: "Key Array To Perform XOR"} string[] keys)
+                             returns @display {label: "Size of String"} int | error {
         return bitOpXor(self.datasource, java:fromString(destination), keys);
     }
 
@@ -115,7 +115,7 @@ public client class Client {
     # + key - Key referring to a value
     # + value - Value to be decremented
     # + return - Value of key after decrement or `error` if an error occurs
-    @display {label: "Decrement(By Number)"}
+    @display {label: "Decrement (By Number)"}
     remote function decrBy(@display {label: "Key"} string key, @display {label: "Value To Decrement"} int value) 
                            returns @display {label: "Value"} int | error {
         return decrBy(self.datasource, java:fromString(key), value);
@@ -169,7 +169,7 @@ public client class Client {
     #
     # + key - Key referring to a value
     # + return - Value of key after increment
-    @display {label: "Increment(By One)"}
+    @display {label: "Increment (By One)"}
     remote function incr(@display {label: "Key"} string key) returns @display {label: "Result Value"} int | error {
         return incr(self.datasource, java:fromString(key));
     }
@@ -179,7 +179,7 @@ public client class Client {
     # + key - Key referring to a value
     # + value - Amount to increment
     # + return - Value of key after increment
-    @display {label: "Increment(By Number)"}
+    @display {label: "Increment (By Number)"}
     remote function incrBy(@display {label: "Key"} string key, @display {label: "Increment Value"} int value) 
                            returns @display {label: "Result Value"} int | error {
         return incrBy(self.datasource, java:fromString(key), value);
@@ -190,7 +190,7 @@ public client class Client {
     # + key - Key referring to a value
     # + value - Amount to increment
     # + return - Value of key after increment
-    @display {label: "Increment(By Float)"}
+    @display {label: "Increment (By Float)"}
     remote function incrByFloat(@display {label: "Key"} string key, 
                                 @display {label: "Increment Value"} float value) 
                                 returns @display {label: "Float Result Value"} float | error {
@@ -222,7 +222,7 @@ public client class Client {
     # + keyValueMap - Map of key-value pairs to be set
     # + return - True if the operation was successful, false if it failed
     @display {label: "Set Values If Absent"}
-    remote function mSetNx(@display{label: "Map of key value pairs"} map<any> keyValueMap) 
+    remote function mSetNx(@display{label: "Map of Key Value Pairs"} map<any> keyValueMap)
                            returns @display{label: "Result"} boolean | error {
         return mSetNx(self.datasource, keyValueMap);
     }
@@ -233,9 +233,9 @@ public client class Client {
     # + value - Value to be set
     # + expirationTime - Expiration time in milli seconds
     # + return - `OK` if successful or `error` if an error occurs
-    @display {label: "Set Expirable Value(ms)"}
+    @display {label: "Set Expirable Value (ms)"}
     remote function pSetEx(@display {label: "Key"} string key, @display {label: "Value"} string value,
-                           @display {label: "TTL(ms)"} int expirationTime) 
+                           @display {label: "TTL (ms)"} int expirationTime)
                            returns @display {label: "Result"} string | error {
         return <string>java:toString(check pSetEx(self.datasource, java:fromString(key), java:fromString(value),
         expirationTime));
@@ -271,9 +271,9 @@ public client class Client {
     # + value - Value to be set
     # + expirationPeriodSeconds - Expiration time to be set, in seconds
     # + return - On success `OK` or `error` if an error occurs
-    @display {label: "Set Expirable Value(s)"}
+    @display {label: "Set Expirable Value (s)"}
     remote function setEx(@display {label: "Key"} string key, @display {label: "Value"} string value, 
-                          @display {label: "TTL(s)"} int expirationPeriodSeconds) 
+                          @display {label: "TTL (s)"} int expirationPeriodSeconds)
                           returns @display {label: "Result"} string | error {
         return <string>java:toString(check setEx(self.datasource, java:fromString(key), java:fromString(value),
         expirationPeriodSeconds));
@@ -299,7 +299,7 @@ public client class Client {
     # + return - Length of the string after it was modified or `error` if an error occurs
     @display {label: "Overwrite Value From Offset"} 
     remote function setRange(@display {label: "Key"} string key, 
-                             @display {label: "Start position"} int offset, 
+                             @display {label: "Start Position"} int offset,
                              @display {label: "Value"} string value) 
                              returns @display {label: "Result String Length"} int | error {
         return setRange(self.datasource, java:fromString(key), offset, java:fromString(value));
@@ -356,8 +356,8 @@ public client class Client {
     # + return - `Nil` when no element could be popped and the timeout expired. A map containing one item, with the
     #         key being  the name of the key where an element was popped and the second element  being the value of the
     #         popped element, or `error` if an error occurs
-    @display {label: "Pop List First Element And Block Block If Absent"}
-    remote function bLPop(@display {label: "Timeout(s)"} int timeOut, @display {label: "Keys"} string[] keys) 
+    @display {label: "Pop List First Element And Block If Absent"}
+    remote function bLPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Keys"} string[] keys)
                           returns @display {label: "Key-Value Pair"} map<any> | error {
         return bLPop(self.datasource, timeOut, keys);
     }
@@ -370,7 +370,7 @@ public client class Client {
     #         key being  the name of the key where an element was popped and the second element being the value of the
     #         popped element, or `error` if an error occurs
     @display {label: "Pop List Last Element And Block If Absent"}
-    remote function bRPop(@display {label: "Timeout(s)"} int timeOut, @display {label: "Key referring to a values"} string[] keys) 
+    remote function bRPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Key Referring To a Values"} string[] keys)
                           returns @display {label: "Key-Value Pair"} map<any> | error {
         return bRPop(self.datasource, timeOut, keys);
     }
@@ -396,7 +396,7 @@ public client class Client {
     #           an error occurs
     @display {label: "Insert To List In Specific Position"}
     remote function lInsert(@display {label: "Key"} string key, 
-                            @display {label: "Insert Before Or Not"} boolean before, 
+                            @display {label: "Insert Before or Not"} boolean before,
                             @display {label: "Place To Insert"} string pivot, @display {label: "Value"} string value) 
                             returns @display {label: "Result List Length"} int | error {
         return lInsert(self.datasource, java:fromString(key), before, java:fromString(pivot), java:fromString(value));
@@ -417,7 +417,7 @@ public client class Client {
     # + startPos - Begining index of the range
     # + stopPos - Last index of the range
     # + return - Array of elements in the specified range or `error` if an error occurs
-    @display {label: "Get Range Of List Elements"}
+    @display {label: "Get Range of List Elements"}
     remote function lRange(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                            @display {label: "End Position"} int stopPos) 
                            returns @display {label: "Elements In Range"} string[] | error {
@@ -518,7 +518,7 @@ public client class Client {
     #            already present in the set, or `error` if an error occurs
     @display {label: "Add Members To Set"}
     remote function sAdd(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                         returns @display {label: "Number Of Elements Added"} int | error {
+                         returns @display {label: "Number of Elements Added"} int | error {
         return sAdd(self.datasource, java:fromString(key), values);
     }
 
@@ -536,7 +536,7 @@ public client class Client {
     #
     # + keys - The keys of the sets
     # + return - An array of members of the resulting set or `error` if an error occurs
-    @display {label: "Get Difference Of Set"}
+    @display {label: "Get Difference of Set"}
     remote function sDiff(@display {label: "Keys"} string[] keys) 
                           returns @display {label: "Members"} string[] | error {
         return sDiff(self.datasource, keys);
@@ -548,7 +548,7 @@ public client class Client {
     # + destination - Destination key of the resulting set
     # + keys - Keys of the sets to find the difference of
     # + return - Number of members in the resulting set or `error` if an error occurs
-    @display {label: "Set Difference Of Set"}
+    @display {label: "Set Difference of Set"}
     remote function sDiffStore(@display {label: "Destination Key"} string destination, 
                                @display {label: "Keys"} string[] keys) 
                                returns @display {label: "Member Count"} int | error {
@@ -559,7 +559,7 @@ public client class Client {
     #
     # + keys - Keys of the sets to be intersected
     # + return - Array of members of the resulting set or `error` if an error occurs
-    @display {label: "Get Intersections Of Sets"}
+    @display {label: "Get Intersections of Sets"}
     remote function sInter(@display {label: "Keys"} string[] keys) 
                            returns @display {label: "Members"} string[] | error {
         return sInter(self.datasource, keys);
@@ -570,7 +570,7 @@ public client class Client {
     # + destination - Destination key of the resulting set
     # + keys - Keys of the sets to be intersected
     # + return - Number of members of the resulting set or `error` if an error occurs
-    @display {label: "Set Intersections Of Sets"}
+    @display {label: "Set Intersections of Sets"}
     remote function sInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int | error {
@@ -672,7 +672,7 @@ public client class Client {
     # + keys - Array of keys of sets
     # + return - Number of members of the resulting set or `error` if an error occurs
     @display {label: "Set Multiple Sets Union"}
-    remote function sUnionStore(@display {label: "Destination key"} string destination, 
+    remote function sUnionStore(@display {label: "Destination Key"} string destination,
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int | error {
         return sUnionStore(self.datasource, java:fromString(destination), keys);
@@ -709,7 +709,7 @@ public client class Client {
     # + min - Minimum score of the range
     # + max - Maximum score of the range
     # + return - Number of elements in the specified score range or `error` if an error occurs
-    @display {label: "Get Sorted Set Member Count(By Range)"}
+    @display {label: "Get Sorted Set Member Count (By Range)"}
     remote function zCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                            @display {label: "Maximum Value"} float max) 
                            returns @display {label: "Member Count"} int | error {
@@ -734,7 +734,7 @@ public client class Client {
     # + destination - Destination key of the resulting sorted set
     # + keys - Keys of the sorted sets to be intersected
     # + return - Number of elements in the resulting sorted set or `error` if an error occurs
-    @display {label: "Get Member Count(Sorted Sets Intersection)"}
+    @display {label: "Get Member Count (Sorted Sets Intersection)"}
     remote function zInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int | error {
@@ -747,7 +747,7 @@ public client class Client {
     # + min - Minimum lexicographical value of the range
     # + max - Maximum lexicographical value of the range
     # + return - Number of elements in the specified lexicographical value range or `error` if an error occurs
-    @display {label: "Get Member Count(Lexicographical Range)"}
+    @display {label: "Get Member Count (Lexicographical Range)"}
     remote function zLexCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                               @display {label: "Maximum Value"} string max) 
                               returns @display {label: "Member Count"} int | error {
@@ -760,7 +760,7 @@ public client class Client {
     # + min - Minimum index of the range
     # + max - Maximum index of the range
     # + return - Range of members in a sorted set, by index, or `error` if an error occurs
-    @display {label: "Get Sorted Set Members(By Index Range)"}
+    @display {label: "Get Sorted Set Members (By Index Range)"}
     remote function zRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                            @display {label: "Maximum Index"} int max) 
                            returns @display {label: "Members"} string[] | error {
@@ -774,7 +774,7 @@ public client class Client {
     # + max - Maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from lowest to highest or `error`
     #            if an error occurs
-    @display {label: "Get Sorted Set Members From Lowest(By Lexicographical Range)"}
+    @display {label: "Get Sorted Set Members From Lowest (By Lexicographical Range)"}
     remote function zRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                 @display {label: "Maximum Value"} string max) 
                                 returns @display {label: "Members"} string[] | error {
@@ -789,7 +789,7 @@ public client class Client {
     # + max - Maximum lexicographical value of the range
     # + return - Array of members in the specified lexicographical value range ordered from highest to lowest or `error`
     #            if an error occurs
-    @display {label: "Get Sorted Set Members From Highest(By Lexicographical Range)"}
+    @display {label: "Get Sorted Set Members From Highest (By Lexicographical Range)"}
     remote function zRevRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                    @display {label: "Maximum Value"} string max) 
                                    returns @display {label: "Members"} string[] | error {
@@ -803,7 +803,7 @@ public client class Client {
     # + max - Maximum score of range
     # + return - Array of members in the specified score range ordered from lowest to highest or `error` if an error
     #            occurs
-    @display {label: "Get Sorted Set Members(By Score Range)"}
+    @display {label: "Get Sorted Set Members (By Score Range)"}
     remote function zRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                   @display {label: "Maximum Value"} float max) 
                                   returns @display {label: "Members"} string[] | error {
@@ -879,7 +879,7 @@ public client class Client {
     # + min - Minimum index of the range
     # + max - Maximum index of the range
     # + return - Number of elements in the specified index range or `error` if an error occurs
-    @display {label: "Get Members(By Index Range)"}
+    @display {label: "Get Members (By Index Range)"}
     remote function zRevRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                               @display {label: "Maximum Index"} int max) 
                               returns @display {label: "Members"} string[] | error {
@@ -893,7 +893,7 @@ public client class Client {
     # + max - Maximum score of the range
     # + return - Array of members in the specified score range ordered from highest to lowest or `error` if an error
     #            occurs
-    @display {label: "Get Members(By Score Range)"}
+    @display {label: "Get Members (By Score Range)"}
     remote function zRevRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                      @display {label: "Maximum Value"} float max) 
                                      returns @display {label: "Members"} string[] | error {
@@ -967,7 +967,7 @@ public client class Client {
     # + return - Value of the field or `error` if an error occurs
     @display {label: "Get Hash Field Value"} 
     remote function hGet(@display {label: "Key"} string key, @display {label: "Field"} string 'field) 
-                         returns @display {label: "Value of field"} string | error {
+                         returns @display {label: "Value of Field"} string | error {
         return <string>java:toString(check hGet(self.datasource, java:fromString(key), java:fromString('field)));
     }
 
@@ -977,7 +977,7 @@ public client class Client {
     # + return - Map of field-value pairs or `error` if an error occurs
     @display {label: "Get Hash Values"} 
     remote function hGetAll(@display {label: "Key"} string key) 
-                            returns @display {label: "Field-value pairs"} map<any> | error {
+                            returns @display {label: "Field-value Pairs"} map<any> | error {
         return hGetAll(self.datasource, java:fromString(key));
     }
 
@@ -987,7 +987,7 @@ public client class Client {
     # + field - Field in the hash
     # + amount - Amount to increment
     # + return - Value of the field or `error` if an error occurs
-    @display {label: "Increment Hash Field(By Number)"} 
+    @display {label: "Increment Hash Field (By Number)"}
     remote function hIncrBy(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
                             @display {label: "Increment Value"} int amount) 
                             returns @display {label: "Incremented Value"} int | error {
@@ -1000,10 +1000,10 @@ public client class Client {
     # + field - Field in the hash
     # + amount - Amount to increment
     # + return - Value of the field or `error` if an error occurs
-    @display {label: "Increment Hash Field(By Float)"} 
+    @display {label: "Increment Hash Field (By Float)"}
     remote function hIncrByFloat(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
-                                 @display {label: "Value to increment"} float amount) 
-                                 returns @display {label: "Incremented value"} float | error {
+                                 @display {label: "Value To Increment"} float amount)
+                                 returns @display {label: "Incremented Value"} float | error {
         return hIncrByFloat(self.datasource, java:fromString(key), java:fromString('field), amount);
     }
 
@@ -1059,7 +1059,7 @@ public client class Client {
     #         field already exists in the hash and the value was updated, or `error` if an error occurs
     @display {label: "Set Hash Field"} 
     remote function hSet(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field,
-                         @display {label: "Value"}  string value) returns @display {label: "Result"} boolean | error {
+                         @display {label: "Value"} string value) returns @display {label: "Result"} boolean | error {
         return hSet(self.datasource, java:fromString(key), java:fromString('field), java:fromString(value));
     }
 
@@ -1116,7 +1116,7 @@ public client class Client {
     # + return - Number of existing keys or `error` if an error occurs
     @display {label: "Check Keys"}
     remote function exists(@display {label: "Keys"} string[] keys) 
-                           returns @display {label: "Number Of Keys Exists"} int|error {
+                           returns @display {label: "Number of Keys Exists"} int|error {
         return exists(self.datasource, keys);
     }
 
@@ -1126,8 +1126,8 @@ public client class Client {
     # + seconds - Expiry in seconds
     # + return - Boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set or
     # `error` if an error occurs
-    @display {label: "Set TTL(s)"}
-    remote function expire(@display {label: "Key"} string key, @display {label: "TTL(s)"} int seconds) 
+    @display {label: "Set TTL (s)"}
+    remote function expire(@display {label: "Key"} string key, @display {label: "TTL (s)"} int seconds)
                            returns @display {label: "Result"} boolean | error {
         return expire(self.datasource, java:fromString(key), seconds);
     }
@@ -1170,9 +1170,9 @@ public client class Client {
     # + timeMilliSeconds - Expiry time in milli seconds
     # + return - Boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
     #         be set, or `error` if an error occurs
-    @display {label: "Set TTL(ms)"}
+    @display {label: "Set TTL (ms)"}
     remote function pExpire(@display {label: "Key"} string key, 
-                            @display {label: "TTL(ms)"} int timeMilliSeconds) 
+                            @display {label: "TTL (ms)"} int timeMilliSeconds)
                             returns @display {label: "Result"} boolean | error {
         return pExpire(self.datasource, java:fromString(key), timeMilliSeconds);
     }
@@ -1181,9 +1181,9 @@ public client class Client {
     #
     # + key - Key of which time-to-live should be obtained
     # + return - TTL of the key, in milli seconds or `error` if an error occurs
-    @display {label: "Get TTL(ms)"}
+    @display {label: "Get TTL (ms)"}
     remote function pTtl(@display {label: "Key"} string key) 
-                         returns @display {label: "TTL(ms)"} int | error {
+                         returns @display {label: "TTL (ms)"} int | error {
         return pTtl(self.datasource, java:fromString(key));
     }
 
@@ -1213,7 +1213,7 @@ public client class Client {
     # + return - Boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists. Or `error` if an
     #            error occurs
     @display {label: "Rename Key If Absent"}
-    remote function renameNx(@display {label: "Key"} string key, @display {label: "New name to rename"} string newName)
+    remote function renameNx(@display {label: "Key"} string key, @display {label: "New Key Name"} string newName)
                              returns @display {label: "Result"} boolean | error {
         return renameNx(self.datasource, java:fromString(key), java:fromString(newName));
     }
@@ -1236,7 +1236,7 @@ public client class Client {
     #         level or the driver level
     @display {label: "Get Key TTL"}
     remote function ttl(@display {label: "Key"} string key) 
-                        returns @display {label: "TTL(s)"} int | error {
+                        returns @display {label: "TTL (s)"} int | error {
         return ttl(self.datasource, java:fromString(key));
     }
 
@@ -1280,7 +1280,7 @@ public client class Client {
     # + message - Message to be echo-ed
     # + return - Message itself if the operation was successful or `error` if an error occurs
     @display {label: "Echo Input String"}
-    remote function echo(@display {label: "String To Echo"} string message) 
+    remote function echo(@display {label: "String To Echo"} string message)
                          returns @display {label: "Result"} string|error {
         var result = echo(self.datasource, java:fromString(message)); 
         if (result is handle) {
