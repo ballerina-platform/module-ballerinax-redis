@@ -22,7 +22,7 @@ public function main() returns error? {
     var lPopResult = conn->lPop("NumberList");
     if (lPopResult is string) {
         io:println("Popped element: " + lPopResult);    // lPopResult is "Two"
-    } else if (result is ()) {
+    } else if (lPopResult is ()) {
         io:println("Key not found");
     } else {
         io:println("Error occurred while calling `lPop`");
