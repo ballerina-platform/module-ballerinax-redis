@@ -4,20 +4,20 @@ The Ballerina connector for Redis allows you to connect to Redis and manipulate 
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
-* Make sure Redis cache is running in the local environment or use Redis cache running on the cloud (for example, [Redis Enterprise Cloud](https://redislabs.com/redis-enterprise-cloud/overview/))
-* Configure the connector with details related to redis cache like hostname, port number and password
+* Make sure Redis cache is running in the local environment or use Redis cache running on the cloud (for example, [Redis Enterprise Cloud](https://redislabs.com/redis-enterprise-cloud/overview/)).
+* Configure the connector with details related to redis cache such as hostname, port number and password.
 
 ## Quickstart
 
 To use the Redis connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-First, import the ballerinax/redis module into the Ballerina project.
+Import the `ballerinax/redis` module into the Ballerina project as follows..
 ```ballerina
 import ballerinax/redis;
 ```
 ### Step 2: Create a new connector instance
-To access a Redis datasource, you must first create a `client` object. Create a client of the redis client type (i.e. `redis:Client`) and provide the necessary connection parameters. This will create a connection/pool of connections to the given Redis database. A method for creating a client with a Redis client can be found below.
+To access a Redis datasource, you must first create a `client` object. Create a client of the redis client type (i.e. `redis:Client`) and provide the necessary connection parameters. This creates a connection/pool of connections to the given Redis database. A method for creating a client with a Redis client can be found below.
 ```ballerina
 redis:ClientEndpointConfiguration redisConfig = {
     host: "localhost",
@@ -35,7 +35,7 @@ redis:ClientEndpointConfiguration redisConfig = {
 redis:Client conn = check new (redisConfig);
 ```
 ### Step 3: Invoke connector operation
-1. You can insert value for specific key. 
+1. You can insert a value for a specific key as follows. 
     ```ballerina
     string stringSetresult = check connection->set("Project", "Ballerina");
     ```
