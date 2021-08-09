@@ -27,10 +27,10 @@ public function main() returns error? {
     }
 
     var floatResult = conn->incrByFloat("testIncrByKey", 0.2);
-    if (result is float) {
-        test:assertEquals(result);
+    if (floatResult is float) {
+        io:println(floatResult);
     } else {
-        test:assertFail("Error in incrementing in float");
+        io:println("Error in incrementing in float");
     }
 
     conn.stop();
