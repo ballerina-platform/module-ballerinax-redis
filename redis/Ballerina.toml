@@ -13,6 +13,3 @@ groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
 version="0.99.7"
-
-[build-options]
-taintCheck = true

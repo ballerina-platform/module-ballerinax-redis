@@ -9,7 +9,7 @@ This package provides the capability to access Redis and it provides the functio
 ### Compatibility
 |                     | Version         |
 |---------------------|-----------------|
-| Ballerina Language  | Swan Lake Beta2 |
+| Ballerina Language  | Swan Lake Beta3 |
 
 ## Report issues
 
