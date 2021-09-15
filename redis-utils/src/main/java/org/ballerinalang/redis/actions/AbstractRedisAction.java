@@ -48,8 +48,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import static org.ballerinalang.redis.Constants.REDIS_CONNECTOR_VERSION;
-
 /**
  * {@code {@link AbstractRedisAction}} is the base class for all Redis connector actions.
  *
@@ -60,8 +58,6 @@ public abstract class AbstractRedisAction {
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;
     private static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
-    static final Module PACKAGE_ID_REDIS = new Module("ballerinax", "redis",
-            REDIS_CONNECTOR_VERSION);
 
     protected AbstractRedisAction() {
     }
