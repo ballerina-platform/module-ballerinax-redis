@@ -3,7 +3,7 @@ org="ballerinax"
 name = "redis"
 version="0.99.7"
 authors = ["Ballerina"]
-keywords = ["redis", "in-memory-database"]
+keywords = ["dev tools/databases", "dev tools/caching", "cost/freemium"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
