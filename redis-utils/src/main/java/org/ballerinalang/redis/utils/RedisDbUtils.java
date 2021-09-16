@@ -28,6 +28,7 @@ import io.ballerina.runtime.api.Module;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.redis.utils.ModuleUtils;
 import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
@@ -38,7 +39,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ballerinalang.redis.Constants.REDIS_CONNECTOR_VERSION;
 import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
@@ -49,8 +49,6 @@ public class RedisDbUtils {
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
     private static RedisCommands<String, String> redisCommands;
-    private static final Module PACKAGE_ID_REDIS = new Module("ballerinax", "redis",
-            REDIS_CONNECTOR_VERSION);
 
     /**
      * Initialize custom redis server.
@@ -80,7 +78,7 @@ public class RedisDbUtils {
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";
@@ -108,7 +106,7 @@ public class RedisDbUtils {
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";

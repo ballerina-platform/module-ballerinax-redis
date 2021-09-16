@@ -23,6 +23,7 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.internal.values.HandleValue;
 import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.utils.ModuleUtils;
 
 import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
@@ -41,7 +42,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return ping(redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -57,7 +58,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return auth(password, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -73,7 +74,7 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return echo(message, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, PACKAGE_ID_REDIS, StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
         }
     }
 }
