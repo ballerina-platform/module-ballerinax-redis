@@ -1,14 +1,14 @@
 import ballerinax/redis;
 import ballerina/io;
 
-redis:ClientEndpointConfiguration redisConfig1 = {
+redis:ConnectionConfig redisConfig1 = {
     host: "localhost:6379",
     password: "",
     options: { connectionPooling: true, isClusterConnection: false, ssl: false,
         startTls: false, verifyPeer: false }
 };
 
-redis:ClientEndpointConfiguration redisConfig2 = {
+redis:ConnectionConfig redisConfig2 = {
     host: "localhost:6379",
     password: "",
     options: { connectionPooling: true, isClusterConnection: false, ssl: false,

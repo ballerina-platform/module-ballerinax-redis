@@ -18,7 +18,7 @@ import ballerina/jballerina.java;
 import ballerina/log;
 import ballerina/test;
 
-ClientEndpointConfiguration redisConfig = {
+ConnectionConfig redisConfig = {
     host: "localhost",
     password: "",
     options: {
