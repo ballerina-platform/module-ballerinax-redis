@@ -21,7 +21,7 @@ import ballerina/jballerina.java;
 # 
 @display {label: "Redis Client", iconPath: "RedisLogo.png"}
 public isolated client class Client {
-    private ClientEndpointConfiguration clientEndpointConfig = {};
+    private ConnectionConfig clientEndpointConfig = {};
 
     final handle datasource;
 
@@ -29,7 +29,7 @@ public isolated client class Client {
     #
     # + config - Configuration for the connector
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized
-    public isolated function init(ClientEndpointConfiguration config) returns error? {
+    public isolated function init(ConnectionConfig config) returns error? {
         self.datasource = initClient(config);
     }
 
@@ -1306,7 +1306,7 @@ public isolated client class Client {
 #
 # + clientEndpointConfig - Client end point configuration
 # + return - `error` if error occurs
-isolated function initClient(ClientEndpointConfiguration clientEndpointConfig) returns handle = @java:Method {
+isolated function initClient(ConnectionConfig clientEndpointConfig) returns handle = @java:Method {
     'class: "org.ballerinalang.redis.endpoint.InitRedisClient"
 } external;
 
@@ -1781,7 +1781,7 @@ public type Options record {|
 # + password - Password for the database connection
 # + options - Properties for the connection configuration
 @display{label: "Connection Config"} 
-public type ClientEndpointConfiguration record {|
+public type ConnectionConfig record {|
     @display{label: "Host"} 
     string host = "localhost";
     @display{label: "Password"} 

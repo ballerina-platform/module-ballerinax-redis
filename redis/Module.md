@@ -19,7 +19,7 @@ import ballerinax/redis;
 ### Step 2: Create a new connector instance
 To access a Redis datasource, you must first create a `client` object. Create a client of the redis client type (i.e. `redis:Client`) and provide the necessary connection parameters. This creates a connection/pool of connections to the given Redis database. A method for creating a client with a Redis client can be found below.
 ```ballerina
-redis:ClientEndpointConfiguration redisConfig = {
+redis:ConnectionConfig redisConfig = {
     host: "localhost",
     password: "",
     options: {
