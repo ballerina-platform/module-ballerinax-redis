@@ -1,7 +1,7 @@
 [package]
 org="ballerinax"
 name = "redis"
-version="0.99.7"
+version="0.99.8"
 authors = ["Ballerina"]
 keywords = ["redis", "in-memory-database"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
