@@ -80,7 +80,7 @@ jobs:
           uses: ballerina-platform/ballerina-action/@master
           with:
             args:
-              build -c --skip-tests redis
+              pack redis
           env:
             JAVA_HOME: /usr/lib/jvm/default-jvm 
             JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
