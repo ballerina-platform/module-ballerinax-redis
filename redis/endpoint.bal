@@ -19,7 +19,7 @@ import ballerina/jballerina.java;
 # Ballerina Redis connector provides the capability to access Redis cache.
 # This connector lets you to perform operations to access and manipulate key-value data stored in a Redis database. 
 # 
-@display {label: "Redis Client", iconPath: "resources/redis.svg"}
+@display {label: "Redis Client", iconPath: "icon.png"}
 public isolated client class Client {
     private ConnectionConfig clientEndpointConfig = {};
 
