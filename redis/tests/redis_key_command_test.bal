@@ -126,7 +126,7 @@ function testPExpire() {
 @test:Config {
 }
 function testPTtl() {
-    var exp = pexpire(java:fromString("testPTtlKey"), 10000);
+    _ = pexpire(java:fromString("testPTtlKey"), 10000);
     var result = conn->pTtl("testPTtlKey");
     runtime:sleep(5);
     int ttl = pttl(java:fromString("testPTtlKey"));
@@ -206,7 +206,7 @@ function testSort() {
 @test:Config {
 }
 function testTtl() {
-    var exp = pexpire(java:fromString("testTtlKey"), 10);
+    _ = pexpire(java:fromString("testTtlKey"), 10);
     var result = conn->pTtl("testTtlKey");
     int ttl = pttl(java:fromString("testTtlKey"));
     if (result is int) {
