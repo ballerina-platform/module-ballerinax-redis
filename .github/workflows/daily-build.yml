@@ -86,7 +86,22 @@ jobs:
             - name: Ballerina Build 
               run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.0.0/bin/bal pack redis
             - name: Ballerina Test 
-              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.0.0/bin/bal test redis
+              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.0.0/bin/bal test --code-coverage redis
+
+            # Read the ballerina test results
+            - name: Read Ballerina Test Results
+              id: test_results
+              run: |
+                content=`cat ./redis/target/report/test_results.json`                
+                content="${content//'%'/'%25'}"
+                content="${content//$'\n'/'%0A'}"
+                content="${content//$'\r'/'%0D'}"
+                echo "::set-output name=testResultsJson::$content"
+
+            # Print the code coverage information
+            - name: Code Coverage
+              run: |
+                echo "Code Coverage Percentage : ${{fromJson(steps.test_results.outputs.testResultsJson).coveragePercentage}}"
 
             # Send notification when build fails
             - name: Notify failure
