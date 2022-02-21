@@ -25,25 +25,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>redis</artifactId>
+    <artifactId>redis1</artifactId>
     <packaging>jar</packaging>
-    <name>Ballerina - Redis Native Component</name>
+    <name>Ballerina - Redis Component</name>
     <url>http://ballerinalang.org</url>
 
     <dependencies>
-        <dependency>
-            <groupId>org.ballerinalang</groupId>
-            <artifactId>ballerina-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ballerinalang</groupId>
-            <artifactId>ballerina-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
@@ -53,17 +40,8 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ballerinalang</groupId>
-            <artifactId>ballerina-runtime</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.kstyrc</groupId>
             <artifactId>embedded-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ballerinalang</groupId>
-            <artifactId>ballerina-test-utils</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -75,28 +53,75 @@
             <artifactId>commons-io</artifactId>
             <version>2.7</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-kqueue</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-epoll</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency> 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-buffer</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>4.1.71.Final</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${basedir}/libs</outputDirectory>
                             <artifactSet>
                                 <includes>
                                     <include>${project.groupId}:${project.artifactId}</include>
-                                    <include>io.projectreactor:reactor-core</include>
-                                    <include>org.reactivestreams:reactive-streams</include>
-                                    <include>org.apache.commons:commons-pool2</include>
+                                    <include>io.lettuce:lettuce-core</include>
                                     <include>com.github.kstyrc:embedded-redis</include>
                                     <include>com.google.guava:guava</include>
-                                    <include>commons-io:commons-io</include>
+                                    <include>io.netty:netty-common</include>
+                                    <include>io.netty:netty-transport</include>
+                                    <include>io.netty:netty-handler</include>
+                                    <include>io.netty:netty-transport-native-kqueue</include>
+                                    <include>io.netty:netty-transport-native-epoll</include>
+                                    <include>io.netty:netty-buffer</include>
+                                    <include>io.netty:netty-resolver</include>
+                                    <include>io.netty:netty-codec</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

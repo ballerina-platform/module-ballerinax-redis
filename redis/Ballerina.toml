@@ -15,3 +15,24 @@ groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
 version="2.2.1"
+
+[[platform.java11.dependency]]
+path = "./libs/lettuce-core-5.1.2.RELEASE.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-common-4.1.71.Final.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-buffer-4.1.71.Final.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-transport-4.1.71.Final.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-resolver-4.1.71.Final.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-handler-4.1.71.Final.jar"
+
+[[platform.java11.dependency]]
+path = "./libs/netty-codec-4.1.71.Final.jar"
