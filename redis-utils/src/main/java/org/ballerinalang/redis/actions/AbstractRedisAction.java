@@ -32,7 +32,6 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.internal.types.BArrayType;
 import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.Module;
-import org.ballerinalang.core.model.types.BTypes;
 import io.ballerina.runtime.internal.values.MapValue;
 import io.ballerina.runtime.internal.values.MapValueImpl;
 import io.ballerina.runtime.api.values.BArray;
