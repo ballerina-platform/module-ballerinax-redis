@@ -1,5 +1,5 @@
 [package]
-distribution = "2201.0.2"
+distribution = "2201.0.3"
 org="ballerinax"
 name = "redis"
 version="2.2.2"
@@ -20,19 +20,19 @@ version="2.2.2"
 path = "./libs/lettuce-core-5.1.2.RELEASE.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-common-4.1.71.Final.jar"
+path = "./libs/netty-common-4.1.77.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-buffer-4.1.71.Final.jar"
+path = "./libs/netty-buffer-4.1.77.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-transport-4.1.71.Final.jar"
+path = "./libs/netty-transport-4.1.77.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-resolver-4.1.71.Final.jar"
+path = "./libs/netty-resolver-4.1.77.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-handler-4.1.71.Final.jar"
+path = "./libs/netty-handler-4.1.77.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-codec-4.1.71.Final.jar"
+path = "./libs/netty-codec-4.1.77.Final.jar"
