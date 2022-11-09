@@ -1,5 +1,5 @@
 [package]
-distribution = "2201.2.1"
+distribution = "2201.3.0"
 org="ballerinax"
 name = "redis"
 version="2.3.0"
