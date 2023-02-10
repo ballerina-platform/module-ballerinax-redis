@@ -1,8 +1,8 @@
 [package]
-distribution = "2201.3.0"
+distribution = "2201.3.1"
 org="ballerinax"
 name = "redis"
-version="2.3.0"
+version="2.4.0"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
@@ -10,11 +10,11 @@ repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
 [[platform.java11.dependency]]
-path = "../redis-utils/target/redis-2.3.0.jar"
+path = "../redis-utils/target/redis-2.4.0.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="2.3.0"
+version="2.4.0"
 
 [[platform.java11.dependency]]
 path = "./libs/lettuce-core-5.1.2.RELEASE.jar"
