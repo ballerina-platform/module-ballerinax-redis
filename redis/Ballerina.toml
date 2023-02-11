@@ -1,8 +1,8 @@
 [package]
-distribution = "2201.3.0"
+distribution = "2201.3.1"
 org="ballerinax"
 name = "redis"
-version="2.3.0"
+version="2.3.2"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
@@ -10,29 +10,29 @@ repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
 [[platform.java11.dependency]]
-path = "../redis-utils/target/redis-2.3.0.jar"
+path = "../redis-utils/target/redis-2.3.2.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="2.3.0"
+version="2.3.2"
 
 [[platform.java11.dependency]]
 path = "./libs/lettuce-core-5.1.2.RELEASE.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-common-4.1.77.Final.jar"
+path = "./libs/netty-common-4.1.86.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-buffer-4.1.77.Final.jar"
+path = "./libs/netty-buffer-4.1.86.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-transport-4.1.77.Final.jar"
+path = "./libs/netty-transport-4.1.86.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-resolver-4.1.77.Final.jar"
+path = "./libs/netty-resolver-4.1.86.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-handler-4.1.77.Final.jar"
+path = "./libs/netty-handler-4.1.86.Final.jar"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-codec-4.1.77.Final.jar"
+path = "./libs/netty-codec-4.1.86.Final.jar"
