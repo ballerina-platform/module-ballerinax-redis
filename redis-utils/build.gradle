@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+}
+
+group project.group
+
+configurations {
+    dist {
+        transitive true
+    }
+}
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url = 'https://maven.pkg.github.com/ballerina-platform/ballerina-lang'
+        credentials {
+            username System.getenv("packageUser")
+            password System.getenv("packagePAT")
+        }
+    }
+}
+
+dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'org.ballerinalang', name: 'ballerina-lang', version: project.ballerinaLangVersion
+    compile (group: 'org.ballerinalang', name: 'ballerina-runtime', version: project.ballerinaLangVersion) {
+        transitive = true
+    }
+    compile group: 'org.ballerinalang', name: 'value', version: project.ballerinaLangVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn configurations.dist
+    from { configurations.dist.collect { it.isDirectory() ? it : zipTree(it) } } {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA','io/netty/resolver/**', 'io/netty/handler/**',
+        'io/netty/transport/**', 'io/netty/internal/tcnative/**', 'io/netty/channel/*.class',
+        'io/netty/channel/socket/**', 'io/netty/channel/nio/**', 'io/netty/channel/pool/**', 
+        'io/netty/channel/group/**', 'io/netty/channel/local/**', 'io/netty/channel/embedded/**', 
+        'io/netty/channel/oio/**', 'io/netty/channel/internal/**', 'io/netty/bootstrap/**', 'io/netty/util/**', 
+        'io/netty/buffer/**', 'javax/activation/**', 'org/codehaus/stax2/**', 'org/HdrHistogram/**', 'com/ctc/wstx/**', 
+        'org/slf4j/**', 'io/netty/**', 'reactor/netty/**', 'io/micrometer/**'
+    }
+}

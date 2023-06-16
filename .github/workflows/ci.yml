@@ -11,8 +11,6 @@ jobs:
               uses: actions/setup-java@v1
               with:
                 java-version: 11 
-            - name: print mvn version
-              run: mvn -v
             - name: 'Create settings.xml'
               run: |
                   echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -70,8 +68,18 @@ jobs:
                         </settings>' > ~/.m2/settings.xml
             - name: print file
               run: cat ~/.m2/settings.xml
-            - name: Maven Build
-              run: mvn clean install 
+            # Grant execute permission to the gradlew script
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+
+            # Build the project with Gradle
+            - name: Build with Gradle
+              env:
+                packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
+                packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
+                JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+              run: |
+                ./gradlew build
             - name: Ballerina Download
               run: sudo wget https://dist.ballerina.io/downloads/2201.3.1/ballerina-2201.3.1-swan-lake.zip
             - name: Use Ballerina zip version

@@ -81,8 +81,18 @@ jobs:
                       </mirrors>
 
                     </settings>' > ~/.m2/settings.xml
-        - name: Maven Build
-          run: mvn clean install 
+        # Grant execute permission to the gradlew script
+        - name: Grant execute permission for gradlew
+          run: chmod +x gradlew
+
+        # Build the project with Gradle
+        - name: Build with Gradle
+          env:
+            packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
+            packagePAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
+            JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          run: |
+            ./gradlew build
         - name: Ballerina Build
           uses: ballerina-platform/ballerina-action@2201.3.1
           with:
