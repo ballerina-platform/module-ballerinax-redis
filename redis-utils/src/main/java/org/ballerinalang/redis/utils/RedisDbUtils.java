@@ -114,10 +114,10 @@ public class RedisDbUtils {
 
     private static Path getResourcePath() {
         Path userDir = Paths.get(System.getProperty("user.dir"));
-        if (userDir.toString().endsWith(File.separator + "redis")) {
-            return userDir.resolve("tests").resolve("resources");
+        if (!userDir.toString().endsWith(File.separator + "redis")) {
+            userDir = userDir.resolve("redis");
         }
-        return userDir.resolve("redis/tests").resolve("resources");
+        return userDir.resolve("tests").resolve("resources");
     }
 
     /**
