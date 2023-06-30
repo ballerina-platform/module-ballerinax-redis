@@ -26,8 +26,8 @@ allprojects {
         maven {
             url = 'https://maven.pkg.github.com/ballerina-platform/ballerina-lang'
             credentials {
-                username "kapilraajP"
-                password "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"
+                username = System.getenv("publishUser")
+                password = System.getenv("publishPAT")
             }
         }
     }

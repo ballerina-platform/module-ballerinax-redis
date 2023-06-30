@@ -1,2 +1,18 @@
+plugins {
+    id "com.gradle.enterprise" version "3.2"
+}
+
 rootProject.name = 'module-ballerinax-redis'
+
 include ':redis-utils'
+include ':checkstyle'
+
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
+project(':redis-utils').projectDir = file('redis-utils')
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}

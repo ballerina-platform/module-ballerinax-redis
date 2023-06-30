@@ -87,7 +87,7 @@ public class RedisDataSource<K, V> {
     public void init(String hosts, String password, MapValueImpl options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         if (isClusterConnection) {
-            setRedisClusterCommands(serverAddresses, options);
+            setRedisClusterCommands(serverAddresses, password, options);
         } else {
             setRedisStandaloneCommands(serverAddresses, password, options);
         }
@@ -169,12 +169,18 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, MapValueImpl options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
-        List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
+        List<RedisURI> redisURIS;
+        if (!password.isEmpty()) {
+            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
+                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).withPassword(password).build())
+                .collect(Collectors.toList());
+        } else {
+            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
                 RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
                 .collect(Collectors.toList());
-        //TODO: Clarify password usage with Redis Clusters and implement cluster authentication.
+        }
         redisClusterClient = RedisClusterClient.create(redisURIS);
         if (!poolingEnabled) {
             statefulRedisClusterConnection = redisClusterClient.connect(codec);
@@ -242,7 +248,7 @@ public class RedisDataSource<K, V> {
         try {
             return objectPool.borrowObject();
         } catch (Exception e) {
-            throw new BallerinaException("Error occurred while obtaining connection from the pool");
+            throw new BallerinaException("Error occurred while obtaining connection from the pool: " + e);
         }
     }
 

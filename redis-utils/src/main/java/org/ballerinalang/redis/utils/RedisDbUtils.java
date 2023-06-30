@@ -32,9 +32,11 @@ import org.ballerinalang.redis.utils.ModuleUtils;
 import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,8 +58,7 @@ public class RedisDbUtils {
      * @throws IOException exception
      */
     public static Object initServer() throws IOException {
-        String scriptPath = Paths.get(System.getProperty("user.dir")).
-                resolve("redis/tests").resolve("resources").resolve("setup.sh").toString();
+        String scriptPath = getResourcePath().resolve("setup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
@@ -89,8 +90,7 @@ public class RedisDbUtils {
      */
     public static Object stopServer() throws IOException {
         redisServer.stop();
-        String scriptPath = Paths.get(System.getProperty("user.dir")).
-                resolve("redis/tests").resolve("resources").resolve("cleanup.sh").toString();
+        String scriptPath = getResourcePath().resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
         Process process = processBuilder.start();
@@ -110,6 +110,14 @@ public class RedisDbUtils {
         }
         process.destroy();
         return "OK";
+    }
+
+    private static Path getResourcePath() {
+        Path userDir = Paths.get(System.getProperty("user.dir"));
+        if (!userDir.toString().endsWith(File.separator + "redis")) {
+            userDir = userDir.resolve("redis");
+        }
+        return userDir.resolve("tests").resolve("resources");
     }
 
     /**

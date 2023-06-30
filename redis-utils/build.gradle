@@ -23,13 +23,13 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
     compile group: 'org.ballerinalang', name: 'ballerina-lang', version: project.ballerinaLangVersion
     compile (group: 'org.ballerinalang', name: 'ballerina-runtime', version: project.ballerinaLangVersion) {
         transitive = true
     }
     compile group: 'org.ballerinalang', name: 'value', version: project.ballerinaLangVersion
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
 }
 
 jar {
