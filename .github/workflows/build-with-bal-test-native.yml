@@ -101,7 +101,7 @@ jobs:
                 version: 2201.5.0
             
             - name: Run Ballerina tests using the native executable
-              run: bal test --native redis
+              run: bal test --graalvm redis
               env:
                 JAVA_HOME: /usr/lib/jvm/default-jvm
                 JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
