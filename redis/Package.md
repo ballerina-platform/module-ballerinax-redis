@@ -9,7 +9,7 @@ This package provides the capability to access Redis and it provides the functio
 ### Compatibility
 |                     | Version            |
 |---------------------|--------------------|
-| Ballerina Language  | Swan Lake 2201.3.0 |
+| Ballerina Language  | Swan Lake 2201.7.0 |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

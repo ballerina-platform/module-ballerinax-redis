@@ -39,7 +39,6 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import org.ballerinalang.redis.RedisDataSource;
-import io.ballerina.runtime.internal.util.exceptions.BallerinaException;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,7 +76,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.set(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -90,7 +89,7 @@ public abstract class AbstractRedisAction {
             String result = redisCommands.get(key);
             return result == null ? null : result;
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -102,7 +101,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<String, String>) getRedisCommands(redisDataSource);
             return redisCommands.append(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -114,7 +113,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<String, String>) getRedisCommands(redisDataSource);
             return redisCommands.bitcount(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -126,7 +125,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.bitopAnd(destination, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -138,7 +137,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.bitopOr(destination, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -150,7 +149,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.bitopNot(destination, key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -162,7 +161,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.bitopXor(destination, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -174,7 +173,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.decr(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -186,7 +185,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.decrby(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -198,7 +197,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.getbit(key, offset);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -210,7 +209,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.getrange(key, start, end);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -222,7 +221,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.getset(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -234,7 +233,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.incr(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -246,7 +245,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.incrby(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -258,7 +257,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.incrbyfloat(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -271,7 +270,7 @@ public abstract class AbstractRedisAction {
             List<KeyValue<K, String>> result = redisCommands.mget(key);
             return createBMapFromKeyValueList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -283,7 +282,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.mset(map);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -295,7 +294,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.msetnx(map);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -308,7 +307,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.psetex(key, expirationPeriodMS, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -320,7 +319,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.setbit(key, offset, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -333,7 +332,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.setex(key, expirationPeriodSeconds, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -345,7 +344,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.setnx(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -357,7 +356,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.setrange(key, offset, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -369,7 +368,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.strlen(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -382,7 +381,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.lpush(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -394,7 +393,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.lpop(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -406,7 +405,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.lpushx(key, values);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -425,7 +424,7 @@ public abstract class AbstractRedisAction {
                 return null;
             }
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -444,7 +443,7 @@ public abstract class AbstractRedisAction {
                 return null;
             }
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -457,7 +456,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.brpoplpush(timeout, source, destination);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -469,7 +468,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.lindex(key, index);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -482,7 +481,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.linsert(key, before, pivot, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -494,7 +493,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.llen(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -507,7 +506,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.lrange(key, start, stop);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -519,7 +518,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.lrem(key, count, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -531,7 +530,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.lset(key, index, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -543,7 +542,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.ltrim(key, start, stop);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -555,7 +554,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.rpop(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -567,7 +566,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.rpoplpush(src, destination);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -579,7 +578,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.rpush(key, values);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -591,7 +590,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.rpushx(key, values);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -605,7 +604,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.sadd(key, values);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -617,7 +616,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.scard(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -631,7 +630,7 @@ public abstract class AbstractRedisAction {
             BArray valueArray = createBStringArrayFromSet(result);
             return valueArray;
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -643,7 +642,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.sdiffstore(dest, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -656,7 +655,7 @@ public abstract class AbstractRedisAction {
             Set<String> result = redisCommands.sinter(keys);
             return createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -668,7 +667,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.sinterstore(dest, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -680,7 +679,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.sismember(key, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -693,7 +692,7 @@ public abstract class AbstractRedisAction {
             Set<String> result = redisCommands.smembers(key);
             return createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -705,7 +704,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.smove(source, dest, member);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -718,7 +717,7 @@ public abstract class AbstractRedisAction {
             Set<String> result = redisCommands.spop(key, count);
             return (result == null || result.isEmpty()) ? null : createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -731,7 +730,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.srandmember(key, count);
             return (result == null || result.isEmpty()) ? null : createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -743,7 +742,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.srem(key, members);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -756,7 +755,7 @@ public abstract class AbstractRedisAction {
             Set<String> result = redisCommands.sunion(keys);
             return createBStringArrayFromSet(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -768,7 +767,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSetCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.sunionstore(dest, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Argements " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Argements " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -799,7 +798,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zadd(key, scoredValues);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Members " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Members " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -811,7 +810,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zcard(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -824,7 +823,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zcount(key, range);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -836,7 +835,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zincrby(key, amount, member);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -848,7 +847,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zinterstore(dest, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -861,7 +860,7 @@ public abstract class AbstractRedisAction {
             Range<V> range = Range.create(min, max);
             return redisCommands.zlexcount(key, range);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -874,7 +873,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrange(key, min, max);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -888,7 +887,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrangebylex(key, range);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -903,7 +902,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrevrangebylex(key, range);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Arguments" + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Arguments" + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -918,7 +917,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrangebyscore(key, range);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -930,7 +929,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zrank(key, member);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -954,7 +953,7 @@ public abstract class AbstractRedisAction {
             Range<String> range = Range.create(min, max);
             return redisCommands.zremrangebylex(key, range);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -967,7 +966,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.zremrangebyrank(key, min, max);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -981,7 +980,7 @@ public abstract class AbstractRedisAction {
             Range<Double> range = Range.create(min, max);
             return redisCommands.zremrangebyscore(key, range);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -994,7 +993,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrevrange(key, min, max);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1009,7 +1008,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.zrevrangebyscore(key, range);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(ARGUMENTS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1021,7 +1020,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zrevrank(key, member);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1033,7 +1032,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zscore(key, member);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1045,7 +1044,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisSortedSetCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.zunionstore(dest, keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Destination key/source key(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Destination key/source key(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1059,7 +1058,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hdel((K) key.toString(), fields);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1071,7 +1070,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hexists(key, field);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1083,7 +1082,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.hget(key, field);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1096,7 +1095,7 @@ public abstract class AbstractRedisAction {
             Map<K, String> result = redisCommands.hgetall(key);
             return createBMapFromMap(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1108,7 +1107,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.hincrby(key, field, amount);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1121,7 +1120,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.hincrbyfloat(key, field, amount);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1134,7 +1133,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.hkeys(key);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1146,7 +1145,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.hlen(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1159,7 +1158,7 @@ public abstract class AbstractRedisAction {
             List<KeyValue<K, String>> result = redisCommands.hmget(key, fields);
             return createBMapFromKeyValueList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field(s) " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field(s) " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1171,7 +1170,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hmset(key, fieldValueMap);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1183,7 +1182,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hset(key, field, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1195,7 +1194,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hsetnx(key, field, value);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1207,7 +1206,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisHashCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.hstrlen(key, field);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Key/field " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Key/field " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1220,7 +1219,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.hvals(key);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1233,7 +1232,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.del(keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1247,7 +1246,7 @@ public abstract class AbstractRedisAction {
             byte[] result = redisCommands.dump(key);
             return result;
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1259,7 +1258,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.exists(keys);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEYS_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1271,7 +1270,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.expire(key, seconds);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1284,7 +1283,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.keys(pattern);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1296,7 +1295,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.move(key, db);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1308,7 +1307,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.persist(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1320,7 +1319,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.pexpire(key, milliSeconds);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1332,7 +1331,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.pttl(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1344,7 +1343,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.randomkey();
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1356,7 +1355,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.rename(key, newName);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1368,7 +1367,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, String>) getRedisCommands(redisDataSource);
             return redisCommands.renamenx(key, newName);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1381,7 +1380,7 @@ public abstract class AbstractRedisAction {
             List<String> result = redisCommands.sort(key);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1393,7 +1392,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.ttl(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1405,7 +1404,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.type(key);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException(KEY_MUST_NOT_BE_NULL);
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }
@@ -1419,7 +1418,7 @@ public abstract class AbstractRedisAction {
             redisCommands = (RedisCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.auth(password);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Password " + MUST_NOT_BE_NULL);
+            throw new RuntimeException("Password " + MUST_NOT_BE_NULL);
         } finally {
             releaseResources(redisCommands, redisDataSource);
         }

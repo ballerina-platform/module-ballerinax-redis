@@ -33,7 +33,6 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.internal.values.MapValueImpl;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.util.exceptions.BallerinaException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -146,7 +145,7 @@ public class RedisDataSource<K, V> {
 
     private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
         if (serverAddresses.size() > 1) {
-            throw new BallerinaException("More than one hosts have been provided for a non-cluster connection");
+            throw new RuntimeException("More than one hosts have been provided for a non-cluster connection");
         }
         RedisURI redisUri;
         StatefulRedisConnection<K, V> statefulRedisConnection;
@@ -236,7 +235,7 @@ public class RedisDataSource<K, V> {
             try {
                 port = Integer.parseInt(hostPort[1]);
             } catch (NumberFormatException e) {
-                throw new BallerinaException("the port of the host string must be an integer: " + hostStr, e);
+                throw new RuntimeException("the port of the host string must be an integer: " + hostStr, e);
             }
         } else {
             port = DEFAULT_REDIS_PORT;
@@ -248,7 +247,7 @@ public class RedisDataSource<K, V> {
         try {
             return objectPool.borrowObject();
         } catch (Exception e) {
-            throw new BallerinaException("Error occurred while obtaining connection from the pool: " + e);
+            throw new RuntimeException("Error occurred while obtaining connection from the pool: " + e);
         }
     }
 
