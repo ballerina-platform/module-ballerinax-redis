@@ -29,7 +29,6 @@ import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
-import io.ballerina.runtime.internal.util.exceptions.BallerinaException;
 
 /**
  * Creates a Redis client.
@@ -93,7 +92,7 @@ public class InitRedisClient  {
         try {
             return Constants.Codec.fromCodecName(codecString);
         } catch (IllegalArgumentException e) {
-            throw new BallerinaException("Unsupported Codec: " + codecString);
+            throw new RuntimeException("Unsupported Codec: " + codecString);
         }
     }
 }
