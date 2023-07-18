@@ -73,17 +73,17 @@ jobs:
             - name: Maven Build
               run: mvn clean install 
             - name: Ballerina Download
-              run: sudo wget https://dist.ballerina.io/downloads/2201.3.1/ballerina-2201.3.1-swan-lake.zip
+              run: sudo wget https://dist.ballerina.io/downloads/2201.7.0/ballerina-2201.7.0-swan-lake.zip
             - name: Use Ballerina zip version
               run: sudo apt-get install -y unzip
-            - run: sudo unzip ballerina-2201.3.1-swan-lake.zip
+            - run: sudo unzip ballerina-2201.7.0-swan-lake.zip
               env: 
                   JAVA_HOME: /usr/lib/jvm/default-jvm
                   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true 
             - name: Ballerina Build 
-              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.3.1-swan-lake/bin/bal pack redis
+              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.7.0-swan-lake/bin/bal pack redis
             - name: Ballerina Test 
-              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.3.1-swan-lake/bin/bal test --code-coverage redis
+              run: /home/runner/work/module-ballerinax-redis/module-ballerinax-redis/ballerina-2201.7.0-swan-lake/bin/bal test --code-coverage redis
 
             # Read the ballerina test results
             - name: Read Ballerina Test Results
