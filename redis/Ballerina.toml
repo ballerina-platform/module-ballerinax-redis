@@ -1,41 +1,52 @@
 [package]
-distribution = "2201.7.0"
+distribution = "2201.3.1"
 org="ballerinax"
 name = "redis"
-version="2.5.0"
+version="2.3.2"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
-[platform.java11]
-graalvmCompatible = true
-
 [[platform.java11.dependency]]
-path = "../redis-utils/target/redis-2.5.0.jar"
+path = "../redis-utils/build/libs/redis-utils-2.3.2.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="2.5.0"
+version="2.3.2"
 
 [[platform.java11.dependency]]
-path = "./libs/lettuce-core-5.1.2.RELEASE.jar"
+groupId = "io.lettuce"
+artifactId = "lettuce-core"
+version = "5.1.2.RELEASE"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-common-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-common"
+version = "4.1.86.Final"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-buffer-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-buffer"
+version = "4.1.86.Final"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-transport-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-transport"
+version = "4.1.86.Final"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-resolver-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-resolver"
+version = "4.1.86.Final"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-handler-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-handler"
+version = "4.1.86.Final"
 
 [[platform.java11.dependency]]
-path = "./libs/netty-codec-4.1.86.Final.jar"
+groupId = "io.netty"
+artifactId = "netty-codec"
+version = "4.1.86.Final"
