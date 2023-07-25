@@ -1,7 +1,5 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "5.2.0"
-    id "de.undercouch.download" version "4.0.4"
-    id "net.researchgate.release" version "2.8.0"
 }
 
 ext.ballerinaLangVersion = project.ballerinaLangVersion
@@ -26,8 +24,8 @@ allprojects {
         maven {
             url = 'https://maven.pkg.github.com/ballerina-platform/ballerina-lang'
             credentials {
-                username = System.getenv("publishUser")
-                password = System.getenv("publishPAT")
+                username System.getenv("packageUser")
+                password System.getenv("packagePAT")
             }
         }
     }
@@ -40,13 +38,13 @@ subprojects {
 }
 
 def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
-def packageName = "redis"
+def packageName = "mongodb"
 def packageOrg = "ballerinax"
-def pathToBala = file("${project.projectDir}/redis/target/bala")
+def pathToBala = file("${project.projectDir}/mongodb/target/bala")
 def platform = "java11"
 
 task createBalaDirectory {
-    mkdir "${project.projectDir}/redis/target/bala"
+    mkdir "${project.projectDir}/mongodb/target/bala"
 }
 
 task copyDistribution {
@@ -59,7 +57,7 @@ task copyDistribution {
         }
     }
     copy {
-        from file("${project.projectDir}/redis/target/cache")
+        from file("${project.projectDir}/mongodb/target/cache")
         exclude '**/*-testable.jar'
         exclude '**/tests_cache/'
         into file("${artifactCacheParent}/cache/")
@@ -68,9 +66,9 @@ task copyDistribution {
 }
 
 task createArtifactZip(type: Zip) {
-   from "${buildDir}/cache_parent"
-   archiveName 'distribution.zip'
-   destinationDir(file("${buildDir}/distribution"))
+    from "${buildDir}/cache_parent"
+    archiveName 'distribution.zip'
+    destinationDir(file("${buildDir}/distribution"))
 }
 
 publishing {
@@ -83,7 +81,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerinax-redis")
+            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerinax-mongodb")
             credentials {
                 username = System.getenv("publishUser")
                 password = System.getenv("publishPAT")
