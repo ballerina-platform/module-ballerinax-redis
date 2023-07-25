@@ -16,15 +16,15 @@
  */
 
 plugins {
-    id "com.gradle.enterprise" version "3.2"
+    id "com.gradle.enterprise" version "3.5"
 }
 
 rootProject.name = 'module-ballerinax-redis'
 
-//include ':checkstyle'
+include ':checkstyle'
 include ':redis-utils'
 
-//project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
 project(':redis-utils').projectDir = file('redis-utils')
 
 gradleEnterprise {

@@ -1,5 +1,23 @@
+/*
+ * Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 plugins {
-    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "com.github.johnrengelman.shadow" version "${shadowJarPluginVersion}"
+    id "de.undercouch.download" version "${downloadPluginVersion}"
 }
 
 ext.ballerinaLangVersion = project.ballerinaLangVersion
@@ -38,13 +56,13 @@ subprojects {
 }
 
 def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
-def packageName = "mongodb"
+def packageName = "redis"
 def packageOrg = "ballerinax"
-def pathToBala = file("${project.projectDir}/mongodb/target/bala")
+def pathToBala = file("${project.projectDir}/redis/target/bala")
 def platform = "java11"
 
 task createBalaDirectory {
-    mkdir "${project.projectDir}/mongodb/target/bala"
+    mkdir "${project.projectDir}/redis/target/bala"
 }
 
 task copyDistribution {
@@ -57,7 +75,7 @@ task copyDistribution {
         }
     }
     copy {
-        from file("${project.projectDir}/mongodb/target/cache")
+        from file("${project.projectDir}/redis/target/cache")
         exclude '**/*-testable.jar'
         exclude '**/tests_cache/'
         into file("${artifactCacheParent}/cache/")
@@ -81,7 +99,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerinax-mongodb")
+            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerinax-redis")
             credentials {
                 username = System.getenv("publishUser")
                 password = System.getenv("publishPAT")

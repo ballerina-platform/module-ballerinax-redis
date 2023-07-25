@@ -42,10 +42,9 @@ dependencies {
     implementation "io.lettuce:lettuce-core:${project.lettuceCoreVersion}"
     implementation "org.apache.commons:commons-pool2:${project.commonsPool2Version}"
     implementation "com.github.kstyrc:embedded-redis:${project.embeddedRedisVersion}"
-
-    compile "org.ballerinalang:ballerina-lang:${project.ballerinaLangVersion}"
-    compile "org.ballerinalang:ballerina-runtime:${project.ballerinaLangVersion}"
-    compile "org.ballerinalang:value:${project.ballerinaLangVersion}"
+    implementation "org.ballerinalang:ballerina-lang:${project.ballerinaLangVersion}"
+    implementation "org.ballerinalang:ballerina-runtime:${project.ballerinaLangVersion}"
+    implementation "org.ballerinalang:value:${project.ballerinaLangVersion}"
 }
 
 jar {
