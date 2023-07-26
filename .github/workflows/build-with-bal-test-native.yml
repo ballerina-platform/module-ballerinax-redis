@@ -1,6 +1,5 @@
 name: GraalVM Check
 
-# Controls when the action will run.
 on: 
   schedule:
     - cron: '30 18 * * *'
@@ -17,11 +16,10 @@ jobs:
               with:
                 distribution: 'temurin'
                 java-version: 11
-            # Grant execute permission to the gradlew script
+
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
 
-            # Build the project with Gradle
             - name: Build with Gradle
               env:
                 packageUser: ${{ secrets.BALLERINA_BOT_USERNAME }}
@@ -29,6 +27,7 @@ jobs:
                 JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
               run: |
                 ./gradlew build
+
             - name: Set up GraalVM
               uses: graalvm/setup-graalvm@v1
               with:
@@ -49,7 +48,8 @@ jobs:
                 version: latest
             
             - name: Run Ballerina tests using the native executable
-              run: bal test --graalvm redis
+              working-directory: ./redis
+              run: bal test --graalvm
               env:
                 JAVA_HOME: /usr/lib/jvm/default-jvm
                 JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
