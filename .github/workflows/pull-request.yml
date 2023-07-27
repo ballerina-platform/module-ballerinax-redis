@@ -26,10 +26,17 @@ jobs:
                 ./gradlew build
 
             - name: Set Up Ballerina
-                uses: ballerina-platform/setup-ballerina@v1.1.0
-                with:
-                  version: latest
+              uses: ballerina-platform/setup-ballerina@v1.1.0
+              with:
+                version: latest
 
             - name: Ballerina Build
               working-directory: ./redis
               run: bal build
+
+            - name: Ballerina Test
+              working-directory: ./redis
+              run: bal test --test-report --code-coverage --coverage-format=xml
+
+            - name: Upload coverage reports to Codecov
+              uses: codecov/codecov-action@v3

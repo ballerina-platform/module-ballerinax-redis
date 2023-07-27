@@ -26,9 +26,9 @@ jobs:
                 ./gradlew build
 
             - name: Set Up Ballerina
-                uses: ballerina-platform/setup-ballerina@v1.1.0
-                with:
-                  version: latest
+              uses: ballerina-platform/setup-ballerina@v1.1.0
+              with:
+                version: latest
 
             - name: Ballerina Build
               working-directory: ./redis
@@ -36,19 +36,7 @@ jobs:
 
             - name: Ballerina Test
               working-directory: ./redis
-              run: bal test --code-coverage
+              run: bal test --test-report --code-coverage --coverage-format=xml
 
-            - name: Read Ballerina Test Results
-              id: test_results
-              run: |
-                content=`cat ./redis/target/report/test_results.json`                
-                content="${content//'%'/'%25'}"
-                content="${content//$'\n'/'%0A'}"
-                content="${content//$'\r'/'%0D'}"
-                echo "::set-output name=testResultsJson::$content"
-
-            - name: Code Coverage
-              run: |
-                echo "Covered Code Lines : ${{fromJson(steps.test_results.outputs.testResultsJson).coveredLines}}"
-                echo "Total Code Lines : $(expr ${{fromJson(steps.test_results.outputs.testResultsJson).missedLines}} + ${{fromJson(steps.test_results.outputs.testResultsJson).coveredLines}})"
-                echo "Code Coverage Percentage : ${{fromJson(steps.test_results.outputs.testResultsJson).coveragePercentage}}"
+            - name: Upload coverage reports to Codecov
+              uses: codecov/codecov-action@v3
