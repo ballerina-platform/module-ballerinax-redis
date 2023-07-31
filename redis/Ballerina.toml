@@ -2,7 +2,7 @@
 distribution = "2201.7.0"
 org="ballerinax"
 name = "redis"
-version="2.5.0"
+version="2.5.1"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
@@ -10,11 +10,11 @@ repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
 [[platform.java11.dependency]]
-path = "../redis-utils/build/libs/redis-utils-2.5.0.jar"
+path = "../redis-utils/build/libs/redis-utils-2.5.1.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="2.5.0"
+version="2.5.1"
 
 [[platform.java11.dependency]]
 groupId = "io.lettuce"
@@ -44,42 +44,42 @@ version = "2.7"
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-common"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-buffer"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-resolver"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-handler"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-kqueue"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-epoll"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-codec"
-version = "4.1.86.Final"
+version = "4.1.94.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.projectreactor"

@@ -29,9 +29,9 @@ jobs:
                 ./gradlew build
 
             - name: Set Up Ballerina
-                uses: ballerina-platform/setup-ballerina@v1.1.0
-                with:
-                  version: latest
+              uses: ballerina-platform/setup-ballerina@v1.1.0
+              with:
+                version: latest
 
             - name: Ballerina Build
               working-directory: ./redis
