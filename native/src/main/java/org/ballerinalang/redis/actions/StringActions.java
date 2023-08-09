@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.RedisDataSource;
@@ -42,7 +41,7 @@ public class StringActions extends AbstractRedisAction {
      * @param redisValue value
      * @return size of the new string
      */
-    public static Object append(HandleValue redisDataSourceHandleValue, String key, String redisValue)  {
+    public static Object append(BHandle redisDataSourceHandleValue, String key, String redisValue)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return append(key, redisValue, redisDataSource);
@@ -58,7 +57,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key key key
      * @return bit count
      */
-    public static Object bitCount(HandleValue redisDataSourceHandleValue, String key)  {
+    public static Object bitCount(BHandle redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bitCount(key, redisDataSource);
@@ -76,7 +75,7 @@ public class StringActions extends AbstractRedisAction {
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
-    public static Object bitOpAnd(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
+    public static Object bitOpAnd(BHandle redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bitopAnd(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -94,7 +93,7 @@ public class StringActions extends AbstractRedisAction {
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
-    public static Object bitOpOr(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
+    public static Object bitOpOr(BHandle redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bitopOr(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -111,7 +110,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key Input keys to perform AND between
      * @return The size of the string stored in the destination key
      */
-    public static Object bitOpNot(HandleValue redisDataSourceHandleValue, String destination, String key)  {
+    public static Object bitOpNot(BHandle redisDataSourceHandleValue, String destination, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bitopNot(destination, key, redisDataSource);
@@ -129,7 +128,7 @@ public class StringActions extends AbstractRedisAction {
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
-    public static Object bitOpXor(HandleValue redisDataSourceHandleValue, String destination, BArray keys)  {
+    public static Object bitOpXor(BHandle redisDataSourceHandleValue, String destination, BArray keys)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bitopXor(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -145,7 +144,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key key
      * @return The value of the key after the decrement
      */
-    public static Object decr(HandleValue redisDataSourceHandleValue, String key)  {
+    public static Object decr(BHandle redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return decr(key, redisDataSource);
@@ -162,7 +161,7 @@ public class StringActions extends AbstractRedisAction {
      * @param redisValue The offset
      * @return The bit value stored at offset
      */
-    public static Object decrBy(HandleValue redisDataSourceHandleValue, String key, int redisValue)  {
+    public static Object decrBy(BHandle redisDataSourceHandleValue, String key, int redisValue)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return decrBy(key, redisValue, redisDataSource);
@@ -178,7 +177,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key key key
      * @return value
      */
-    public static Object get(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object get(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return get(key, redisDataSource);
@@ -195,7 +194,7 @@ public class StringActions extends AbstractRedisAction {
      * @param offset The offset
      * @return The bit value stored at offset
      */
-    public static Object getBit(HandleValue redisDataSourceHandleValue, String key, int offset)  {
+    public static Object getBit(BHandle redisDataSourceHandleValue, String key, int offset)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return getBit(key, offset, redisDataSource);
@@ -213,7 +212,7 @@ public class StringActions extends AbstractRedisAction {
      * @param end The end point of the substring
      * @return The substring
      */
-    public static Object getRange(HandleValue redisDataSourceHandleValue, String key, int startPos, int end)  {
+    public static Object getRange(BHandle redisDataSourceHandleValue, String key, int startPos, int end)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return getRange(key, startPos, end, redisDataSource);
@@ -230,7 +229,7 @@ public class StringActions extends AbstractRedisAction {
      * @param value value
      * @return The old value stored at key
      */
-    public static Object getSet(HandleValue redisDataSourceHandleValue, String key, String value)  {
+    public static Object getSet(BHandle redisDataSourceHandleValue, String key, String value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return getSet(key, value, redisDataSource);
@@ -246,7 +245,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key key
      * @return The value of the key after increment
      */
-    public static Object incr(HandleValue redisDataSourceHandleValue, String key)  {
+    public static Object incr(BHandle redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return incr(key, redisDataSource);
@@ -263,7 +262,7 @@ public class StringActions extends AbstractRedisAction {
      * @param value value
      * @return The value of the key after increment
      */
-    public static Object incrBy(HandleValue redisDataSourceHandleValue, String key, int value)  {
+    public static Object incrBy(BHandle redisDataSourceHandleValue, String key, int value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return incrBy(key, value, redisDataSource);
@@ -280,7 +279,7 @@ public class StringActions extends AbstractRedisAction {
      * @param value value
      * @return The value of the key after increment
      */
-    public static Object incrByFloat(HandleValue redisDataSourceHandleValue, String key, float value)  {
+    public static Object incrByFloat(BHandle redisDataSourceHandleValue, String key, float value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return incrByFloat(key, value, redisDataSource);
@@ -296,7 +295,7 @@ public class StringActions extends AbstractRedisAction {
      * @param keys The keys of which the values need to be retrieved
      * @return Array of values at the specified keys
      */
-    public static Object mGet(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object mGet(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return createBstringArrayFromBMap(mGet(redisDataSource, createStringArrayFromBArray(keys)));
@@ -312,7 +311,7 @@ public class StringActions extends AbstractRedisAction {
      * @param keys A map of key-value pairs to be set
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object mSet(HandleValue redisDataSourceHandleValue, BMap keys) {
+    public static Object mSet(BHandle redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return mSet(createMapFromBMap(keys), redisDataSource);
@@ -328,7 +327,7 @@ public class StringActions extends AbstractRedisAction {
      * @param keys A map of key-value pairs to be set
      * @return True if the operation was successful, false if it failed
      */
-    public static Object mSetNx(HandleValue redisDataSourceHandleValue, BMap keys) {
+    public static Object mSetNx(BHandle redisDataSourceHandleValue, BMap keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return mSetnx(createMapFromBMap(keys), redisDataSource);
@@ -346,7 +345,7 @@ public class StringActions extends AbstractRedisAction {
      * @param expirationTime Expiration time in milli seconds
      * @return New value of the key
      */
-    public static Object pSetEx(HandleValue redisDataSourceHandleValue, String key, String value, int expirationTime)  {
+    public static Object pSetEx(BHandle redisDataSourceHandleValue, String key, String value, int expirationTime)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pSetex(key, value, expirationTime, redisDataSource);
@@ -363,7 +362,7 @@ public class StringActions extends AbstractRedisAction {
      * @param redisValue value
      * @return `OK` if successful
      */
-    public static Object set(HandleValue redisDataSourceHandleValue, String key, String redisValue) {
+    public static Object set(BHandle redisDataSourceHandleValue, String key, String redisValue) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return set(key, redisValue, redisDataSource);
@@ -381,7 +380,7 @@ public class StringActions extends AbstractRedisAction {
      * @param offset The offset at which the value should be set
      * @return The original bit value stored at offset
      */
-    public static Object setBit(HandleValue redisDataSourceHandleValue, String key, int value, int offset)  {
+    public static Object setBit(BHandle redisDataSourceHandleValue, String key, int value, int offset)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return setBit(key, value, offset, redisDataSource);
@@ -399,7 +398,7 @@ public class StringActions extends AbstractRedisAction {
      * @param expirationPeriodSeconds Expiration time to be set, in seconds
      * @return New value of the key or
      */
-    public static Object setEx(HandleValue redisDataSourceHandleValue, String key, String value,
+    public static Object setEx(BHandle redisDataSourceHandleValue, String key, String value,
                                int expirationPeriodSeconds)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
@@ -417,7 +416,7 @@ public class StringActions extends AbstractRedisAction {
      * @param value value
      * @return New value of the key
      */
-    public static Object setNx(HandleValue redisDataSourceHandleValue, String key, String value)  {
+    public static Object setNx(BHandle redisDataSourceHandleValue, String key, String value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return setNx(key, value, redisDataSource);
@@ -435,7 +434,7 @@ public class StringActions extends AbstractRedisAction {
      * @param value value
      * @return The length of the string after it was modified
      */
-    public static Object setRange(HandleValue redisDataSourceHandleValue, String key, int offset, String value)  {
+    public static Object setRange(BHandle redisDataSourceHandleValue, String key, int offset, String value)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return setRange(key, offset, value, redisDataSource);
@@ -451,7 +450,7 @@ public class StringActions extends AbstractRedisAction {
      * @param key key
      * @return The length of the string at key, or 0 when key does not exis
      */
-    public static Object strln(HandleValue redisDataSourceHandleValue, String key)  {
+    public static Object strln(BHandle redisDataSourceHandleValue, String key)  {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return strln(key, redisDataSource);

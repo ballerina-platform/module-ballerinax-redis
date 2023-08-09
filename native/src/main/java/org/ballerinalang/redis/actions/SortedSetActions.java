@@ -20,8 +20,8 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.RedisDataSource;
@@ -46,7 +46,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @return The number of elements that were added to the sorted set, not including all the elements which were
      *         already present in the set for which the score was updated
      */
-    public static Object zAdd(HandleValue redisDataSourceHandleValue, String key,
+    public static Object zAdd(BHandle redisDataSourceHandleValue, String key,
                               BMap<BString, Object> memberScoreMap) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
@@ -67,7 +67,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param key The key of the sorted set
      * @return The cardinality (number of elements) of the sorted set
      */
-    public static Object zCard(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object zCard(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zCard(key, redisDataSource);
@@ -85,7 +85,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum score of the range
      * @return The number of elements in the specified score range
      */
-    public static Object zCount(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
+    public static Object zCount(BHandle redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zCount(key, min, max, redisDataSource);
@@ -103,7 +103,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param member The member whose score to be incremented
      * @return The new score of the member
      */
-    public static Object zIncrBy(HandleValue redisDataSourceHandleValue, String key, float amount, String member) {
+    public static Object zIncrBy(BHandle redisDataSourceHandleValue, String key, float amount, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zIncrBy(key, amount, member, redisDataSource);
@@ -120,7 +120,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param keys The keys of the sorted sets to be intersected
      * @return The number of elements in the resulting sorted set
      */
-    public static Object zInterStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object zInterStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -138,7 +138,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum lexicographical value of the range
      * @return The number of elements in the specified lexicographical value range
      */
-    public static Object zLexCount(HandleValue redisDataSourceHandleValue, String destination, String min, String max) {
+    public static Object zLexCount(BHandle redisDataSourceHandleValue, String destination, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zLexCount(destination, min, max, redisDataSource);
@@ -156,7 +156,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum index of the range
      * @return The range of members in a sorted set, by index
      */
-    public static Object zRange(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
+    public static Object zRange(BHandle redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRange(key, min, max, redisDataSource);
@@ -174,7 +174,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum lexicographical value of the range
      * @return Array of members in the specified lexicographical value range ordered from lowest to highest
      */
-    public static Object zRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
+    public static Object zRangeByLex(BHandle redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRangeByLex(key, min, max, redisDataSource);
@@ -193,7 +193,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum lexicographical value of the range
      * @return Array of members in the specified lexicographical value range ordered from highest to lowest
      */
-    public static Object zRevRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
+    public static Object zRevRangeByLex(BHandle redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRangeByLex(key, min, max, redisDataSource);
@@ -211,7 +211,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum score of the range
      * @return Array of members in the specified score range ordered from lowest to highest
      */
-    public static Object zRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
+    public static Object zRangeByScore(BHandle redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRangeByScore(key, min, max, redisDataSource);
@@ -228,7 +228,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param member The member of which the index needs to be obtained
      * @return  The index of the member
      */
-    public static Object zRank(HandleValue redisDataSourceHandleValue, String key, String member) {
+    public static Object zRank(BHandle redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRank(key, member, redisDataSource);
@@ -245,7 +245,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param memebers The members to be removed
      * @return The number of members removed from the sorted set, not including non existing members
      */
-    public static Object zRem(HandleValue redisDataSourceHandleValue, String key, BArray memebers) {
+    public static Object zRem(BHandle redisDataSourceHandleValue, String key, BArray memebers) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRem(key, redisDataSource, createStringArrayFromBArray(memebers));
@@ -263,7 +263,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum lexicographical value of the range
      * @return The number of members removed from the sorted set
      */
-    public static Object zRemRangeByLex(HandleValue redisDataSourceHandleValue, String key, String min, String max) {
+    public static Object zRemRangeByLex(BHandle redisDataSourceHandleValue, String key, String min, String max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByLex(key, min, max, redisDataSource);
@@ -281,7 +281,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum index of the range
      * @return The number of members removed from the sorted set
      */
-    public static Object zRemRangeByRank(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
+    public static Object zRemRangeByRank(BHandle redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByRank(key, min, max, redisDataSource);
@@ -299,7 +299,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum score of the range
      * @return The number of members removed from the sorted set
      */
-    public static Object zRemRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
+    public static Object zRemRangeByScore(BHandle redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRemRangeByScore(key, min, max, redisDataSource);
@@ -317,7 +317,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum index of the range
      * @return The number of elements in the specified index range
      */
-    public static Object zRevRange(HandleValue redisDataSourceHandleValue, String key, int min, int max) {
+    public static Object zRevRange(BHandle redisDataSourceHandleValue, String key, int min, int max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRange(key, min, max, redisDataSource);
@@ -335,7 +335,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param max The maximum score of the range
      * @return Array of members in the specified score range ordered from highest to lowest
      */
-    public static Object zRevRangeByScore(HandleValue redisDataSourceHandleValue, String key, float min, float max) {
+    public static Object zRevRangeByScore(BHandle redisDataSourceHandleValue, String key, float min, float max) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRangeByScore(key, min, max, redisDataSource);
@@ -352,7 +352,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param member The member of which the index needs to be obtained
      * @return The index of the member
      */
-    public static Object zRevRank(HandleValue redisDataSourceHandleValue, String key, String member) {
+    public static Object zRevRank(BHandle redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zRevRank(key, member, redisDataSource);
@@ -369,7 +369,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param member The member of which the score needs to be obtained
      * @return
      */
-    public static Object zScore(HandleValue redisDataSourceHandleValue, String key, String member) {
+    public static Object zScore(BHandle redisDataSourceHandleValue, String key, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zScore(key, member, redisDataSource);
@@ -386,7 +386,7 @@ public class SortedSetActions extends AbstractRedisAction {
      * @param keys The member of which the score needs to be obtained
      * @return The score of the member
      */
-    public static Object zUnionStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object zUnionStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return zUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));

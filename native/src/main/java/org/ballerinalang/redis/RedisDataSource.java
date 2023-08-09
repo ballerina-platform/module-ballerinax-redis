@@ -31,7 +31,7 @@ import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.internal.values.MapValueImpl;
+import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 
 import java.time.Duration;
@@ -83,7 +83,7 @@ public class RedisDataSource<K, V> {
      * @param password The password required for authentication
      * @param options  The additional options
      */
-    public void init(String hosts, String password, MapValueImpl options) {
+    public void init(String hosts, String password, BMap<BString, Object> options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, password, options);
@@ -143,7 +143,7 @@ public class RedisDataSource<K, V> {
         objectPool.close();
     }
 
-    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
+    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, BMap<BString, Object> options) {
         if (serverAddresses.size() > 1) {
             throw new RuntimeException("More than one hosts have been provided for a non-cluster connection");
         }
@@ -168,7 +168,7 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password, BMap<BString, Object> options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
         List<RedisURI> redisURIS;
         if (!password.isEmpty()) {
@@ -190,7 +190,7 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private RedisURI.Builder setOptions(RedisURI.Builder builder, MapValueImpl options) {
+    private RedisURI.Builder setOptions(RedisURI.Builder builder, BMap<BString, Object> options) {
         int database = options.getIntValue(StringUtils.fromString(ConnectionParam.DATABASE.getKey())).intValue();
         int connectionTimeout = options.getIntValue(StringUtils.fromString(
                 ConnectionParam.CONNECTION_TIMEOUT.getKey())).intValue();

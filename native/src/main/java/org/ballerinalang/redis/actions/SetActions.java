@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
@@ -42,7 +41,7 @@ public class SetActions extends AbstractRedisAction {
      * @return The number of elements that were added to the set, not including all the elements which were
      *         already present in the set
      */
-    public static Object sAdd(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static Object sAdd(BHandle redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sAdd(key, redisDataSource, createStringArrayFromBArray(values));
@@ -58,7 +57,7 @@ public class SetActions extends AbstractRedisAction {
      * @param key The key of the set
      * @return The cardinality (number of elements) of the set
      */
-    public static Object sCard(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object sCard(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sCard(key, redisDataSource);
@@ -74,7 +73,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys The keys of the sets
      * @return An array of members of the resulting set
      */
-    public static Object sDiff(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object sDiff(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sDiff(redisDataSource, createStringArrayFromBArray(keys));
@@ -92,7 +91,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys The keys of the sets to find the difference of
      * @return The number of members in the resulting set
      */
-    public static Object sDiffStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sDiffStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sDiffStore(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -108,7 +107,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys The keys of the sets to be intersected
      * @return An array of members of the resulting set
      */
-    public static Object sInter(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object sInter(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sInter(redisDataSource, createStringArrayFromBArray(keys));
@@ -125,7 +124,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys The keys of the sets to be intersected
      * @return An array of members of the resulting set
      */
-    public static Object sInterStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sInterStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
@@ -142,7 +141,7 @@ public class SetActions extends AbstractRedisAction {
      * @param value The value
      * @return boolean true/false depending on whether the value is a member of the set or not
      */
-    public static Object sIsMember(HandleValue redisDataSourceHandleValue, String key, String value) {
+    public static Object sIsMember(BHandle redisDataSourceHandleValue, String key, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sIsMember(key, value, redisDataSource);
@@ -158,7 +157,7 @@ public class SetActions extends AbstractRedisAction {
      * @param key The key of the set
      * @return Array of all members in the set
      */
-    public static Object sMembers(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object sMembers(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sMembers(key, redisDataSource);
@@ -177,7 +176,7 @@ public class SetActions extends AbstractRedisAction {
      * @return `true` if the element is moved. `false` if the element is not a member of source and no
      *          operation was performed
      */
-    public static Object sMove(HandleValue redisDataSourceHandleValue, String src, String destination, String member) {
+    public static Object sMove(BHandle redisDataSourceHandleValue, String src, String destination, String member) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sMove(src, destination, member, redisDataSource);
@@ -194,7 +193,7 @@ public class SetActions extends AbstractRedisAction {
      * @param count Number of members to pop
      * @return Array of removed elements or `nil` if key does not exist
      */
-    public static Object sPop(HandleValue redisDataSourceHandleValue, String key, int count) {
+    public static Object sPop(BHandle redisDataSourceHandleValue, String key, int count) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sPop(key, count, redisDataSource);
@@ -211,7 +210,7 @@ public class SetActions extends AbstractRedisAction {
      * @param count Number of members to obtain
      * @return Array of the randomly selected elements, or `nil` when key does not
      */
-    public static Object sRandMember(HandleValue redisDataSourceHandleValue, String key, int count) {
+    public static Object sRandMember(BHandle redisDataSourceHandleValue, String key, int count) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sRandMember(key, count, redisDataSource);
@@ -228,7 +227,7 @@ public class SetActions extends AbstractRedisAction {
      * @param members Array of members to remove
      * @return The number of members that were removed from the set, not including non existing members
      */
-    public static Object sRem(HandleValue redisDataSourceHandleValue, String key, BArray members) {
+    public static Object sRem(BHandle redisDataSourceHandleValue, String key, BArray members) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sRem(key, redisDataSource, createStringArrayFromBArray(members));
@@ -244,7 +243,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys Array of keys of sets
      * @return Array of members of the resulting set
      */
-    public static Object sUnion(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object sUnion(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sUnion(redisDataSource, createStringArrayFromBArray(keys));
@@ -261,7 +260,7 @@ public class SetActions extends AbstractRedisAction {
      * @param keys Array of keys of sets
      * @return Number of members of the resulting set
      */
-    public static Object sUnionStore(HandleValue redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sUnionStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));

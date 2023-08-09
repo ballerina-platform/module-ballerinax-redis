@@ -18,6 +18,7 @@
 
 package org.ballerinalang.redis.actions;
 
+import io.ballerina.runtime.api.creators.TypeCreator;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScoredValue;
@@ -29,11 +30,9 @@ import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.internal.types.BArrayType;
 import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.Module;
-import io.ballerina.runtime.internal.values.MapValue;
-import io.ballerina.runtime.internal.values.MapValueImpl;
+import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -263,7 +262,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, BString> mGet(RedisDataSource<K, String> redisDataSource, K... key) {
+    static <K> BMap<BString, Object> mGet(RedisDataSource<K, String> redisDataSource, K... key) {
         RedisStringCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
@@ -411,13 +410,13 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, BString> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<BString, Object> bLPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.blpop(timeout, keys);
             if (result != null) {
-                MapValue<BString, BString> bMap = new MapValueImpl<>();
+                BMap<BString, Object> bMap = ValueCreator.createMapValue();
                 bMap.put(StringUtils.fromString((String) result.getKey()), StringUtils.fromString(result.getValue()));
                 return bMap;
             } else {
@@ -430,13 +429,13 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, BString> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
+    static <K> BMap<BString, Object> bRPop(long timeout, RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisListCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
             KeyValue<K, String> result = redisCommands.brpop(timeout, keys);
             if (result != null) {
-                MapValue<BString, BString> bMap = new MapValueImpl<>();
+                BMap<BString, Object> bMap = ValueCreator.createMapValue();
                 bMap.put(StringUtils.fromString((String) result.getKey()), StringUtils.fromString(result.getValue()));
                 return bMap;
             } else {
@@ -1088,7 +1087,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, BString> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
+    static <K> BMap<BString, Object> hGetAll(K key, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1151,7 +1150,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, BString> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
+    static <K> BMap<BString, Object> hMGet(K key, RedisDataSource<K, String> redisDataSource, K... fields) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1449,7 +1448,7 @@ public abstract class AbstractRedisAction {
     }
 
     private static BArray createBStringArrayFromSet(Set<String> set) {
-        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : set) {
             bStringArray.append(StringUtils.fromString(item));
         }
@@ -1457,7 +1456,7 @@ public abstract class AbstractRedisAction {
     }
 
     private static BArray createBStringArrayFromList(List<String> list) {
-        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : list) {
             bStringArray.append(StringUtils.fromString(item));
         }
@@ -1474,14 +1473,14 @@ public abstract class AbstractRedisAction {
         return scoredValues;
     }
 
-    private static <K> BMap<BString, BString> createBMapFromMap(Map<K, String> map) {
-        MapValue<BString, BString> bMap = new MapValueImpl<>();
+    private static <K> BMap<BString, Object> createBMapFromMap(Map<K, String> map) {
+        BMap<BString, Object> bMap = ValueCreator.createMapValue();
         map.forEach((key, value) -> bMap.put(StringUtils.fromString((String) key), StringUtils.fromString(value)));
         return bMap;
     }
 
-    private static <K> BMap<BString, BString> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
-        MapValue<BString, BString> bMap = new MapValueImpl<>();
+    private static <K> BMap<BString, Object> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
+        BMap<BString, Object> bMap = ValueCreator.createMapValue();
         for (KeyValue<K, String> item : list) {
             String value;
             try {
@@ -1512,7 +1511,7 @@ public abstract class AbstractRedisAction {
     }
 
     static BArray createBstringArrayFromBMap(BMap<BString, BString> bMap) {
-        BArray bStringArray = ValueCreator.createArrayValue(new BArrayType(PredefinedTypes.TYPE_STRING));
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
         for (Map.Entry<BString, BString> entry : bMap.entrySet()) {
             bStringArray.append(entry.getValue());
         }

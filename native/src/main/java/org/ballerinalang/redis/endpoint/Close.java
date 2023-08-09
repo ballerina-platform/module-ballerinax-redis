@@ -18,7 +18,7 @@
 
 package org.ballerinalang.redis.endpoint;
 
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
 
@@ -35,7 +35,7 @@ public class Close extends AbstractRedisAction {
      *
      * @param redisDataSourceHandleValue redis datasource
      */
-    public static void close(HandleValue redisDataSourceHandleValue) {
+    public static void close(BHandle redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         close(redisDataSource);
     }

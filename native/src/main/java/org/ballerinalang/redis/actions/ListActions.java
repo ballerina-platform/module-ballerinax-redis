@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
@@ -41,7 +40,7 @@ public class ListActions extends AbstractRedisAction {
      * @param values The values to be prepended
      * @return The length of the list after the push operation(s)
      */
-    public static Object lPushX(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static Object lPushX(BHandle redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPushX(redisKey, redisDataSource, createStringArrayFromBArray(values));
@@ -60,7 +59,7 @@ public class ListActions extends AbstractRedisAction {
      *         key being  the name of the key where an element was popped and the second element  being the value of the
      *         popped element, or `error` if an error occurs
      */
-    public static Object bLPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static Object bLPop(BHandle redisDataSourceHandleValue, int timeOut, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bLPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
@@ -79,7 +78,7 @@ public class ListActions extends AbstractRedisAction {
      *          key being  the name of the key where an element was popped and the second element being the value of the
      *          popped element, or `error` if an error occurs
      */
-    public static Object bRPop(HandleValue redisDataSourceHandleValue, int timeOut, BArray keys) {
+    public static Object bRPop(BHandle redisDataSourceHandleValue, int timeOut, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return bRPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
@@ -96,7 +95,7 @@ public class ListActions extends AbstractRedisAction {
      * @param values The values to be prepended
      * @return The length of the list after the push operation(s)
      */
-    public static Object lPush(HandleValue redisDataSourceHandleValue, String redisKey, BArray values) {
+    public static Object lPush(BHandle redisDataSourceHandleValue, String redisKey, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPush(redisKey, redisDataSource, createStringArrayFromBArray(values));
@@ -112,7 +111,7 @@ public class ListActions extends AbstractRedisAction {
      * @param redisKey The key
      * @return The value of the first element, or nil when key does not exist
      */
-    public static Object lPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object lPop(BHandle redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lPop(redisKey, redisDataSource);
@@ -129,7 +128,7 @@ public class ListActions extends AbstractRedisAction {
      * @param index The index from which the element should be retrieved
      * @return The value at the given index
      */
-    public static Object lIndex(HandleValue redisDataSourceHandleValue, String redisKey, int index) {
+    public static Object lIndex(BHandle redisDataSourceHandleValue, String redisKey, int index) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lIndex(redisKey, index, redisDataSource);
@@ -148,7 +147,7 @@ public class ListActions extends AbstractRedisAction {
      * @param value The value
      * @return The length of the list after the insert operation, or -1 when the value pivot not found
      */
-    public static Object lInsert(HandleValue redisDataSourceHandleValue, String key, boolean before, String pivot,
+    public static Object lInsert(BHandle redisDataSourceHandleValue, String key, boolean before, String pivot,
                                       String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
@@ -165,7 +164,7 @@ public class ListActions extends AbstractRedisAction {
      * @param redisKey The key
      * @return The length of the list at key
      */
-    public static Object lLen(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object lLen(BHandle redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lLen(redisKey, redisDataSource);
@@ -183,7 +182,7 @@ public class ListActions extends AbstractRedisAction {
      * @param stopPos The last index of the range
      * @return Array of elements in the specified range
      */
-    public static Object lRange(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static Object lRange(BHandle redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lRange(redisKey, startPos, stopPos, redisDataSource);
@@ -201,7 +200,7 @@ public class ListActions extends AbstractRedisAction {
      * @param value The value which the elements to be removed should be equal to
      * @return Number of elements removed
      */
-    public static Object lRem(HandleValue redisDataSourceHandleValue, String redisKey, int count, String value) {
+    public static Object lRem(BHandle redisDataSourceHandleValue, String redisKey, int count, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lRem(redisKey, count, value, redisDataSource);
@@ -219,7 +218,7 @@ public class ListActions extends AbstractRedisAction {
      * @param value The value to be set
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object lSet(HandleValue redisDataSourceHandleValue, String redisKey, int index, String value) {
+    public static Object lSet(BHandle redisDataSourceHandleValue, String redisKey, int index, String value) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lSet(redisKey, index, value, redisDataSource);
@@ -237,7 +236,7 @@ public class ListActions extends AbstractRedisAction {
      * @param stopPos The end index of the range
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object lTrim(HandleValue redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
+    public static Object lTrim(BHandle redisDataSourceHandleValue, String redisKey, int startPos, int stopPos) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return lTrim(redisKey, startPos, startPos, redisDataSource);
@@ -253,7 +252,7 @@ public class ListActions extends AbstractRedisAction {
      * @param redisKey The key of the list
      * @return The value of the last element, or `nil` when key does not exist
      */
-    public static Object rPop(HandleValue redisDataSourceHandleValue, String redisKey) {
+    public static Object rPop(BHandle redisDataSourceHandleValue, String redisKey) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPop(redisKey, redisDataSource);
@@ -270,7 +269,7 @@ public class ListActions extends AbstractRedisAction {
      * @param destination The destination key
      * @return The element being popped and pushed
      */
-    public static Object rPopLPush(HandleValue redisDataSourceHandleValue, String src, String destination) {
+    public static Object rPopLPush(BHandle redisDataSourceHandleValue, String src, String destination) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPopLPush(src, destination, redisDataSource);
@@ -287,7 +286,7 @@ public class ListActions extends AbstractRedisAction {
      * @param values Array of values to be appended
      * @return The length of the list after the push operation
      */
-    public static Object rPush(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static Object rPush(BHandle redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPush(key, redisDataSource, createStringArrayFromBArray(values));
@@ -304,7 +303,7 @@ public class ListActions extends AbstractRedisAction {
      * @param values Array of values to be appended
      * @return The length of the list after the push operation
      */
-    public static Object rPushX(HandleValue redisDataSourceHandleValue, String key, BArray values) {
+    public static Object rPushX(BHandle redisDataSourceHandleValue, String key, BArray values) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rPush(key, redisDataSource, createStringArrayFromBArray(values));

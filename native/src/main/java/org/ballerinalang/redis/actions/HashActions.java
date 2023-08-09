@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.RedisDataSource;
@@ -42,7 +41,7 @@ public class HashActions extends AbstractRedisAction {
      * @param fields Array of fields to be deleted
      * @return Number of fields that were removed from the hash, not including specified but non existing fields
      */
-    public static Object hDel(HandleValue redisDataSourceHandleValue, String key, BArray fields) {
+    public static Object hDel(BHandle redisDataSourceHandleValue, String key, BArray fields) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hDel(StringUtils.fromString(key), redisDataSource, createStringArrayFromBArray(fields));
@@ -60,7 +59,7 @@ public class HashActions extends AbstractRedisAction {
      * @return boolean `true` if the hash contains the field. boolean false if the hash does not contain
      * field or key does not exist
      */
-    public static Object hExists(HandleValue redisDataSourceHandleValue, String key, String field) {
+    public static Object hExists(BHandle redisDataSourceHandleValue, String key, String field) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hExists(key, field, redisDataSource);
@@ -77,7 +76,7 @@ public class HashActions extends AbstractRedisAction {
      * @param field The field
      * @return The value of the field
      */
-    public static Object hGet(HandleValue redisDataSourceHandleValue, String key, String field) {
+    public static Object hGet(BHandle redisDataSourceHandleValue, String key, String field) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hGet(key, field, redisDataSource);
@@ -93,7 +92,7 @@ public class HashActions extends AbstractRedisAction {
      * @param key The key of the hash
      * @return Map of field-value pairs
      */
-    public static Object hGetAll(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object hGetAll(BHandle redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hGetAll(key, redisDataSource);
@@ -111,7 +110,7 @@ public class HashActions extends AbstractRedisAction {
      * @param amount The amount to increment
      * @return The value of the field
      */
-    public static Object hIncrBy(HandleValue redisDataSourceHandleValue, String key, String field, int amount) {
+    public static Object hIncrBy(BHandle redisDataSourceHandleValue, String key, String field, int amount) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hIncrBy(key, field, amount, redisDataSource);
@@ -129,7 +128,7 @@ public class HashActions extends AbstractRedisAction {
      * @param amount The amount to increment
      * @return The value of the field
      */
-    public static Object hIncrByFloat(HandleValue redisDataSourceHandleValue, String key, String field, double amount) {
+    public static Object hIncrByFloat(BHandle redisDataSourceHandleValue, String key, String field, double amount) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hIncrByFloat(key, field, amount, redisDataSource);
@@ -145,7 +144,7 @@ public class HashActions extends AbstractRedisAction {
      * @param key The key of the hash
      * @return Array of hash fields
      */
-    public static Object hKeys(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object hKeys(BHandle redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hKeys(key, redisDataSource);
@@ -161,7 +160,7 @@ public class HashActions extends AbstractRedisAction {
      * @param key The key of the hash
      * @return Number of fields
      */
-    public static Object hLen(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object hLen(BHandle redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hLen(key, redisDataSource);
@@ -178,7 +177,7 @@ public class HashActions extends AbstractRedisAction {
      * @param fields Array of hash fields
      * @return Map of field-value pairs
      */
-    public static Object hMGet(HandleValue redisDataSourceHandleValue, String key, BArray fields) {
+    public static Object hMGet(BHandle redisDataSourceHandleValue, String key, BArray fields) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hMGet(key, redisDataSource, createStringArrayFromBArray(fields));
@@ -195,7 +194,7 @@ public class HashActions extends AbstractRedisAction {
      * @param fieldValueMap Map of field-value pairs
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object hMSet(HandleValue redisDataSourceHandleValue, String key, BMap fieldValueMap) {
+    public static Object hMSet(BHandle redisDataSourceHandleValue, String key, BMap fieldValueMap) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hMSet(key, createMapFromBMap(fieldValueMap), redisDataSource);
@@ -214,7 +213,7 @@ public class HashActions extends AbstractRedisAction {
      * @return boolean `true` if field is a new field in the hash and value was set. boolean false if
      * field already exists in the hash and the value was updated
      */
-    public static Object hSet(HandleValue redisDataSourceHandleValue, String key, String field, String value) {
+    public static Object hSet(BHandle redisDataSourceHandleValue, String key, String field, String value) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hSet(key, field, value, redisDataSource);
@@ -233,7 +232,7 @@ public class HashActions extends AbstractRedisAction {
      * @return boolean `true` if field is a new field in the hash and value was set. boolean false if
      * field already exists in the hash and the value was updated
      */
-    public static Object hSetNx(HandleValue redisDataSourceHandleValue, String key, String field, String value) {
+    public static Object hSetNx(BHandle redisDataSourceHandleValue, String key, String field, String value) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hSetNx(key, field, value, redisDataSource);
@@ -251,7 +250,7 @@ public class HashActions extends AbstractRedisAction {
      * @return The length of the field value, or 0 when field is not present in the hash or key does
      * not exist at all
      */
-    public static Object hStrln(HandleValue redisDataSourceHandleValue, String key, String field) {
+    public static Object hStrln(BHandle redisDataSourceHandleValue, String key, String field) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hStrln(key, field, redisDataSource);
@@ -267,7 +266,7 @@ public class HashActions extends AbstractRedisAction {
      * @param key The key of the hash
      * @return Array of values in the hash, or an empty array when key does not exist
      */
-    public static Object hVals(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object hVals(BHandle redisDataSourceHandleValue, String key) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return hVals(key, redisDataSource);

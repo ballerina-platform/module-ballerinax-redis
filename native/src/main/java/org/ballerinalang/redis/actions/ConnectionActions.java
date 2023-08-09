@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
@@ -35,9 +34,9 @@ public class ConnectionActions extends AbstractRedisAction {
     /**
      * Ping the redis database server.
      *
-     * @param redisDataSourceHandleValue redis datasource handleValue
+     * @param redisDataSourceHandleValue redis datasource BHandle
      */
-    public static Object ping(HandleValue redisDataSourceHandleValue) {
+    public static Object ping(BHandle redisDataSourceHandleValue) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return ping(redisDataSource);
@@ -53,7 +52,7 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param password The password
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object auth(HandleValue redisDataSourceHandleValue, String password) {
+    public static Object auth(BHandle redisDataSourceHandleValue, String password) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return auth(password, redisDataSource);
@@ -69,7 +68,7 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param message The message to be echo-ed
      * @return The message itself if the operation was successful
      */
-    public static Object echo(HandleValue redisDataSourceHandleValue, String message) {
+    public static Object echo(BHandle redisDataSourceHandleValue, String message) {
         RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
         try {
             return echo(message, redisDataSource);

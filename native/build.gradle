@@ -20,7 +20,6 @@ plugins {
     id 'com.github.spotbugs'
     id 'checkstyle'
     id 'jacoco'
-    id "com.github.johnrengelman.shadow"
 }
 
 description = 'Ballerina - Redis Native'
@@ -37,9 +36,8 @@ dependencies {
 
     checkstyle project(":checkstyle")
     checkstyle "com.puppycrawl.tools:checkstyle:${puppycrawlCheckstyleVersion}"
-    implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
 
-
+    implementation "org.ballerinalang:ballerina-runtime:${project.ballerinaLangVersion}"
     implementation "io.lettuce:lettuce-core:${project.lettuceCoreVersion}"
     implementation "org.apache.commons:commons-pool2:${project.commonsPool2Version}"
     implementation "com.github.kstyrc:embedded-redis:${project.embeddedRedisVersion}"
@@ -120,7 +118,6 @@ jar {
     }
 }
 
-build.dependsOn(shadowJar)
 spotbugsMain.finalizedBy validateSpotbugs
 checkstyleMain.dependsOn ':checkstyle:downloadCheckstyleRuleFiles'
 

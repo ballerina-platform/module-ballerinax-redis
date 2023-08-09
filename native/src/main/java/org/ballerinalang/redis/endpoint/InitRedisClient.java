@@ -18,17 +18,17 @@
 
 package org.ballerinalang.redis.endpoint;
 
+import io.ballerina.runtime.api.values.BHandle;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.internal.values.HandleValue;
-import io.ballerina.runtime.internal.values.MapValueImpl;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
+import io.ballerina.runtime.api.creators.ValueCreator;
 
 /**
  * Creates a Redis client.
@@ -43,10 +43,10 @@ public class InitRedisClient  {
      * @param config configuration map
      * @return a handle value
      */
-    public static HandleValue initClient(MapValueImpl config) {
+    public static BHandle initClient(BMap config) {
         BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
         BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
-        MapValueImpl options = (MapValueImpl) config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
+        BMap<BString, BString> options = config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
         
 
         RedisCodec<String, String> codec = retrieveRedisCodec(Constants.Codec.STRING_CODEC.getCodecName());
@@ -58,7 +58,7 @@ public class InitRedisClient  {
         RedisDataSource dataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
         dataSource.init(host.toString(), password.toString(), options);
 
-        return new HandleValue(dataSource);
+        return ValueCreator.createHandleValue(dataSource);
     }
 
 

@@ -20,8 +20,7 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.internal.values.HandleValue;
+import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
@@ -40,7 +39,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param keys The key to be deleted
      * @return The number of keys that were removed
      */
-    public static Object del(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object del(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return del(redisDataSource, createStringArrayFromBArray(keys));
@@ -56,7 +55,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param keys The keys of which existence to be found out
      * @return The number of existing keys
      */
-    public static Object exists(HandleValue redisDataSourceHandleValue, BArray keys) {
+    public static Object exists(BHandle redisDataSourceHandleValue, BArray keys) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return exists(redisDataSource, createStringArrayFromBArray(keys));
@@ -73,7 +72,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param seconds Expiry in seconds
      * @return boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set
      */
-    public static Object expire(HandleValue redisDataSourceHandleValue, String key, int seconds) {
+    public static Object expire(BHandle redisDataSourceHandleValue, String key, int seconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return expire(key, seconds, redisDataSource);
@@ -89,7 +88,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param pattern The pattern to match
      * @return Array of keys matching the given pattern
      */
-    public static Object keys(HandleValue redisDataSourceHandleValue, String pattern) {
+    public static Object keys(BHandle redisDataSourceHandleValue, String pattern) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return keys(pattern, redisDataSource);
@@ -106,7 +105,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param database The database to which the key needs to be moved
      * @return boolean true if key was succesfully moved, boolean false otherwise
      */
-    public static Object move(HandleValue redisDataSourceHandleValue, String key, int database) {
+    public static Object move(BHandle redisDataSourceHandleValue, String key, int database) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return move(key, database, redisDataSource);
@@ -123,7 +122,7 @@ public class KeyActions extends AbstractRedisAction {
      * @return boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
      *         an associated timeout
      */
-    public static Object persist(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object persist(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return persist(key, redisDataSource);
@@ -141,7 +140,7 @@ public class KeyActions extends AbstractRedisAction {
      * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
      *         be set
      */
-    public static Object pExpire(HandleValue redisDataSourceHandleValue, String key, int timeMilliSeconds) {
+    public static Object pExpire(BHandle redisDataSourceHandleValue, String key, int timeMilliSeconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pExpire(key, timeMilliSeconds, redisDataSource);
@@ -157,7 +156,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param key The key of which time-to-live should be obtained
      * @return time-to-live of the key, in milli seconds
      */
-    public static Object pTtl(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object pTtl(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pTtl(key, redisDataSource);
@@ -172,7 +171,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param redisDataSourceHandleValue redis datasource
      * @return The random key
      */
-    public static Object randomKey(HandleValue redisDataSourceHandleValue) {
+    public static Object randomKey(BHandle redisDataSourceHandleValue) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return randomKey(redisDataSource);
@@ -189,7 +188,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param newName The new name of the key
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object rename(HandleValue redisDataSourceHandleValue, String key, String newName) {
+    public static Object rename(BHandle redisDataSourceHandleValue, String key, String newName) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rename(key, newName, redisDataSource);
@@ -207,7 +206,7 @@ public class KeyActions extends AbstractRedisAction {
      *                newkey already exists.
      * @return boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists
      */
-    public static Object renameNx(HandleValue redisDataSourceHandleValue, String key, String newName) {
+    public static Object renameNx(BHandle redisDataSourceHandleValue, String key, String newName) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return renameNx(key, newName, redisDataSource);
@@ -223,7 +222,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param key The key of the data typeure to be sorted
      * @return Sorted array containing the members of the sorted data type
      */
-    public static Object sort(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object sort(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sort(key, redisDataSource);
@@ -241,7 +240,7 @@ public class KeyActions extends AbstractRedisAction {
      *         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
      *         level or the driver level
      */
-    public static Object ttl(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object ttl(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return ttl(key, redisDataSource);
@@ -257,7 +256,7 @@ public class KeyActions extends AbstractRedisAction {
      * @param key The key of which the type needs to be obtained
      * @return Type stored at key
      */
-    public static Object redisType(HandleValue redisDataSourceHandleValue, String key) {
+    public static Object redisType(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return type(key, redisDataSource);
