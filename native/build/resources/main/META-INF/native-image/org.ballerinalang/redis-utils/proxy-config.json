@@ -1,0 +1,14 @@
+[
+  {
+    "interfaces": [
+      "io.lettuce.core.api.sync.RedisCommands",
+      "io.lettuce.core.cluster.api.sync.RedisClusterCommands"
+    ]
+  },
+  {
+    "interfaces": [
+      "io.lettuce.core.support.ConnectionWrapping$HasTargetConnection",
+      "io.lettuce.core.api.StatefulRedisConnection"
+    ]
+  }
+]
