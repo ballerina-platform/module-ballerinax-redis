@@ -18,17 +18,15 @@
 
 package org.ballerinalang.redis.utils;
 
+import io.ballerina.runtime.api.creators.ErrorCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.ScoredValue;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
-import io.ballerina.runtime.api.Module;
-import io.ballerina.runtime.api.creators.ErrorCreator;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.utils.ModuleUtils;
 import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
@@ -47,9 +45,10 @@ import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
  * Redis database utils to run unit tests.
  */
 public class RedisDbUtils {
-    private static RedisServer redisServer;
+
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
+    private static RedisServer redisServer;
     private static RedisCommands<String, String> redisCommands;
 
     /**
@@ -76,10 +75,12 @@ public class RedisDbUtils {
                 redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
                 redisServer.start();
             } else {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
+                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
+                        StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";
@@ -103,10 +104,12 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal != 0) {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED), StringUtils.fromString(output.toString()));
+                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
+                        StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
         process.destroy();
         return "OK";
@@ -165,7 +168,7 @@ public class RedisDbUtils {
         }
 
         String listKey = "testSortKey";
-        String[] listValues = { "2", "3", "1", "4", "8", "0" };
+        String[] listValues = {"2", "3", "1", "4", "8", "0"};
         redisCommands.lpush(listKey, listValues);
     }
 
@@ -180,15 +183,15 @@ public class RedisDbUtils {
                 "testRPopKey", "testRPopLPushKey1", "testRPopLPushKey2", "testRPushKey", "testRPushXKey"
         };
         String[][] valueArray = {
-                { "testBLPopValue1", "testBLPopValue2" }, { "testBRPopValue1", "testBRPopValue2" },
-                { "testLIndexValue1", "testLIndexValue2" },
-                { "testLInsertValue1", "testLInsertValue2", "pivotValue", "testLInsertValue4" },
-                { "testLLenValue1", "testLLenValue2", "testLLenValue3" }, { "testLPopValue1", "testLPopValue2" },
-                { "testLPushValue1" }, { "testLPushXValue1" }, { "0", "1", "2", "3", "4" },
-                { "testLRemValue1", "toBeRemovedValue", "toBeRemovedValue", "testLRemValue4" },
-                { "testLSetValue1", "testLSetValue2", "testLSetValue3" }, { "One", "Two", "Three" },
-                { "testRPopValue1", "testRPopValue2" }, { "One", "Two", "Three" }, { "One", "Two" },
-                { "testRPushValue1" }, {"testRPushXValue1"}
+                {"testBLPopValue1", "testBLPopValue2"}, {"testBRPopValue1", "testBRPopValue2"},
+                {"testLIndexValue1", "testLIndexValue2"},
+                {"testLInsertValue1", "testLInsertValue2", "pivotValue", "testLInsertValue4"},
+                {"testLLenValue1", "testLLenValue2", "testLLenValue3"}, {"testLPopValue1", "testLPopValue2"},
+                {"testLPushValue1"}, {"testLPushXValue1"}, {"0", "1", "2", "3", "4"},
+                {"testLRemValue1", "toBeRemovedValue", "toBeRemovedValue", "testLRemValue4"},
+                {"testLSetValue1", "testLSetValue2", "testLSetValue3"}, {"One", "Two", "Three"},
+                {"testRPopValue1", "testRPopValue2"}, {"One", "Two", "Three"}, {"One", "Two"},
+                {"testRPushValue1"}, {"testRPushXValue1"}
         };
 
         for (int i = 0; i < keyArray.length; i++) {
@@ -207,22 +210,22 @@ public class RedisDbUtils {
         };
 
         String[][] hashFieldArray = {
-                { "testHDelField1", "testHDelField2", "testHDelField3" }, { "testHGetField1", "testHGetField2" },
-                { "testHExistsField1", "testHExistsField2" }, { "testHGetAllField1", "testHGetAllField2" },
-                { "testHIncrByField1" }, { "testHIncrByFloatField1" },
-                { "testHKeysField1", "testHKeysField2", "testHKeysField3" },
-                { "testHLenField1", "testHLenField2", "testHLenField3" },
-                { "testHMGetField1", "testHMGetField2", "testHMGetField3" }, { "testHStrlnField1" },
-                { "testHValsField1", "testHValsField2", "testHValsField3" }
+                {"testHDelField1", "testHDelField2", "testHDelField3"}, {"testHGetField1", "testHGetField2"},
+                {"testHExistsField1", "testHExistsField2"}, {"testHGetAllField1", "testHGetAllField2"},
+                {"testHIncrByField1"}, {"testHIncrByFloatField1"},
+                {"testHKeysField1", "testHKeysField2", "testHKeysField3"},
+                {"testHLenField1", "testHLenField2", "testHLenField3"},
+                {"testHMGetField1", "testHMGetField2", "testHMGetField3"}, {"testHStrlnField1"},
+                {"testHValsField1", "testHValsField2", "testHValsField3"}
         };
 
         String[][] hashValueArray = {
-                { "testHDelValue1", "testHDelValue2", "testHDelValue3" }, { "testHGetValue1", "testHGetValue2" },
-                { "testHExistsValue1", "testHExistsValue2" }, { "testHGetAllValue1", "testHGetAllValue2" }, { "6" },
-                { "7" }, { "testHKeysValue1", "testHKeysValue2", "testHKeysValue3" },
-                { "testHLenValue1", "testHLenValue2", "testHLenValue3" },
-                { "testHMGetValue1", "testHMGetValue2", "testHMGetValue3" }, { "testHStrlnValue1" },
-                { "testHValsValue1", "testHValsValue2", "testHValsValue3" }
+                {"testHDelValue1", "testHDelValue2", "testHDelValue3"}, {"testHGetValue1", "testHGetValue2"},
+                {"testHExistsValue1", "testHExistsValue2"}, {"testHGetAllValue1", "testHGetAllValue2"}, {"6"},
+                {"7"}, {"testHKeysValue1", "testHKeysValue2", "testHKeysValue3"},
+                {"testHLenValue1", "testHLenValue2", "testHLenValue3"},
+                {"testHMGetValue1", "testHMGetValue2", "testHMGetValue3"}, {"testHStrlnValue1"},
+                {"testHValsValue1", "testHValsValue2", "testHValsValue3"}
         };
 
         for (int i = 0; i < hashKeyArray.length; i++) {
@@ -245,13 +248,13 @@ public class RedisDbUtils {
 
         };
         String[][] valueArray = {
-                { "testSAddValue1", "testSAddValue2" }, { "One", "Two", "Three", "Four" }, { "One", "Two" },
-                { "One", "Two", "Three", "Four" }, { "One", "Two" }, { "testSIsMemberValue" },
-                { "testSMembersValue1", "testSMembersValue2", "testSMembersValue3" },
-                { "testSPopValue1", "testSPopValue2", "testSPopValue3" },
-                { "testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3" },
-                { "testSRemValue1", "testSRemValue2", "testSRemValue3" }, { "testUnionValue1", "testUnionValue2" },
-                { "testUnionValue2", "testUnionValue3", "testUnionValue4" }
+                {"testSAddValue1", "testSAddValue2"}, {"One", "Two", "Three", "Four"}, {"One", "Two"},
+                {"One", "Two", "Three", "Four"}, {"One", "Two"}, {"testSIsMemberValue"},
+                {"testSMembersValue1", "testSMembersValue2", "testSMembersValue3"},
+                {"testSPopValue1", "testSPopValue2", "testSPopValue3"},
+                {"testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"},
+                {"testSRemValue1", "testSRemValue2", "testSRemValue3"}, {"testUnionValue1", "testUnionValue2"},
+                {"testUnionValue2", "testUnionValue3", "testUnionValue4"}
         };
         for (int i = 0; i < keyArray.length; i++) {
             redisCommands.sadd(keyArray[i], valueArray[i]);
@@ -361,35 +364,35 @@ public class RedisDbUtils {
         ScoredValue<String> testZUnionStoreValue6 = ScoredValue.fromNullable(4, "f");
         ScoredValue<String> testZUnionStoreValue7 = ScoredValue.fromNullable(3, "g");
 
-        ScoredValue[][] valueArray = new ScoredValue[][] {
-                new ScoredValue[] { testZAddValue1 }, new ScoredValue[] { testZCardValue1, testZCardValue2 },
-                new ScoredValue[] { testZCountValue1, testZCountValue2, testZCountValue3, testZCountValue4 },
-                new ScoredValue[] { testZIncrByValue1 },
-                new ScoredValue[] { testZInterStoreValue1, testZInterStoreValue2, testZInterStoreValue3 },
-                new ScoredValue[] { testZInterStoreValue4, testZInterStoreValue5, testZInterStoreValue6 },
-                new ScoredValue[] { testZInterStoreValue7 }, new ScoredValue[] {
+        ScoredValue[][] valueArray = new ScoredValue[][]{
+                new ScoredValue[]{testZAddValue1}, new ScoredValue[]{testZCardValue1, testZCardValue2},
+                new ScoredValue[]{testZCountValue1, testZCountValue2, testZCountValue3, testZCountValue4},
+                new ScoredValue[]{testZIncrByValue1},
+                new ScoredValue[]{testZInterStoreValue1, testZInterStoreValue2, testZInterStoreValue3},
+                new ScoredValue[]{testZInterStoreValue4, testZInterStoreValue5, testZInterStoreValue6},
+                new ScoredValue[]{testZInterStoreValue7}, new ScoredValue[]{
                 testZLexCountValue1, testZLexCountValue2, testZLexCountValue3, testZLexCountValue4, testZLexCountValue5,
                 testZLexCountValue6, testZLexCountValue7
-        }, new ScoredValue[] {
+        }, new ScoredValue[]{
                 testZRangeValue1, testZRangeValue2, testZRangeValue3, testZRangeValue4, testZRangeValue5,
                 testZRangeValue6, testZRangeValue7
-        }, new ScoredValue[] { testZRankValue1, testZRankValue2, testZRankValue3 },
-                new ScoredValue[] { testZRemValue1, testZRemValue2, testZRemValue3 }, new ScoredValue[] {
+        }, new ScoredValue[]{testZRankValue1, testZRankValue2, testZRankValue3},
+                new ScoredValue[]{testZRemValue1, testZRemValue2, testZRemValue3}, new ScoredValue[]{
                 testZRemRangeByLexValue1, testZRemRangeByLexValue2, testZRemRangeByLexValue3, testZRemRangeByLexValue4,
                 testZRemRangeByLexValue5, testZRemRangeByLexValue6, testZRemRangeByLexValue7, testZRemRangeByLexValue8,
                 testZRemRangeByLexValue9, testZRemRangeByLexValue10
-        }, new ScoredValue[] {
+        }, new ScoredValue[]{
                 testZRemRangeByRankValue1, testZRemRangeByRankValue2, testZRemRangeByRankValue3,
                 testZRemRangeByRankValue4, testZRemRangeByRankValue5, testZRemRangeByRankValue6
-        }, new ScoredValue[] {
+        }, new ScoredValue[]{
                 testZRemRangeByScoreValue1, testZRemRangeByScoreValue2, testZRemRangeByScoreValue3,
                 testZRemRangeByScoreValue4, testZRemRangeByScoreValue5, testZRemRangeByScoreValue6
-        }, new ScoredValue[] {
+        }, new ScoredValue[]{
                 testZRangeByLexValue1, testZRangeByLexValue2, testZRangeByLexValue3, testZRangeByLexValue4,
                 testZRangeByLexValue5, testZRangeByLexValue6, testZRangeByLexValue7
-        }, new ScoredValue[] { testZScoreValue1, testZScoreValue2 }, new ScoredValue[] {
+        }, new ScoredValue[]{testZScoreValue1, testZScoreValue2}, new ScoredValue[]{
                 testZUnionStoreValue1, testZUnionStoreValue2, testZUnionStoreValue3, testZUnionStoreValue4
-        }, new ScoredValue[] { testZUnionStoreValue5, testZUnionStoreValue6, testZUnionStoreValue7 }
+        }, new ScoredValue[]{testZUnionStoreValue5, testZUnionStoreValue6, testZUnionStoreValue7}
         };
 
         for (int i = 0; i < keyArray.length; i++) {
@@ -425,7 +428,7 @@ public class RedisDbUtils {
     /**
      * Check if set contains a member.
      *
-     * @param key key
+     * @param key   key
      * @param value member
      * @return True if member exists in set, false if not
      */
@@ -436,7 +439,7 @@ public class RedisDbUtils {
     /**
      * Check if hash exists.
      *
-     * @param key key
+     * @param key   key
      * @param field field
      * @return True if hash exists, false if not
      */
@@ -447,7 +450,7 @@ public class RedisDbUtils {
     /**
      * Get a value of a hash.
      *
-     * @param key key
+     * @param key   key
      * @param field field
      * @return hash value
      */
@@ -468,7 +471,7 @@ public class RedisDbUtils {
     /**
      * Make a key expire after a given time.
      *
-     * @param key key
+     * @param key      key
      * @param duration duration
      */
     public static void pexpire(String key, int duration) {
@@ -488,7 +491,7 @@ public class RedisDbUtils {
     /**
      * Get the value using an index of a set.
      *
-     * @param key key
+     * @param key   key
      * @param index index
      * @return value
      */

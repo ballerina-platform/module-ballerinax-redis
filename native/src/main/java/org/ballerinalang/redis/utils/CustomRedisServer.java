@@ -29,14 +29,11 @@ import java.util.Locale;
  * A custom redis server.
  */
 public class CustomRedisServer extends RedisServer {
+
     private static final String REDIS_READY_PATTERN = ".*Ready to accept connections*";
 
     CustomRedisServer(String executable, Integer port) throws IOException {
         super(RedisExecProvider.defaultProvider().override(getOs(), executable), port);
-    }
-
-    protected String redisReadyPattern() {
-        return REDIS_READY_PATTERN;
     }
 
     private static OS getOs() {
@@ -48,5 +45,9 @@ public class CustomRedisServer extends RedisServer {
         } else {
             return OS.WINDOWS;
         }
+    }
+
+    protected String redisReadyPattern() {
+        return REDIS_READY_PATTERN;
     }
 }

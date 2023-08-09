@@ -18,24 +18,24 @@
 
 package org.ballerinalang.redis.endpoint;
 
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BHandle;
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
-import io.ballerina.runtime.api.creators.ValueCreator;
 
 /**
  * Creates a Redis client.
  *
  * @since 0.5.0
  */
-public class InitRedisClient  {
+public class InitRedisClient {
 
     /**
      * Initialize a redis client.
@@ -47,7 +47,6 @@ public class InitRedisClient  {
         BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
         BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
         BMap<BString, BString> options = config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
-        
 
         RedisCodec<String, String> codec = retrieveRedisCodec(Constants.Codec.STRING_CODEC.getCodecName());
         boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(
@@ -61,7 +60,6 @@ public class InitRedisClient  {
         return ValueCreator.createHandleValue(dataSource);
     }
 
-
     /**
      * Retrieve redis codec.
      *
@@ -71,14 +69,14 @@ public class InitRedisClient  {
     private static RedisCodec retrieveRedisCodec(String codecString) {
         Constants.Codec codec = retrieveCodec(codecString);
         switch (codec) {
-        case BYTE_ARRAY_CODEC:
-            return new ByteArrayCodec();
-        case STRING_CODEC:
-            return new StringCodec();
-        case UTF8_STRING_CODEC:
-            return new Utf8StringCodec();
-        default:
-            throw new UnsupportedOperationException("Support for RedisCodec " + codec + " is not implemented yet");
+            case BYTE_ARRAY_CODEC:
+                return new ByteArrayCodec();
+            case STRING_CODEC:
+                return new StringCodec();
+            case UTF8_STRING_CODEC:
+                return new Utf8StringCodec();
+            default:
+                throw new UnsupportedOperationException("Support for RedisCodec " + codec + " is not implemented yet");
         }
     }
 

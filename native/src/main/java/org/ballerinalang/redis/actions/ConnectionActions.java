@@ -41,15 +41,16 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return ping(redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
     /**
      * Authenticate to the server.
-     * 
+     *
      * @param redisDataSourceHandleValue redis datasource
-     * @param password The password
+     * @param password                   The password
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object auth(BHandle redisDataSourceHandleValue, String password) {
@@ -57,7 +58,8 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return auth(password, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -65,7 +67,7 @@ public class ConnectionActions extends AbstractRedisAction {
      * Echo the given string.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param message The message to be echo-ed
+     * @param message                    The message to be echo-ed
      * @return The message itself if the operation was successful
      */
     public static Object echo(BHandle redisDataSourceHandleValue, String message) {
@@ -73,7 +75,8 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return echo(message, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 }

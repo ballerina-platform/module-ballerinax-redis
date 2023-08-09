@@ -27,19 +27,9 @@ import java.util.Map;
  * @since 0.5.0
  */
 public class Constants {
-    static final int DEFAULT_REDIS_PORT = 6379;
-    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerinax/redis}Error";
 
-    /**
-     * Endpoint configuration constants.
-     */
-    public static class EndpointConfig {
-        public static final String HOST = "host";
-        public static final String PASSWORD = "password";
-        public static final String OPTIONS = "options";
-        public static final String CLUSTERING_ENABLED = "isClusterConnection";
-        public static final String POOLING_ENABLED = "connectionPooling";
-    }
+    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerinax/redis}Error";
+    static final int DEFAULT_REDIS_PORT = 6379;
 
     /**
      * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
@@ -47,23 +37,17 @@ public class Constants {
     public enum Codec {
         BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");
 
-        String codec;
-
         static Map<String, Codec> codecMap = new HashMap<>(3);
-
         static {
             Codec[] codecs = values();
             for (Codec codec : codecs) {
                 codecMap.put(codec.getCodecName(), codec);
             }
         }
+        String codec;
 
         Codec(String codec) {
             this.codec = codec;
-        }
-
-        public String getCodecName() {
-            return codec;
         }
 
         public static Codec fromCodecName(String codecName) {
@@ -73,5 +57,21 @@ public class Constants {
             }
             return codec;
         }
+
+        public String getCodecName() {
+            return codec;
+        }
+    }
+
+    /**
+     * Endpoint configuration constants.
+     */
+    public static class EndpointConfig {
+
+        public static final String HOST = "host";
+        public static final String PASSWORD = "password";
+        public static final String OPTIONS = "options";
+        public static final String CLUSTERING_ENABLED = "isClusterConnection";
+        public static final String POOLING_ENABLED = "connectionPooling";
     }
 }

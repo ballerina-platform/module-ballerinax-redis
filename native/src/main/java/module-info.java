@@ -16,7 +16,7 @@
  * under the License.
  */
 
- module org.ballerinalang.redis {
+module org.ballerinalang.redis {
     requires io.ballerina.runtime;
     requires io.ballerina.lang;
     requires lettuce.core;

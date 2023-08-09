@@ -18,6 +18,9 @@
 
 package org.ballerinalang.redis;
 
+import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulConnection;
@@ -30,9 +33,6 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -65,10 +65,10 @@ public class RedisDataSource<K, V> {
     /**
      * Constructor for {@link RedisDataSource}.
      *
-     * @param codec The codec for transcoding keys/values between the application and the Redis DB.
-     *              Instance of {@link RedisCodec}
+     * @param codec               The codec for transcoding keys/values between the application and the Redis DB.
+     *                            Instance of {@link RedisCodec}
      * @param isClusterConnection Whether the connection is a cluster connection
-     * @param poolingEnabled Whether connection pooling is enabled
+     * @param poolingEnabled      Whether connection pooling is enabled
      */
     public RedisDataSource(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
         this.codec = codec;
@@ -143,7 +143,8 @@ public class RedisDataSource<K, V> {
         objectPool.close();
     }
 
-    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password, BMap<BString, Object> options) {
+    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password,
+                                            BMap<BString, Object> options) {
         if (serverAddresses.size() > 1) {
             throw new RuntimeException("More than one hosts have been provided for a non-cluster connection");
         }
@@ -168,17 +169,19 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password, BMap<BString, Object> options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password,
+                                         BMap<BString, Object> options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
         List<RedisURI> redisURIS;
         if (!password.isEmpty()) {
             redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).withPassword(password).build())
-                .collect(Collectors.toList());
+                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options)
+                            .withPassword(password).build())
+                    .collect(Collectors.toList());
         } else {
             redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
-                .collect(Collectors.toList());
+                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
+                    .collect(Collectors.toList());
         }
         redisClusterClient = RedisClusterClient.create(redisURIS);
         if (!poolingEnabled) {
@@ -251,6 +254,14 @@ public class RedisDataSource<K, V> {
         }
     }
 
+    public void releaseResources(Object redisCommands) {
+        if (isClusterConnection) {
+            objectPool.returnObject(((RedisAdvancedClusterCommands<K, V>) redisCommands).getStatefulConnection());
+        } else {
+            objectPool.returnObject(((RedisCommands<K, V>) redisCommands).getStatefulConnection());
+        }
+    }
+
     private enum ConnectionParam {
         //String params
         CLIENT_NAME("clientName"),
@@ -273,15 +284,8 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    public void releaseResources(Object redisCommands) {
-        if (isClusterConnection) {
-            objectPool.returnObject(((RedisAdvancedClusterCommands<K, V>) redisCommands).getStatefulConnection());
-        } else {
-            objectPool.returnObject(((RedisCommands<K, V>) redisCommands).getStatefulConnection());
-        }
-    }
-
     private static class ServerAddress {
+
         private String host;
         private int port;
 

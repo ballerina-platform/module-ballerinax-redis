@@ -34,11 +34,11 @@ public class ModuleUtils {
     private ModuleUtils() {
     }
 
-    public static void setModule(Environment env) {
-        redisModule = env.getCurrentModule();
-    }
-
     public static Module getModule() {
         return redisModule;
+    }
+
+    public static void setModule(Environment env) {
+        redisModule = env.getCurrentModule();
     }
 }

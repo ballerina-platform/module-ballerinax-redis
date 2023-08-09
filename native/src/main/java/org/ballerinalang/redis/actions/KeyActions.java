@@ -20,8 +20,8 @@ package org.ballerinalang.redis.actions;
 
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BArray;
+import io.ballerina.runtime.api.values.BHandle;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
@@ -34,8 +34,9 @@ public class KeyActions extends AbstractRedisAction {
 
     /**
      * Delete one or more keys.
-     * 
+     * <p>
      * redisDataSourceHandleValue redis datasource
+     *
      * @param keys The key to be deleted
      * @return The number of keys that were removed
      */
@@ -44,7 +45,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return del(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -52,7 +54,7 @@ public class KeyActions extends AbstractRedisAction {
      * Determine how many keys exist.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param keys The keys of which existence to be found out
+     * @param keys                       The keys of which existence to be found out
      * @return The number of existing keys
      */
     public static Object exists(BHandle redisDataSourceHandleValue, BArray keys) {
@@ -60,7 +62,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return exists(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -68,8 +71,8 @@ public class KeyActions extends AbstractRedisAction {
      * Set a key's time to live in seconds.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The keys of which expiry time to be set
-     * @param seconds Expiry in seconds
+     * @param key                        The keys of which expiry time to be set
+     * @param seconds                    Expiry in seconds
      * @return boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set
      */
     public static Object expire(BHandle redisDataSourceHandleValue, String key, int seconds) {
@@ -77,7 +80,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return expire(key, seconds, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -85,7 +89,7 @@ public class KeyActions extends AbstractRedisAction {
      * Find all keys matching the given pattern.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param pattern The pattern to match
+     * @param pattern                    The pattern to match
      * @return Array of keys matching the given pattern
      */
     public static Object keys(BHandle redisDataSourceHandleValue, String pattern) {
@@ -93,7 +97,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return keys(pattern, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -101,8 +106,8 @@ public class KeyActions extends AbstractRedisAction {
      * Move a key to another database.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key to be moved
-     * @param database The database to which the key needs to be moved
+     * @param key                        The key to be moved
+     * @param database                   The database to which the key needs to be moved
      * @return boolean true if key was succesfully moved, boolean false otherwise
      */
     public static Object move(BHandle redisDataSourceHandleValue, String key, int database) {
@@ -110,7 +115,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return move(key, database, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -118,16 +124,17 @@ public class KeyActions extends AbstractRedisAction {
      * Remove the expiration from a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key of which expiry time should be removed
-     * @return boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
-     *         an associated timeout
+     * @param key                        The key of which expiry time should be removed
+     * @return boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have an
+     * associated timeout
      */
     public static Object persist(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return persist(key, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -135,17 +142,18 @@ public class KeyActions extends AbstractRedisAction {
      * Set a key's time to live in milliseconds.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key he key of which expiry time should be removed
-     * @param timeMilliSeconds The expiry time in milli seconds
-     * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not
-     *         be set
+     * @param key                        he key of which expiry time should be removed
+     * @param timeMilliSeconds           The expiry time in milli seconds
+     * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not be
+     * set
      */
     public static Object pExpire(BHandle redisDataSourceHandleValue, String key, int timeMilliSeconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pExpire(key, timeMilliSeconds, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -153,7 +161,7 @@ public class KeyActions extends AbstractRedisAction {
      * Get the time to live for a key in milliseconds.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key of which time-to-live should be obtained
+     * @param key                        The key of which time-to-live should be obtained
      * @return time-to-live of the key, in milli seconds
      */
     public static Object pTtl(BHandle redisDataSourceHandleValue, String key) {
@@ -161,7 +169,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return pTtl(key, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -176,7 +185,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return randomKey(redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -184,8 +194,8 @@ public class KeyActions extends AbstractRedisAction {
      * Rename a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key to be renamed
-     * @param newName The new name of the key
+     * @param key                        The key to be renamed
+     * @param newName                    The new name of the key
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object rename(BHandle redisDataSourceHandleValue, String key, String newName) {
@@ -193,7 +203,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return rename(key, newName, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -201,9 +212,9 @@ public class KeyActions extends AbstractRedisAction {
      * Rename a key, only if the new key does not exist.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key to be renamed
-     * @param newName The new name of the key boolean `true` if key was renamed to newkey. boolean `false` if
-     *                newkey already exists.
+     * @param key                        The key to be renamed
+     * @param newName                    The new name of the key boolean `true` if key was renamed to newkey. boolean
+     *                                   `false` if newkey already exists.
      * @return boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists
      */
     public static Object renameNx(BHandle redisDataSourceHandleValue, String key, String newName) {
@@ -211,7 +222,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return renameNx(key, newName, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -219,7 +231,7 @@ public class KeyActions extends AbstractRedisAction {
      * Sort the elements in a list, set or sorted set.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key of the data typeure to be sorted
+     * @param key                        The key of the data typeure to be sorted
      * @return Sorted array containing the members of the sorted data type
      */
     public static Object sort(BHandle redisDataSourceHandleValue, String key) {
@@ -227,7 +239,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return sort(key, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -235,17 +248,18 @@ public class KeyActions extends AbstractRedisAction {
      * Get the time to live for a key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key of which the time to live needs to be obtained
+     * @param key                        The key of which the time to live needs to be obtained
      * @return Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
-     *         Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB
-     *         level or the driver level
+     * Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB level or
+     * the driver level
      */
     public static Object ttl(BHandle redisDataSourceHandleValue, String key) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return ttl(key, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 
@@ -253,7 +267,7 @@ public class KeyActions extends AbstractRedisAction {
      * Determine the type stored at key.
      *
      * @param redisDataSourceHandleValue redis datasource
-     * @param key The key of which the type needs to be obtained
+     * @param key                        The key of which the type needs to be obtained
      * @return Type stored at key
      */
     public static Object redisType(BHandle redisDataSourceHandleValue, String key) {
@@ -261,7 +275,8 @@ public class KeyActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
             return type(key, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(), StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
         }
     }
 }

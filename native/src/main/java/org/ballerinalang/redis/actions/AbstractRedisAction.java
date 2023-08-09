@@ -18,7 +18,13 @@
 
 package org.ballerinalang.redis.actions;
 
+import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BArray;
+import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScoredValue;
@@ -29,14 +35,6 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.PredefinedTypes;
-import io.ballerina.runtime.api.Module;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BArray;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.creators.ValueCreator;
 import org.ballerinalang.redis.RedisDataSource;
 
 import java.util.LinkedHashMap;
@@ -51,6 +49,7 @@ import java.util.Set;
  * @since 0.5.0
  */
 public abstract class AbstractRedisAction {
+
     private static final String MUST_NOT_BE_NULL = "must not be null";
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;
@@ -300,7 +299,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> String pSetex(K key, String value, long expirationPeriodMS,
-                              RedisDataSource<K, String> redisDataSource) {
+                             RedisDataSource<K, String> redisDataSource) {
         RedisStringCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
@@ -325,7 +324,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> String setEx(K key, String value, long expirationPeriodSeconds,
-                             RedisDataSource<K, String> redisDataSource) {
+                            RedisDataSource<K, String> redisDataSource) {
         RedisStringCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<K, String>) getRedisCommands(redisDataSource);
@@ -448,19 +447,6 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K> String brPopLPush(K source, K destination, long timeout,
-            RedisDataSource<K, String> redisDataSource) {
-        RedisListCommands<K, String> redisCommands = null;
-        try {
-            redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
-            return redisCommands.brpoplpush(timeout, source, destination);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
-        } finally {
-            releaseResources(redisCommands, redisDataSource);
-        }
-    }
-
     static <K> String lIndex(K key, long index, RedisDataSource<K, String> redisDataSource) {
         RedisListCommands<K, String> redisCommands = null;
         try {
@@ -474,7 +460,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K, V> long lInsert(K key, boolean before, V pivot, V value,
-                                             RedisDataSource<K, V> redisDataSource) {
+                               RedisDataSource<K, V> redisDataSource) {
         RedisListCommands<K, V> redisCommands = null;
         try {
             redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
@@ -583,20 +569,6 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    protected <K, V> long rPushX(K key, RedisDataSource<K, V> redisDataSource, V... values) {
-        RedisListCommands<K, V> redisCommands = null;
-        try {
-            redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
-            return redisCommands.rpushx(key, values);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
-        } finally {
-            releaseResources(redisCommands, redisDataSource);
-        }
-    }
-
-    //Set Commands
-
     static <K, V> long sAdd(K key, RedisDataSource<K, V> redisDataSource, V... values) {
         RedisSetCommands<K, V> redisCommands = null;
         try {
@@ -620,6 +592,8 @@ public abstract class AbstractRedisAction {
             releaseResources(redisCommands, redisDataSource);
         }
     }
+
+    //Set Commands
 
     static <K> BArray sDiff(RedisDataSource<K, String> redisDataSource, K... keys) {
         RedisSetCommands<K, String> redisCommands = null;
@@ -788,8 +762,6 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    // Sorted Set Commands
-
     static <K, V> long zAdd(K key, RedisDataSource<K, V> redisDataSource, Map<V, Double> valueScoreMap) {
         ScoredValue<V>[] scoredValues = createArrayFromScoredValueMap(valueScoreMap);
         RedisSortedSetCommands<K, V> redisCommands = null;
@@ -814,6 +786,8 @@ public abstract class AbstractRedisAction {
             releaseResources(redisCommands, redisDataSource);
         }
     }
+
+    // Sorted Set Commands
 
     static <K, V> long zCount(K key, double min, double max, RedisDataSource<K, V> redisDataSource) {
         Range<Double> range = Range.create(min, max);
@@ -893,7 +867,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> BArray zRevRangeByLex(K key, String min, String max,
-                                               RedisDataSource<K, String> redisDataSource) {
+                                     RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -908,7 +882,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> BArray zRangeByScore(K key, double min, double max,
-                                              RedisDataSource<K, String> redisDataSource) {
+                                    RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -945,7 +919,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> long zRemRangeByLex(K key, String min, String max,
-                                                 RedisDataSource<K, String> redisDataSource) {
+                                   RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -959,7 +933,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> long zRemRangeByRank(K key, long min, long max,
-                                                  RedisDataSource<K, String> redisDataSource) {
+                                    RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -972,7 +946,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> long zRemRangeByScore(K key, double min, double max,
-                                                   RedisDataSource<K, String> redisDataSource) {
+                                     RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -999,7 +973,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> BArray zRevRangeByScore(K key, double min, double max,
-                                                 RedisDataSource<K, String> redisDataSource) {
+                                       RedisDataSource<K, String> redisDataSource) {
         RedisSortedSetCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisSortedSetCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1049,8 +1023,6 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    // Hash Commands
-
     static <K, V> long hDel(BString key, RedisDataSource<K, V> redisDataSource, K... fields) {
         RedisHashCommands<K, V> redisCommands = null;
         try {
@@ -1074,6 +1046,8 @@ public abstract class AbstractRedisAction {
             releaseResources(redisCommands, redisDataSource);
         }
     }
+
+    // Hash Commands
 
     static <K> String hGet(K key, K field, RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
@@ -1113,7 +1087,7 @@ public abstract class AbstractRedisAction {
     }
 
     static <K> double hIncrByFloat(K key, K field, double amount,
-                                             RedisDataSource<K, String> redisDataSource) {
+                                   RedisDataSource<K, String> redisDataSource) {
         RedisHashCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisHashCommands<K, String>) getRedisCommands(redisDataSource);
@@ -1230,20 +1204,6 @@ public abstract class AbstractRedisAction {
         try {
             redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.del(keys);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
-        } finally {
-            releaseResources(redisCommands, redisDataSource);
-        }
-    }
-
-    // TODO: Add as a native action once byte type is supported in ballerina. When doing so retrun a BType
-    protected <K, V> byte[] dump(K key, RedisDataSource<K, V> redisDataSource) {
-        RedisKeyCommands<K, V> redisCommands = null;
-        try {
-            redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
-            byte[] result = redisCommands.dump(key);
-            return result;
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
@@ -1409,8 +1369,6 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    //Connection commands
-
     static <K, V> String auth(String password, RedisDataSource<K, V> redisDataSource) {
         RedisCommands<K, V> redisCommands = null;
         try {
@@ -1442,6 +1400,8 @@ public abstract class AbstractRedisAction {
             releaseResources(redisCommands, redisDataSource);
         }
     }
+
+    //Connection commands
 
     private static boolean isClusterConnection(RedisDataSource redisDataSource) {
         return redisDataSource.isClusterConnection();
@@ -1521,6 +1481,45 @@ public abstract class AbstractRedisAction {
     private static <K, V> void releaseResources(Object redisCommands, RedisDataSource<K, V> redisDataSource) {
         if (redisDataSource.isPoolingEnabled() && redisCommands != null) {
             redisDataSource.releaseResources(redisCommands);
+        }
+    }
+
+    protected <K> String brPopLPush(K source, K destination, long timeout,
+                                    RedisDataSource<K, String> redisDataSource) {
+        RedisListCommands<K, String> redisCommands = null;
+        try {
+            redisCommands = (RedisListCommands<K, String>) getRedisCommands(redisDataSource);
+            return redisCommands.brpoplpush(timeout, source, destination);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL);
+        } finally {
+            releaseResources(redisCommands, redisDataSource);
+        }
+    }
+
+    protected <K, V> long rPushX(K key, RedisDataSource<K, V> redisDataSource, V... values) {
+        RedisListCommands<K, V> redisCommands = null;
+        try {
+            redisCommands = (RedisListCommands<K, V>) getRedisCommands(redisDataSource);
+            return redisCommands.rpushx(key, values);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(ARGUMENTS_MUST_NOT_BE_NULL);
+        } finally {
+            releaseResources(redisCommands, redisDataSource);
+        }
+    }
+
+    // TODO: Add as a native action once byte type is supported in ballerina. When doing so retrun a BType
+    protected <K, V> byte[] dump(K key, RedisDataSource<K, V> redisDataSource) {
+        RedisKeyCommands<K, V> redisCommands = null;
+        try {
+            redisCommands = (RedisKeyCommands<K, V>) getRedisCommands(redisDataSource);
+            byte[] result = redisCommands.dump(key);
+            return result;
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
+        } finally {
+            releaseResources(redisCommands, redisDataSource);
         }
     }
 }

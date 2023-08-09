@@ -47,3 +47,6 @@ redis-utils/dependency-reduced-pom.xml
 redis/resources/*.json
 redis-utils/target/**
 redis/target/**
+
+# Ignore Gradle build output directory
+build*
