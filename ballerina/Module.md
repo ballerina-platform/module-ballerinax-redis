@@ -41,4 +41,4 @@ redis:Client conn = check new (redisConfig);
     ```
 2. Use `bal run` command to compile and run the Ballerina program. 
 
-**[You can find more samples here](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/redis/samples)**
+**[You can find more samples here](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples)**

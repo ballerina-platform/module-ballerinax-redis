@@ -12,11 +12,16 @@
 
 # Package Files #
 *.jar
+!gradle-wrapper/*.jar
+*.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
 *.rar
+
+# Ignore Gradle files
+.gradle/**
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
