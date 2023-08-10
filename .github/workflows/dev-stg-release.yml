@@ -60,16 +60,16 @@ jobs:
       - name: Push to Staging
         if: github.event.inputs.bal_central_environment == 'STAGE'
         run: bal push
+        working-directory: ./ballerina
         env:
           BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_STAGE_ACCESS_TOKEN }}
-          WORKING_DIR: ./ballerina
           JAVA_HOME: /usr/lib/jvm/default-jvm
 
       # Push to Ballerina Dev Central
       - name: Push to Dev
         if: github.event.inputs.bal_central_environment == 'DEV'
         run: bal push
+        working-directory: ./ballerina
         env:
           BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_DEV_ACCESS_TOKEN }}
-          WORKING_DIR: ./ballerina
           JAVA_HOME: /usr/lib/jvm/default-jvm
