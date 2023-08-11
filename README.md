@@ -1,6 +1,7 @@
 # Ballerina Redis Connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-redis/workflows/CI/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-redis/branch/master/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-redis)
 [![Trivy](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/trivy-scan.yml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-redis.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/commits/master)
 [![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/build-with-bal-test-native.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/build-with-bal-test-native.yml)
@@ -27,11 +28,11 @@ Execute the following commands to build from the source:
 
 * To build the package:
    ```   
-   bal build -c
+   bal build ./ballerina
    ```
-* To build the package without tests:
+* To run the tests
    ```
-   bal build -c --skip-tests
+   bal test ./ballerina 
    ```
 ## Contributing to Ballerina
 As an open source project, Ballerina welcomes contributions from the community. 
