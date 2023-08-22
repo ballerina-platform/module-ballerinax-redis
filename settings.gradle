@@ -16,16 +16,21 @@
  */
 
 plugins {
-    id "com.gradle.enterprise" version "3.5"
+    id "com.gradle.enterprise" version "3.2"
 }
 
-rootProject.name = 'module-ballerinax-redis'
+def projectName = 'redis'
+rootProject.name = "ballerinax-${projectName}"
 
-include ':checkstyle'
-include ':redis-utils'
+include ":checkstyle"
+include ":${projectName}-native"
+include ":${projectName}-ballerina"
+include ":${projectName}-examples"
 
 project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
-project(':redis-utils').projectDir = file('redis-utils')
+project(":${projectName}-native").projectDir = file('native')
+project(":${projectName}-ballerina").projectDir = file('ballerina')
+project(":${projectName}-examples").projectDir = file('examples')
 
 gradleEnterprise {
     buildScan {

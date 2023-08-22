@@ -14,18 +14,22 @@
  * limitations under the License.
  *
  */
+import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
-    id "com.github.johnrengelman.shadow" version "${shadowJarPluginVersion}"
-    id "de.undercouch.download" version "${downloadPluginVersion}"
+    id "com.github.spotbugs" version "${githubSpotbugsVersion}"
+    id "com.github.johnrengelman.shadow" version "${githubJohnrengelmanShadowVersion}"
+    id "de.undercouch.download" version "${underCouchDownloadVersion}"
+    id "net.researchgate.release" version "${researchgateReleaseVersion}"
 }
 
-ext.ballerinaLangVersion = project.ballerinaLangVersion
+description = 'Ballerina - Redis'
 
 allprojects {
     group = project.group
     version = project.version
 
+    apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
 
     repositories {
@@ -47,65 +51,32 @@ allprojects {
             }
         }
     }
-}
 
-subprojects {
-    apply plugin: 'java'
-
-    dependencies {}
-}
-
-def artifactCacheParent = file("${project.projectDir}/build/cache_parent/")
-def packageName = "redis"
-def packageOrg = "ballerinax"
-def pathToBala = file("${project.projectDir}/redis/target/bala")
-def platform = "java11"
-
-task createBalaDirectory {
-    mkdir "${project.projectDir}/redis/target/bala"
-}
-
-task copyDistribution {
-    inputs.dir file(project.projectDir)
-
-    pathToBala.eachFileMatch(~/.*.bala/) { balaFile ->
-        copy {
-            from zipTree(balaFile)
-            into file("${artifactCacheParent}/bala/${packageOrg}/${packageName}/${project.version}/${platform}")
-        }
+    ext {
+        snapshotVersion= '-SNAPSHOT'
+        timestampedVersionRegex = '.*-\\d{8}-\\d{6}-\\w.*\$'
+        packageName ='redis'
+        balPackageName = 'redis'
     }
-    copy {
-        from file("${project.projectDir}/redis/target/cache")
-        exclude '**/*-testable.jar'
-        exclude '**/tests_cache/'
-        into file("${artifactCacheParent}/cache/")
-    }
-    outputs.dir artifactCacheParent
 }
 
-task createArtifactZip(type: Zip) {
-    from "${buildDir}/cache_parent"
-    archiveName 'distribution.zip'
-    destinationDir(file("${buildDir}/distribution"))
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact source: createArtifactZip, extension: 'zip'
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ballerina-platform/module-ballerinax-redis")
-            credentials {
-                username = System.getenv("publishUser")
-                password = System.getenv("publishPAT")
+def executeBalCommand(String command, String dir) {
+    try {
+        exec {
+            workingDir dir
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                commandLine 'cmd', '/c', "bal.bat ${command} && exit %%ERRORLEVEL%%"
+            } else {
+                commandLine 'sh', '-c', "bal ${command}"
             }
         }
+    } catch (Exception e) {
+        println("bal command failed. " + e.message)
+        throw e
     }
 }
 
-publish.dependsOn copyDistribution
+task build {
+    dependsOn("${project.packageName}-native:build")
+    dependsOn("${project.packageName}-ballerina:build")
+}
