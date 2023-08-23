@@ -17,9 +17,12 @@
 import ballerina/jballerina.java;
 import ballerina/log;
 import ballerina/test;
+import ballerina/os;
+
+configurable int port = check int:fromString(os:getEnv("REDIS_PORT"));
 
 ConnectionConfig redisConfig = {
-    host: "localhost",
+    host: string `localhost:${port}`,
     password: "",
     options: {
         connectionPooling: true,
@@ -36,7 +39,7 @@ Client conn = check new (redisConfig);
 @test:BeforeSuite
 public function initDb() {
     var stringResult = initRedisServer();
-    if(stringResult is error){
+    if (stringResult is error) {
         log:printError("Redis server initialization failed" + stringResult.toString());
     }
     setupRedisStringDatabase();
