@@ -66,10 +66,10 @@ public class RedisDataSource<K, V> {
     /**
      * Constructor for {@link RedisDataSource}.
      *
-     * @param codec The codec for transcoding keys/values between the application and the Redis DB.
-     *              Instance of {@link RedisCodec}
+     * @param codec               The codec for transcoding keys/values between the application and the Redis DB.
+     *                            Instance of {@link RedisCodec}
      * @param isClusterConnection Whether the connection is a cluster connection
-     * @param poolingEnabled Whether connection pooling is enabled
+     * @param poolingEnabled      Whether connection pooling is enabled
      */
     public RedisDataSource(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
         this.codec = codec;
@@ -87,7 +87,7 @@ public class RedisDataSource<K, V> {
     public void init(String hosts, String password, MapValueImpl options) {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         if (isClusterConnection) {
-            setRedisClusterCommands(serverAddresses, options);
+            setRedisClusterCommands(serverAddresses, password, options);
         } else {
             setRedisStandaloneCommands(serverAddresses, password, options);
         }
@@ -169,12 +169,19 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, MapValueImpl options) {
+    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password, MapValueImpl options) {
         StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
-        List<RedisURI> redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
-                .collect(Collectors.toList());
-        //TODO: Clarify password usage with Redis Clusters and implement cluster authentication.
+        List<RedisURI> redisURIS;
+        if (!password.isEmpty()) {
+            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
+                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options)
+                            .withPassword(password).build())
+                    .collect(Collectors.toList());
+        } else {
+            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
+                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options)
+                            .build()).collect(Collectors.toList());
+        }
         redisClusterClient = RedisClusterClient.create(redisURIS);
         if (!poolingEnabled) {
             statefulRedisClusterConnection = redisClusterClient.connect(codec);
