@@ -47,4 +47,5 @@ jobs:
           native-image --version
 
       - name: Run Ballerina tests using the native executable
-        run: bal test --native ./ballerina
+        run: bal test --graalvm
+        working-directory: ./ballerina

@@ -48,7 +48,8 @@ jobs:
       
       # Test Ballerina Project
       - name: Ballerina Test
-        run: bal test --test-report --code-coverage --coverage-format=xml ./ballerina
+        run: bal test --test-report --code-coverage --coverage-format=xml
+        working-directory: ./ballerina
         env:
           JAVA_HOME: /usr/lib/jvm/default-jvm
 
