@@ -27,7 +27,6 @@ import io.lettuce.core.ScoredValue;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
-import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,7 +47,6 @@ public class RedisDbUtils {
 
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
-    private static RedisServer redisServer;
     private static RedisCommands<String, String> redisCommands;
 
     /**
@@ -69,16 +67,13 @@ public class RedisDbUtils {
                 output.append(line).append("\n");
             }
             int exitVal = process.waitFor();
-            if (exitVal == 0) {
-                String executablePath = Paths.get(System.getProperty("user.dir")).resolve("redis-5.0.7").resolve("src").
-                        resolve("redis-server").toString();
-                redisServer = new CustomRedisServer(executablePath, REDIS_PORT);
-                redisServer.start();
-            } else {
+            if (exitVal != 0) {
+                System.out.println("Here Exit Val : " + exitVal);
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
                         StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
+            System.out.println("Here exception : " + e.getMessage());
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
         }
@@ -90,7 +85,6 @@ public class RedisDbUtils {
      * Stop redis server.
      */
     public static Object stopServer() throws IOException {
-        redisServer.stop();
         String scriptPath = getResourcePath().resolve("cleanup.sh").toString();
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("bash", scriptPath);
