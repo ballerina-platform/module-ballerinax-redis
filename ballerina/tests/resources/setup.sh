@@ -14,11 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# Pull the Redis 5.0.7 Docker image
 docker pull redis:5.0.7
-
-# Create a Redis container and run it
 docker run --name test-redis-container -d -p 6379:6379 redis:5.0.7
-
-# Wait for Redis to start (optional, add a sleep or polling logic if needed)
 sleep 5

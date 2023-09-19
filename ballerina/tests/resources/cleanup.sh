@@ -15,7 +15,5 @@
 #  limitations under the License.
 
 # Stop and remove the Redis container (if it's running)
-docker stop my-redis-container
-docker rm my-redis-container
-# Remove redis image
-docker rmi redis
+docker stop test-redis-container
+docker rm test-redis-container

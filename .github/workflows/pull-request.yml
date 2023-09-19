@@ -39,3 +39,9 @@ jobs:
         run: bal pack ./ballerina
         env:
           JAVA_HOME: /usr/lib/jvm/default-jvm
+      
+      # Test Ballerina Project
+      - name: Ballerina Test
+        run: bal test ./ballerina
+        env:
+          JAVA_HOME: /usr/lib/jvm/default-jvm

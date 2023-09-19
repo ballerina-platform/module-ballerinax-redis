@@ -68,12 +68,10 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal != 0) {
-                System.out.println("Here Exit Val : " + exitVal);
                 return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
                         StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            System.out.println("Here exception : " + e.getMessage());
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
         }
