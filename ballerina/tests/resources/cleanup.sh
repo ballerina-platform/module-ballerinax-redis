@@ -14,5 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-rm -rf redis-5.0.7
-rm redis-5.0.7.tar.gz
+# Stop and remove the Redis container (if it's running)
+docker stop test-redis-container
+docker rm test-redis-container

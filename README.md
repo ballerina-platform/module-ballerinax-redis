@@ -22,6 +22,7 @@ For more information, go to the module(s).
     > **Note:** Set the JAVA_HOME environment variable to the path name of the directory into which you installed JDK.
 
 2. Download and install [Ballerina Swan Lake](https://ballerina.io/). 
+3. Download and install [docker](https://docs.docker.com/get-docker/).
 
 ### Building the source
 Execute the following commands to build from the source:
@@ -30,7 +31,7 @@ Execute the following commands to build from the source:
    ```   
    bal build ./ballerina
    ```
-* To run the tests
+* To run the tests:
    ```
    bal test ./ballerina 
    ```
