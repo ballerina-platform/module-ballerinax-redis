@@ -28,6 +28,7 @@ import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScoredValue;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.api.sync.RedisHashCommands;
 import io.lettuce.core.api.sync.RedisKeyCommands;
@@ -73,6 +74,18 @@ public abstract class AbstractRedisAction {
         try {
             redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
             return redisCommands.set(key, value);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
+        } finally {
+            releaseResources(redisCommands, redisDataSource);
+        }
+    }
+
+    static <K, V> String set(K key, V value, SetArgs setArgs, RedisDataSource<K, V> redisDataSource) {
+        RedisStringCommands<K, V> redisCommands = null;
+        try {
+            redisCommands = (RedisStringCommands<K, V>) getRedisCommands(redisDataSource);
+            return redisCommands.set(key, value, setArgs);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {

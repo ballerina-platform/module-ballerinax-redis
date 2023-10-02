@@ -258,6 +258,18 @@ public isolated client class Client {
         return <string>java:toString(check set(self.datasource, java:fromString(key), java:fromString(value)));
     }
 
+    # Set the value of a key with options.
+    #
+    # + key - Key referring to a value
+    # + value - Values
+    # + options - Arguments
+    # + return - `OK` if successful
+    @display {label: "Set Value"}
+    isolated remote function setWithArgs(@display {label: "Key"} string key, @display {label: "Value"} string value, SetOptions options) 
+                        returns @display {label: "Result"} string | error {
+        return <string>java:toString(check setWithArgs(self.datasource, java:fromString(key), java:fromString(value), options));
+    }
+
     # Sets or clears the bit at offset in the string value stored at key.
     #
     # + key - Key referring to a value
@@ -1394,7 +1406,15 @@ isolated function pSetEx(handle datasource, handle key, handle value, int expira
 } external;
 
 isolated function set(handle datasource, handle key, handle value) returns handle | error = @java:Method {
+    name: "set",
+    paramTypes: ["io.ballerina.runtime.api.values.BHandle", "java.lang.String", "java.lang.String"],
     'class: "org.ballerinalang.redis.actions.StringActions"
+} external;
+
+isolated function setWithArgs(handle datasource, handle key, handle value, SetOptions options) returns handle | error = @java:Method {
+    name: "set",
+    'class: "org.ballerinalang.redis.actions.StringActions",
+    paramTypes: ["io.ballerina.runtime.api.values.BHandle", "java.lang.String", "java.lang.String", "io.ballerina.runtime.api.values.BMap"]
 } external;
 
 isolated function setBit(handle datasource, handle key, int value, int offset) returns int | error = @java:Method {
@@ -1789,3 +1809,10 @@ public type ConnectionConfig record {|
     @display{label: "Connection Options"} 
     Options options = {};
 |};
+
+public type SetOptions record {
+    float? ex = ();
+    float? px = ();
+    boolean nx = false;
+    boolean xx = false;
+};

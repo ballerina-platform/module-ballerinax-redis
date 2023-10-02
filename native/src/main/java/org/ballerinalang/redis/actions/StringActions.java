@@ -23,6 +23,8 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
+import io.lettuce.core.SetArgs;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
@@ -391,6 +393,26 @@ public class StringActions extends AbstractRedisAction {
         }
     }
 
+        /**
+     * Set a string value for a given key value while setting SET command options.
+     *
+     * @param redisDataSourceHandleValue redis datasource
+     * @param key                        key key
+     * @param redisValue                 value
+     * @param options                    SET command options
+     * @return `OK` if successful
+     */
+    public static Object set(BHandle redisDataSourceHandleValue, String key, String redisValue,
+                             BMap<BString, Object> options) {
+        try {
+            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            return set(key, redisValue, createSetArgument(options), redisDataSource);
+        } catch (Throwable e) {
+            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
+                    StringUtils.fromString(e.getMessage()));
+        }
+    }
+
     /**
      * Sets or clears the bit at offset in the string value stored at key.
      *
@@ -482,5 +504,30 @@ public class StringActions extends AbstractRedisAction {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
         }
+    }
+
+    /**
+     * Create SetArgs object from BMap.
+     *
+     * @param options BMap of SetArgs options given by the user
+     * @return SetArgs object
+     */
+    private static SetArgs createSetArgument(BMap<BString, Object> options) {
+        SetArgs setArgs = new SetArgs();
+
+        for (BString key : options.getKeys()) {
+            if (key.toString().equals("nx") && options.getBooleanValue(key)) {
+                setArgs.nx();
+            } else if (key.toString().equals("xx") && options.getBooleanValue(key)) {
+                setArgs.xx();
+            } else if (key.toString().equals("ex") && options.getFloatValue(key) != null) {
+                long ex = options.getFloatValue(key).longValue();
+                setArgs.ex(ex);
+            } else if (key.toString().equals("px") && options.getFloatValue(key) != null) {
+                long px = options.getFloatValue(key).longValue();
+                setArgs.px(px);
+            }
+        }
+        return setArgs;
     }
 }

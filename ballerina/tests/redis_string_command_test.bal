@@ -30,6 +30,22 @@ public function testSet() {
 }
 
 @test:Config {
+    dependsOn: [testSet]
+}
+public function testSetWithArgs() {
+    SetOptions options = {
+        nx: false,
+        xx: true
+    };
+    var result = conn->setWithArgs("Name", "Anee", options);
+    if (result is string) {
+        test:assertEquals(result, "OK");
+    } else {
+        test:assertFail("error from Connector: " + result.message());
+    }
+}
+
+@test:Config {
 }
 public function testAppend() {
     var result = conn->append("AppendTestKey", "SomeValue");
