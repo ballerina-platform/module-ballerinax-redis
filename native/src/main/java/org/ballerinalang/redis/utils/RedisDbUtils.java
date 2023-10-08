@@ -265,96 +265,95 @@ public class RedisDbUtils {
                 "testZRangeByLexKey", "testZScoreKey", "testZUnionStoreKey1", "testZUnionStoreKey2"
         };
 
-        ScoredValue<String> testZAddValue1 = ScoredValue.fromNullable(1, "testZAddValue1");
+        ScoredValue<String> testZAddValue1 = ScoredValue.just(1, "testZAddValue1");
+        ScoredValue<String> testZCardValue1 = (ScoredValue<String>) ScoredValue.just(1, "testZCardValue1");
+        ScoredValue<String> testZCardValue2 = (ScoredValue<String>) ScoredValue.just(1, "testZCardValue2");
 
-        ScoredValue<String> testZCardValue1 = ScoredValue.fromNullable(1, "testZCardValue1");
-        ScoredValue<String> testZCardValue2 = ScoredValue.fromNullable(1, "testZCardValue2");
+        ScoredValue<String> testZCountValue1 = ScoredValue.just(1, "testZCountValue1");
+        ScoredValue<String> testZCountValue2 = ScoredValue.just(2, "testZCountValue2");
+        ScoredValue<String> testZCountValue3 = ScoredValue.just(2, "testZCountValue3");
+        ScoredValue<String> testZCountValue4 = ScoredValue.just(4, "testZCountValue4");
 
-        ScoredValue<String> testZCountValue1 = ScoredValue.fromNullable(1, "testZCountValue1");
-        ScoredValue<String> testZCountValue2 = ScoredValue.fromNullable(2, "testZCountValue2");
-        ScoredValue<String> testZCountValue3 = ScoredValue.fromNullable(2, "testZCountValue3");
-        ScoredValue<String> testZCountValue4 = ScoredValue.fromNullable(4, "testZCountValue4");
+        ScoredValue<String> testZIncrByValue1 = ScoredValue.just(6, "testZIncrByValue1");
 
-        ScoredValue<String> testZIncrByValue1 = ScoredValue.fromNullable(6, "testZIncrByValue1");
+        ScoredValue<String> testZInterStoreValue1 = ScoredValue.just(1, "One");
+        ScoredValue<String> testZInterStoreValue2 = ScoredValue.just(6, "Six");
+        ScoredValue<String> testZInterStoreValue3 = ScoredValue.just(3, "Three");
 
-        ScoredValue<String> testZInterStoreValue1 = ScoredValue.fromNullable(1, "One");
-        ScoredValue<String> testZInterStoreValue2 = ScoredValue.fromNullable(6, "Six");
-        ScoredValue<String> testZInterStoreValue3 = ScoredValue.fromNullable(3, "Three");
+        ScoredValue<String> testZInterStoreValue4 = ScoredValue.just(1, "One");
+        ScoredValue<String> testZInterStoreValue5 = ScoredValue.just(2, "One");
+        ScoredValue<String> testZInterStoreValue6 = ScoredValue.just(6, "Six");
 
-        ScoredValue<String> testZInterStoreValue4 = ScoredValue.fromNullable(1, "One");
-        ScoredValue<String> testZInterStoreValue5 = ScoredValue.fromNullable(2, "One");
-        ScoredValue<String> testZInterStoreValue6 = ScoredValue.fromNullable(6, "Six");
+        ScoredValue<String> testZInterStoreValue7 = ScoredValue.just(7, "Seven");
 
-        ScoredValue<String> testZInterStoreValue7 = ScoredValue.fromNullable(7, "Seven");
+        ScoredValue<String> testZLexCountValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZLexCountValue2 = ScoredValue.just(1, "b");
+        ScoredValue<String> testZLexCountValue3 = ScoredValue.just(1, "c");
+        ScoredValue<String> testZLexCountValue4 = ScoredValue.just(1, "d");
+        ScoredValue<String> testZLexCountValue5 = ScoredValue.just(1, "e");
+        ScoredValue<String> testZLexCountValue6 = ScoredValue.just(1, "f");
+        ScoredValue<String> testZLexCountValue7 = ScoredValue.just(1, "g");
 
-        ScoredValue<String> testZLexCountValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZLexCountValue2 = ScoredValue.fromNullable(1, "b");
-        ScoredValue<String> testZLexCountValue3 = ScoredValue.fromNullable(1, "c");
-        ScoredValue<String> testZLexCountValue4 = ScoredValue.fromNullable(1, "d");
-        ScoredValue<String> testZLexCountValue5 = ScoredValue.fromNullable(1, "e");
-        ScoredValue<String> testZLexCountValue6 = ScoredValue.fromNullable(1, "f");
-        ScoredValue<String> testZLexCountValue7 = ScoredValue.fromNullable(1, "g");
+        ScoredValue<String> testZRangeValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZRangeValue2 = ScoredValue.just(2, "b");
+        ScoredValue<String> testZRangeValue3 = ScoredValue.just(5, "c");
+        ScoredValue<String> testZRangeValue4 = ScoredValue.just(1, "d");
+        ScoredValue<String> testZRangeValue5 = ScoredValue.just(3, "e");
+        ScoredValue<String> testZRangeValue6 = ScoredValue.just(4, "f");
+        ScoredValue<String> testZRangeValue7 = ScoredValue.just(8, "g");
 
-        ScoredValue<String> testZRangeValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZRangeValue2 = ScoredValue.fromNullable(2, "b");
-        ScoredValue<String> testZRangeValue3 = ScoredValue.fromNullable(5, "c");
-        ScoredValue<String> testZRangeValue4 = ScoredValue.fromNullable(1, "d");
-        ScoredValue<String> testZRangeValue5 = ScoredValue.fromNullable(3, "e");
-        ScoredValue<String> testZRangeValue6 = ScoredValue.fromNullable(4, "f");
-        ScoredValue<String> testZRangeValue7 = ScoredValue.fromNullable(8, "g");
+        ScoredValue<String> testZRankValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZRankValue2 = ScoredValue.just(2, "b");
+        ScoredValue<String> testZRankValue3 = ScoredValue.just(5, "c");
 
-        ScoredValue<String> testZRankValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZRankValue2 = ScoredValue.fromNullable(2, "b");
-        ScoredValue<String> testZRankValue3 = ScoredValue.fromNullable(5, "c");
+        ScoredValue<String> testZRemValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZRemValue2 = ScoredValue.just(2, "b");
+        ScoredValue<String> testZRemValue3 = ScoredValue.just(5, "c");
 
-        ScoredValue<String> testZRemValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZRemValue2 = ScoredValue.fromNullable(2, "b");
-        ScoredValue<String> testZRemValue3 = ScoredValue.fromNullable(5, "c");
+        ScoredValue<String> testZRemRangeByLexValue1 = ScoredValue.just(1, "foo");
+        ScoredValue<String> testZRemRangeByLexValue2 = ScoredValue.just(1, "zap");
+        ScoredValue<String> testZRemRangeByLexValue3 = ScoredValue.just(1, "zip");
+        ScoredValue<String> testZRemRangeByLexValue4 = ScoredValue.just(1, "ALPHA");
+        ScoredValue<String> testZRemRangeByLexValue5 = ScoredValue.just(1, "alpha");
+        ScoredValue<String> testZRemRangeByLexValue6 = ScoredValue.just(1, "aaaa");
+        ScoredValue<String> testZRemRangeByLexValue7 = ScoredValue.just(1, "b");
+        ScoredValue<String> testZRemRangeByLexValue8 = ScoredValue.just(1, "c");
+        ScoredValue<String> testZRemRangeByLexValue9 = ScoredValue.just(1, "d");
+        ScoredValue<String> testZRemRangeByLexValue10 = ScoredValue.just(1, "e");
 
-        ScoredValue<String> testZRemRangeByLexValue1 = ScoredValue.fromNullable(1, "foo");
-        ScoredValue<String> testZRemRangeByLexValue2 = ScoredValue.fromNullable(1, "zap");
-        ScoredValue<String> testZRemRangeByLexValue3 = ScoredValue.fromNullable(1, "zip");
-        ScoredValue<String> testZRemRangeByLexValue4 = ScoredValue.fromNullable(1, "ALPHA");
-        ScoredValue<String> testZRemRangeByLexValue5 = ScoredValue.fromNullable(1, "alpha");
-        ScoredValue<String> testZRemRangeByLexValue6 = ScoredValue.fromNullable(1, "aaaa");
-        ScoredValue<String> testZRemRangeByLexValue7 = ScoredValue.fromNullable(1, "b");
-        ScoredValue<String> testZRemRangeByLexValue8 = ScoredValue.fromNullable(1, "c");
-        ScoredValue<String> testZRemRangeByLexValue9 = ScoredValue.fromNullable(1, "d");
-        ScoredValue<String> testZRemRangeByLexValue10 = ScoredValue.fromNullable(1, "e");
+        ScoredValue<String> testZRemRangeByRankValue1 = ScoredValue.just(1, "One");
+        ScoredValue<String> testZRemRangeByRankValue2 = ScoredValue.just(2, "Two");
+        ScoredValue<String> testZRemRangeByRankValue3 = ScoredValue.just(2, "Three");
+        ScoredValue<String> testZRemRangeByRankValue4 = ScoredValue.just(3, "Four");
+        ScoredValue<String> testZRemRangeByRankValue5 = ScoredValue.just(5, "Five");
+        ScoredValue<String> testZRemRangeByRankValue6 = ScoredValue.just(6, "Six");
 
-        ScoredValue<String> testZRemRangeByRankValue1 = ScoredValue.fromNullable(1, "One");
-        ScoredValue<String> testZRemRangeByRankValue2 = ScoredValue.fromNullable(2, "Two");
-        ScoredValue<String> testZRemRangeByRankValue3 = ScoredValue.fromNullable(2, "Three");
-        ScoredValue<String> testZRemRangeByRankValue4 = ScoredValue.fromNullable(3, "Four");
-        ScoredValue<String> testZRemRangeByRankValue5 = ScoredValue.fromNullable(5, "Five");
-        ScoredValue<String> testZRemRangeByRankValue6 = ScoredValue.fromNullable(6, "Six");
+        ScoredValue<String> testZRemRangeByScoreValue1 = ScoredValue.just(1, "One");
+        ScoredValue<String> testZRemRangeByScoreValue2 = ScoredValue.just(2, "Two");
+        ScoredValue<String> testZRemRangeByScoreValue3 = ScoredValue.just(2, "Three");
+        ScoredValue<String> testZRemRangeByScoreValue4 = ScoredValue.just(3, "Four");
+        ScoredValue<String> testZRemRangeByScoreValue5 = ScoredValue.just(5, "Five");
+        ScoredValue<String> testZRemRangeByScoreValue6 = ScoredValue.just(6, "Six");
 
-        ScoredValue<String> testZRemRangeByScoreValue1 = ScoredValue.fromNullable(1, "One");
-        ScoredValue<String> testZRemRangeByScoreValue2 = ScoredValue.fromNullable(2, "Two");
-        ScoredValue<String> testZRemRangeByScoreValue3 = ScoredValue.fromNullable(2, "Three");
-        ScoredValue<String> testZRemRangeByScoreValue4 = ScoredValue.fromNullable(3, "Four");
-        ScoredValue<String> testZRemRangeByScoreValue5 = ScoredValue.fromNullable(5, "Five");
-        ScoredValue<String> testZRemRangeByScoreValue6 = ScoredValue.fromNullable(6, "Six");
+        ScoredValue<String> testZRangeByLexValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZRangeByLexValue2 = ScoredValue.just(1, "b");
+        ScoredValue<String> testZRangeByLexValue3 = ScoredValue.just(1, "c");
+        ScoredValue<String> testZRangeByLexValue4 = ScoredValue.just(1, "d");
+        ScoredValue<String> testZRangeByLexValue5 = ScoredValue.just(1, "e");
+        ScoredValue<String> testZRangeByLexValue6 = ScoredValue.just(1, "f");
+        ScoredValue<String> testZRangeByLexValue7 = ScoredValue.just(1, "g");
 
-        ScoredValue<String> testZRangeByLexValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZRangeByLexValue2 = ScoredValue.fromNullable(1, "b");
-        ScoredValue<String> testZRangeByLexValue3 = ScoredValue.fromNullable(1, "c");
-        ScoredValue<String> testZRangeByLexValue4 = ScoredValue.fromNullable(1, "d");
-        ScoredValue<String> testZRangeByLexValue5 = ScoredValue.fromNullable(1, "e");
-        ScoredValue<String> testZRangeByLexValue6 = ScoredValue.fromNullable(1, "f");
-        ScoredValue<String> testZRangeByLexValue7 = ScoredValue.fromNullable(1, "g");
+        ScoredValue<String> testZScoreValue1 = ScoredValue.just(1.2, "a");
+        ScoredValue<String> testZScoreValue2 = ScoredValue.just(2.3, "b");
 
-        ScoredValue<String> testZScoreValue1 = ScoredValue.fromNullable(1.2, "a");
-        ScoredValue<String> testZScoreValue2 = ScoredValue.fromNullable(2.3, "b");
+        ScoredValue<String> testZUnionStoreValue1 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZUnionStoreValue2 = ScoredValue.just(2, "b");
+        ScoredValue<String> testZUnionStoreValue3 = ScoredValue.just(5, "c");
+        ScoredValue<String> testZUnionStoreValue4 = ScoredValue.just(1, "d");
 
-        ScoredValue<String> testZUnionStoreValue1 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZUnionStoreValue2 = ScoredValue.fromNullable(2, "b");
-        ScoredValue<String> testZUnionStoreValue3 = ScoredValue.fromNullable(5, "c");
-        ScoredValue<String> testZUnionStoreValue4 = ScoredValue.fromNullable(1, "d");
-
-        ScoredValue<String> testZUnionStoreValue5 = ScoredValue.fromNullable(1, "a");
-        ScoredValue<String> testZUnionStoreValue6 = ScoredValue.fromNullable(4, "f");
-        ScoredValue<String> testZUnionStoreValue7 = ScoredValue.fromNullable(3, "g");
+        ScoredValue<String> testZUnionStoreValue5 = ScoredValue.just(1, "a");
+        ScoredValue<String> testZUnionStoreValue6 = ScoredValue.just(4, "f");
+        ScoredValue<String> testZUnionStoreValue7 = ScoredValue.just(3, "g");
 
         ScoredValue[][] valueArray = new ScoredValue[][]{
                 new ScoredValue[]{testZAddValue1}, new ScoredValue[]{testZCardValue1, testZCardValue2},
