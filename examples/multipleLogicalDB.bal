@@ -42,6 +42,6 @@ public function main() returns error? {
         io:println("Error while exists");
     }
 
-    conn1.stop();
-    conn2.stop();
+    conn1.close();
+    conn2.close();
 }

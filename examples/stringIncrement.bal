@@ -33,5 +33,5 @@ public function main() returns error? {
         io:println("Error in incrementing in float");
     }
 
-    conn.stop();
+    conn.close();
 }

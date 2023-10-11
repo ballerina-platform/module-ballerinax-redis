@@ -21,7 +21,8 @@ package org.ballerinalang.redis.actions;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
-import io.ballerina.runtime.api.values.BHandle;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
@@ -40,9 +41,9 @@ public class KeyActions extends AbstractRedisAction {
      * @param keys The key to be deleted
      * @return The number of keys that were removed
      */
-    public static Object del(BHandle redisDataSourceHandleValue, BArray keys) {
+    public static Object del(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return del(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
@@ -53,13 +54,13 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Determine how many keys exist.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param keys                       The keys of which existence to be found out
      * @return The number of existing keys
      */
-    public static Object exists(BHandle redisDataSourceHandleValue, BArray keys) {
+    public static Object exists(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return exists(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
@@ -70,15 +71,15 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Set a key's time to live in seconds.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The keys of which expiry time to be set
      * @param seconds                    Expiry in seconds
      * @return boolean `true` if the timeout was set. false if key does not exist or the timeout could not be set
      */
-    public static Object expire(BHandle redisDataSourceHandleValue, String key, int seconds) {
+    public static Object expire(BObject redisClient, BString key, int seconds) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return expire(key, seconds, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return expire(key.getValue(), seconds, redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -88,14 +89,14 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Find all keys matching the given pattern.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param pattern                    The pattern to match
      * @return Array of keys matching the given pattern
      */
-    public static Object keys(BHandle redisDataSourceHandleValue, String pattern) {
+    public static Object keys(BObject redisClient, BString pattern) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return keys(pattern, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return keys(pattern.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -105,15 +106,15 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Move a key to another database.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key to be moved
      * @param database                   The database to which the key needs to be moved
      * @return boolean true if key was succesfully moved, boolean false otherwise
      */
-    public static Object move(BHandle redisDataSourceHandleValue, String key, int database) {
+    public static Object move(BObject redisClient, BString  key, int database) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return move(key, database, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return move(key.getValue(), database, redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -123,15 +124,15 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Remove the expiration from a key.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of which expiry time should be removed
      * @return boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have an
      * associated timeout
      */
-    public static Object persist(BHandle redisDataSourceHandleValue, String key) {
+    public static Object persist(BObject redisClient, BString  key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return persist(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return persist(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -141,16 +142,16 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Set a key's time to live in milliseconds.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        he key of which expiry time should be removed
      * @param timeMilliSeconds           The expiry time in milli seconds
      * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not be
      * set
      */
-    public static Object pExpire(BHandle redisDataSourceHandleValue, String key, int timeMilliSeconds) {
+    public static Object pExpire(BObject redisClient, BString  key, int timeMilliSeconds) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return pExpire(key, timeMilliSeconds, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return pExpire(key.getValue(), timeMilliSeconds, redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -160,14 +161,14 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Get the time to live for a key in milliseconds.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of which time-to-live should be obtained
      * @return time-to-live of the key, in milli seconds
      */
-    public static Object pTtl(BHandle redisDataSourceHandleValue, String key) {
+    public static Object pTtl(BObject redisClient, BString  key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return pTtl(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return pTtl(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -177,13 +178,13 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Return a random key from the keyspace.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @return The random key
      */
-    public static Object randomKey(BHandle redisDataSourceHandleValue) {
+    public static Object randomKey(BObject redisClient) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return randomKey(redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return StringUtils.fromString(randomKey(redisDataSource));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -193,15 +194,15 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Rename a key.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key to be renamed
      * @param newName                    The new name of the key
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object rename(BHandle redisDataSourceHandleValue, String key, String newName) {
+    public static Object rename(BObject redisClient, BString  key, BString  newName) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return rename(key, newName, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return StringUtils.fromString(rename(key.getValue(), newName.getValue(), redisDataSource));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -211,16 +212,16 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Rename a key, only if the new key does not exist.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key to be renamed
      * @param newName                    The new name of the key boolean `true` if key was renamed to newkey. boolean
      *                                   `false` if newkey already exists.
      * @return boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists
      */
-    public static Object renameNx(BHandle redisDataSourceHandleValue, String key, String newName) {
+    public static Object renameNx(BObject redisClient, BString  key, BString  newName) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return renameNx(key, newName, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return renameNx(key.getValue(), newName.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -230,14 +231,14 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Sort the elements in a list, set or sorted set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the data typeure to be sorted
      * @return Sorted array containing the members of the sorted data type
      */
-    public static Object sort(BHandle redisDataSourceHandleValue, String key) {
+    public static Object sort(BObject redisClient, BString  key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sort(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sort(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -247,16 +248,16 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Get the time to live for a key.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of which the time to live needs to be obtained
      * @return Time to live in seconds or a negative value/`error` in order to signal an error in evaluating ttl.
      * Whether it is a negative value of an `error` would differ depending on whether the error occurs at DB level or
      * the driver level
      */
-    public static Object ttl(BHandle redisDataSourceHandleValue, String key) {
+    public static Object ttl(BObject redisClient, BString  key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return ttl(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return ttl(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -266,14 +267,14 @@ public class KeyActions extends AbstractRedisAction {
     /**
      * Determine the type stored at key.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of which the type needs to be obtained
      * @return Type stored at key
      */
-    public static Object redisType(BHandle redisDataSourceHandleValue, String key) {
+    public static Object redisType(BObject redisClient, BString  key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return type(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return StringUtils.fromString(type(key.getValue(), redisDataSource));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));

@@ -21,7 +21,8 @@ package org.ballerinalang.redis.actions;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
-import io.ballerina.runtime.api.values.BHandle;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
@@ -35,16 +36,16 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Add one or more members to a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @param values                     Array of values to be added
      * @return The number of elements that were added to the set, not including all the elements which were already
      * present in the set
      */
-    public static Object sAdd(BHandle redisDataSourceHandleValue, String key, BArray values) {
+    public static Object sAdd(BObject redisClient, BString key, BArray values) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sAdd(key, redisDataSource, createStringArrayFromBArray(values));
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sAdd(key.getValue(), redisDataSource, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -54,14 +55,14 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Get the number of members in a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @return The cardinality (number of elements) of the set
      */
-    public static Object sCard(BHandle redisDataSourceHandleValue, String key) {
+    public static Object sCard(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sCard(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sCard(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -71,13 +72,13 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Return set resulting from the difference between the first set and all the successive sets.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param keys                       The keys of the sets
      * @return An array of members of the resulting set
      */
-    public static Object sDiff(BHandle redisDataSourceHandleValue, BArray keys) {
+    public static Object sDiff(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return sDiff(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
@@ -89,15 +90,15 @@ public class SetActions extends AbstractRedisAction {
      * Obtain the set resulting from the difference between the first set and all the successive. sets and store at the
      * provided destination.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param destination                The destination key of the resulting set
      * @param keys                       The keys of the sets to find the difference of
      * @return The number of members in the resulting set
      */
-    public static Object sDiffStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sDiffStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sDiffStore(destination, redisDataSource, createStringArrayFromBArray(keys));
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sDiffStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -107,13 +108,13 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Return the intersection of the provided sets.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param keys                       The keys of the sets to be intersected
      * @return An array of members of the resulting set
      */
-    public static Object sInter(BHandle redisDataSourceHandleValue, BArray keys) {
+    public static Object sInter(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return sInter(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
@@ -124,15 +125,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Obtain the intersection of the provided sets and store at the provided destination.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param destination                The destination key of the resulting set
      * @param keys                       The keys of the sets to be intersected
      * @return An array of members of the resulting set
      */
-    public static Object sInterStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sInterStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sInterStore(destination, redisDataSource, createStringArrayFromBArray(keys));
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sInterStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -142,15 +143,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Determine if a given value is a member of a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @param value                      The value
      * @return boolean true/false depending on whether the value is a member of the set or not
      */
-    public static Object sIsMember(BHandle redisDataSourceHandleValue, String key, String value) {
+    public static Object sIsMember(BObject redisClient, BString key, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sIsMember(key, value, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sIsMember(key.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -160,14 +161,14 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Get all the members in a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @return Array of all members in the set
      */
-    public static Object sMembers(BHandle redisDataSourceHandleValue, String key) {
+    public static Object sMembers(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sMembers(key, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sMembers(key.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -177,17 +178,17 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Move a member from one set to another.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param src                        The source key
      * @param destination                The destination key
      * @param member                     The member to be moved
      * @return `true` if the element is moved. `false` if the element is not a member of source and no operation was
      * performed
      */
-    public static Object sMove(BHandle redisDataSourceHandleValue, String src, String destination, String member) {
+    public static Object sMove(BObject redisClient, BString src, BString destination, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sMove(src, destination, member, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sMove(src.getValue(), destination.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -197,15 +198,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Remove and return a random member from a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The source key
      * @param count                      Number of members to pop
      * @return Array of removed elements or `nil` if key does not exist
      */
-    public static Object sPop(BHandle redisDataSourceHandleValue, String key, int count) {
+    public static Object sPop(BObject redisClient, BString key, int count) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sPop(key, count, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sPop(key.getValue(), count, redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -215,15 +216,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Get one or multiple random members from a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @param count                      Number of members to obtain
      * @return Array of the randomly selected elements, or `nil` when key does not
      */
-    public static Object sRandMember(BHandle redisDataSourceHandleValue, String key, int count) {
+    public static Object sRandMember(BObject redisClient, BString key, int count) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sRandMember(key, count, redisDataSource);
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sRandMember(key.getValue(), count, redisDataSource);
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -233,15 +234,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Remove one or more members from a set.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param key                        The key of the set
      * @param members                    Array of members to remove
      * @return The number of members that were removed from the set, not including non existing members
      */
-    public static Object sRem(BHandle redisDataSourceHandleValue, String key, BArray members) {
+    public static Object sRem(BObject redisClient, BString key, BArray members) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sRem(key, redisDataSource, createStringArrayFromBArray(members));
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sRem(key.getValue(), redisDataSource, createStringArrayFromBArray(members));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));
@@ -251,13 +252,13 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Return the union of multiple sets.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param keys                       Array of keys of sets
      * @return Array of members of the resulting set
      */
-    public static Object sUnion(BHandle redisDataSourceHandleValue, BArray keys) {
+    public static Object sUnion(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return sUnion(redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
@@ -268,15 +269,15 @@ public class SetActions extends AbstractRedisAction {
     /**
      * Return the union of multiple sets.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      * @param destination                The destination key of the resulting set
      * @param keys                       Array of keys of sets
      * @return Number of members of the resulting set
      */
-    public static Object sUnionStore(BHandle redisDataSourceHandleValue, String destination, BArray keys) {
+    public static Object sUnionStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
-            return sUnionStore(destination, redisDataSource, createStringArrayFromBArray(keys));
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            return sUnionStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
                     StringUtils.fromString(e.getMessage()));

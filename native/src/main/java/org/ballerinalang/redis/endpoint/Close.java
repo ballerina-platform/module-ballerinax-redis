@@ -18,7 +18,7 @@
 
 package org.ballerinalang.redis.endpoint;
 
-import io.ballerina.runtime.api.values.BHandle;
+import io.ballerina.runtime.api.values.BObject;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.actions.AbstractRedisAction;
 
@@ -33,10 +33,10 @@ public class Close extends AbstractRedisAction {
     /**
      * Close a redis server connection.
      *
-     * @param redisDataSourceHandleValue redis datasource
+     * @param redisClient                Client from the Ballerina redis client
      */
-    public static void close(BHandle redisDataSourceHandleValue) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static void close(BObject redisClient) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         close(redisDataSource);
     }
 }
