@@ -25,7 +25,7 @@ import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.ERROR;
 
 /**
  * Redis connection actions.
@@ -35,23 +35,24 @@ public class ConnectionActions extends AbstractRedisAction {
     /**
      * Ping the redis database server.
      *
-     * @param redisClient               Client from the Ballerina redis client
+     * @param redisClient Client from the Ballerina redis client
      */
     public static Object ping(BObject redisClient) {
         RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
             return StringUtils.fromString(ping(redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Authenticate to the server.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param password                   The password
+     * @param redisClient Client from the Ballerina redis client
+     * @param password    The password
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object auth(BObject redisClient, BString password) {
@@ -59,16 +60,17 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return StringUtils.fromString(auth(password.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Echo the given string.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param message                    The message to be echo-ed
+     * @param redisClient Client from the Ballerina redis client
+     * @param message     The message to be echo-ed
      * @return The message itself if the operation was successful
      */
     public static Object echo(BObject redisClient, BString message) {
@@ -76,8 +78,9 @@ public class ConnectionActions extends AbstractRedisAction {
         try {
             return StringUtils.fromString(echo(message.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 }

@@ -30,7 +30,7 @@ import org.ballerinalang.redis.utils.ModuleUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.ERROR;
 
 /**
  * Redis sorted set actions.
@@ -40,9 +40,9 @@ public class SortedSetActions extends AbstractRedisAction {
     /**
      * Add one or more members to a sorted set, or update its score if it already exist.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param memberScoreMap             A map of members and corresponding scores
+     * @param redisClient    Client from the Ballerina redis client
+     * @param key            The key of the sorted set
+     * @param memberScoreMap A map of members and corresponding scores
      * @return The number of elements that were added to the sorted set, not including all the elements which were
      * already present in the set for which the score was updated
      */
@@ -56,16 +56,17 @@ public class SortedSetActions extends AbstractRedisAction {
             }
             return zAdd(key.getValue(), redisDataSource, map);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the number of members in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
      * @return The cardinality (number of elements) of the sorted set
      */
     public static Object zCard(BObject redisClient, BString key) {
@@ -73,18 +74,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zCard(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Count the members in a sorted set with scores within the given range.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum score of the range
-     * @param max                        The maximum score of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum score of the range
+     * @param max         The maximum score of the range
      * @return The number of elements in the specified score range
      */
     public static Object zCount(BObject redisClient, BString key, float min, float max) {
@@ -92,18 +94,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zCount(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the score of a member in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param amount                     The amount to increment
-     * @param member                     The member whose score to be incremented
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param amount      The amount to increment
+     * @param member      The member whose score to be incremented
      * @return The new score of the member
      */
     public static Object zIncrBy(BObject redisClient, BString key, float amount, BString member) {
@@ -111,17 +114,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zIncrBy(key.getValue(), amount, member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Intersect multiple sorted sets and store the resulting sorted set in a new key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                The destination key of the resulting sorted set
-     * @param keys                       The keys of the sorted sets to be intersected
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination The destination key of the resulting sorted set
+     * @param keys        The keys of the sorted sets to be intersected
      * @return The number of elements in the resulting sorted set
      */
     public static Object zInterStore(BObject redisClient, BString destination, BArray keys) {
@@ -129,18 +133,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zInterStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Count the members in a sorted set within the given lexicographical range.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                The key of the sorted set
-     * @param min                        The minimum lexicographical value of the range
-     * @param max                        The maximum lexicographical value of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination The key of the sorted set
+     * @param min         The minimum lexicographical value of the range
+     * @param max         The maximum lexicographical value of the range
      * @return The number of elements in the specified lexicographical value range
      */
     public static Object zLexCount(BObject redisClient, BString destination, BString min, BString max) {
@@ -148,18 +153,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zLexCount(destination.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by index.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum index of the range
-     * @param max                        The maximum index of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum index of the range
+     * @param max         The maximum index of the range
      * @return The range of members in a sorted set, by index
      */
     public static Object zRange(BObject redisClient, BString key, int min, int max) {
@@ -167,18 +173,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRange(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by lexicographical range from lowest to highest.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum lexicographical value of the range
-     * @param max                        The maximum lexicographical value of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum lexicographical value of the range
+     * @param max         The maximum lexicographical value of the range
      * @return Array of members in the specified lexicographical value range ordered from lowest to highest
      */
     public static Object zRangeByLex(BObject redisClient, BString key, BString min, BString max) {
@@ -186,18 +193,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by lexicographical range ordered from highest to lowest.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The lexicographical value of the range
-     * @param max                        The maximum lexicographical value of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The lexicographical value of the range
+     * @param max         The maximum lexicographical value of the range
      * @return Array of members in the specified lexicographical value range ordered from highest to lowest
      */
     public static Object zRevRangeByLex(BObject redisClient, BString key, BString min, BString max) {
@@ -205,18 +213,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRevRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by score from lowest to highest.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum score of the range
-     * @param max                        The maximum score of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum score of the range
+     * @param max         The maximum score of the range
      * @return Array of members in the specified score range ordered from lowest to highest
      */
     public static Object zRangeByScore(BObject redisClient, BString key, float min, float max) {
@@ -224,17 +233,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Determine the index of a member in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param member                     The member of which the index needs to be obtained
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param member      The member of which the index needs to be obtained
      * @return The index of the member
      */
     public static Object zRank(BObject redisClient, BString key, BString member) {
@@ -242,17 +252,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRank(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Remove one or more members from a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param memebers                   The members to be removed
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param memebers    The members to be removed
      * @return The number of members removed from the sorted set, not including non existing members
      */
     public static Object zRem(BObject redisClient, BString key, BArray memebers) {
@@ -260,18 +271,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRem(key.getValue(), redisDataSource, createStringArrayFromBArray(memebers));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Remove all members in a sorted set between the given lexicographical range.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum lexicographical value of the range
-     * @param max                        The maximum lexicographical value of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum lexicographical value of the range
+     * @param max         The maximum lexicographical value of the range
      * @return The number of members removed from the sorted set
      */
     public static Object zRemRangeByLex(BObject redisClient, BString key, BString min, BString max) {
@@ -279,18 +291,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRemRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Remove all members in a sorted set within the given indices.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum index of the range
-     * @param max                        The maximum index of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum index of the range
+     * @param max         The maximum index of the range
      * @return The number of members removed from the sorted set
      */
     public static Object zRemRangeByRank(BObject redisClient, BString key, int min, int max) {
@@ -298,18 +311,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRemRangeByRank(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Remove all members in a sorted set within the given scores.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum score of the range
-     * @param max                        The maximum score of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum score of the range
+     * @param max         The maximum score of the range
      * @return The number of members removed from the sorted set
      */
     public static Object zRemRangeByScore(BObject redisClient, BString key, float min, float max) {
@@ -317,18 +331,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRemRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by index, ordered highest to lowest.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum index of the range
-     * @param max                        The maximum index of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum index of the range
+     * @param max         The maximum index of the range
      * @return The number of elements in the specified index range
      */
     public static Object zRevRange(BObject redisClient, BString key, int min, int max) {
@@ -336,18 +351,19 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRevRange(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Return a range of members in a sorted set, by score from highest to lowest.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param min                        The minimum score of the range
-     * @param max                        The maximum score of the range
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param min         The minimum score of the range
+     * @param max         The maximum score of the range
      * @return Array of members in the specified score range ordered from highest to lowest
      */
     public static Object zRevRangeByScore(BObject redisClient, BString key, float min, float max) {
@@ -355,17 +371,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRevRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Determine the index of a member in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param member                     The member of which the index needs to be obtained
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param member      The member of which the index needs to be obtained
      * @return The index of the member
      */
     public static Object zRevRank(BObject redisClient, BString key, BString member) {
@@ -373,17 +390,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zRevRank(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Determine the score of a member in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        The key of the sorted set
-     * @param member                     The member of which the score needs to be obtained
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the sorted set
+     * @param member      The member of which the score needs to be obtained
      * @return
      */
     public static Object zScore(BObject redisClient, BString key, BString member) {
@@ -391,17 +409,18 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zScore(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Determine the score of a member in a sorted set.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                The key of the sorted set
-     * @param keys                       The member of which the score needs to be obtained
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination The key of the sorted set
+     * @param keys        The member of which the score needs to be obtained
      * @return The score of the member
      */
     public static Object zUnionStore(BObject redisClient, BString destination, BArray keys) {
@@ -409,8 +428,9 @@ public class SortedSetActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return zUnionStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 }

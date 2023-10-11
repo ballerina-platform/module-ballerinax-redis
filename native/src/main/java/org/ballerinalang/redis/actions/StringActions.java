@@ -27,7 +27,7 @@ import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.ERROR;
 
 /**
  * Redis string actions.
@@ -37,9 +37,9 @@ public class StringActions extends AbstractRedisAction {
     /**
      * Append a value to a key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key key
-     * @param redisValue                 value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key key
+     * @param redisValue  value
      * @return size of the new string
      */
     public static Object append(BObject redisClient,
@@ -48,16 +48,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return append(key.getValue(), redisValue.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Count set bits in a string.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key key
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key key
      * @return bit count
      */
     public static Object bitCount(BObject redisClient, BString key) {
@@ -65,17 +66,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return bitCount(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Perform bitwise AND between strings.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                Result key of the operation
-     * @param keys                       Input keys to perform AND between
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination Result key of the operation
+     * @param keys        Input keys to perform AND between
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
@@ -84,17 +86,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return bitopAnd(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Perform bitwise OR between strings.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                Result key of the operation
-     * @param keys                       Input keys to perform AND between
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination Result key of the operation
+     * @param keys        Input keys to perform AND between
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
@@ -103,17 +106,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return bitopOr(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Perform bitwise NOT on a string.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                Result key of the operation
-     * @param key                        Input keys to perform AND between
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination Result key of the operation
+     * @param key         Input keys to perform AND between
      * @return The size of the string stored in the destination key
      */
     public static Object bitOpNot(BObject redisClient, BString destination, BString key) {
@@ -121,17 +125,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return bitopNot(destination.getValue(), key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Perform bitwise XOR between strings.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param destination                Result key of the operation
-     * @param keys                       Input keys to perform AND between
+     * @param redisClient Client from the Ballerina redis client
+     * @param destination Result key of the operation
+     * @param keys        Input keys to perform AND between
      * @return The size of the string stored in the destination key, that is equal to the size of the longest input
      * string
      */
@@ -140,16 +145,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return bitopXor(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Decrement the integer value of a key by one.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
      * @return The value of the key after the decrement
      */
     public static Object decr(BObject redisClient, BString key) {
@@ -157,17 +163,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return decr(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Decrement the integer value of a key by the given number.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param redisValue                 The offset
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param redisValue  The offset
      * @return The bit value stored at offset
      */
     public static Object decrBy(BObject redisClient, BString key, int redisValue) {
@@ -175,16 +182,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return decrBy(key.getValue(), redisValue, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get a string value from redis database.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key key
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key key
      * @return value
      */
     public static Object get(BObject redisClient, BString key) {
@@ -192,17 +200,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(get(key.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Returns the bit value at offset in the string value stored at key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param offset                     The offset
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param offset      The offset
      * @return The bit value stored at offset
      */
     public static Object getBit(BObject redisClient, BString key, int offset) {
@@ -210,18 +219,19 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return getBit(key.getValue(), offset, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get a substring of the string stored at a key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param startPos                   The starting point of the substring
-     * @param end                        The end point of the substring
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param startPos    The starting point of the substring
+     * @param end         The end point of the substring
      * @return The substring
      */
     public static Object getRange(BObject redisClient, BString key, int startPos, int end) {
@@ -229,17 +239,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(getRange(key.getValue(), startPos, end, redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the string value of a key and return its old value.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param value       value
      * @return The old value stored at key
      */
     public static Object getSet(BObject redisClient, BString key, BString value) {
@@ -247,16 +258,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(getSet(key.getValue(), value.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the integer value of a key by one.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
      * @return The value of the key after increment
      */
     public static Object incr(BObject redisClient, BString key) {
@@ -264,17 +276,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return incr(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the integer value of a key by the given amount.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param value       value
      * @return The value of the key after increment
      */
     public static Object incrBy(BObject redisClient, BString key, int value) {
@@ -282,17 +295,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return incrBy(key.getValue(), value, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the integer value of a key by the given amount.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param value       value
      * @return The value of the key after increment
      */
     public static Object incrByFloat(BObject redisClient, BString key, float value) {
@@ -300,16 +314,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return incrByFloat(key.getValue(), value, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the values of all the given keys.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param keys                       The keys of which the values need to be retrieved
+     * @param redisClient Client from the Ballerina redis client
+     * @param keys        The keys of which the values need to be retrieved
      * @return Array of values at the specified keys
      */
     public static Object mGet(BObject redisClient, BArray keys) {
@@ -317,16 +332,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return createBstringArrayFromBMap(mGet(redisDataSource, createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set multiple keys to multiple values.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param keys                       A map of key-value pairs to be set
+     * @param redisClient Client from the Ballerina redis client
+     * @param keys        A map of key-value pairs to be set
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object mSet(BObject redisClient, BMap keys) {
@@ -334,16 +350,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(mSet(createMapFromBMap(keys), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set multiple keys to multiple values, only if none of the keys exist.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param keys                       A map of key-value pairs to be set
+     * @param redisClient Client from the Ballerina redis client
+     * @param keys        A map of key-value pairs to be set
      * @return True if the operation was successful, false if it failed
      */
     public static Object mSetNx(BObject redisClient, BMap keys) {
@@ -351,18 +368,19 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return mSetnx(createMapFromBMap(keys), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the value and expiration in milliseconds of a key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
-     * @param expirationTime             Expiration time in milli seconds
+     * @param redisClient    Client from the Ballerina redis client
+     * @param key            key
+     * @param value          value
+     * @param expirationTime Expiration time in milli seconds
      * @return New value of the key
      */
     public static Object pSetEx(BObject redisClient, BString key, BString value, int expirationTime) {
@@ -370,17 +388,18 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(pSetex(key.getValue(), value.getValue(), expirationTime, redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set a string value for a given key value.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key key
-     * @param redisValue                 value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key key
+     * @param redisValue  value
      * @return `OK` if successful
      */
     public static Object set(BObject redisClient, BString key, BString redisValue) {
@@ -388,18 +407,19 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return StringUtils.fromString(set(key.getValue(), redisValue.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Sets or clears the bit at offset in the string value stored at key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
-     * @param offset                     The offset at which the value should be set
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param value       value
+     * @param offset      The offset at which the value should be set
      * @return The original bit value stored at offset
      */
     public static Object setBit(BObject redisClient, BString key, int value, int offset) {
@@ -407,38 +427,40 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return setBit(key.getValue(), value, offset, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the value and expiration of a key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
-     * @param expirationPeriodSeconds    Expiration time to be set, in seconds
+     * @param redisClient             Client from the Ballerina redis client
+     * @param key                     key
+     * @param value                   value
+     * @param expirationPeriodSeconds Expiration time to be set, in seconds
      * @return New value of the key or
      */
     public static Object setEx(BObject redisClient, BString key, BString value,
                                int expirationPeriodSeconds) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
-            return StringUtils.fromString(setEx(key.getValue(), value.getValue(), expirationPeriodSeconds, 
-                                                    redisDataSource));
+            return StringUtils.fromString(setEx(key.getValue(), value.getValue(), expirationPeriodSeconds,
+                    redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the value of a key, only if the key does not exist.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param value                      value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param value       value
      * @return New value of the key
      */
     public static Object setNx(BObject redisClient, BString key, BString value) {
@@ -446,18 +468,19 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return setNx(key.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Overwrite part of a string at key starting at the specified offset.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
-     * @param offset                     The offset at which the value should be set
-     * @param value                      value
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
+     * @param offset      The offset at which the value should be set
+     * @param value       value
      * @return The length of the string after it was modified
      */
     public static Object setRange(BObject redisClient, BString key, int offset, BString value) {
@@ -465,16 +488,17 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return setRange(key.getValue(), offset, value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the length of the value stored in a key.
      *
-     * @param redisClient                Client from the Ballerina redis client
-     * @param key                        key
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         key
      * @return The length of the string at key, or 0 when key does not exis
      */
     public static Object strln(BObject redisClient, BString key) {
@@ -482,8 +506,9 @@ public class StringActions extends AbstractRedisAction {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
             return strln(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 }

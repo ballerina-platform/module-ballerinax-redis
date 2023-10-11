@@ -38,7 +38,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.ERROR;
 
 /**
  * Redis database utils to run unit tests.
@@ -68,12 +68,13 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal != 0) {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
+                return ErrorCreator.createError(StringUtils.fromString(ERROR),
                         StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
         process.destroy();
         return "OK";
@@ -96,12 +97,13 @@ public class RedisDbUtils {
             }
             int exitVal = process.waitFor();
             if (exitVal != 0) {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
+                return ErrorCreator.createError(StringUtils.fromString(ERROR),
                         StringUtils.fromString(output.toString()));
             }
         } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
         process.destroy();
         return "OK";

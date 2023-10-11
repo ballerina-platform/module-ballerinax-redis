@@ -33,7 +33,7 @@ public class Close extends AbstractRedisAction {
     /**
      * Close a redis server connection.
      *
-     * @param redisClient                Client from the Ballerina redis client
+     * @param redisClient Client from the Ballerina redis client
      */
     public static void close(BObject redisClient) {
         RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
