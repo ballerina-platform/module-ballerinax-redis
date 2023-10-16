@@ -24,44 +24,44 @@ version = "5.1.8.RELEASE"
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-common"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-buffer"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-resolver"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-handler"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-kqueue"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-epoll"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-codec"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
 
 [[platform.java11.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-unix-common"
-version = "4.1.94.Final"
+version = "4.1.100.Final"
