@@ -2,7 +2,7 @@
 distribution = "2201.7.0"
 org="ballerinax"
 name = "redis"
-version="2.5.1"
+version="2.5.2"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
@@ -10,11 +10,11 @@ repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
 [[platform.java11.dependency]]
-path = "../redis-utils/build/libs/redis-utils-2.5.1.jar"
+path = "../redis-utils/build/libs/redis-utils-2.5.2.jar"
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
 module = "redis-utils" 
-version="2.5.1"
+version="2.5.2"
 
 [[platform.java11.dependency]]
 groupId = "io.lettuce"
