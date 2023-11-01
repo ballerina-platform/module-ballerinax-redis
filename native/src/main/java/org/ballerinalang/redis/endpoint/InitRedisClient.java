@@ -18,10 +18,9 @@
 
 package org.ballerinalang.redis.endpoint;
 
-import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
@@ -41,9 +40,8 @@ public class InitRedisClient {
      * Initialize a redis client.
      *
      * @param config configuration map
-     * @return a handle value
      */
-    public static BHandle initClient(BMap config) {
+    public static void initClient(BObject client, BMap config) {
         BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
         BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
         BMap<BString, BString> options = config.getMapValue(StringUtils.fromString(Constants.EndpointConfig.OPTIONS));
@@ -56,8 +54,7 @@ public class InitRedisClient {
 
         RedisDataSource dataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
         dataSource.init(host.toString(), password.toString(), options);
-
-        return ValueCreator.createHandleValue(dataSource);
+        client.addNativeData("DATA_SOURCE", dataSource);
     }
 
     /**

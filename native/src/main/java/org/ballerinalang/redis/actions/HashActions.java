@@ -21,12 +21,13 @@ package org.ballerinalang.redis.actions;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
-import io.ballerina.runtime.api.values.BHandle;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
 import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
+import static org.ballerinalang.redis.Constants.ERROR;
 
 /**
  * Redis hash actions.
@@ -36,255 +37,269 @@ public class HashActions extends AbstractRedisAction {
     /**
      * Delete one or more hash fields.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param fields                     Array of fields to be deleted
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param fields      Array of fields to be deleted
      * @return Number of fields that were removed from the hash, not including specified but non existing fields
      */
-    public static Object hDel(BHandle redisDataSourceHandleValue, String key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hDel(BObject redisClient, BString key, BArray fields) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hDel(StringUtils.fromString(key), redisDataSource, createStringArrayFromBArray(fields));
+            return hDel(StringUtils.fromString(key.getValue()), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Determine if a hash field exists.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      Array of fields to be deleted
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       Array of fields to be deleted
      * @return boolean `true` if the hash contains the field. boolean false if the hash does not contain field or key
      * does not exist
      */
-    public static Object hExists(BHandle redisDataSourceHandleValue, String key, String field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hExists(BObject redisClient, BString key, BString field) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hExists(key, field, redisDataSource);
+            return hExists(key.getValue(), field.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the value of a hash field.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
      * @return The value of the field
      */
-    public static Object hGet(BHandle redisDataSourceHandleValue, String key, String field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hGet(BObject redisClient, BString key, BString field) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hGet(key, field, redisDataSource);
+            return StringUtils.fromString(hGet(key.getValue(), field.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the all values of a hash.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
      * @return Map of field-value pairs
      */
-    public static Object hGetAll(BHandle redisDataSourceHandleValue, String key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hGetAll(BObject redisClient, BString key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hGetAll(key, redisDataSource);
+            return hGetAll(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the integer value of a hash field by the given number.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
-     * @param amount                     The amount to increment
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
+     * @param amount      The amount to increment
      * @return The value of the field
      */
-    public static Object hIncrBy(BHandle redisDataSourceHandleValue, String key, String field, int amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hIncrBy(BObject redisClient, BString key, BString field, int amount) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hIncrBy(key, field, amount, redisDataSource);
+            return hIncrBy(key.getValue(), field.getValue(), amount, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Increment the float value of a hash field by the given number.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
-     * @param amount                     The amount to increment
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
+     * @param amount      The amount to increment
      * @return The value of the field
      */
-    public static Object hIncrByFloat(BHandle redisDataSourceHandleValue, String key, String field, double amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hIncrByFloat(BObject redisClient, BString key, BString field, double amount) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hIncrByFloat(key, field, amount, redisDataSource);
+            return hIncrByFloat(key.getValue(), field.getValue(), amount, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get all the fields in a hash.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
      * @return Array of hash fields
      */
-    public static Object hKeys(BHandle redisDataSourceHandleValue, String key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hKeys(BObject redisClient, BString key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hKeys(key, redisDataSource);
+            return hKeys(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the number of fields in a hash.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
      * @return Number of fields
      */
-    public static Object hLen(BHandle redisDataSourceHandleValue, String key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hLen(BObject redisClient, BString key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hLen(key, redisDataSource);
+            return hLen(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the values of all the given hash fields.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param fields                     Array of hash fields
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param fields      Array of hash fields
      * @return Map of field-value pairs
      */
-    public static Object hMGet(BHandle redisDataSourceHandleValue, String key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hMGet(BObject redisClient, BString key, BArray fields) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hMGet(key, redisDataSource, createStringArrayFromBArray(fields));
+            return hMGet(key.getValue(), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set multiple hash fields to multiple values.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param fieldValueMap              Map of field-value pairs
+     * @param redisClient   Client from the Ballerina redis client
+     * @param key           The key of the hash
+     * @param fieldValueMap Map of field-value pairs
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object hMSet(BHandle redisDataSourceHandleValue, String key, BMap fieldValueMap) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hMSet(BObject redisClient, BString key, BMap fieldValueMap) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hMSet(key, createMapFromBMap(fieldValueMap), redisDataSource);
+            return StringUtils.fromString(hMSet(key.getValue(), createMapFromBMap(fieldValueMap), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the string value of a hash field.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
-     * @param value                      The value to be set to the field
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
+     * @param value       The value to be set to the field
      * @return boolean `true` if field is a new field in the hash and value was set. boolean false if field already
      * exists in the hash and the value was updated
      */
-    public static Object hSet(BHandle redisDataSourceHandleValue, String key, String field, String value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hSet(BObject redisClient, BString key, BString field, BString value) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hSet(key, field, value, redisDataSource);
+            return hSet(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Set the string value of a hash field.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
-     * @param value                      The value to be set to the field
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
+     * @param value       The value to be set to the field
      * @return boolean `true` if field is a new field in the hash and value was set. boolean false if field already
      * exists in the hash and the value was updated
      */
-    public static Object hSetNx(BHandle redisDataSourceHandleValue, String key, String field, String value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hSetNx(BObject redisClient, BString key, BString field, BString value) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hSetNx(key, field, value, redisDataSource);
+            return hSetNx(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get the string length of the field value in a hash.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
-     * @param field                      The field
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
+     * @param field       The field
      * @return The length of the field value, or 0 when field is not present in the hash or key does not exist at all
      */
-    public static Object hStrln(BHandle redisDataSourceHandleValue, String key, String field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hStrln(BObject redisClient, BString key, BString field) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hStrln(key, field, redisDataSource);
+            return hStrln(key.getValue(), field.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 
     /**
      * Get all the values in a hash.
      *
-     * @param redisDataSourceHandleValue redis datasource
-     * @param key                        The key of the hash
+     * @param redisClient Client from the Ballerina redis client
+     * @param key         The key of the hash
      * @return Array of values in the hash, or an empty array when key does not exist
      */
-    public static Object hVals(BHandle redisDataSourceHandleValue, String key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisDataSourceHandleValue.getValue();
+    public static Object hVals(BObject redisClient, BString key) {
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
         try {
-            return hVals(key, redisDataSource);
+            return hVals(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
+            return ErrorCreator.createError(ModuleUtils.getModule(), ERROR,
+                    StringUtils.fromString(e.getMessage()), 
+                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
         }
     }
 }

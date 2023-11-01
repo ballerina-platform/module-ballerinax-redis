@@ -1300,7 +1300,7 @@ public abstract class AbstractRedisAction {
         RedisKeyCommands<K, String> redisCommands = null;
         try {
             redisCommands = (RedisKeyCommands<K, String>) getRedisCommands(redisDataSource);
-            return redisCommands.randomkey();
+            return (String) redisCommands.randomkey();
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(KEY_MUST_NOT_BE_NULL);
         } finally {
@@ -1427,7 +1427,7 @@ public abstract class AbstractRedisAction {
         ScoredValue<V>[] scoredValues = new ScoredValue[valueScoreMap.size()];
         int i = 0;
         for (Map.Entry<V, Double> entry : valueScoreMap.entrySet()) {
-            scoredValues[i] = ScoredValue.fromNullable(entry.getValue(), entry.getKey());
+            scoredValues[i] = (ScoredValue<V>) ScoredValue.just(entry.getValue(), entry.getKey());
             i++;
         }
         return scoredValues;

@@ -35,5 +35,5 @@ public function main() returns error? {
         io:println("Error while fetching");
     }
 
-    conn.stop();
+    conn.close();
 }

@@ -28,5 +28,5 @@ public function main() returns error? {
         io:println("Error occurred while calling `lPop`");
     }
 
-    conn.stop();
+    conn.close();
 }

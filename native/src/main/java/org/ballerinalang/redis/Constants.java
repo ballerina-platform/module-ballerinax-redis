@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class Constants {
 
-    public static final String REDIS_EXCEPTION_OCCURRED = "{ballerinax/redis}Error";
+    public static final String ERROR = "Error";
     static final int DEFAULT_REDIS_PORT = 6379;
 
     /**
@@ -38,12 +38,14 @@ public class Constants {
         BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");
 
         static Map<String, Codec> codecMap = new HashMap<>(3);
+
         static {
             Codec[] codecs = values();
             for (Codec codec : codecs) {
                 codecMap.put(codec.getCodecName(), codec);
             }
         }
+
         String codec;
 
         Codec(String codec) {

@@ -154,7 +154,7 @@ function testSPop() {
 @test:Config {
 }
 function testSRandMember() {
-    var result = conn->sRandMember("testSRandMemberKey", 2);
+    var result = conn->sRandMember("testSRandMemberKey", 3);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allMembersPopped = true;

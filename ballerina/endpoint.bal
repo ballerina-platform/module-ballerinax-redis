@@ -23,15 +23,25 @@ import ballerina/jballerina.java;
 public isolated client class Client {
     private ConnectionConfig clientEndpointConfig = {};
 
-    final handle datasource;
-
     # Initializes the connector. During initialization you have to pass needed configurations such as host name, port number and password.
     #
     # + config - Configuration for the connector
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized
     public isolated function init(ConnectionConfig config) returns error? {
-        self.datasource = initClient(config);
+        Error? initClientResult = self.initClient(self, config);
+        if initClientResult is Error {
+            return initClientResult;
+        }
     }
+
+    # Initialize redis client.
+    #
+    # + redisClient - client
+    # + clientEndpointConfig - Client end point configuration
+    # + return - `error` if error occurs
+    isolated function initClient(Client redisClient, ConnectionConfig clientEndpointConfig) returns Error? = @java:Method {
+        'class: "org.ballerinalang.redis.endpoint.InitRedisClient"
+    } external;
 
     // String operations
     
@@ -42,9 +52,9 @@ public isolated client class Client {
     # + return - Length of the string after the operation
     @display {label: "Enrich Value"}
     isolated remote function append(@display {label: "Key"} string key, @display {label: "Value To Append"} string value) 
-                           returns @display {label: "Result String Length"} int | error {
-        return append(self.datasource, java:fromString(key), java:fromString(value));
-    }
+                           returns int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Count set bits in a string.
     #
@@ -52,9 +62,9 @@ public isolated client class Client {
     # + return - Number of bits of the value
     @display {label: "Get Bits of String"}
     isolated remote function bitCount(@display {label: "Key"} string key) 
-                             returns @display {label: "Bits of String"} int | error {
-        return bitCount(self.datasource, java:fromString(key));
-    }
+                             returns @display {label: "Bits of String"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Perform bitwise AND between strings.
     #
@@ -65,9 +75,9 @@ public isolated client class Client {
     @display {label: "Perform Bitwise AND"}
     isolated remote function bitOpAnd(@display {label: "Result key"} string destination, 
                              @display {label: "Key Array To Perform AND"} string[] keys)
-                             returns @display {label: "Size of string"} int | error {
-        return bitOpAnd(self.datasource, java:fromString(destination), keys);
-    }
+                             returns @display {label: "Size of string"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Perform bitwise OR between strings.
     #
@@ -78,9 +88,9 @@ public isolated client class Client {
     @display {label: "Perform Bitwise OR"}
     isolated remote function bitOpOr(@display {label: "Result key"} string destination, 
                             @display {label: "Key Array To Perform OR"} string[] keys)
-                            returns @display {label: "Size of string"} int | error {
-        return bitOpOr(self.datasource, java:fromString(destination), keys);
-    }
+                            returns @display {label: "Size of string"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Perform bitwise NOT on a string.
     #
@@ -90,9 +100,9 @@ public isolated client class Client {
     @display {label: "Perform Bitwise NOT"}
     isolated remote function bitOpNot(@display {label: "Result key"} string destination, 
                              @display {label: "Key To Perform NOT"} string key)
-                             returns @display {label: "Size of String"} int | error {
-        return bitOpNot(self.datasource, java:fromString(destination), java:fromString(key));
-    }
+                             returns @display {label: "Size of String"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Perform bitwise XOR between strings.
     #
@@ -103,18 +113,18 @@ public isolated client class Client {
     @display {label: "Perform Bitwise XOR"}
     isolated remote function bitOpXor(@display {label: "Result key"} string destination, 
                              @display {label: "Key Array To Perform XOR"} string[] keys)
-                             returns @display {label: "Size of String"} int | error {
-        return bitOpXor(self.datasource, java:fromString(destination), keys);
-    }
+                             returns @display {label: "Size of String"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Decrement integer value of a key by one.
     #
     # + key - Key referring to a value
     # + return - Value of key after the decrement
     @display {label: "Decrement(By One)"}
-    isolated remote function decr(@display {label: "Key"} string key) returns @display {label: "Value"} int | error {
-        return decr(self.datasource, java:fromString(key));
-    }
+    isolated remote function decr(@display {label: "Key"} string key) returns @display {label: "Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Decrement integer value of a key by the given number.
     #
@@ -123,9 +133,9 @@ public isolated client class Client {
     # + return - Value of key after decrement or `error` if an error occurs
     @display {label: "Decrement (By Number)"}
     isolated remote function decrBy(@display {label: "Key"} string key, @display {label: "Value To Decrement"} int value) 
-                           returns @display {label: "Value"} int | error {
-        return decrBy(self.datasource, java:fromString(key), value);
-    }
+                           returns @display {label: "Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Returns bit value at offset in the string value stored at key.
     #
@@ -134,9 +144,9 @@ public isolated client class Client {
     # + return - Bit value stored at offset or `error` if an error occurs
     @display {label: "Get Bit At Offset"}
     isolated remote function getBit(@display {label: "Key"} string key, @display {label: "Offset"} int offset) 
-                           returns @display {label: "Bit Value"} int | error {
-        return getBit(self.datasource, java:fromString(key), offset);
-    }
+                           returns @display {label: "Bit Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Get substring of string stored at a key.
     #
@@ -147,9 +157,9 @@ public isolated client class Client {
     @display {label: "Get Substring"}
     isolated remote function getRange(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                              @display {label: "End Position"} int end) 
-                             returns @display {label: "Substring"} string | error {
-        return <string>java:toString(check getRange(self.datasource, java:fromString(key), startPos, end));
-    }
+                             returns @display {label: "Substring"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set string value of key and return its existing value.
     #
@@ -158,27 +168,27 @@ public isolated client class Client {
     # + return - Existing value stored at key, or nil when key does not exist or `error` if an error occurs
     @display {label: "Get And Set Value"}
     isolated remote function getSet(@display {label: "Key"} string key, @display {label: "New Value"} string value) 
-                           returns @display {label: "Old Value"} string?|error {
-        return java:toString(check getSet(self.datasource, java:fromString(key), java:fromString(value)));
-    }
+                           returns @display {label: "Old Value"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Get value of key.
     #
     # + key - Key referring to a value
     # + return - Value of key, or nil when key does not exist or `error` if an error occurs
     @display {label: "Get Value"}
-    isolated remote function get(@display {label: "Key"} string key) returns @display {label: "Value"} string?|error {
-        return java:toString(check get(self.datasource, java:fromString(key)));
-    }
+    isolated remote function get(@display {label: "Key"} string key) returns @display {label: "Value"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Increment integer value of a key by one.
     #
     # + key - Key referring to a value
     # + return - Value of key after increment
     @display {label: "Increment (By One)"}
-    isolated remote function incr(@display {label: "Key"} string key) returns @display {label: "Result Value"} int | error {
-        return incr(self.datasource, java:fromString(key));
-    }
+    isolated remote function incr(@display {label: "Key"} string key) returns @display {label: "Result Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Increment integer value of key by the given amount.
     #
@@ -187,9 +197,9 @@ public isolated client class Client {
     # + return - Value of key after increment
     @display {label: "Increment (By Number)"}
     isolated remote function incrBy(@display {label: "Key"} string key, @display {label: "Increment Value"} int value) 
-                           returns @display {label: "Result Value"} int | error {
-        return incrBy(self.datasource, java:fromString(key), value);
-    }
+                           returns @display {label: "Result Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Increment integer value of key by the given float.
     #
@@ -199,9 +209,9 @@ public isolated client class Client {
     @display {label: "Increment (By Float)"}
     isolated remote function incrByFloat(@display {label: "Key"} string key, 
                                 @display {label: "Increment Value"} float value) 
-                                returns @display {label: "Float Result Value"} float | error {
-        return incrByFloat(self.datasource, java:fromString(key), value);
-    }
+                                returns @display {label: "Float Result Value"} float | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Get values of all given keys.
     #
@@ -209,9 +219,9 @@ public isolated client class Client {
     # + return - Array of values at specified keys
     @display {label: "Get Values"}
     isolated remote function mGet(@display {label: "Keys"} string[] keys) 
-                         returns @display {label: "Values"} string[] | error {
-        return mGet(self.datasource, keys);
-    }
+                         returns @display {label: "Values"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set multiple keys to multiple values.
     #
@@ -219,9 +229,9 @@ public isolated client class Client {
     # + return - String with value `OK` if the operation was successful
     @display {label: "Set Values"}
     isolated remote function mSet(@display {label: "Key-Value Pair Map"} map<any> keyValueMap) 
-                         returns @display {label: "Result"} string | error {
-        return <string>java:toString(check mSet(self.datasource, keyValueMap));
-    }
+                         returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set multiple keys to multiple values, only if none of the keys exist.
     #
@@ -229,9 +239,9 @@ public isolated client class Client {
     # + return - True if the operation was successful, false if it failed
     @display {label: "Set Values If Absent"}
     isolated remote function mSetNx(@display{label: "Map of Key Value Pairs"} map<any> keyValueMap)
-                           returns @display{label: "Result"} boolean | error {
-        return mSetNx(self.datasource, keyValueMap);
-    }
+                           returns @display{label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set value and expiration in milliseconds of a key.
     #
@@ -242,10 +252,9 @@ public isolated client class Client {
     @display {label: "Set Expirable Value (ms)"}
     isolated remote function pSetEx(@display {label: "Key"} string key, @display {label: "Value"} string value,
                            @display {label: "TTL (ms)"} int expirationTime)
-                           returns @display {label: "Result"} string | error {
-        return <string>java:toString(check pSetEx(self.datasource, java:fromString(key), java:fromString(value),
-        expirationTime));
-    }
+                           returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set the value of a key.
     #
@@ -254,9 +263,9 @@ public isolated client class Client {
     # + return - `OK` if successful
     @display {label: "Set Value"}
     isolated remote function set(@display {label: "Key"} string key, @display {label: "Value"} string value) 
-                        returns @display {label: "Result"} string | error {
-        return <string>java:toString(check set(self.datasource, java:fromString(key), java:fromString(value)));
-    }
+                        returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Sets or clears the bit at offset in the string value stored at key.
     #
@@ -267,9 +276,9 @@ public isolated client class Client {
     @display {label: "Set Bit From Offset"} 
     isolated remote function setBit(@display {label: "Key"} string key, @display {label: "Value"} int value, 
                            @display {label: "Offset"} int offset) 
-                           returns @display {label: "Old Bit At Offset"} int | error {
-        return setBit(self.datasource, java:fromString(key), value, offset);
-    }
+                           returns @display {label: "Old Bit At Offset"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set the value and expiration of a key.
     #
@@ -280,11 +289,9 @@ public isolated client class Client {
     @display {label: "Set Expirable Value (s)"}
     isolated remote function setEx(@display {label: "Key"} string key, @display {label: "Value"} string value, 
                           @display {label: "TTL (s)"} int expirationPeriodSeconds)
-                          returns @display {label: "Result"} string | error {
-        return <string>java:toString(check setEx(self.datasource, java:fromString(key), java:fromString(value),
-        expirationPeriodSeconds));
-
-    }
+                          returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Set value of a key, only if key does not exist.
     #
@@ -293,9 +300,9 @@ public isolated client class Client {
     # + return - `True` if exist `False` if not or `error` if an error occurs
     @display {label: "Set Value If Absent"} 
     isolated remote function setNx(@display {label: "Key"} string key, @display {label: "Value"} string value) 
-                          returns @display {label: "Result"} boolean | error {
-        return setNx(self.datasource, java:fromString(key), java:fromString(value));
-    }
+                          returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Overwrite part of string at key starting at the specified offset.
     #
@@ -307,9 +314,9 @@ public isolated client class Client {
     isolated remote function setRange(@display {label: "Key"} string key, 
                              @display {label: "Start Position"} int offset,
                              @display {label: "Value"} string value) 
-                             returns @display {label: "Result String Length"} int | error {
-        return setRange(self.datasource, java:fromString(key), offset, java:fromString(value));
-    }
+                             returns @display {label: "Result String Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     # Get length of value stored in a key.
     #
@@ -317,9 +324,9 @@ public isolated client class Client {
     # + return - Length of string at key, or 0 when key does not exist or `error` if an error occurs
     @display {label: "Get String Length"} 
     isolated remote function strln(@display {label: "Key"} string key) 
-                          returns @display {label: "String Length"} int | error {
-        return strln(self.datasource, java:fromString(key));
-    }
+                          returns @display {label: "String Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.StringActions"
+    } external;
 
     // list operations
 
@@ -330,9 +337,9 @@ public isolated client class Client {
     # + return - Length of list after the push operation(s) or `error` if an error occurs
     @display {label: "Push Value To List"}
     isolated remote function lPush(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                          returns @display {label: "List Length"} int | error {
-        return lPush(self.datasource, java:fromString(key), values);
-    }
+                          returns @display {label: "List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove and get the first element in a list.
     #
@@ -340,9 +347,9 @@ public isolated client class Client {
     # + return - Value of the first element, or nil when key does not exist or `error` if an error occurs
     @display {label: "Pop Value From List"}
     isolated remote function lPop(@display {label: "Key"} string key) 
-                         returns @display {label: "First Element Popped"} string?|error {
-        return java:toString(check lPop(self.datasource, java:fromString(key)));
-    }
+                         returns @display {label: "First Element Popped"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Prepend one or multiple values to a list, only if the list exists.
     #
@@ -351,9 +358,9 @@ public isolated client class Client {
     # + return - Length of the list after the push operation(s)
     @display {label: "Push To Available List"}
     isolated remote function lPushX(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                           returns @display {label: "List Length"} int | error {
-        return lPushX(self.datasource, java:fromString(key), values);
-    }
+                           returns @display {label: "List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove and get the first element in a list, or block until one is available.
     #
@@ -364,9 +371,9 @@ public isolated client class Client {
     #         popped element, or `error` if an error occurs
     @display {label: "Pop List First Element And Block If Absent"}
     isolated remote function bLPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Keys"} string[] keys)
-                          returns @display {label: "Key-Value Pair"} map<any> | error {
-        return bLPop(self.datasource, timeOut, keys);
-    }
+                          returns @display {label: "Key-Value Pair"} map<any> | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove and get the last element in a list, or block until one is available.
     #
@@ -377,9 +384,9 @@ public isolated client class Client {
     #         popped element, or `error` if an error occurs
     @display {label: "Pop List Last Element And Block If Absent"}
     isolated remote function bRPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Key Referring To a Values"} string[] keys)
-                          returns @display {label: "Key-Value Pair"} map<any> | error {
-        return bRPop(self.datasource, timeOut, keys);
-    }
+                          returns @display {label: "Key-Value Pair"} map<any> | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Get an element from list by its index.
     #
@@ -388,9 +395,9 @@ public isolated client class Client {
     # + return - Value at the given index
     @display {label: "Get List Element By Index"}
     isolated remote function lIndex(@display {label: "Key"} string key, @display {label: "Index"} int index) 
-                           returns @display {label: "Value"} string?|error {
-        return java:toString(check lIndex(self.datasource, java:fromString(key), index));
-    }
+                           returns @display {label: "Value"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Insert an element before or after another element in a list.
     #
@@ -404,18 +411,18 @@ public isolated client class Client {
     isolated remote function lInsert(@display {label: "Key"} string key, 
                             @display {label: "Insert Before or Not"} boolean before,
                             @display {label: "Place To Insert"} string pivot, @display {label: "Value"} string value) 
-                            returns @display {label: "Result List Length"} int | error {
-        return lInsert(self.datasource, java:fromString(key), before, java:fromString(pivot), java:fromString(value));
-    }
+                            returns @display {label: "Result List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Get length of a list.
     #
     # + key - Key referring to a value
     # + return - Length of list at key or `error` if an error occurs
     @display {label: "Get List Length"}
-    isolated remote function lLen(@display {label: "Key"} string key) returns @display {label: "List Length"} int | error {
-        return lLen(self.datasource, java:fromString(key));
-    }
+    isolated remote function lLen(@display {label: "Key"} string key) returns @display {label: "List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Get a range of elements from a list.
     #
@@ -426,9 +433,9 @@ public isolated client class Client {
     @display {label: "Get Range of List Elements"}
     isolated remote function lRange(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                            @display {label: "End Position"} int stopPos) 
-                           returns @display {label: "Elements In Range"} string[] | error {
-        return lRange(self.datasource, java:fromString(key), startPos, stopPos);
-    }
+                           returns @display {label: "Elements In Range"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove elements from list.
     #
@@ -439,9 +446,9 @@ public isolated client class Client {
     @display {label: "Remove List Elements"}
     isolated remote function lRem(@display {label: "Key"} string key, @display {label: "Member Count"} int count, 
                          @display {label: "Value"} string value) 
-                         returns @display {label: "Removed Member Count"} int | error {
-        return lRem(self.datasource, java:fromString(key), count, java:fromString(value));
-    }
+                         returns @display {label: "Removed Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Set the value of an element in a list by its index.
     #
@@ -452,9 +459,9 @@ public isolated client class Client {
     @display {label: "Set List Element At Index"}
     isolated remote function lSet(@display {label: "Key"} string key, @display {label: "Index"} int index, 
                          @display {label: "Value"} string value) 
-                         returns @display {label: "Result"} string | error {
-        return <string>java:toString(check lSet(self.datasource, java:fromString(key), index, java:fromString(value)));
-    }
+                         returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Trim list to the specified range.
     #
@@ -465,9 +472,9 @@ public isolated client class Client {
     @display {label: "Trim List To Range"}
     isolated remote function lTrim(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                           @display {label: "End Position"} int stopPos) 
-                          returns @display {label: "Result"} string | error {
-        return <string>java:toString(check lTrim(self.datasource, java:fromString(key), startPos, stopPos));
-    }
+                          returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove and get the last element in a list.
     #
@@ -475,9 +482,9 @@ public isolated client class Client {
     # + return - Value of the last element, or `nil` when key does not exist or `error` if an error occurs
     @display {label: "Pop List Last Element"}
     isolated remote function rPop(@display {label: "Key"} string key) 
-                         returns @display {label: "Popped Value"} string?|error {
-        return java:toString(check rPop(self.datasource, java:fromString(key)));
-    }
+                         returns @display {label: "Popped Value"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Remove the last element in a list, append it to another list and return it.
     #
@@ -487,10 +494,9 @@ public isolated client class Client {
     @display {label: "Move List Last Element To Another"}
     isolated remote function rPopLPush(@display {label: "Current Key"} string src, 
                               @display {label: "Destination Key"} string destination) 
-                              returns @display {label: "Value"} string | error {
-        return <string>java:toString(check rPopLPush(self.datasource, java:fromString(src),
-        java:fromString(destination)));
-    }
+                              returns @display {label: "Value"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Append one or multiple values to a list.
     #
@@ -499,9 +505,9 @@ public isolated client class Client {
     # + return - Length of the list after the push operation or `error` if an error occurs
     @display {label: "Enrich Values To List"}
     isolated remote function rPush(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                          returns @display {label: "List Length"} int | error {
-        return rPush(self.datasource, java:fromString(key), values);
-    }
+                          returns @display {label: "List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     # Append one or multiple values to a list, only if the list exists.
     #
@@ -510,9 +516,9 @@ public isolated client class Client {
     # + return - Length of the list after the push operation or `error` if an error occurs
     @display {label: "Enrich Values To List If Exists"}
     isolated remote function rPushX(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                           returns @display {label: "List Length"} int | error {
-        return rPushX(self.datasource, java:fromString(key), values);
-    }
+                           returns @display {label: "List Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ListActions"
+    } external;
 
     // Set Commands
 
@@ -524,9 +530,9 @@ public isolated client class Client {
     #            already present in the set, or `error` if an error occurs
     @display {label: "Add Members To Set"}
     isolated remote function sAdd(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
-                         returns @display {label: "Number of Elements Added"} int | error {
-        return sAdd(self.datasource, java:fromString(key), values);
-    }
+                         returns @display {label: "Number of Elements Added"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Get the number of members in a set
     #
@@ -534,9 +540,9 @@ public isolated client class Client {
     # + return - Cardinality (number of elements) of the set or `error` if an error occurs
     @display {label: "Get Member Count In Set"}
     isolated remote function sCard(@display {label: "Key"} string key) 
-                          returns @display {label: "Elements In Set"} int | error {
-        return sCard(self.datasource, java:fromString(key));
-    }
+                          returns @display {label: "Elements In Set"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Return set resulting from the difference between the first set and all the successive sets
     #
@@ -544,9 +550,9 @@ public isolated client class Client {
     # + return - An array of members of the resulting set or `error` if an error occurs
     @display {label: "Get Difference of Set"}
     isolated remote function sDiff(@display {label: "Keys"} string[] keys) 
-                          returns @display {label: "Members"} string[] | error {
-        return sDiff(self.datasource, keys);
-    }
+                          returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Obtain the set resulting from the difference between the first set and all the successive.
     # sets and store at the provided destination.
@@ -557,9 +563,9 @@ public isolated client class Client {
     @display {label: "Set Difference of Set"}
     isolated remote function sDiffStore(@display {label: "Destination Key"} string destination, 
                                @display {label: "Keys"} string[] keys) 
-                               returns @display {label: "Member Count"} int | error {
-        return sDiffStore(self.datasource, java:fromString(destination), keys);
-    }
+                               returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Return the intersection of the provided sets.
     #
@@ -567,9 +573,9 @@ public isolated client class Client {
     # + return - Array of members of the resulting set or `error` if an error occurs
     @display {label: "Get Intersections of Sets"}
     isolated remote function sInter(@display {label: "Keys"} string[] keys) 
-                           returns @display {label: "Members"} string[] | error {
-        return sInter(self.datasource, keys);
-    }
+                           returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Obtain the intersection of the provided sets and store at the provided destination.
     #
@@ -579,9 +585,9 @@ public isolated client class Client {
     @display {label: "Set Intersections of Sets"}
     isolated remote function sInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
-                                returns @display {label: "Member Count"} int | error {
-        return sInterStore(self.datasource, java:fromString(destination), keys);
-    }
+                                returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Determine if a given value is a member of a set.
     #
@@ -591,9 +597,9 @@ public isolated client class Client {
     #            occurs
     @display {label: "Check Value In Set"}
     isolated remote function sIsMember(@display {label: "Key"} string key, @display {label: "Value"} string value) 
-                              returns @display {label: "Result"} boolean | error {
-        return sIsMember(self.datasource, java:fromString(key), java:fromString(value));
-    }
+                              returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Get all members in a set.
     #
@@ -601,9 +607,9 @@ public isolated client class Client {
     # + return - Array of all members in the set or `error` if an error occurs
     @display {label: "Get Members In Set"}
     isolated remote function sMembers(@display {label: "Key"} string key) 
-                             returns @display {label: "Members"} string[] | error {
-        return sMembers(self.datasource, java:fromString(key));
-    }
+                             returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Move a member from one set to another.
     #
@@ -616,9 +622,9 @@ public isolated client class Client {
     isolated remote function sMove(@display {label: "Source Key"} string src, 
                           @display {label: "Destination Key"} string destination, 
                           @display {label: "Member"} string member) 
-                          returns @display {label: "Result"} boolean | error {
-        return sMove(self.datasource, java:fromString(src), java:fromString(destination), java:fromString(member));
-    }
+                          returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
 
     # Remove and return a random member from a set.
@@ -628,16 +634,9 @@ public isolated client class Client {
     # + return - Array of removed elements or `nil` if key does not exist or `error` if an error occurs
     @display {label: "Pop Set Random Member"}
     isolated remote function sPop(@display {label: "Key"} string key, @display {label: "Member Count"} int count) 
-                         returns @display {label: "Removed Elements"} string[]?|error {
-        handle|string[]|error result = sPop(self.datasource, java:fromString(key), count);
-        if (result is handle) {
-            return ();
-        } else if (result is string[]) {
-            return result;
-        } else {
-            return result;
-        }
-    }
+                         returns @display {label: "Removed Elements"} string[]?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Get one or multiple random members from a set.
     #
@@ -646,9 +645,9 @@ public isolated client class Client {
     # + return - Array of the randomly selected elements, or `nil` when key does not exist or `error` if an error occurs
     @display {label: "Get Random Members In Set"}
     isolated remote function sRandMember(@display {label: "Key"} string key, @display {label: "Member Count"} int count) 
-                                returns @display {label: "Elements"} string[] | error {
-        return sMembers(self.datasource, java:fromString(key));
-    }
+                                returns @display {label: "Elements"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Remove one or more members from a set.
     #
@@ -658,9 +657,9 @@ public isolated client class Client {
     #            an error occurs
     @display {label: "Remove Members In Set"}
     isolated remote function sRem(@display {label: "Key"} string key, @display {label: "Members"} string[] members) 
-                         returns @display {label: "Member Count"} int | error {
-        return sRem(self.datasource, java:fromString(key), members);
-    }
+                         returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Return the union of multiple sets.
     #
@@ -668,9 +667,9 @@ public isolated client class Client {
     # + return - Array of members of the resulting set or `error` if an error occurs
     @display {label: "Get Multiple Sets Union"}
     isolated remote function sUnion(@display {label: "Keys"} string[] keys) 
-                           returns @display {label: "Members"} string[] | error {
-        return sUnion(self.datasource, keys);
-    }
+                           returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     # Return the union of multiple sets.
     #
@@ -680,9 +679,9 @@ public isolated client class Client {
     @display {label: "Set Multiple Sets Union"}
     isolated remote function sUnionStore(@display {label: "Destination Key"} string destination,
                                 @display {label: "Keys"} string[] keys) 
-                                returns @display {label: "Member Count"} int | error {
-        return sUnionStore(self.datasource, java:fromString(destination), keys);
-    }
+                                returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SetActions"
+    } external;
 
     // Sorted set Commands
 
@@ -695,9 +694,9 @@ public isolated client class Client {
     @display {label: "Set Sorted Set Members"} 
     isolated remote function zAdd(@display {label: "Key"} string key, 
                          @display {label: "Member-Value Pairs"} map<any> memberScoreMap) 
-                         returns @display {label: "Added Member Count"} int | error {
-        return zAdd(self.datasource, java:fromString(key), memberScoreMap);
-    }
+                         returns @display {label: "Added Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Get the number of members in a sorted set.
     #
@@ -705,9 +704,9 @@ public isolated client class Client {
     # + return - Cardinality (number of elements) of the sorted set or `error` if an error occurs
     @display {label: "Get Sorted Set Member Count"}
     isolated remote function zCard(@display {label: "Key"} string key) 
-                          returns @display {label: "Member Count"} int | error {
-        return zCard(self.datasource, java:fromString(key));
-    }
+                          returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Count the members in a sorted set with scores within the given range.
     #
@@ -718,9 +717,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Member Count (By Range)"}
     isolated remote function zCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                            @display {label: "Maximum Value"} float max) 
-                           returns @display {label: "Member Count"} int | error {
-        return zCount(self.datasource, java:fromString(key), min, max);
-    }
+                           returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Increment the score of a member in a sorted set.
     #
@@ -731,9 +730,9 @@ public isolated client class Client {
     @display {label: "Increment Sorted Set Member"}
     isolated remote function zIncrBy(@display {label: "Key"} string key, @display {label: "Value"} float amount, 
                             @display {label: "Member"} string member) 
-                            returns @display {label: "Incremented Member Score"} float | error {
-        return zIncrBy(self.datasource, java:fromString(key), amount, java:fromString(member));
-    }
+                            returns @display {label: "Incremented Member Score"} float | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Intersect multiple sorted sets and store the resulting sorted set in a new key.
     #
@@ -743,9 +742,9 @@ public isolated client class Client {
     @display {label: "Get Member Count (Sorted Sets Intersection)"}
     isolated remote function zInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
-                                returns @display {label: "Member Count"} int | error {
-        return zInterStore(self.datasource, java:fromString(destination), keys);
-    }
+                                returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Count the members in a sorted set within the given lexicographical range.
     #
@@ -756,9 +755,9 @@ public isolated client class Client {
     @display {label: "Get Member Count (Lexicographical Range)"}
     isolated remote function zLexCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                               @display {label: "Maximum Value"} string max) 
-                              returns @display {label: "Member Count"} int | error {
-        return zLexCount(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
-    }
+                              returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by index.
     #
@@ -769,9 +768,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Members (By Index Range)"}
     isolated remote function zRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                            @display {label: "Maximum Index"} int max) 
-                           returns @display {label: "Members"} string[] | error {
-        return zRange(self.datasource, java:fromString(key), min, max);
-    }
+                           returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by lexicographical range from lowest to highest.
     #
@@ -783,9 +782,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Members From Lowest (By Lexicographical Range)"}
     isolated remote function zRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                 @display {label: "Maximum Value"} string max) 
-                                returns @display {label: "Members"} string[] | error {
-        return zRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
-    }
+                                returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by lexicographical range ordered from highest to
     # lowest.
@@ -798,9 +797,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Members From Highest (By Lexicographical Range)"}
     isolated remote function zRevRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                    @display {label: "Maximum Value"} string max) 
-                                   returns @display {label: "Members"} string[] | error {
-        return zRevRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
-    }
+                                   returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by score from lowest to highest.
     #
@@ -812,9 +811,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Members (By Score Range)"}
     isolated remote function zRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                   @display {label: "Maximum Value"} float max) 
-                                  returns @display {label: "Members"} string[] | error {
-        return zRangeByScore(self.datasource, java:fromString(key), min, max);
-    }
+                                  returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Determine index of a member in a sorted set.
     #
@@ -823,9 +822,9 @@ public isolated client class Client {
     # + return - Index of the member or `error` if an error occurs
     @display {label: "Get Sorted Set Member Index"}
     isolated remote function zRank(@display {label: "Key"} string key, @display {label: "Member"} string member) 
-                          returns @display {label: "Index"} int | error {
-        return zRank(self.datasource, java:fromString(key), java:fromString(member));
-    }
+                          returns @display {label: "Index"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Remove one or more members from a sorted set
     #
@@ -835,9 +834,9 @@ public isolated client class Client {
     #            error occurs
     @display {label: "Remove Sorted Set Members"}
     isolated remote function zRem(@display {label: "Key"} string key, @display {label: "Members"} string[] members) 
-                         returns @display {label: "Removed Member Count"} int | error {
-        return zRem(self.datasource, java:fromString(key), members);
-    }
+                         returns @display {label: "Removed Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
 
     # Remove all members in a sorted set between the given lexicographical range.
@@ -849,9 +848,9 @@ public isolated client class Client {
     @display {label: "Deleted Member Count Between Lexicographical Range"}
     isolated remote function zRemRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                    @display {label: "Maximum Value"} string max) 
-                                   returns @display {label: "Removed Member Count"} int | error {
-        return zRemRangeByLex(self.datasource, java:fromString(key), java:fromString(min), java:fromString(max));
-    }
+                                   returns @display {label: "Removed Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Remove all members in a sorted set within the given indices.
     #
@@ -862,9 +861,9 @@ public isolated client class Client {
     @display {label: "Deleted Member Count Between Indexes"}
     isolated remote function zRemRangeByRank(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                                     @display {label: "Maximum Index"} int max) 
-                                    returns @display {label: "Removed Member Count"} int | error {
-        return zRemRangeByRank(self.datasource, java:fromString(key), min, max);
-    }
+                                    returns @display {label: "Removed Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Remove all members in a sorted set within the given scores.
     #
@@ -875,9 +874,9 @@ public isolated client class Client {
     @display {label: "Deleted Member Count Between Scores"}
     isolated remote function zRemRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                      @display {label: "Maximum Value"} float max) 
-                                     returns @display {label: "Removed Member Count"} int | error {
-        return zRemRangeByScore(self.datasource, java:fromString(key), min, max);
-    }
+                                     returns @display {label: "Removed Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by index, ordered highest to lowest.
     #
@@ -888,9 +887,9 @@ public isolated client class Client {
     @display {label: "Get Members (By Index Range)"}
     isolated remote function zRevRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                               @display {label: "Maximum Index"} int max) 
-                              returns @display {label: "Members"} string[] | error {
-        return zRevRange(self.datasource, java:fromString(key), min, max);
-    }
+                              returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return a range of members in a sorted set, by score from highest to lowest.
     #
@@ -902,9 +901,9 @@ public isolated client class Client {
     @display {label: "Get Members (By Score Range)"}
     isolated remote function zRevRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                      @display {label: "Maximum Value"} float max) 
-                                     returns @display {label: "Members"} string[] | error {
-        return zRevRangeByScore(self.datasource, java:fromString(key), min, max);
-    }
+                                     returns @display {label: "Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Determine the index of a member in a sorted set
     #
@@ -913,9 +912,9 @@ public isolated client class Client {
     # + return - Index of the member or `error` if an error occurs
     @display {label: "Get Sorted Set Member Index"}
     isolated remote function zRevRank(@display {label: "Key"} string key, @display {label: "Member"} string member) 
-                             returns @display {label: "Index"} int | error {
-        return zRevRank(self.datasource, java:fromString(key), java:fromString(member));
-    }
+                             returns @display {label: "Index"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Determine the score of a member in a sorted set
     #
@@ -924,9 +923,9 @@ public isolated client class Client {
     # + return - Score of the member or `error` if an error occurs
     @display {label: "Get Sorted Set Member Score"}
     isolated remote function zScore(@display {label: "Key"} string key, @display {label: "Member"} string member) 
-                           returns @display {label: "Score"} float | error {
-        return zScore(self.datasource, java:fromString(key), java:fromString(member));
-    }
+                           returns @display {label: "Score"} float | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     # Return the union of multiple sorted sets
     #
@@ -936,9 +935,9 @@ public isolated client class Client {
     @display {label: "Get Sorted Sets Union"}
     isolated remote function zUnionStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
-                                returns @display {label: "Member Count"} int | error {
-        return zUnionStore(self.datasource, java:fromString(destination), keys);
-    }
+                                returns @display {label: "Member Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.SortedSetActions"
+    } external;
 
     // Hash Commands
 
@@ -950,9 +949,9 @@ public isolated client class Client {
     #            `error` if an error occurs
     @display {label: "Delete Hash Fields"}
     isolated remote function hDel(@display {label: "Key"} string key, @display {label: "Fields"} string[] fields) 
-                         returns @display {label: "Deleted Fields Count"} int | error {
-        return hDel(self.datasource, java:fromString(key), fields);
-    }
+                         returns @display {label: "Deleted Fields Count"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Determine if a hash field exists.
     #
@@ -962,9 +961,9 @@ public isolated client class Client {
     #            field or key does not exist or `error` if an error occurs
     @display {label: "Check Hash Field Availability"}
     isolated remote function hExists(@display {label: "Key"} string key, @display {label: "Field"} string 'field) 
-                            returns @display {label: "Result"} boolean | error {
-        return hExists(self.datasource, java:fromString(key), java:fromString('field));
-    }
+                            returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get the value of a hash field.
     #
@@ -973,9 +972,9 @@ public isolated client class Client {
     # + return - Value of the field or `error` if an error occurs
     @display {label: "Get Hash Field Value"} 
     isolated remote function hGet(@display {label: "Key"} string key, @display {label: "Field"} string 'field) 
-                         returns @display {label: "Value of Field"} string | error {
-        return <string>java:toString(check hGet(self.datasource, java:fromString(key), java:fromString('field)));
-    }
+                         returns @display {label: "Value of Field"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get the all values of a hash.
     #
@@ -983,9 +982,9 @@ public isolated client class Client {
     # + return - Map of field-value pairs or `error` if an error occurs
     @display {label: "Get Hash Values"} 
     isolated remote function hGetAll(@display {label: "Key"} string key) 
-                            returns @display {label: "Field-value Pairs"} map<any> | error {
-        return hGetAll(self.datasource, java:fromString(key));
-    }
+                            returns @display {label: "Field-value Pairs"} map<any> | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Increment the integer value of a hash field by the given number.
     #
@@ -996,9 +995,9 @@ public isolated client class Client {
     @display {label: "Increment Hash Field (By Number)"}
     isolated remote function hIncrBy(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
                             @display {label: "Increment Value"} int amount) 
-                            returns @display {label: "Incremented Value"} int | error {
-        return hIncrBy(self.datasource, java:fromString(key), java:fromString('field), amount);
-    }
+                            returns @display {label: "Incremented Value"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Increment the float value of a hash field by the given number.
     #
@@ -1009,9 +1008,9 @@ public isolated client class Client {
     @display {label: "Increment Hash Field (By Float)"}
     isolated remote function hIncrByFloat(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
                                  @display {label: "Value To Increment"} float amount)
-                                 returns @display {label: "Incremented Value"} float | error {
-        return hIncrByFloat(self.datasource, java:fromString(key), java:fromString('field), amount);
-    }
+                                 returns @display {label: "Incremented Value"} float | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get all the fields in a hash.
     #
@@ -1019,9 +1018,9 @@ public isolated client class Client {
     # + return - Array of hash fields or `error` if an error occurs
     @display {label: "Get Hash Fields"} 
     isolated remote function hKeys(@display {label: "Key"} string key) 
-                          returns @display {label: "Hash Fields"} string[] | error {
-        return hKeys(self.datasource, java:fromString(key));
-    }
+                          returns @display {label: "Hash Fields"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get the number of fields in a hash.
     #
@@ -1029,9 +1028,9 @@ public isolated client class Client {
     # + return - Number of fields or `error` if an error occurs
     @display {label: "Get Hash Fields Count"} 
     isolated remote function hLen(@display {label: "Key"} string key) 
-                         returns @display {label: "Number of hash fields"} int | error {
-        return hLen(self.datasource, java:fromString(key));
-    }
+                         returns @display {label: "Number of hash fields"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get the values of all the given hash fields.
     #
@@ -1040,9 +1039,9 @@ public isolated client class Client {
     # + return - Map of field-value pairs or `error` if an error occurs
     @display {label: "Get Hash Fields Values"} 
     isolated remote function hMGet(@display {label: "Key"} string key, @display {label: "Fields"} string[] fields) 
-                          returns @display {label: "Field-Value Pairs"} map<any> | error {
-        return hMGet(self.datasource, java:fromString(key), fields);
-    }
+                          returns @display {label: "Field-Value Pairs"} map<any> | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Set multiple hash fields to multiple values.
     #
@@ -1052,9 +1051,9 @@ public isolated client class Client {
     @display {label: "Set Hash Fields"} 
     isolated remote function hMSet(@display {label: "Key"} string key, 
                           @display {label: "Field-Value Pairs"} map<any> fieldValueMap) 
-                          returns @display {label: "Result"} string | error {
-        return <string>java:toString(check hMSet(self.datasource, java:fromString(key), fieldValueMap));
-    }
+                          returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Set the string value of a hash field.
     #
@@ -1065,9 +1064,9 @@ public isolated client class Client {
     #         field already exists in the hash and the value was updated, or `error` if an error occurs
     @display {label: "Set Hash Field"} 
     isolated remote function hSet(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field,
-                         @display {label: "Value"} string value) returns @display {label: "Result"} boolean | error {
-        return hSet(self.datasource, java:fromString(key), java:fromString('field), java:fromString(value));
-    }
+                         @display {label: "Value"} string value) returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Set the string value of a hash field, only if the field does not exist.
     #
@@ -1078,9 +1077,9 @@ public isolated client class Client {
     #            field already exists in the hash and no operation was performed, or `error` if an error occurs
     @display {label: "Set Hash Field If Absent"} 
     isolated remote function hSetNx(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field, 
-                           @display {label: "Value"} string value) returns @display {label: "Result"} boolean | error {
-        return hSetNx(self.datasource, java:fromString(key), java:fromString('field), java:fromString(value));
-    }
+                           @display {label: "Value"} string value) returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get the string length of the field value in a hash.
     #
@@ -1090,9 +1089,9 @@ public isolated client class Client {
     #            not exist at all, or `error` if an error occurs
     @display {label: "Get Value String Length"}
     isolated remote function hStrln(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field) 
-                           returns @display {label: "String Length"} int | error {
-        return hStrln(self.datasource, java:fromString(key), java:fromString('field));
-    }
+                           returns @display {label: "String Length"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     # Get all the values in a hash.
     #
@@ -1100,9 +1099,9 @@ public isolated client class Client {
     # + return - Array of values in the hash, or an empty array when key does not exist or `error` if an error occurs
     @display {label: "Get Values In Hash"}
     isolated remote function hVals(@display {label: "Key"} string key) 
-                          returns @display {label: "Values"} string[] | error {
-        return hVals(self.datasource, java:fromString(key));
-    }
+                          returns @display {label: "Values"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.HashActions"
+    } external;
 
     // Key Commands
 
@@ -1112,9 +1111,9 @@ public isolated client class Client {
     # + return - Number of keys that were removed
     @display {label: "Delete Keys"}
     isolated remote function del(@display {label: "Keys"} string[] keys) 
-                        returns @display {label: "Number of keys deleted"} int | error {
-        return del(self.datasource, keys);
-    }
+                        returns @display {label: "Number of keys deleted"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Determine how many keys exist.
     #
@@ -1122,9 +1121,9 @@ public isolated client class Client {
     # + return - Number of existing keys or `error` if an error occurs
     @display {label: "Check Keys"}
     isolated remote function exists(@display {label: "Keys"} string[] keys) 
-                           returns @display {label: "Number of Keys Exists"} int|error {
-        return exists(self.datasource, keys);
-    }
+                           returns @display {label: "Number of Keys Exists"} int|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Set a key's time to live in seconds.
     #
@@ -1134,9 +1133,9 @@ public isolated client class Client {
     # `error` if an error occurs
     @display {label: "Set TTL (s)"}
     isolated remote function expire(@display {label: "Key"} string key, @display {label: "TTL (s)"} int seconds)
-                           returns @display {label: "Result"} boolean | error {
-        return expire(self.datasource, java:fromString(key), seconds);
-    }
+                           returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Find all keys matching the given pattern.
     #
@@ -1144,9 +1143,9 @@ public isolated client class Client {
     # + return - Array of keys matching the given pattern or `error` if an error occurs
     @display {label: "Get Matching Keys"}
     isolated remote function keys(@display {label: "Pattern String"} string pattern) 
-                         returns @display {label: "Keys"} string[] | error {
-        return keys(self.datasource, java:fromString(pattern));
-    }
+                         returns @display {label: "Keys"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Move a key to another database.
     #
@@ -1156,9 +1155,9 @@ public isolated client class Client {
     @display {label: "Move Key"}
     isolated remote function move(@display {label: "Key"} string key, 
                          @display {label: "Destination Database"} int database) 
-                         returns @display {label: "Result"} boolean | error {
-        return move(self.datasource, java:fromString(key), database);
-    }
+                         returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Remove the expiration from a key.
     #
@@ -1166,9 +1165,9 @@ public isolated client class Client {
     # + return - Boolean `true` if the timeout was removed. boolean `false` if key does not exist or does not have
     #            an associated timeout, or `error` if an error occurs
     @display {label: "Remove Key Timeout"}
-    isolated remote function persist(@display {label: "Key"} string key) returns @display {label: "Result"} boolean | error {
-        return persist(self.datasource, java:fromString(key));
-    }
+    isolated remote function persist(@display {label: "Key"} string key) returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Set a key's time to live in milliseconds.
     #
@@ -1179,9 +1178,9 @@ public isolated client class Client {
     @display {label: "Set TTL (ms)"}
     isolated remote function pExpire(@display {label: "Key"} string key, 
                             @display {label: "TTL (ms)"} int timeMilliSeconds)
-                            returns @display {label: "Result"} boolean | error {
-        return pExpire(self.datasource, java:fromString(key), timeMilliSeconds);
-    }
+                            returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Get the time to live for a key in milliseconds.
     #
@@ -1189,17 +1188,17 @@ public isolated client class Client {
     # + return - TTL of the key, in milli seconds or `error` if an error occurs
     @display {label: "Get TTL (ms)"}
     isolated remote function pTtl(@display {label: "Key"} string key) 
-                         returns @display {label: "TTL (ms)"} int | error {
-        return pTtl(self.datasource, java:fromString(key));
-    }
+                         returns @display {label: "TTL (ms)"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Return a random key from the keyspace.
     #
     # + return - Random key, or `nil` when the database is empty or `error` if an error occurs
     @display {label: "Get Random Key"}
-    isolated remote function randomKey() returns @display {label: "Key"} string?|error {
-        return java:toString(check randomKey(self.datasource));
-    }
+    isolated remote function randomKey() returns @display {label: "Key"} string?|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Rename a key.
     #
@@ -1208,9 +1207,9 @@ public isolated client class Client {
     # + return - String with the value `OK` if the operation was successful or `error` if an error occurs
     @display {label: "Rename Key"}
     isolated remote function rename(@display {label: "Key"} string key, @display {label: "New Key Name"} string newName)
-                           returns @display {label: "Result"} string | error {
-        return <string>java:toString(check rename(self.datasource, java:fromString(key), java:fromString(newName)));
-    }
+                           returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Rename a key, only if the new key does not exist.
     #
@@ -1220,9 +1219,9 @@ public isolated client class Client {
     #            error occurs
     @display {label: "Rename Key If Absent"}
     isolated remote function renameNx(@display {label: "Key"} string key, @display {label: "New Key Name"} string newName)
-                             returns @display {label: "Result"} boolean | error {
-        return renameNx(self.datasource, java:fromString(key), java:fromString(newName));
-    }
+                             returns @display {label: "Result"} boolean | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Sort elements in a list, set or sorted set.
     #
@@ -1230,9 +1229,9 @@ public isolated client class Client {
     # + return - Sorted array containing the members of the sorted data type or `error` if an error occurs
     @display {label: "Sort Elements"}
     isolated remote function sort(@display {label: "Key"} string key) 
-                         returns @display {label: "Sorted Members"} string[] | error {
-        return sort(self.datasource, java:fromString(key));
-    }
+                         returns @display {label: "Sorted Members"} string[] | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Get the time to live for a key.
     #
@@ -1242,9 +1241,9 @@ public isolated client class Client {
     #         level or the driver level
     @display {label: "Get Key TTL"}
     isolated remote function ttl(@display {label: "Key"} string key) 
-                        returns @display {label: "TTL (s)"} int | error {
-        return ttl(self.datasource, java:fromString(key));
-    }
+                        returns @display {label: "TTL (s)"} int | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     # Determine the type stored at key.
     #
@@ -1252,9 +1251,9 @@ public isolated client class Client {
     # + return - Type stored at key
     @display {label: "Get Key Type"}
     isolated remote function redisType(@display {label: "Key"} string key) 
-                              returns @display {label: "Type Of Key"} string | error {
-        return <string>java:toString(check redisType(self.datasource, java:fromString(key)));
-    }
+                              returns @display {label: "Type Of Key"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.KeyActions"
+    } external;
 
     // Connection commands
 
@@ -1262,14 +1261,9 @@ public isolated client class Client {
     # 
     # + return - String with the value `PONG` if the operation was successful
     @display {label: "Ping the server"}
-    isolated remote function ping() returns @display {label: "Result"} string|error {
-        var result = ping(self.datasource); 
-        if (result is handle) {
-            return <string>java:toString(result);
-        } else {
-            return result;
-        }
-    }
+    isolated remote function ping() returns @display {label: "Result"} string|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ConnectionActions"
+    } external;
 
     # Authenticate to the server.
     #
@@ -1277,9 +1271,9 @@ public isolated client class Client {
     # + return - String with the value `OK` if the operation was successful or `error` if an error occurs
     @display {label: "Authenticate Server"}
     isolated remote function auth(@display {label: "Password"} string password) 
-                         returns @display {label: "Result"} string | error {
-        return <string>java:toString(check auth(self.datasource, java:fromString(password)));
-    }
+                         returns @display {label: "Result"} string | error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ConnectionActions"
+    } external;
 
     # Echo the given string.
     #
@@ -1287,462 +1281,15 @@ public isolated client class Client {
     # + return - Message itself if the operation was successful or `error` if an error occurs
     @display {label: "Echo Input String"}
     isolated remote function echo(@display {label: "String To Echo"} string message)
-                         returns @display {label: "Result"} string|error {
-        var result = echo(self.datasource, java:fromString(message)); 
-        if (result is handle) {
-            return <string>java:toString(result);
-        } else {
-            return result;
-        }
-    }
+                         returns @display {label: "Result"} string|error = @java:Method {
+        'class: "org.ballerinalang.redis.actions.ConnectionActions"
+    } external;
 
     # Stops the registered service.
-    public isolated function stop() {
-        close(self.datasource);
-    }
+    public isolated function close() = @java:Method {
+        'class: "org.ballerinalang.redis.endpoint.Close"
+    } external;
 }
-
-# Initialize redis client.
-#
-# + clientEndpointConfig - Client end point configuration
-# + return - `error` if error occurs
-isolated function initClient(ConnectionConfig clientEndpointConfig) returns handle = @java:Method {
-    'class: "org.ballerinalang.redis.endpoint.InitRedisClient"
-} external;
-
-# An internal isolated function used by clients to shutdown the connection/connection pool(if pooling enabled).
-# 
-# + datasource - data source handle
-isolated function close(handle datasource) = @java:Method {
-    'class: "org.ballerinalang.redis.endpoint.Close"
-} external;
-
-isolated function append(handle datasource, handle key, handle value) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function bitCount(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function bitOpAnd(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function bitOpOr(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function bitOpNot(handle datasource, handle destination, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function bitOpXor(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function decr(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function decrBy(handle datasource, handle key, int value) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function get(handle datasource, handle key) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function getBit(handle datasource, handle key, int offset) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function getRange(handle datasource, handle key, int startPos, int end) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function getSet(handle datasource, handle key, handle value) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function incr(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function incrBy(handle datasource, handle key, int value) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function incrByFloat(handle datasource, handle key, float value) returns float | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-public isolated function mGet(handle datasource, string[] keys) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-public isolated function mSet(handle datasource, map<any> keyValueMap) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-public isolated function mSetNx(handle datasource, map<any> keyValueMap) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function pSetEx(handle datasource, handle key, handle value, int expirationTime) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function set(handle datasource, handle key, handle value) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function setBit(handle datasource, handle key, int value, int offset) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function setEx(handle datasource, handle key, handle value, int expirationPeriodSeconds) returns handle | error =
-@java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function setNx(handle datasource, handle key, handle value) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function setRange(handle datasource, handle key, int offset, handle value) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function strln(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.StringActions"
-} external;
-
-isolated function lPush(handle datasource, handle key, string[] values) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lPop(handle datasource, handle key) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lPushX(handle datasource, handle key, string[] values) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function bLPop(handle datasource, int timeOut, string[] keys) returns map<any> | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function bRPop(handle datasource, int timeOut, string[] keys) returns map<any> | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lIndex(handle datasource, handle key, int index) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lInsert(handle datasource, handle key, boolean before, handle pivot, handle value) returns int | error =
-@java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lLen(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lRange(handle datasource, handle key, int startPos, int stopPos) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lRem(handle datasource, handle key, int count, handle value) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lSet(handle datasource, handle key, int index, handle value) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function lTrim(handle datasource, handle key, int startPos, int stopPos) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function rPop(handle datasource, handle key) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function rPopLPush(handle datasource, handle src, handle destination) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function rPush(handle datasource, handle key, string[] values) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function rPushX(handle datasource, handle key, string[] values) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ListActions"
-} external;
-
-isolated function sAdd(handle datasource, handle key, string[] values) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sCard(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sDiff(handle datasource, string[] keys) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sDiffStore(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sInter(handle datasource, string[] keys) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sInterStore(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sIsMember(handle datasource, handle key, handle value) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sMembers(handle datasource, handle key) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sMove(handle datasource, handle src, handle destination, handle member) returns boolean | error =
-@java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sPop(handle datasource, handle key, int count) returns handle | string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sRandMember(handle datasource, handle key, int count) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sRem(handle datasource, handle key, string[] members) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sUnion(handle datasource, string[] keys) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function sUnionStore(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SetActions"
-} external;
-
-isolated function zAdd(handle datasource, handle key, map<any> memberScoreMap) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zCard(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zCount(handle datasource, handle key, float min, float max) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zIncrBy(handle datasource, handle key, float amount, handle member) returns float | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zInterStore(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zLexCount(handle datasource, handle destination, handle min, handle max) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRange(handle datasource, handle key, int min, int max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRevRangeByLex(handle datasource, handle key, handle min, handle max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRangeByScore(handle datasource, handle key, float min, float max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRank(handle datasource, handle key, handle member) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRem(handle datasource, handle key, string[] members) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRemRangeByLex(handle datasource, handle key, handle min, handle max) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRemRangeByRank(handle datasource, handle key, int min, int max) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRemRangeByScore(handle datasource, handle key, float min, float max) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRevRange(handle datasource, handle key, int min, int max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRevRangeByScore(handle datasource, handle key, float min, float max) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zRevRank(handle datasource, handle key, handle member) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zScore(handle datasource, handle key, handle member) returns float | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function zUnionStore(handle datasource, handle destination, string[] keys) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.SortedSetActions"
-} external;
-
-isolated function del(handle datasource, string[] key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function exists(handle datasource, string[] key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function expire(handle datasource, handle key, int seconds) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function keys(handle datasource, handle pattern) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function move(handle datasource, handle key, int database) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function persist(handle datasource, handle key) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function pExpire(handle datasource, handle key, int timeMilliSeconds) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function pTtl(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function randomKey(handle datasource) returns handle|error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function rename(handle datasource, handle key, handle newName) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function renameNx(handle datasource, handle key, handle newName) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function sort(handle datasource, handle key) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function ttl(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function redisType(handle datasource, handle key) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.KeyActions"
-} external;
-
-isolated function ping(handle datasource) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ConnectionActions"
-} external;
-
-isolated function auth(handle datasource, handle password) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ConnectionActions"
-} external;
-
-isolated function echo(handle datasource, handle message) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.ConnectionActions"
-} external;
-
-isolated function hDel(handle datasource, handle key, string[] fields) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hExists(handle datasource, handle key, handle 'field) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hGet(handle datasource, handle key, handle 'field) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hGetAll(handle datasource, handle key) returns map<any> | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hIncrBy(handle datasource, handle key, handle 'field, int amount) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hIncrByFloat(handle datasource, handle key, handle 'field, float amount) returns float | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hLen(handle datasource, handle key) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hMGet(handle datasource, handle key, string[] fields) returns map<any> | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hMSet(handle datasource, handle key, map<any> fieldValueMap) returns handle | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hKeys(handle datasource, handle key) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hSet(handle datasource, handle key, handle 'field, handle value) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hSetNx(handle datasource, handle key, handle 'field, handle value) returns boolean | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hStrln(handle datasource, handle key, handle 'field) returns int | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
-
-isolated function hVals(handle datasource, handle key) returns string[] | error = @java:Method {
-    'class: "org.ballerinalang.redis.actions.HashActions"
-} external;
 
 # Connection options for Redis Client Endpoint.
 #
