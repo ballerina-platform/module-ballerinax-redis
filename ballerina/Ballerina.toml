@@ -9,6 +9,9 @@ icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
+[platform.java17]
+graalvmCompatible = true
+
 [[platform.java17.dependency]]
 groupId = "org.ballerinalang"
 artifactId = "redis-utils"
