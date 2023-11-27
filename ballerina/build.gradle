@@ -56,7 +56,18 @@ configurations {
 }
 
 dependencies {
-
+    externalJars(group: 'com.google.guava', name: 'guava', version: "${guavaVersion}") {transitive = false}
+    externalJars(group: 'commons-io', name: 'commons-io', version: "${commonsIoVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-common', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-buffer', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-transport', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-resolver', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-handler', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-transport-native-kqueue', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-transport-native-epoll', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-codec', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.projectreactor', name: 'reactor-core', version: "${reactorCoreVersion}") {transitive = false}
+    externalJars(group: 'org.reactivestreams', name: 'reactive-streams', version: "${reactiveStreamsVersion}") {transitive = false}
 }
 
 task updateTomlFiles {
@@ -65,6 +76,11 @@ task updateTomlFiles {
         newBallerinaToml = newBallerinaToml.replace("@toml.version@", tomlVersion)
         newBallerinaToml = newBallerinaToml.replace("@lettuce.version@", lettuceCoreVersion)
         newBallerinaToml = newBallerinaToml.replace("@commons.pool2.version@", commonsPool2Version)
+        newBallerinaToml = newBallerinaToml.replace("@guava.version@", guavaVersion)
+        newBallerinaToml = newBallerinaToml.replace("@commons.io.version@", commonsIoVersion)
+        newBallerinaToml = newBallerinaToml.replace("@netty.version@", nettyVersion)
+        newBallerinaToml = newBallerinaToml.replace("@reactor-core.version@", reactorCoreVersion)
+        newBallerinaToml = newBallerinaToml.replace("@reactive-streams.version@", reactiveStreamsVersion)
         ballerinaTomlFile.text = newBallerinaToml
     }
 }
@@ -87,5 +103,5 @@ clean {
 }
 
 build.dependsOn copyToLib
-build.dependsOn ":${packageName}-native:build"
-test.dependsOn ":${packageName}-native:build"
+build.dependsOn ":${project.packageName}-native:build"
+test.dependsOn ":${project.packageName}-native:build"
