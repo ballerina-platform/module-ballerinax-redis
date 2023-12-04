@@ -9,16 +9,6 @@ distribution-version = "2201.8.0-20230830-220400-8a7556d8"
 
 [[package]]
 org = "ballerina"
-name = "io"
-version = "1.6.0"
-scope = "testOnly"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.value"}
-]
-
-[[package]]
-org = "ballerina"
 name = "jballerina.java"
 version = "0.0.0"
 modules = [
@@ -48,39 +38,6 @@ modules = [
 
 [[package]]
 org = "ballerina"
-name = "lang.value"
-version = "0.0.0"
-scope = "testOnly"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
-name = "log"
-version = "2.9.0"
-scope = "testOnly"
-dependencies = [
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.value"},
-	{org = "ballerina", name = "observe"}
-]
-modules = [
-	{org = "ballerina", packageName = "log", moduleName = "log"}
-]
-
-[[package]]
-org = "ballerina"
-name = "observe"
-version = "1.2.0"
-scope = "testOnly"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
 name = "test"
 version = "0.0.0"
 scope = "testOnly"
@@ -99,7 +56,6 @@ version = "3.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.runtime"},
-	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "test"}
 ]
 modules = [
