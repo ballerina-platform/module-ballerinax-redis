@@ -13,40 +13,33 @@
 # Package Files #
 *.jar
 !gradle-wrapper/*.jar
-*.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
 *.rar
 
-# Ignore Gradle files
-.gradle/**
-
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# Ballerina configuartion file
-ballerina.conf
-Config.toml
+# mac
+.DS_Store
 
-# Target folder of ballerina project
+.classpath
+.project
+.settings
+.vscode
+
 target
-
-# json files created inside resources folder
-/resources/*.json
-
 .idea
 *.iml
 *.ipr
 *.iws
+.gradle
+build
 
-Ballerina.lock
-*.DS_Store
-redis-utils/dependency-reduced-pom.xml
-redis/resources/*.json
-redis-utils/target/**
-redis/target/**
+# Environment files
+*.env
 
-# Ignore Gradle build output directory
-build*
+# Ballerina configuartion files
+**/Config.toml

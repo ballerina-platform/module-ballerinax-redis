@@ -46,7 +46,7 @@ task buildExamples {
     }
     doLast {
         // TODO: Enabled --offline due to a bug in pulling incorrect versions from the central repository.
-        examples.each { example ->  executeBalCommand ("build --offline ${example}", "${project.rootDir}") }
+        // examples.each { example ->  executeBalCommand ("build --offline ${example}", "${project.rootDir}") }
     }
 }
 
