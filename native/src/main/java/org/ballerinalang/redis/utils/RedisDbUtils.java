@@ -18,7 +18,6 @@
 
 package org.ballerinalang.redis.utils;
 
-import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.RedisClient;
@@ -28,17 +27,8 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.ballerinalang.redis.Constants.REDIS_EXCEPTION_OCCURRED;
 
 /**
  * Redis database utils to run unit tests.
@@ -48,72 +38,6 @@ public class RedisDbUtils {
     private static final String REDIS_HOST = "localhost";
     private static final int REDIS_PORT = 6379;
     private static RedisCommands<String, String> redisCommands;
-
-    /**
-     * Initialize custom redis server.
-     *
-     * @throws IOException exception
-     */
-    public static Object initServer() throws IOException {
-        String scriptPath = getResourcePath().resolve("setup.sh").toString();
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("bash", scriptPath);
-        Process process = processBuilder.start();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8))) {
-            StringBuilder output = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
-            int exitVal = process.waitFor();
-            if (exitVal != 0) {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
-                        StringUtils.fromString(output.toString()));
-            }
-        } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
-        }
-        process.destroy();
-        return "OK";
-    }
-
-    /**
-     * Stop redis server.
-     */
-    public static Object stopServer() throws IOException {
-        String scriptPath = getResourcePath().resolve("cleanup.sh").toString();
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("bash", scriptPath);
-        Process process = processBuilder.start();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8))) {
-            StringBuilder output = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line).append("\n");
-            }
-            int exitVal = process.waitFor();
-            if (exitVal != 0) {
-                return ErrorCreator.createError(StringUtils.fromString(REDIS_EXCEPTION_OCCURRED),
-                        StringUtils.fromString(output.toString()));
-            }
-        } catch (IOException | InterruptedException e) {
-            return ErrorCreator.createDistinctError(REDIS_EXCEPTION_OCCURRED, ModuleUtils.getModule(),
-                    StringUtils.fromString(e.getMessage()));
-        }
-        process.destroy();
-        return "OK";
-    }
-
-    private static Path getResourcePath() {
-        Path userDir = Paths.get(System.getProperty("user.dir"));
-        if (!userDir.toString().endsWith(File.separator + "ballerina")) {
-            userDir = userDir.resolve("ballerina");
-        }
-        return userDir.resolve("tests").resolve("resources");
-    }
 
     /**
      * Populate string database.

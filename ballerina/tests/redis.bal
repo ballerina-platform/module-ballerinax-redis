@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/jballerina.java;
-import ballerina/log;
 import ballerina/test;
 
 ConnectionConfig redisConfig = {
@@ -35,10 +34,6 @@ Client conn = check new (redisConfig);
 
 @test:BeforeSuite
 public function initDb() {
-    var stringResult = initRedisServer();
-    if(stringResult is error){
-        log:printError("Redis server initialization failed" + stringResult.toString());
-    }
     setupRedisStringDatabase();
     setupRedisKeyDatabase();
     setupRedisListDatabase();
@@ -46,24 +41,6 @@ public function initDb() {
     setupRedisSetDatabase();
     setupRedisSortedSetDatabase();
 }
-
-@test:AfterSuite {}
-public function stopServer() {
-    var result = stopRedisServer();
-    if (result is error) {
-        test:assertFail("error from Connector: " + result.message());
-    }
-}
-
-function initRedisServer() returns handle|error = @java:Method {
-    name: "initServer",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function stopRedisServer() returns handle|error = @java:Method {
-    name: "stopServer",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
 
 function getValue(handle key) returns handle = @java:Method {
     name: "getValue",
