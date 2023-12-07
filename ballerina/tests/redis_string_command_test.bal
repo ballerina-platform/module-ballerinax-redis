@@ -21,7 +21,7 @@ import ballerina/test;
 @test:Config {
 }
 public function testSet() {
-    var result = conn->set("Name", "Manuri");
+    var result = redis->set("Name", "Manuri");
     if (result is string) {
         test:assertEquals(result, "OK");
     } else {
@@ -32,7 +32,7 @@ public function testSet() {
 @test:Config {
 }
 public function testAppend() {
-    var result = conn->append("AppendTestKey", "SomeValue");
+    var result = redis->append("AppendTestKey", "SomeValue");
     if (result is int) {
         test:assertEquals(result, 24);
     } else {
@@ -43,7 +43,7 @@ public function testAppend() {
 @test:Config {
 }
 public function testBitCount() {
-    var result = conn->bitCount("BitCountTestKey");
+    var result = redis->bitCount("BitCountTestKey");
     if (result is int) {
         test:assertEquals(result, 69);
     } else {
@@ -55,7 +55,7 @@ public function testBitCount() {
 }
 public function testBitOpAnd() {
     string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    var result = conn->bitOpAnd("tesBitOpAndDest", keys);
+    var result = redis->bitOpAnd("tesBitOpAndDest", keys);
     if (result is int) {
         test:assertEquals(result, 3);
         test:assertEquals(getValue(java:fromString("tesBitOpAndDest")).toString(), "100");
@@ -68,7 +68,7 @@ public function testBitOpAnd() {
 }
 public function tesBitOpOr() {
     string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    var result = conn->bitOpOr("tesBitOpOrDest", keys);
+    var result = redis->bitOpOr("tesBitOpOrDest", keys);
     if (result is int) {
         test:assertEquals(result, 3);
         test:assertEquals(getValue(java:fromString("tesBitOpOrDest")).toString(), "101");
@@ -80,7 +80,7 @@ public function tesBitOpOr() {
 @test:Config {
 }
 public function tesBitOpNot() {
-    var result = conn->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
+    var result = redis->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -91,7 +91,7 @@ public function tesBitOpNot() {
 @test:Config {
 }
 function tesBitOpXor() {
-    var result = conn->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
+    var result = redis->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -102,7 +102,7 @@ function tesBitOpXor() {
 @test:Config {
 }
 public function testDecr() {
-    var result = conn->decr("testDecrKey");
+    var result = redis->decr("testDecrKey");
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
@@ -113,7 +113,7 @@ public function testDecr() {
 @test:Config {
 }
 function testDecrBy() {
-    var result = conn->decrBy("testDecrByKey", 3);
+    var result = redis->decrBy("testDecrByKey", 3);
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
@@ -124,7 +124,7 @@ function testDecrBy() {
 @test:Config {
 }
 public function testGet() {
-    var result = conn->get("GetTestKey");
+    var result = redis->get("GetTestKey");
     if (result is string) {
         test:assertEquals(result, "GetTestValue");
     } else if (result is ()) {
@@ -137,7 +137,7 @@ public function testGet() {
 @test:Config {
 }
 public function testGetBit() {
-    var result = conn->getBit("testGetBitKey", 4);
+    var result = redis->getBit("testGetBitKey", 4);
     if (result is int) {
         test:assertEquals(result, 0);
     } else {
@@ -148,7 +148,7 @@ public function testGetBit() {
 @test:Config {
 }
 public function testGetRange() {
-    var result = conn->getRange("testGetRangekey", 2, 5);
+    var result = redis->getRange("testGetRangekey", 2, 5);
     if (result is string) {
         test:assertEquals(result, "3456");
     } else {
@@ -159,7 +159,7 @@ public function testGetRange() {
 @test:Config {
 }
 public function testGetSet() {
-    var result = conn->getSet("testGetSetKey", "testGetSetNewValue");
+    var result = redis->getSet("testGetSetKey", "testGetSetNewValue");
     if (result is string) {
         test:assertEquals(result, "testGetSetValue");
         test:assertEquals(getValue(java:fromString("testGetSetKey")).toString(), "testGetSetNewValue");
@@ -173,7 +173,7 @@ public function testGetSet() {
 @test:Config {
 }
 public function testIncr() {
-    var result = conn->incr("testIncrKey");
+    var result = redis->incr("testIncrKey");
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
@@ -184,7 +184,7 @@ public function testIncr() {
 @test:Config {
 }
 public function testIncrBy() {
-    var result = conn->incrBy("testIncrByKey", 2);
+    var result = redis->incrBy("testIncrByKey", 2);
     if (result is int) {
         test:assertEquals(result, 7);
     } else {
@@ -196,7 +196,7 @@ public function testIncrBy() {
     dependsOn: [testIncrBy]
 }
 public function testIncrByFloat() {
-    var result = conn->incrByFloat("testIncrByKey", 0.2);
+    var result = redis->incrByFloat("testIncrByKey", 0.2);
     if (result is float) {
         test:assertEquals(result, 7.200000002980232);
     } else {
@@ -207,7 +207,7 @@ public function testIncrByFloat() {
 @test:Config {
 }
 function testMGet() {
-    var result = conn->mGet(["testMGetKey1", "testMGetKey2"]);
+    var result = redis->mGet(["testMGetKey1", "testMGetKey2"]);
     if (result is string[]) {
         test:assertEquals(result.length(), 2);
         test:assertEquals(getValue(java:fromString("testMGetKey1")).toString(), "testMGetValue1");
@@ -226,7 +226,7 @@ function testMSet() {
         testMSetKey2: "testMSetValue2",
         testMSetKey3: "testMSetValue3"
     };
-    var result = conn->mSet(keyValueMap);
+    var result = redis->mSet(keyValueMap);
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(getValue(java:fromString("testMSetKey1")).toString(), "testMSetValue1");
@@ -246,7 +246,7 @@ function testMSetNx() {
         testMSetNxKey3:
             "testMSetNxValue3"
     };
-    var result = conn->mSetNx(keyValueMap);
+    var result = redis->mSetNx(keyValueMap);
     if (result is boolean) {
         test:assertFalse(result);
         test:assertEquals(getValue(java:fromString("testMSetNxKey1")).toString(), "testMSetNxValue1");
@@ -260,7 +260,7 @@ function testMSetNx() {
 @test:Config {
 }
 public function testPSetEx() {
-    var result = conn->pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
+    var result = redis->pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "testPSetExNewValue");
@@ -274,7 +274,7 @@ public function testPSetEx() {
 @test:Config {
 }
 public function testSetBit() {
-    var result = conn->setBit("testSetBitKey", 1, 2);
+    var result = redis->setBit("testSetBitKey", 1, 2);
     if (result is int) {
         test:assertEquals(result, 1);
     } else {
@@ -285,7 +285,7 @@ public function testSetBit() {
 @test:Config {
 }
 public function testSetEx() {
-    var result = conn->setEx("testSetExKey", "testSetExNewValue", 5);
+    var result = redis->setEx("testSetExKey", "testSetExNewValue", 5);
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "testSetExNewValue");
@@ -299,7 +299,7 @@ public function testSetEx() {
 @test:Config {
 }
 public function testSetNx() {
-    var result = conn->setNx("testSetNxKey", "testSetNxValue");
+    var result = redis->setNx("testSetNxKey", "testSetNxValue");
     if (result is boolean) {
         test:assertEquals(result, true);
         test:assertEquals(getValue(java:fromString("testSetNxKey")).toString(), "testSetNxValue");
@@ -311,7 +311,7 @@ public function testSetNx() {
 @test:Config {
 }
 public function testSetRange() {
-    var result = conn->setRange("testSetRangeKey", 2, "!!!");
+    var result = redis->setRange("testSetRangeKey", 2, "!!!");
     if (result is int) {
         test:assertEquals(result, 17);
         test:assertEquals(getValue(java:fromString("testSetRangeKey")).toString(), "te!!!etRangeValue");
@@ -323,15 +323,10 @@ public function testSetRange() {
 @test:Config {
 }
 public function testStrln() {
-    var result = conn->strln("testStrlnKey");
+    var result = redis->strln("testStrlnKey");
     if (result is int) {
         test:assertEquals(result, 14);
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisStringDatabase() = @java:Method {
-    name: "setupStringDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;

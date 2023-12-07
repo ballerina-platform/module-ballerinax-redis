@@ -20,7 +20,7 @@ import ballerina/test;
 @test:Config {
 }
 function testHDel() {
-    var result = conn->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
+    var result = redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
     if (result is int) {
         test:assertEquals(result, 3);
         test:assertTrue(!hexists(java:fromString("testHDelKey"), java:fromString("testHDelField1")) &&
@@ -34,7 +34,7 @@ function testHDel() {
 @test:Config {
 }
 function testHExists() {
-    var result = conn->hExists("testHExistsKey", "testHExistsField1");
+    var result = redis->hExists("testHExistsKey", "testHExistsField1");
     if (result is boolean) {
         test:assertEquals(result, true);
     } else {
@@ -45,7 +45,7 @@ function testHExists() {
 @test:Config {
 }
 function testHGet() {
-    var result = conn->hGet("testHGetKey", "testHGetField1");
+    var result = redis->hGet("testHGetKey", "testHGetField1");
     if (result is string) {
         test:assertEquals(result, "testHGetValue1");
     } else {
@@ -56,7 +56,7 @@ function testHGet() {
 @test:Config {
 }
 function testHGetAll() {
-    var result = conn->hGetAll("testHGetAllKey");
+    var result = redis->hGetAll("testHGetAllKey");
     if (result is map<any>) {
         test:assertEquals(result.length(), 2);
         test:assertTrue(result.get("testHGetAllField1").toString() == "testHGetAllValue1" &&
@@ -69,7 +69,7 @@ function testHGetAll() {
 @test:Config {
 }
 function testHIncrByFloat() {
-    var result = conn->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
+    var result = redis->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
     if (result is float) {
         test:assertEquals(result, 7.2f);
     } else {
@@ -80,7 +80,7 @@ function testHIncrByFloat() {
 @test:Config {
 }
 function testHIncrBy() {
-    var result = conn->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
+    var result = redis->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
     if (result is int) {
         test:assertEquals(result, 8);
     } else {
@@ -91,7 +91,7 @@ function testHIncrBy() {
 @test:Config {
 }
 function testHLen() {
-    var result = conn->hLen("testHLenKey");
+    var result = redis->hLen("testHLenKey");
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -102,7 +102,7 @@ function testHLen() {
 @test:Config {
 }
 function testHMGet() {
-    var result = conn->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
+    var result = redis->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
     if (result is map<any>) {
         test:assertEquals(result.length(), 3);
         test:assertTrue(result.get("testHMGetField1").toString() == "testHMGetValue1" &&
@@ -117,7 +117,7 @@ function testHMGet() {
 }
 function testHMSet() {
     map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
-    var result = conn->hMSet("testHMSetKey", fieldValueMap);
+    var result = redis->hMSet("testHMSetKey", fieldValueMap);
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertTrue(hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")) &&
@@ -132,7 +132,7 @@ function testHMSet() {
 @test:Config {
 }
 function testHKeys() {
-    var result = conn->hKeys("testHKeysKey");
+    var result = redis->hKeys("testHKeysKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allFieldsRetrieved = true;
@@ -159,7 +159,7 @@ function testHKeys() {
 @test:Config {
 }
 function testHSet() {
-    var result = conn->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
+    var result = redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
     if (result is boolean) {
         test:assertTrue(result);
         test:assertTrue(hexists(java:fromString("testHSetKey"), java:fromString("testHSetField1")) &&
@@ -172,7 +172,7 @@ function testHSet() {
 @test:Config {
 }
 function testHSetNx() {
-    var result = conn->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+    var result = redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
     if (result is boolean) {
         test:assertTrue(result);
         test:assertTrue(hexists(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")) &&
@@ -185,7 +185,7 @@ function testHSetNx() {
 @test:Config {
 }
 function testHStrln() {
-    var result = conn->hStrln("testHStrlnKey", "testHStrlnField1");
+    var result = redis->hStrln("testHStrlnKey", "testHStrlnField1");
     if (result is int) {
         test:assertEquals(result, 16);
     } else {
@@ -196,7 +196,7 @@ function testHStrln() {
 @test:Config {
 }
 function testHVals() {
-    var result = conn->hVals("testHValsKey");
+    var result = redis->hVals("testHValsKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allValuesRetrieved = true;
@@ -219,8 +219,3 @@ function testHVals() {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisHashDatabase() = @java:Method {
-    name: "setupHashDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;

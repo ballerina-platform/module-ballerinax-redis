@@ -20,7 +20,7 @@ import ballerina/test;
 @test:Config {
 }
 function testDel() {
-    var result = conn->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
+    var result = redis->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -31,8 +31,8 @@ function testDel() {
 @test:Config {
 }
 function testExists() {
-    var result1 = conn->exists(["testExistsKey"]);
-    var result2 = conn->exists(["nonExistentKey"]);
+    var result1 = redis->exists(["testExistsKey"]);
+    var result2 = redis->exists(["nonExistentKey"]);
     if (result1 is int) {
         test:assertEquals(result1, 1);
     } else {
@@ -48,7 +48,7 @@ function testExists() {
 @test:Config {
 }
 function testExpire() {
-    var result = conn->expire("testExpireKey", 3);
+    var result = redis->expire("testExpireKey", 3);
     if (result is boolean) {
         test:assertTrue(result);
         runtime:sleep(3);
@@ -61,7 +61,7 @@ function testExpire() {
 @test:Config {
 }
 function testKeys() {
-    var result = conn->keys("testKeysKey*");
+    var result = redis->keys("testKeysKey*");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allMatchingKeysRetrieved = true;
@@ -88,7 +88,7 @@ function testKeys() {
 @test:Config {
 }
 function testMove() {
-    var result = conn->move("testMoveKey", 1);
+    var result = redis->move("testMoveKey", 1);
     if (result is boolean) {
         test:assertTrue(result);
         test:assertEquals(exist(java:fromString("testMoveKey")), 0);
@@ -100,7 +100,7 @@ function testMove() {
 @test:Config {
 }
 function testPersist() {
-    var result = conn->persist("testPersistKey");
+    var result = redis->persist("testPersistKey");
     runtime:sleep(3);
     if (result is boolean) {
         test:assertFalse(result);
@@ -113,7 +113,7 @@ function testPersist() {
 @test:Config {
 }
 function testPExpire() {
-    var result = conn->pExpire("testPExpireKey", 3000);
+    var result = redis->pExpire("testPExpireKey", 3000);
     if (result is boolean) {
         test:assertTrue(result);
         runtime:sleep(3.5);
@@ -127,7 +127,7 @@ function testPExpire() {
 }
 function testPTtl() {
     _ = pexpire(java:fromString("testPTtlKey"), 10000);
-    var result = conn->pTtl("testPTtlKey");
+    var result = redis->pTtl("testPTtlKey");
     runtime:sleep(5);
     int ttl = pttl(java:fromString("testPTtlKey"));
     if (result is int) {
@@ -138,7 +138,7 @@ function testPTtl() {
 @test:Config {
 }
 function testRandomKey() {
-    var result = conn->randomKey();
+    var result = redis->randomKey();
     if (result is string) {
         test:assertNotEquals(result, "");
     } else if (result is ()) {
@@ -151,7 +151,7 @@ function testRandomKey() {
 @test:Config {
 }
 function testRename() {
-    var result = conn->rename("testRenameKey", "testRenameKey1");
+    var result = redis->rename("testRenameKey", "testRenameKey1");
     if (result is string) {
         test:assertEquals(result, "OK");
         test:assertEquals(exist(java:fromString("testRenameKey")), 0);
@@ -164,8 +164,8 @@ function testRename() {
 @test:Config {
 }
 function testRenameNx() {
-    var result1 = conn->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
-    var result2 = conn->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+    var result1 = redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
+    var result2 = redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
     if (result1 is boolean) {
         test:assertTrue(result1);
     } else {
@@ -184,7 +184,7 @@ function testRenameNx() {
 @test:Config {
 }
 function testSort() {
-    var result = conn->sort("testSortKey");
+    var result = redis->sort("testSortKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 6);
         boolean elementsInOrder = true;
@@ -207,7 +207,7 @@ function testSort() {
 }
 function testTtl() {
     _ = pexpire(java:fromString("testTtlKey"), 10);
-    var result = conn->pTtl("testTtlKey");
+    var result = redis->pTtl("testTtlKey");
     int ttl = pttl(java:fromString("testTtlKey"));
     if (result is int) {
         test:assertTrue(result >= ttl && result <= 10000);
@@ -217,15 +217,10 @@ function testTtl() {
 @test:Config {
 }
 function testType() {
-    var result = conn->redisType("testTypeKey");
+    var result = redis->redisType("testTypeKey");
     if (result is string) {
         test:assertEquals(result, "string");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisKeyDatabase() = @java:Method {
-    name: "setupKeyDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;

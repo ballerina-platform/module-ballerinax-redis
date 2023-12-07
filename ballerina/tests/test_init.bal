@@ -30,16 +30,16 @@ ConnectionConfig redisConfig = {
     }
 };
 
-Client conn = check new (redisConfig);
+Client redis = check new (redisConfig);
 
 @test:BeforeSuite
 public function initDb() {
-    setupRedisStringDatabase();
-    setupRedisKeyDatabase();
-    setupRedisListDatabase();
-    setupRedisHashDatabase();
-    setupRedisSetDatabase();
-    setupRedisSortedSetDatabase();
+    setupStringValues();
+    setupKeyValues();
+    setupListValues();
+    setupHashValues();
+    setupSetValues();
+    setupSortedSetValues();
 }
 
 function getValue(handle key) returns handle = @java:Method {
