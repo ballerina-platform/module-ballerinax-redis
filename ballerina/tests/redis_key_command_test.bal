@@ -17,8 +17,7 @@ import ballerina/jballerina.java;
 import ballerina/lang.runtime;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 function testDel() {
     var result = redis->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
     if (result is int) {
@@ -28,8 +27,7 @@ function testDel() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testExists() {
     var result1 = redis->exists(["testExistsKey"]);
     var result2 = redis->exists(["nonExistentKey"]);
@@ -45,8 +43,7 @@ function testExists() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testExpire() {
     var result = redis->expire("testExpireKey", 3);
     if (result is boolean) {
@@ -58,8 +55,7 @@ function testExpire() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testKeys() {
     var result = redis->keys("testKeysKey*");
     if (result is string[]) {
@@ -85,8 +81,7 @@ function testKeys() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testMove() {
     var result = redis->move("testMoveKey", 1);
     if (result is boolean) {
@@ -97,8 +92,7 @@ function testMove() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testPersist() {
     var result = redis->persist("testPersistKey");
     runtime:sleep(3);
@@ -110,8 +104,7 @@ function testPersist() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testPExpire() {
     var result = redis->pExpire("testPExpireKey", 3000);
     if (result is boolean) {
@@ -123,20 +116,20 @@ function testPExpire() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testPTtl() {
-    _ = pexpire(java:fromString("testPTtlKey"), 10000);
-    var result = redis->pTtl("testPTtlKey");
-    runtime:sleep(5);
-    int ttl = pttl(java:fromString("testPTtlKey"));
-    if (result is int) {
+    do {
+        boolean _ = check redis->pExpire("testPTtlKey", 10000);
+        int result = check redis->pTtl("testPTtlKey");
+        runtime:sleep(5);
+        int ttl = check redis->pTtl("testPTtlKey");
         test:assertTrue(result >= ttl && result <= 10000);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRandomKey() {
     var result = redis->randomKey();
     if (result is string) {
@@ -148,8 +141,7 @@ function testRandomKey() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRename() {
     var result = redis->rename("testRenameKey", "testRenameKey1");
     if (result is string) {
@@ -161,8 +153,7 @@ function testRename() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRenameNx() {
     var result1 = redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
     var result2 = redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
@@ -181,8 +172,7 @@ function testRenameNx() {
     test:assertEquals(exist(java:fromString("testRenameNxKey1")), 1);
 }
 
-@test:Config {
-}
+@test:Config {}
 function testSort() {
     var result = redis->sort("testSortKey");
     if (result is string[]) {
@@ -203,19 +193,19 @@ function testSort() {
     }
 }
 
-@test:Config {
-}
-function testTtl() {
-    _ = pexpire(java:fromString("testTtlKey"), 10);
-    var result = redis->pTtl("testTtlKey");
-    int ttl = pttl(java:fromString("testTtlKey"));
-    if (result is int) {
+@test:Config {}
+function testTtl() returns error? {
+    do {
+        _ = check redis->pExpire("testTtlKey", 10);
+        int result = check redis->ttl("testTtlKey");
+        int ttl = check redis->ttl("testTtlKey");
         test:assertTrue(result >= ttl && result <= 10000);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testType() {
     var result = redis->redisType("testTypeKey");
     if (result is string) {

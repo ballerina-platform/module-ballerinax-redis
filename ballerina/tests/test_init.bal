@@ -41,14 +41,8 @@ public function initDb() {
     setupSetValues();
     setupSortedSetValues();
 }
-
 function getValue(handle key) returns handle = @java:Method {
     name: "getValue",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function sisMember(handle key, handle value) returns boolean = @java:Method {
-    name: "sisMember",
     'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
@@ -67,17 +61,3 @@ function exist(handle key) returns int = @java:Method {
     'class: "org.ballerinalang.redis.utils.RedisDbUtils"
 } external;
 
-function pexpire(handle key, int duration) = @java:Method {
-    name: "pexpire",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function pttl(handle key) returns int = @java:Method {
-    name: "pttl",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function lindex(handle key, int index) returns handle = @java:Method {
-    name: "lindex",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
