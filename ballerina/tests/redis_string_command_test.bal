@@ -14,12 +14,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/jballerina.java;
 import ballerina/lang.runtime;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 public function testSet() {
     var result = redis->set("Name", "Manuri");
     if (result is string) {
@@ -29,8 +27,7 @@ public function testSet() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testAppend() {
     var result = redis->append("AppendTestKey", "SomeValue");
     if (result is int) {
@@ -40,8 +37,7 @@ public function testAppend() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testBitCount() {
     var result = redis->bitCount("BitCountTestKey");
     if (result is int) {
@@ -51,34 +47,35 @@ public function testBitCount() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testBitOpAnd() {
-    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    var result = redis->bitOpAnd("tesBitOpAndDest", keys);
-    if (result is int) {
+    do {
+        string[] keys = ["testBitOpKey1", "testBitOpKey2"];
+        int result = check redis->bitOpAnd("tesBitOpAndDest", keys);
         test:assertEquals(result, 3);
-        test:assertEquals(getValue(java:fromString("tesBitOpAndDest")).toString(), "100");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult = check redis->get("tesBitOpAndDest");
+        test:assertEquals(getResult, "100");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function tesBitOpOr() {
-    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    var result = redis->bitOpOr("tesBitOpOrDest", keys);
-    if (result is int) {
+    do {
+        string[] keys = ["testBitOpKey1", "testBitOpKey2"];
+        int result = check redis->bitOpOr("tesBitOpOrDest", keys);
         test:assertEquals(result, 3);
-        test:assertEquals(getValue(java:fromString("tesBitOpOrDest")).toString(), "101");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult = check redis->get("tesBitOpOrDest");
+        test:assertEquals(getResult, "101");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function tesBitOpNot() {
     var result = redis->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
     if (result is int) {
@@ -88,8 +85,7 @@ public function tesBitOpNot() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function tesBitOpXor() {
     var result = redis->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
     if (result is int) {
@@ -99,8 +95,7 @@ function tesBitOpXor() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testDecr() {
     var result = redis->decr("testDecrKey");
     if (result is int) {
@@ -110,8 +105,7 @@ public function testDecr() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testDecrBy() {
     var result = redis->decrBy("testDecrByKey", 3);
     if (result is int) {
@@ -121,8 +115,7 @@ function testDecrBy() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testGet() {
     var result = redis->get("GetTestKey");
     if (result is string) {
@@ -134,8 +127,7 @@ public function testGet() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testGetBit() {
     var result = redis->getBit("testGetBitKey", 4);
     if (result is int) {
@@ -145,8 +137,7 @@ public function testGetBit() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testGetRange() {
     var result = redis->getRange("testGetRangekey", 2, 5);
     if (result is string) {
@@ -156,22 +147,20 @@ public function testGetRange() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testGetSet() {
-    var result = redis->getSet("testGetSetKey", "testGetSetNewValue");
-    if (result is string) {
+    do {
+        string? result = check redis->getSet("testGetSetKey", "testGetSetNewValue");
         test:assertEquals(result, "testGetSetValue");
-        test:assertEquals(getValue(java:fromString("testGetSetKey")).toString(), "testGetSetNewValue");
-    } else if (result is ()) {
-        test:assertFail("Key not found");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult = check redis->get("testGetSetKey");
+        test:assertEquals(getResult, "testGetSetNewValue");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testIncr() {
     var result = redis->incr("testIncrKey");
     if (result is int) {
@@ -181,8 +170,7 @@ public function testIncr() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testIncrBy() {
     var result = redis->incrBy("testIncrByKey", 2);
     if (result is int) {
@@ -204,75 +192,86 @@ public function testIncrByFloat() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testMGet() {
-    var result = redis->mGet(["testMGetKey1", "testMGetKey2"]);
-    if (result is string[]) {
+    do {
+        string[] result = check redis->mGet(["testMGetKey1", "testMGetKey2"]);
         test:assertEquals(result.length(), 2);
-        test:assertEquals(getValue(java:fromString("testMGetKey1")).toString(), "testMGetValue1");
-        test:assertEquals(getValue(java:fromString("testMGetKey2")).toString(), "testMGetValue2");
-        test:assertEquals(getValue(java:fromString("testMGetKey3")).toString(), "");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult1 = check redis->get("testMGetKey1");
+        test:assertEquals(getResult1, "testMGetValue1");
+        string? getResult2 = check redis->get("testMGetKey2");
+        test:assertEquals(getResult2, "testMGetValue2");
+        string? getResult3 = check redis->get("testMGetKey3");
+        test:assertEquals(getResult3, ());
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testMSet() {
     map<any> keyValueMap = {
         testMSetKey1: "testMSetValue1",
         testMSetKey2: "testMSetValue2",
         testMSetKey3: "testMSetValue3"
     };
-    var result = redis->mSet(keyValueMap);
-    if (result is string) {
+    do {
+        string result = check redis->mSet(keyValueMap);
         test:assertEquals(result, "OK");
-        test:assertEquals(getValue(java:fromString("testMSetKey1")).toString(), "testMSetValue1");
-        test:assertEquals(getValue(java:fromString("testMSetKey2")).toString(), "testMSetValue2");
-        test:assertEquals(getValue(java:fromString("testMSetKey3")).toString(), "testMSetValue3");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult1 = check redis->get("testMSetKey1");
+        test:assertEquals(getResult1, "testMSetValue1");
+        string? getResult2 = check redis->get("testMSetKey2");
+        test:assertEquals(getResult2, "testMSetValue2");
+        string? getResult3 = check redis->get("testMSetKey3");
+        test:assertEquals(getResult3, "testMSetValue3");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testMSetNx() {
     map<any> keyValueMap = {
         testMSetNxKey1: "testMSetNxNewValue1",
         testMSetNxKey2: "testMSetNxValue2",
-        testMSetNxKey3:
-            "testMSetNxValue3"
+        testMSetNxKey3: "testMSetNxValue3"
     };
-    var result = redis->mSetNx(keyValueMap);
-    if (result is boolean) {
+
+    do {
+        boolean result = check redis->mSetNx(keyValueMap);
         test:assertFalse(result);
-        test:assertEquals(getValue(java:fromString("testMSetNxKey1")).toString(), "testMSetNxValue1");
-        test:assertEquals(getValue(java:fromString("testMSetNxKey2")).toString(), "");
-        test:assertEquals(getValue(java:fromString("testMSetNxKey3")).toString(), "");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult1 = check redis->get("testMSetNxKey1");
+        test:assertEquals(getResult1, "testMSetNxValue1");
+        string? getResult2 = check redis->get("testMSetNxKey2");
+        test:assertEquals(getResult2, ());
+        string? getResult3 = check redis->get("testMSetNxKey3");
+        test:assertEquals(getResult3, ());
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
+
 public function testPSetEx() {
-    var result = redis->pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
-    if (result is string) {
+    do {
+        string result = check redis->pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
         test:assertEquals(result, "OK");
-        test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "testPSetExNewValue");
+
+        string? getResult = check redis->get("testPSetExKey");
+        test:assertEquals(getResult, "testPSetExNewValue");
         runtime:sleep(6);
-        test:assertEquals(getValue(java:fromString("testPSetExKey")).toString(), "");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        string? getResult2 = check redis->get("testPSetExKey");
+        test:assertEquals(getResult2, ());
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testSetBit() {
     var result = redis->setBit("testSetBitKey", 1, 2);
     if (result is int) {
@@ -282,46 +281,49 @@ public function testSetBit() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testSetEx() {
-    var result = redis->setEx("testSetExKey", "testSetExNewValue", 5);
-    if (result is string) {
+    do {
+        string result = check redis->setEx("testSetExKey", "testSetExNewValue", 5);
         test:assertEquals(result, "OK");
-        test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "testSetExNewValue");
+
+        string? getResult = check redis->get("testSetExKey");
+        test:assertEquals(getResult, "testSetExNewValue");
         runtime:sleep(6);
-        test:assertEquals(getValue(java:fromString("testSetExKey")).toString(), "");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        string? getResult2 = check redis->get("testSetExKey");
+        test:assertEquals(getResult2, ());
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testSetNx() {
-    var result = redis->setNx("testSetNxKey", "testSetNxValue");
-    if (result is boolean) {
+    do {
+        boolean result = check redis->setNx("testSetNxKey", "testSetNxValue");
         test:assertEquals(result, true);
-        test:assertEquals(getValue(java:fromString("testSetNxKey")).toString(), "testSetNxValue");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult = check redis->get("testSetNxKey");
+        test:assertEquals(getResult, "testSetNxValue");
+    } on fail error e {
+        test:assertFail("error from Connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testSetRange() {
-    var result = redis->setRange("testSetRangeKey", 2, "!!!");
-    if (result is int) {
+    do {
+        int result = check redis->setRange("testSetRangeKey", 2, "!!!");
         test:assertEquals(result, 17);
-        test:assertEquals(getValue(java:fromString("testSetRangeKey")).toString(), "te!!!etRangeValue");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        string? getResult = check redis->get("testSetRangeKey");
+        test:assertEquals(getResult, "te!!!etRangeValue");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 public function testStrln() {
     var result = redis->strln("testStrlnKey");
     if (result is int) {

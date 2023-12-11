@@ -13,7 +13,6 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 
-import ballerina/jballerina.java;
 import ballerina/lang.runtime;
 import ballerina/test;
 
@@ -45,13 +44,15 @@ function testExists() {
 
 @test:Config {}
 function testExpire() {
-    var result = redis->expire("testExpireKey", 3);
-    if (result is boolean) {
+    do {
+        boolean result = check redis->expire("testExpireKey", 3);
         test:assertTrue(result);
+
         runtime:sleep(3);
-        test:assertEquals(exist(java:fromString("testExpireKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        int existsResult = check redis->exists(["testExpireKey"]);
+        test:assertEquals(existsResult, 0);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
@@ -83,36 +84,42 @@ function testKeys() {
 
 @test:Config {}
 function testMove() {
-    var result = redis->move("testMoveKey", 1);
-    if (result is boolean) {
-        test:assertTrue(result);
-        test:assertEquals(exist(java:fromString("testMoveKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+    do {
+        boolean moveResult = check redis->move("testMoveKey", 1);
+        test:assertTrue(moveResult);
+
+        int existsResult = check redis->exists(["testMoveKey"]);
+        test:assertEquals(existsResult, 0);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
 @test:Config {}
 function testPersist() {
-    var result = redis->persist("testPersistKey");
-    runtime:sleep(3);
-    if (result is boolean) {
-        test:assertFalse(result);
-        test:assertEquals(exist(java:fromString("testPersistKey")), 1);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+    do {
+        boolean persistResult = check redis->persist("testPersistKey");
+        runtime:sleep(3);
+        test:assertFalse(persistResult);
+
+        int existsResult = check redis->exists(["testPersistKey"]);
+        test:assertEquals(existsResult, 1);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
 @test:Config {}
 function testPExpire() {
-    var result = redis->pExpire("testPExpireKey", 3000);
-    if (result is boolean) {
-        test:assertTrue(result);
+    do {
+        boolean expireResult = check redis->pExpire("testPExpireKey", 3000);
+        test:assertTrue(expireResult);
+
         runtime:sleep(3.5);
-        test:assertEquals(exist(java:fromString("testPExpireKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        int existsResult = check redis->exists(["testPExpireKey"]);
+        test:assertEquals(existsResult, 0);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
@@ -143,33 +150,36 @@ function testRandomKey() {
 
 @test:Config {}
 function testRename() {
-    var result = redis->rename("testRenameKey", "testRenameKey1");
-    if (result is string) {
+    do {
+        string result = check redis->rename("testRenameKey", "testRenameKey1");
         test:assertEquals(result, "OK");
-        test:assertEquals(exist(java:fromString("testRenameKey")), 0);
-        test:assertEquals(exist(java:fromString("testRenameKey1")), 1);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        int existsResult = check redis->exists(["testRenameKey"]);
+        test:assertEquals(existsResult, 0);
+        int existsResult1 = check redis->exists(["testRenameKey1"]);
+        test:assertEquals(existsResult1, 1);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
 @test:Config {}
 function testRenameNx() {
-    var result1 = redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
-    var result2 = redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
-    if (result1 is boolean) {
-        test:assertTrue(result1);
-    } else {
-        test:assertFail("error from Connector: " + result1.message());
+    do {
+        boolean renameResult1 = check redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
+        boolean renameResult2 = check redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+        test:assertTrue(renameResult1);
+        test:assertFalse(renameResult2);
+
+        int existResult = check redis->exists(["testRenameNxKey"]);
+        test:assertEquals(existResult, 0);
+        int existResult1 = check redis->exists(["testRenameNxKeyRenamed"]);
+        test:assertEquals(existResult1, 1);
+        int existResult2 = check redis->exists(["testRenameNxKey1"]);
+        test:assertEquals(existResult2, 1);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
-    if (result2 is boolean) {
-        test:assertFalse(result2);
-    } else {
-        test:assertFail("error from Connector: " + result2.message());
-    }
-    test:assertEquals(exist(java:fromString("testRenameNxKey")), 0);
-    test:assertEquals(exist(java:fromString("testRenameNxKeyRenamed")), 1);
-    test:assertEquals(exist(java:fromString("testRenameNxKey1")), 1);
 }
 
 @test:Config {}

@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/jballerina.java;
 import ballerina/test;
 
 ConnectionConfig redisConfig = {
@@ -41,23 +40,4 @@ public function initDb() {
     setupSetValues();
     setupSortedSetValues();
 }
-function getValue(handle key) returns handle = @java:Method {
-    name: "getValue",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function hexists(handle key, handle 'field) returns boolean = @java:Method {
-    name: "hexists",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function hget(handle key, handle 'field) returns handle = @java:Method {
-    name: "hget",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
-
-function exist(handle key) returns int = @java:Method {
-    name: "exist",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
 

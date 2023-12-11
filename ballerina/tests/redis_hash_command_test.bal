@@ -14,25 +14,24 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/jballerina.java;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 function testHDel() {
-    var result = redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
-    if (result is int) {
+    do {
+        int result = check redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
         test:assertEquals(result, 3);
-        test:assertTrue(!hexists(java:fromString("testHDelKey"), java:fromString("testHDelField1")) &&
-            !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField2")) &&
-            !hexists(java:fromString("testHDelKey"), java:fromString("testHDelField3")));
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        boolean hExistsResult = check redis->hExists("testHDelKey", "testHDelField1");
+        boolean hExistsResult2 = check redis->hExists("testHDelKey", "testHDelField2");
+        boolean hExistsResult3 = check redis->hExists("testHDelKey", "testHDelField3");
+        test:assertTrue(!hExistsResult && !hExistsResult2 && !hExistsResult3);
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHExists() {
     var result = redis->hExists("testHExistsKey", "testHExistsField1");
     if (result is boolean) {
@@ -42,8 +41,7 @@ function testHExists() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHGet() {
     var result = redis->hGet("testHGetKey", "testHGetField1");
     if (result is string) {
@@ -53,8 +51,7 @@ function testHGet() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHGetAll() {
     var result = redis->hGetAll("testHGetAllKey");
     if (result is map<any>) {
@@ -66,8 +63,7 @@ function testHGetAll() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHIncrByFloat() {
     var result = redis->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
     if (result is float) {
@@ -77,8 +73,7 @@ function testHIncrByFloat() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHIncrBy() {
     var result = redis->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
     if (result is int) {
@@ -88,8 +83,7 @@ function testHIncrBy() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHLen() {
     var result = redis->hLen("testHLenKey");
     if (result is int) {
@@ -99,8 +93,7 @@ function testHLen() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHMGet() {
     var result = redis->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
     if (result is map<any>) {
@@ -113,24 +106,24 @@ function testHMGet() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHMSet() {
-    map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
-    var result = redis->hMSet("testHMSetKey", fieldValueMap);
-    if (result is string) {
+    do {
+        map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
+        string result = check redis->hMSet("testHMSetKey", fieldValueMap);
         test:assertEquals(result, "OK");
-        test:assertTrue(hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")) &&
-            hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField1")).toString() == "testHMSetValue1" &&
-            hexists(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")) &&
-            hget(java:fromString("testHMSetKey"), java:fromString("testHMSetField2")).toString() == "testHMSetValue2");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+
+        boolean hExistsResult = check redis->hExists("testHMSetKey", "testHMSetField1");
+        string hGetResult = check redis->hGet("testHMSetKey", "testHMSetField1");
+        boolean hExistsResult2 = check redis->hExists("testHMSetKey", "testHMSetField2");
+        string hGetResult2 = check redis->hGet("testHMSetKey", "testHMSetField2");
+        test:assertTrue(hExistsResult && hGetResult == "testHMSetValue1" && hExistsResult2 && hGetResult2 == "testHMSetValue2");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHKeys() {
     var result = redis->hKeys("testHKeysKey");
     if (result is string[]) {
@@ -156,34 +149,35 @@ function testHKeys() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHSet() {
-    var result = redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
-    if (result is boolean) {
-        test:assertTrue(result);
-        test:assertTrue(hexists(java:fromString("testHSetKey"), java:fromString("testHSetField1")) &&
-            hget(java:fromString("testHSetKey"), java:fromString("testHSetField1")).toString() == "testHSetValue1");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+    do {
+        boolean hSetResult = check redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
+        test:assertTrue(hSetResult);
+
+        boolean hExistsResult = check redis->hExists("testHSetKey", "testHSetField1");
+        string hGetResult = check redis->hGet("testHSetKey", "testHSetField1");
+        test:assertTrue(hExistsResult && hGetResult == "testHSetValue1");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHSetNx() {
-    var result = redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
-    if (result is boolean) {
-        test:assertTrue(result);
-        test:assertTrue(hexists(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")) &&
-            hget(java:fromString("testHSetNxKey"), java:fromString("testHSetNxField1")).toString() == "testHSetNxValue1");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+    do {
+        boolean hSetResult = check redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+        test:assertTrue(hSetResult);
+
+        boolean hExistsResult = check redis->hExists("testHSetNxKey", "testHSetNxField1");
+        string hGetResult = check redis->hGet("testHSetNxKey", "testHSetNxField1");
+        test:assertTrue(hExistsResult && hGetResult == "testHSetNxValue1");
+    } on fail error e {
+        test:assertFail("error from connector: " + e.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHStrln() {
     var result = redis->hStrln("testHStrlnKey", "testHStrlnField1");
     if (result is int) {
@@ -193,8 +187,7 @@ function testHStrln() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testHVals() {
     var result = redis->hVals("testHValsKey");
     if (result is string[]) {
