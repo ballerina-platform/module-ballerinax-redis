@@ -113,7 +113,7 @@ task startRedisServer() {
 
 task stopRedisServer() {
     doLast {
-        println("Stopping mongodb server...")
+        println("Stopping redis server...")
         exec {
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                 commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/docker-compose.yml down && exit %%ERRORLEVEL%%"
