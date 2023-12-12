@@ -16,20 +16,16 @@
 import ballerina/test;
 
 @test:Config {}
-function testSAdd() {
-    do {
-        int sAddResult = check redis->sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
-        test:assertEquals(sAddResult, 3);
+function testSAdd() returns error? {
+    int sAddResult = check redis->sAdd("testSAddKey", ["testSAddValue3", "testSAddValue4", "testSAddValue5"]);
+    test:assertEquals(sAddResult, 3);
 
-        boolean sIsMemberResult = check redis->sIsMember("testSAddKey", "testSAddValue3");
-        test:assertTrue(sIsMemberResult);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSAddKey", "testSAddValue4");
-        test:assertTrue(sIsMemberResult2);
-        boolean sIsMemberResult3 = check redis->sIsMember("testSAddKey", "testSAddValue5");
-        test:assertTrue(sIsMemberResult3);
-    } on fail error e {
-        test:assertFail("error from Connector: " + e.message());
-    }
+    boolean sIsMemberResult = check redis->sIsMember("testSAddKey", "testSAddValue3");
+    test:assertTrue(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSAddKey", "testSAddValue4");
+    test:assertTrue(sIsMemberResult2);
+    boolean sIsMemberResult3 = check redis->sIsMember("testSAddKey", "testSAddValue5");
+    test:assertTrue(sIsMemberResult3);
 }
 
 @test:Config {}
@@ -44,18 +40,14 @@ function testSDiff() {
 }
 
 @test:Config {}
-function testSDiffStore() {
-    do {
-        int sDiffResult = check redis->sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
-        test:assertEquals(sDiffResult, 2);
+function testSDiffStore() returns error? {
+    int sDiffResult = check redis->sDiffStore("testSDiffStoreDestKey", ["testSDiffKey1", "testSDiffKey2"]);
+    test:assertEquals(sDiffResult, 2);
 
-        boolean sIsMemberResult = check redis->sIsMember("testSDiffStoreDestKey", "Three");
-        test:assertTrue(sIsMemberResult);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSDiffStoreDestKey", "Four");
-        test:assertTrue(sIsMemberResult2);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean sIsMemberResult = check redis->sIsMember("testSDiffStoreDestKey", "Three");
+    test:assertTrue(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSDiffStoreDestKey", "Four");
+    test:assertTrue(sIsMemberResult2);
 }
 
 @test:Config {}
@@ -69,22 +61,18 @@ function testSInter() {
 }
 
 @test:Config {}
-function testSInterStore() {
-    do {
-        int result = check redis->sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
-        test:assertEquals(result, 2);
+function testSInterStore() returns error? {
+    int result = check redis->sInterStore("testSInterDestKey", ["testSInterKey1", "testSInterKey2"]);
+    test:assertEquals(result, 2);
 
-        boolean sIsMemberResult = check redis->sIsMember("testSInterDestKey", "One");
-        test:assertTrue(sIsMemberResult);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSInterDestKey", "Two");
-        test:assertTrue(sIsMemberResult2);
-        boolean sIsMemberResult3 = check redis->sIsMember("testSInterDestKey", "Three");
-        test:assertFalse(sIsMemberResult3);
-        boolean sIsMemberResult4 = check redis->sIsMember("testSInterDestKey", "Four");
-        test:assertFalse(sIsMemberResult4);
-    } on fail error e {
-        test:assertFail("error from Connector: " + e.message());
-    }
+    boolean sIsMemberResult = check redis->sIsMember("testSInterDestKey", "One");
+    test:assertTrue(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSInterDestKey", "Two");
+    test:assertTrue(sIsMemberResult2);
+    boolean sIsMemberResult3 = check redis->sIsMember("testSInterDestKey", "Three");
+    test:assertFalse(sIsMemberResult3);
+    boolean sIsMemberResult4 = check redis->sIsMember("testSInterDestKey", "Four");
+    test:assertFalse(sIsMemberResult4);
 }
 
 @test:Config {}
@@ -124,26 +112,22 @@ function testSMembers() {
 }
 
 @test:Config {}
-function testSPop() {
-    do {
-        string[]? result = check redis->sPop("testSPopKey", 2);
-        if result is () {
-            test:assertFail("key not found");
-        }
-        test:assertEquals(result.length(), 2);
-
-        string[] memberArray = ["testSPopValue1", "testSPopValue2", "testSPopValue3"];
-        test:assertTrue(result.every(function(string m) returns boolean {
-            return memberArray.indexOf(m) != ();
-        }));
-
-        boolean sIsMemberResult = check redis->sIsMember("testSPopKey", result[0]);
-        test:assertFalse(sIsMemberResult);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSPopKey", result[1]);
-        test:assertFalse(sIsMemberResult2);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
+function testSPop() returns error? {
+    string[]? result = check redis->sPop("testSPopKey", 2);
+    if result is () {
+        test:assertFail("key not found");
     }
+    test:assertEquals(result.length(), 2);
+
+    string[] memberArray = ["testSPopValue1", "testSPopValue2", "testSPopValue3"];
+    test:assertTrue(result.every(function(string m) returns boolean {
+        return memberArray.indexOf(m) != ();
+    }));
+
+    boolean sIsMemberResult = check redis->sIsMember("testSPopKey", result[0]);
+    test:assertFalse(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSPopKey", result[1]);
+    test:assertFalse(sIsMemberResult2);
 }
 
 @test:Config {}
@@ -173,18 +157,14 @@ function testSRandMember() {
 }
 
 @test:Config {}
-function testSRem() {
-    do {
-        int result = check redis->sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
-        test:assertEquals(result, 2);
+function testSRem() returns error? {
+    int result = check redis->sRem("testSRemKey", ["testSRemValue1", "testSRemValue3"]);
+    test:assertEquals(result, 2);
 
-        boolean sIsMemberResult = check redis->sIsMember("testSRemKey", "testSRemValue1");
-        test:assertFalse(sIsMemberResult);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSRemKey", "testSRemValue3");
-        test:assertFalse(sIsMemberResult2);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean sIsMemberResult = check redis->sIsMember("testSRemKey", "testSRemValue1");
+    test:assertFalse(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSRemKey", "testSRemValue3");
+    test:assertFalse(sIsMemberResult2);
 }
 
 @test:Config {}
@@ -214,20 +194,16 @@ function testSUnion() {
 }
 
 @test:Config {}
-function testSUnionStore() {
-    do {
-        int result = check redis->sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
-        test:assertEquals(result, 4);
+function testSUnionStore() returns error? {
+    int result = check redis->sUnionStore("testSUnionStoreDestKey", ["testUnionKey1", "testUnionKey2"]);
+    test:assertEquals(result, 4);
 
-        boolean sIsMemberResult1 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue1");
-        test:assertTrue(sIsMemberResult1);
-        boolean sIsMemberResult2 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue2");
-        test:assertTrue(sIsMemberResult2);
-        boolean sIsMemberResult3 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue3");
-        test:assertTrue(sIsMemberResult3);
-        boolean sIsMemberResult4 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue4");
-        test:assertTrue(sIsMemberResult4);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean sIsMemberResult1 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue1");
+    test:assertTrue(sIsMemberResult1);
+    boolean sIsMemberResult2 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue2");
+    test:assertTrue(sIsMemberResult2);
+    boolean sIsMemberResult3 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue3");
+    test:assertTrue(sIsMemberResult3);
+    boolean sIsMemberResult4 = check redis->sIsMember("testSUnionStoreDestKey", "testUnionValue4");
+    test:assertTrue(sIsMemberResult4);
 }

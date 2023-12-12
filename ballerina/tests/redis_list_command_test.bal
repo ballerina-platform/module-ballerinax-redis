@@ -122,15 +122,11 @@ function testLRem() {
 
 @test:Config {}
 function testLSet() returns error? {
-    do {
-        string result = check redis->lSet("testLSetKey", 1, "testLSetValue2New");
-        test:assertEquals(result, "OK");
+    string result = check redis->lSet("testLSetKey", 1, "testLSetValue2New");
+    test:assertEquals(result, "OK");
 
-        string|() lIndexResult = check redis->lIndex("testLSetKey", 1);
-        test:assertEquals(lIndexResult, "testLSetValue2New");
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    string|() lIndexResult = check redis->lIndex("testLSetKey", 1);
+    test:assertEquals(lIndexResult, "testLSetValue2New");
 }
 
 @test:Config {}

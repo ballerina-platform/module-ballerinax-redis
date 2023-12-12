@@ -13,22 +13,17 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/test;
 
 @test:Config {}
-function testHDel() {
-    do {
-        int result = check redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
-        test:assertEquals(result, 3);
+function testHDel() returns error? {
+    int result = check redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
+    test:assertEquals(result, 3);
 
-        boolean hExistsResult = check redis->hExists("testHDelKey", "testHDelField1");
-        boolean hExistsResult2 = check redis->hExists("testHDelKey", "testHDelField2");
-        boolean hExistsResult3 = check redis->hExists("testHDelKey", "testHDelField3");
-        test:assertTrue(!hExistsResult && !hExistsResult2 && !hExistsResult3);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean hExistsResult = check redis->hExists("testHDelKey", "testHDelField1");
+    boolean hExistsResult2 = check redis->hExists("testHDelKey", "testHDelField2");
+    boolean hExistsResult3 = check redis->hExists("testHDelKey", "testHDelField3");
+    test:assertTrue(!hExistsResult && !hExistsResult2 && !hExistsResult3);
 }
 
 @test:Config {}
@@ -107,20 +102,16 @@ function testHMGet() {
 }
 
 @test:Config {}
-function testHMSet() {
-    do {
-        map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
-        string result = check redis->hMSet("testHMSetKey", fieldValueMap);
-        test:assertEquals(result, "OK");
+function testHMSet() returns error? {
+    map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
+    string result = check redis->hMSet("testHMSetKey", fieldValueMap);
+    test:assertEquals(result, "OK");
 
-        boolean hExistsResult = check redis->hExists("testHMSetKey", "testHMSetField1");
-        string hGetResult = check redis->hGet("testHMSetKey", "testHMSetField1");
-        boolean hExistsResult2 = check redis->hExists("testHMSetKey", "testHMSetField2");
-        string hGetResult2 = check redis->hGet("testHMSetKey", "testHMSetField2");
-        test:assertTrue(hExistsResult && hGetResult == "testHMSetValue1" && hExistsResult2 && hGetResult2 == "testHMSetValue2");
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean hExistsResult = check redis->hExists("testHMSetKey", "testHMSetField1");
+    string hGetResult = check redis->hGet("testHMSetKey", "testHMSetField1");
+    boolean hExistsResult2 = check redis->hExists("testHMSetKey", "testHMSetField2");
+    string hGetResult2 = check redis->hGet("testHMSetKey", "testHMSetField2");
+    test:assertTrue(hExistsResult && hGetResult == "testHMSetValue1" && hExistsResult2 && hGetResult2 == "testHMSetValue2");
 }
 
 @test:Config {}
@@ -150,31 +141,23 @@ function testHKeys() {
 }
 
 @test:Config {}
-function testHSet() {
-    do {
-        boolean hSetResult = check redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
-        test:assertTrue(hSetResult);
+function testHSet() returns error? {
+    boolean hSetResult = check redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
+    test:assertTrue(hSetResult);
 
-        boolean hExistsResult = check redis->hExists("testHSetKey", "testHSetField1");
-        string hGetResult = check redis->hGet("testHSetKey", "testHSetField1");
-        test:assertTrue(hExistsResult && hGetResult == "testHSetValue1");
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean hExistsResult = check redis->hExists("testHSetKey", "testHSetField1");
+    string hGetResult = check redis->hGet("testHSetKey", "testHSetField1");
+    test:assertTrue(hExistsResult && hGetResult == "testHSetValue1");
 }
 
 @test:Config {}
-function testHSetNx() {
-    do {
-        boolean hSetResult = check redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
-        test:assertTrue(hSetResult);
+function testHSetNx() returns error? {
+    boolean hSetResult = check redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+    test:assertTrue(hSetResult);
 
-        boolean hExistsResult = check redis->hExists("testHSetNxKey", "testHSetNxField1");
-        string hGetResult = check redis->hGet("testHSetNxKey", "testHSetNxField1");
-        test:assertTrue(hExistsResult && hGetResult == "testHSetNxValue1");
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    boolean hExistsResult = check redis->hExists("testHSetNxKey", "testHSetNxField1");
+    string hGetResult = check redis->hGet("testHSetNxKey", "testHSetNxField1");
+    test:assertTrue(hExistsResult && hGetResult == "testHSetNxValue1");
 }
 
 @test:Config {}

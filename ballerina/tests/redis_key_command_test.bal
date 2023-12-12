@@ -43,17 +43,13 @@ function testExists() {
 }
 
 @test:Config {}
-function testExpire() {
-    do {
-        boolean result = check redis->expire("testExpireKey", 3);
-        test:assertTrue(result);
+function testExpire() returns error? {
+    boolean result = check redis->expire("testExpireKey", 3);
+    test:assertTrue(result);
 
-        runtime:sleep(3);
-        int existsResult = check redis->exists(["testExpireKey"]);
-        test:assertEquals(existsResult, 0);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    runtime:sleep(3);
+    int existsResult = check redis->exists(["testExpireKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
 @test:Config {}
@@ -83,57 +79,41 @@ function testKeys() {
 }
 
 @test:Config {}
-function testMove() {
-    do {
-        boolean moveResult = check redis->move("testMoveKey", 1);
-        test:assertTrue(moveResult);
+function testMove() returns error? {
+    boolean moveResult = check redis->move("testMoveKey", 1);
+    test:assertTrue(moveResult);
 
-        int existsResult = check redis->exists(["testMoveKey"]);
-        test:assertEquals(existsResult, 0);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    int existsResult = check redis->exists(["testMoveKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
 @test:Config {}
-function testPersist() {
-    do {
-        boolean persistResult = check redis->persist("testPersistKey");
-        runtime:sleep(3);
-        test:assertFalse(persistResult);
+function testPersist() returns error? {
+    boolean persistResult = check redis->persist("testPersistKey");
+    runtime:sleep(3);
+    test:assertFalse(persistResult);
 
-        int existsResult = check redis->exists(["testPersistKey"]);
-        test:assertEquals(existsResult, 1);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    int existsResult = check redis->exists(["testPersistKey"]);
+    test:assertEquals(existsResult, 1);
 }
 
 @test:Config {}
-function testPExpire() {
-    do {
-        boolean expireResult = check redis->pExpire("testPExpireKey", 3000);
-        test:assertTrue(expireResult);
+function testPExpire() returns error? {
+    boolean expireResult = check redis->pExpire("testPExpireKey", 3000);
+    test:assertTrue(expireResult);
 
-        runtime:sleep(3.5);
-        int existsResult = check redis->exists(["testPExpireKey"]);
-        test:assertEquals(existsResult, 0);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    runtime:sleep(3.5);
+    int existsResult = check redis->exists(["testPExpireKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
 @test:Config {}
-function testPTtl() {
-    do {
-        boolean _ = check redis->pExpire("testPTtlKey", 10000);
-        int result = check redis->pTtl("testPTtlKey");
-        runtime:sleep(5);
-        int ttl = check redis->pTtl("testPTtlKey");
-        test:assertTrue(result >= ttl && result <= 10000);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+function testPTtl() returns error? {
+    boolean _ = check redis->pExpire("testPTtlKey", 10000);
+    int result = check redis->pTtl("testPTtlKey");
+    runtime:sleep(5);
+    int ttl = check redis->pTtl("testPTtlKey");
+    test:assertTrue(result >= ttl && result <= 10000);
 }
 
 @test:Config {}
@@ -149,37 +129,29 @@ function testRandomKey() {
 }
 
 @test:Config {}
-function testRename() {
-    do {
-        string result = check redis->rename("testRenameKey", "testRenameKey1");
-        test:assertEquals(result, "OK");
+function testRename() returns error? {
+    string result = check redis->rename("testRenameKey", "testRenameKey1");
+    test:assertEquals(result, "OK");
 
-        int existsResult = check redis->exists(["testRenameKey"]);
-        test:assertEquals(existsResult, 0);
-        int existsResult1 = check redis->exists(["testRenameKey1"]);
-        test:assertEquals(existsResult1, 1);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    int existsResult = check redis->exists(["testRenameKey"]);
+    test:assertEquals(existsResult, 0);
+    int existsResult1 = check redis->exists(["testRenameKey1"]);
+    test:assertEquals(existsResult1, 1);
 }
 
 @test:Config {}
-function testRenameNx() {
-    do {
-        boolean renameResult1 = check redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
-        boolean renameResult2 = check redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
-        test:assertTrue(renameResult1);
-        test:assertFalse(renameResult2);
+function testRenameNx() returns error? {
+    boolean renameResult1 = check redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
+    boolean renameResult2 = check redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+    test:assertTrue(renameResult1);
+    test:assertFalse(renameResult2);
 
-        int existResult = check redis->exists(["testRenameNxKey"]);
-        test:assertEquals(existResult, 0);
-        int existResult1 = check redis->exists(["testRenameNxKeyRenamed"]);
-        test:assertEquals(existResult1, 1);
-        int existResult2 = check redis->exists(["testRenameNxKey1"]);
-        test:assertEquals(existResult2, 1);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    int existResult = check redis->exists(["testRenameNxKey"]);
+    test:assertEquals(existResult, 0);
+    int existResult1 = check redis->exists(["testRenameNxKeyRenamed"]);
+    test:assertEquals(existResult1, 1);
+    int existResult2 = check redis->exists(["testRenameNxKey1"]);
+    test:assertEquals(existResult2, 1);
 }
 
 @test:Config {}
@@ -205,14 +177,10 @@ function testSort() {
 
 @test:Config {}
 function testTtl() returns error? {
-    do {
-        _ = check redis->pExpire("testTtlKey", 10);
-        int result = check redis->ttl("testTtlKey");
-        int ttl = check redis->ttl("testTtlKey");
-        test:assertTrue(result >= ttl && result <= 10000);
-    } on fail error e {
-        test:assertFail("error from connector: " + e.message());
-    }
+    _ = check redis->pExpire("testTtlKey", 10);
+    int result = check redis->ttl("testTtlKey");
+    int ttl = check redis->ttl("testTtlKey");
+    test:assertTrue(result >= ttl && result <= 10000);
 }
 
 @test:Config {}
