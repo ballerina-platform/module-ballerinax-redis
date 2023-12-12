@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {
 }
 function testPing() {
-    var result = conn->ping();
+    var result = redis->ping();
     if (result is string) {
         test:assertEquals(result, "PONG");
     } else {
@@ -30,7 +30,7 @@ function testPing() {
 @test:Config {
 }
 function testEcho() {
-    var result = conn->echo("Manuri");
+    var result = redis->echo("Manuri");
     if (result is string) {
         test:assertEquals(result, "Manuri");
     } else {

@@ -98,10 +98,45 @@ task commitTomlFiles {
     }
 }
 
+task startRedisServer() {
+    doLast {
+        println("Starting redis server...")
+        exec {
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/docker-compose.yml up && exit %%ERRORLEVEL%%"
+            } else {
+                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/docker-compose.yml up -d"
+            }
+        }
+    }
+}
+
+task stopRedisServer() {
+    doLast {
+        println("Stopping redis server...")
+        exec {
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/docker-compose.yml down && exit %%ERRORLEVEL%%"
+            } else {
+                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/docker-compose.yml down"
+            }
+        }
+    }
+}
+
+build {
+    dependsOn copyToLib
+    dependsOn ":${project.packageName}-native:build"
+    dependsOn startRedisServer
+    finalizedBy stopRedisServer
+}
+
+test {
+    dependsOn ":${project.packageName}-native:build"
+    dependsOn startRedisServer
+    finalizedBy stopRedisServer
+}
+
 clean {
     delete 'build'
 }
-
-build.dependsOn copyToLib
-build.dependsOn ":${project.packageName}-native:build"
-test.dependsOn ":${project.packageName}-native:build"

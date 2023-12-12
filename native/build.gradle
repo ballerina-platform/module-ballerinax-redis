@@ -39,7 +39,6 @@ dependencies {
 
     implementation group: 'io.lettuce', name: 'lettuce-core', version: "${lettuceCoreVersion}"
     implementation group: 'org.apache.commons', name: 'commons-pool2', version: "${commonsPool2Version}"
-    implementation group: 'com.github.kstyrc', name: 'embedded-redis', version: "${embeddedRedisVersion}"
 }
 
 tasks.withType(JavaCompile) {
