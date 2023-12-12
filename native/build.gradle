@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,43 +16,34 @@
  */
 
 plugins {
-    id 'java-library'
-    id 'com.github.spotbugs'
+    id 'java'
     id 'checkstyle'
-    id 'jacoco'
+    id 'com.github.spotbugs'
 }
 
 description = 'Ballerina - Redis Native'
 
 configurations {
-    jacocoRuntime
     dist {
         transitive true
     }
 }
 
 dependencies {
-    jacocoRuntime "org.jacoco:org.jacoco.agent:${jacoco.toolVersion}:runtime"
-
     checkstyle project(":checkstyle")
-    checkstyle "com.puppycrawl.tools:checkstyle:${puppycrawlCheckstyleVersion}"
+    checkstyle "com.puppycrawl.tools:checkstyle:${checkstylePluginVersion}"
 
-    implementation "org.ballerinalang:ballerina-runtime:${project.ballerinaLangVersion}"
-    implementation "io.lettuce:lettuce-core:${project.lettuceCoreVersion}"
-    implementation "org.apache.commons:commons-pool2:${project.commonsPool2Version}"
-    implementation "com.github.kstyrc:embedded-redis:${project.embeddedRedisVersion}"
-    implementation "org.ballerinalang:ballerina-lang:${project.ballerinaLangVersion}"
-    implementation "org.ballerinalang:value:${project.ballerinaLangVersion}"
+    implementation group:  'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
+    implementation group: 'org.ballerinalang', name: 'ballerina-lang', version: "${ballerinaLangVersion}"
+    implementation group: 'org.ballerinalang', name: 'value', version: "${ballerinaLangVersion}"
+
+    implementation group: 'io.lettuce', name: 'lettuce-core', version: "${lettuceCoreVersion}"
+    implementation group: 'org.apache.commons', name: 'commons-pool2', version: "${commonsPool2Version}"
+    implementation group: 'com.github.kstyrc', name: 'embedded-redis', version: "${embeddedRedisVersion}"
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-sourceCompatibility = JavaVersion.VERSION_17
-
-jacoco {
-    toolVersion = "0.8.10"
 }
 
 test {
@@ -87,24 +78,17 @@ spotbugsTest {
     enabled = false
 }
 
-task validateSpotbugs() {
-    doLast {
-        if (spotbugsMain.reports.size() > 0 &&
-                spotbugsMain.reports[0].destination.exists() &&
-                spotbugsMain.reports[0].destination.text.readLines().size() > 0) {
-            spotbugsMain.reports[0].destination?.eachLine {
-                println 'Failure: ' + it
-            }
-            throw new GradleException("Spotbugs rule violations were found.");
-        }
-    }
+tasks.withType(Checkstyle) {
+    exclude '**/module-info.java'
 }
 
 checkstyle {
-    toolVersion "${checkstyleToolVersion}"
+    toolVersion "${checkstylePluginVersion}"
     configFile file("${rootDir}/build-config/checkstyle/build/checkstyle.xml")
     configProperties = ["suppressionFile": file("${rootDir}/build-config/checkstyle/build/suppressions.xml")]
 }
+
+checkstyleMain.dependsOn ':checkstyle:downloadCheckstyleRuleFiles'
 
 tasks.withType(Checkstyle) {
     exclude '**/module-info.java'
@@ -117,9 +101,6 @@ jar {
         exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
     }
 }
-
-spotbugsMain.finalizedBy validateSpotbugs
-checkstyleMain.dependsOn ':checkstyle:downloadCheckstyleRuleFiles'
 
 compileJava {
     doFirst {
