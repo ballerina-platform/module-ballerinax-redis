@@ -13,14 +13,12 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 
-import ballerina/jballerina.java;
 import ballerina/lang.runtime;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 function testDel() {
-    var result = conn->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
+    var result = redis->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -28,11 +26,10 @@ function testDel() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testExists() {
-    var result1 = conn->exists(["testExistsKey"]);
-    var result2 = conn->exists(["nonExistentKey"]);
+    var result1 = redis->exists(["testExistsKey"]);
+    var result2 = redis->exists(["nonExistentKey"]);
     if (result1 is int) {
         test:assertEquals(result1, 1);
     } else {
@@ -45,23 +42,19 @@ function testExists() {
     }
 }
 
-@test:Config {
-}
-function testExpire() {
-    var result = conn->expire("testExpireKey", 3);
-    if (result is boolean) {
-        test:assertTrue(result);
-        runtime:sleep(3);
-        test:assertEquals(exist(java:fromString("testExpireKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+@test:Config {}
+function testExpire() returns error? {
+    boolean result = check redis->expire("testExpireKey", 3);
+    test:assertTrue(result);
+
+    runtime:sleep(3);
+    int existsResult = check redis->exists(["testExpireKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
-@test:Config {
-}
+@test:Config {}
 function testKeys() {
-    var result = conn->keys("testKeysKey*");
+    var result = redis->keys("testKeysKey*");
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allMatchingKeysRetrieved = true;
@@ -85,60 +78,47 @@ function testKeys() {
     }
 }
 
-@test:Config {
-}
-function testMove() {
-    var result = conn->move("testMoveKey", 1);
-    if (result is boolean) {
-        test:assertTrue(result);
-        test:assertEquals(exist(java:fromString("testMoveKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+@test:Config {}
+function testMove() returns error? {
+    boolean moveResult = check redis->move("testMoveKey", 1);
+    test:assertTrue(moveResult);
+
+    int existsResult = check redis->exists(["testMoveKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
-@test:Config {
-}
-function testPersist() {
-    var result = conn->persist("testPersistKey");
+@test:Config {}
+function testPersist() returns error? {
+    boolean persistResult = check redis->persist("testPersistKey");
     runtime:sleep(3);
-    if (result is boolean) {
-        test:assertFalse(result);
-        test:assertEquals(exist(java:fromString("testPersistKey")), 1);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+    test:assertFalse(persistResult);
+
+    int existsResult = check redis->exists(["testPersistKey"]);
+    test:assertEquals(existsResult, 1);
 }
 
-@test:Config {
-}
-function testPExpire() {
-    var result = conn->pExpire("testPExpireKey", 3000);
-    if (result is boolean) {
-        test:assertTrue(result);
-        runtime:sleep(3.5);
-        test:assertEquals(exist(java:fromString("testPExpireKey")), 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+@test:Config {}
+function testPExpire() returns error? {
+    boolean expireResult = check redis->pExpire("testPExpireKey", 3000);
+    test:assertTrue(expireResult);
+
+    runtime:sleep(3.5);
+    int existsResult = check redis->exists(["testPExpireKey"]);
+    test:assertEquals(existsResult, 0);
 }
 
-@test:Config {
-}
-function testPTtl() {
-    _ = pexpire(java:fromString("testPTtlKey"), 10000);
-    var result = conn->pTtl("testPTtlKey");
+@test:Config {}
+function testPTtl() returns error? {
+    boolean _ = check redis->pExpire("testPTtlKey", 10000);
+    int result = check redis->pTtl("testPTtlKey");
     runtime:sleep(5);
-    int ttl = pttl(java:fromString("testPTtlKey"));
-    if (result is int) {
-        test:assertTrue(result >= ttl && result <= 10000);
-    }
+    int ttl = check redis->pTtl("testPTtlKey");
+    test:assertTrue(result >= ttl && result <= 10000);
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRandomKey() {
-    var result = conn->randomKey();
+    var result = redis->randomKey();
     if (result is string) {
         test:assertNotEquals(result, "");
     } else if (result is ()) {
@@ -148,43 +128,35 @@ function testRandomKey() {
     }
 }
 
-@test:Config {
-}
-function testRename() {
-    var result = conn->rename("testRenameKey", "testRenameKey1");
-    if (result is string) {
-        test:assertEquals(result, "OK");
-        test:assertEquals(exist(java:fromString("testRenameKey")), 0);
-        test:assertEquals(exist(java:fromString("testRenameKey1")), 1);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+@test:Config {}
+function testRename() returns error? {
+    string result = check redis->rename("testRenameKey", "testRenameKey1");
+    test:assertEquals(result, "OK");
+
+    int existsResult = check redis->exists(["testRenameKey"]);
+    test:assertEquals(existsResult, 0);
+    int existsResult1 = check redis->exists(["testRenameKey1"]);
+    test:assertEquals(existsResult1, 1);
 }
 
-@test:Config {
-}
-function testRenameNx() {
-    var result1 = conn->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
-    var result2 = conn->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
-    if (result1 is boolean) {
-        test:assertTrue(result1);
-    } else {
-        test:assertFail("error from Connector: " + result1.message());
-    }
-    if (result2 is boolean) {
-        test:assertFalse(result2);
-    } else {
-        test:assertFail("error from Connector: " + result2.message());
-    }
-    test:assertEquals(exist(java:fromString("testRenameNxKey")), 0);
-    test:assertEquals(exist(java:fromString("testRenameNxKeyRenamed")), 1);
-    test:assertEquals(exist(java:fromString("testRenameNxKey1")), 1);
+@test:Config {}
+function testRenameNx() returns error? {
+    boolean renameResult1 = check redis->renameNx("testRenameNxKey", "testRenameNxKeyRenamed");
+    boolean renameResult2 = check redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+    test:assertTrue(renameResult1);
+    test:assertFalse(renameResult2);
+
+    int existResult = check redis->exists(["testRenameNxKey"]);
+    test:assertEquals(existResult, 0);
+    int existResult1 = check redis->exists(["testRenameNxKeyRenamed"]);
+    test:assertEquals(existResult1, 1);
+    int existResult2 = check redis->exists(["testRenameNxKey1"]);
+    test:assertEquals(existResult2, 1);
 }
 
-@test:Config {
-}
+@test:Config {}
 function testSort() {
-    var result = conn->sort("testSortKey");
+    var result = redis->sort("testSortKey");
     if (result is string[]) {
         test:assertEquals(result.length(), 6);
         boolean elementsInOrder = true;
@@ -203,29 +175,20 @@ function testSort() {
     }
 }
 
-@test:Config {
-}
-function testTtl() {
-    _ = pexpire(java:fromString("testTtlKey"), 10);
-    var result = conn->pTtl("testTtlKey");
-    int ttl = pttl(java:fromString("testTtlKey"));
-    if (result is int) {
-        test:assertTrue(result >= ttl && result <= 10000);
-    }
+@test:Config {}
+function testTtl() returns error? {
+    _ = check redis->pExpire("testTtlKey", 10);
+    int result = check redis->ttl("testTtlKey");
+    int ttl = check redis->ttl("testTtlKey");
+    test:assertTrue(result >= ttl && result <= 10000);
 }
 
-@test:Config {
-}
+@test:Config {}
 function testType() {
-    var result = conn->redisType("testTypeKey");
+    var result = redis->redisType("testTypeKey");
     if (result is string) {
         test:assertEquals(result, "string");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisKeyDatabase() = @java:Method {
-    name: "setupKeyDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;

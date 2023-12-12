@@ -14,14 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/jballerina.java;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 function testZAdd() {
     map<any> valueScoreMap = {testZAddValue2: 2.0};
-    var result = conn->zAdd("testZAddKey", valueScoreMap);
+    var result = redis->zAdd("testZAddKey", valueScoreMap);
     if (result is int) {
         test:assertEquals(result, 1);
     } else {
@@ -29,10 +27,9 @@ function testZAdd() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZCard() {
-    var result = conn->zCard("testZCardKey");
+    var result = redis->zCard("testZCardKey");
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
@@ -40,10 +37,9 @@ function testZCard() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZCount() {
-    var result = conn->zCount("testZCountKey", 2.0, 5.0);
+    var result = redis->zCount("testZCountKey", 2.0, 5.0);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -51,10 +47,9 @@ function testZCount() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZIncrBy() {
-    var result = conn->zIncrBy("testZIncrByKey", 1.0, "testZIncrByValue1");
+    var result = redis->zIncrBy("testZIncrByKey", 1.0, "testZIncrByValue1");
     if (result is float) {
         test:assertEquals(result, 7.0);
     } else {
@@ -62,10 +57,9 @@ function testZIncrBy() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZInterStore() {
-    var result = conn->zInterStore("testZInterStoreDestKey", ["testZInterStoreKey1", "testZInterStoreKey2"]);
+    var result = redis->zInterStore("testZInterStoreDestKey", ["testZInterStoreKey1", "testZInterStoreKey2"]);
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
@@ -73,10 +67,9 @@ function testZInterStore() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZLexCount() {
-    var result = conn->zLexCount("testZLexCountKey", "b", "f");
+    var result = redis->zLexCount("testZLexCountKey", "b", "f");
     if (result is int) {
         test:assertEquals(result, 5);
     } else {
@@ -84,10 +77,9 @@ function testZLexCount() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRange() {
-    var result = conn->zRange("testZRangeKey", 1, 3);
+    var result = redis->zRange("testZRangeKey", 1, 3);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         test:assertEquals(result[0], "d");
@@ -98,10 +90,9 @@ function testZRange() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRangeByLex() {
-    var result = conn->zRangeByLex("testZRangeByLexKey", "aaa", "g");
+    var result = redis->zRangeByLex("testZRangeByLexKey", "aaa", "g");
     if (result is string[]) {
         test:assertEquals(result.length(), 6);
         test:assertEquals(result[0], "b");
@@ -115,10 +106,9 @@ function testZRangeByLex() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRevRangeByLex() {
-    var result = conn->zRevRangeByLex("testZRangeByLexKey", "aaaa", "g");
+    var result = redis->zRevRangeByLex("testZRangeByLexKey", "aaaa", "g");
     if (result is string[]) {
         test:assertEquals(result.length(), 6);
         test:assertEquals(result[0], "g");
@@ -132,10 +122,9 @@ function testZRevRangeByLex() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRangeByScore() {
-    var result = conn->zRangeByScore("testZRangeKey", 2.0, 4.0);
+    var result = redis->zRangeByScore("testZRangeKey", 2.0, 4.0);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         test:assertEquals(result[0], "b");
@@ -146,10 +135,9 @@ function testZRangeByScore() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRank() {
-    var result = conn->zRank("testZRankKey", "a");
+    var result = redis->zRank("testZRankKey", "a");
     if (result is int) {
         test:assertEquals(result, 0);
     } else {
@@ -157,10 +145,9 @@ function testZRank() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRem() {
-    var result = conn->zRem("testZRemKey", ["a", "b"]);
+    var result = redis->zRem("testZRemKey", ["a", "b"]);
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
@@ -168,10 +155,9 @@ function testZRem() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRemRangeByLex() {
-    var result = conn->zRemRangeByLex("testZRemRangeByLexKey", "alpha", "omega");
+    var result = redis->zRemRangeByLex("testZRemRangeByLexKey", "alpha", "omega");
     if (result is int) {
         test:assertEquals(result, 6);
     } else {
@@ -179,10 +165,9 @@ function testZRemRangeByLex() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRemRangeByRank() {
-    var result = conn->zRemRangeByRank("testZRemRangeByRankKey", 1, 4);
+    var result = redis->zRemRangeByRank("testZRemRangeByRankKey", 1, 4);
     if (result is int) {
         test:assertEquals(result, 4);
     } else {
@@ -190,10 +175,9 @@ function testZRemRangeByRank() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRemRangeByScore() {
-    var result = conn->zRemRangeByScore("testZRemRangeByScoreKey", 1, 4);
+    var result = redis->zRemRangeByScore("testZRemRangeByScoreKey", 1, 4);
     if (result is int) {
         test:assertEquals(result, 4);
     } else {
@@ -201,10 +185,9 @@ function testZRemRangeByScore() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRevRange() {
-    var result = conn->zRevRange("testZRangeKey", 1, 3);
+    var result = redis->zRevRange("testZRangeKey", 1, 3);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         boolean allRangeRetrieved = true;
@@ -228,10 +211,9 @@ function testZRevRange() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRevRangeByScore() {
-    var result = conn->zRangeByScore("testZRangeKey", 2.0, 4.0);
+    var result = redis->zRangeByScore("testZRangeKey", 2.0, 4.0);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
         test:assertEquals(result[0], "b");
@@ -242,10 +224,9 @@ function testZRevRangeByScore() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZRevRank() {
-    var result = conn->zRevRank("testZRankKey", "c");
+    var result = redis->zRevRank("testZRankKey", "c");
     if (result is int) {
         test:assertEquals(result, 0);
     } else {
@@ -253,10 +234,9 @@ function testZRevRank() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZScore() {
-    var result = conn->zScore("testZScoreKey", "a");
+    var result = redis->zScore("testZScoreKey", "a");
     if (result is float) {
         test:assertEquals(result, 1.2);
     } else {
@@ -264,18 +244,12 @@ function testZScore() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testZUnionStore() {
-    var result = conn->zUnionStore("testZUnionStoreDestKey", ["testZUnionStoreKey1", "testZUnionStoreKey2"]);
+    var result = redis->zUnionStore("testZUnionStoreDestKey", ["testZUnionStoreKey1", "testZUnionStoreKey2"]);
     if (result is int) {
         test:assertEquals(result, 6);
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisSortedSetDatabase() = @java:Method {
-    name: "setupSortedSetDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;

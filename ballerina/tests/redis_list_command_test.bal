@@ -14,35 +14,31 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/jballerina.java;
 import ballerina/test;
 
-@test:Config {
-}
+@test:Config {}
 function testBLPop() {
-    var result = conn->bLPop(1, ["testBLPopKey"]);
+    var result = redis->bLPop(1, ["testBLPopKey"]);
     if (result is map<any>) {
-        test:assertEquals(<anydata|error> result.get("testBLPopKey"), "testBLPopValue2");
+        test:assertEquals(<anydata|error>result.get("testBLPopKey"), "testBLPopValue2");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testBRPop() {
-    var result = conn->bRPop(1, ["testBRPopKey"]);
+    var result = redis->bRPop(1, ["testBRPopKey"]);
     if (result is map<any>) {
-        test:assertEquals(<anydata|error> result.get("testBRPopKey"), "testBRPopValue1");
+        test:assertEquals(<anydata|error>result.get("testBRPopKey"), "testBRPopValue1");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLPush() {
-    var result = conn->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
+    var result = redis->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -50,10 +46,9 @@ function testLPush() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLPop() {
-    var result = conn->lPop("testLPopKey");
+    var result = redis->lPop("testLPopKey");
     if (result is string) {
         test:assertEquals(result, "testLPopValue2");
     } else if (result is ()) {
@@ -63,10 +58,9 @@ function testLPop() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLPushX() {
-    var result = conn->lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
+    var result = redis->lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -74,10 +68,9 @@ function testLPushX() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLIndex() {
-    var result = conn->lIndex("testLIndexKey", 0);
+    var result = redis->lIndex("testLIndexKey", 0);
     if (result is string) {
         test:assertEquals(result, "testLIndexValue2");
     } else if (result is ()) {
@@ -87,10 +80,9 @@ function testLIndex() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLInsert() {
-    var result = conn->lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
+    var result = redis->lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
     if (result is int) {
         test:assertEquals(result, 5);
     } else {
@@ -98,10 +90,9 @@ function testLInsert() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLLen() {
-    var result = conn->lLen("testLLenKey");
+    var result = redis->lLen("testLLenKey");
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -109,10 +100,9 @@ function testLLen() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLRange() {
-    var result = conn->lRange("testLRangeKey", 1, 3);
+    var result = redis->lRange("testLRangeKey", 1, 3);
     if (result is string[]) {
         test:assertEquals(result.length(), 3);
     } else {
@@ -120,10 +110,9 @@ function testLRange() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLRem() {
-    var result = conn->lRem("testLRemKey", 0, "toBeRemovedValue");
+    var result = redis->lRem("testLRemKey", 0, "toBeRemovedValue");
     if (result is int) {
         test:assertEquals(result, 2);
     } else {
@@ -131,22 +120,18 @@ function testLRem() {
     }
 }
 
-@test:Config {
-}
-function testLSet() {
-    var result = conn->lSet("testLSetKey", 1, "testLSetValue2New");
-    if (result is string) {
-        test:assertEquals(result, "OK");
-        test:assertEquals(lindex(java:fromString("testLSetKey"), 1).toString(), "testLSetValue2New");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+@test:Config {}
+function testLSet() returns error? {
+    string result = check redis->lSet("testLSetKey", 1, "testLSetValue2New");
+    test:assertEquals(result, "OK");
+
+    string|() lIndexResult = check redis->lIndex("testLSetKey", 1);
+    test:assertEquals(lIndexResult, "testLSetValue2New");
 }
 
-@test:Config {
-}
+@test:Config {}
 function testLTrim() {
-    var result = conn->lTrim("testLTrimKey", 1, -1);
+    var result = redis->lTrim("testLTrimKey", 1, -1);
     if (result is string) {
         test:assertEquals(result, "OK");
     } else {
@@ -154,10 +139,9 @@ function testLTrim() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRPop() {
-    var result = conn->rPop("testRPopKey");
+    var result = redis->rPop("testRPopKey");
     if (result is string) {
         test:assertEquals(result, "testRPopValue1");
     } else if (result is ()) {
@@ -167,10 +151,9 @@ function testRPop() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRPopLPush() {
-    var result = conn->rPopLPush("testRPopLPushKey1", "testRPopLPushKey2");
+    var result = redis->rPopLPush("testRPopLPushKey1", "testRPopLPushKey2");
     if (result is string) {
         test:assertEquals(result, "One");
     } else {
@@ -178,10 +161,9 @@ function testRPopLPush() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRPush() {
-    var result = conn->rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
+    var result = redis->rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -189,18 +171,12 @@ function testRPush() {
     }
 }
 
-@test:Config {
-}
+@test:Config {}
 function testRPushX() {
-    var result = conn->rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
+    var result = redis->rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
 }
-
-function setupRedisListDatabase() = @java:Method {
-    name: "setupListDatabase",
-    'class: "org.ballerinalang.redis.utils.RedisDbUtils"
-} external;
