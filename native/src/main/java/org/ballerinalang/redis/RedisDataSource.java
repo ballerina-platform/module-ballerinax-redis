@@ -165,7 +165,7 @@ public class RedisDataSource<K, V> {
             redisCommands = statefulRedisConnection.sync();
         } else {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
-            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig());
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
         }
     }
 

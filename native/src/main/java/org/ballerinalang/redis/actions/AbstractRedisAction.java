@@ -18,8 +18,6 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.PredefinedTypes;
-import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
@@ -37,11 +35,15 @@ import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import org.ballerinalang.redis.RedisDataSource;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
+
+import static org.ballerinalang.redis.utils.ConversionUtils.createArrayFromScoredValueMap;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromKeyValueList;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromMap;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromSet;
 
 /**
  * {@code {@link AbstractRedisAction}} is the base class for all Redis connector actions.
@@ -54,9 +56,6 @@ public abstract class AbstractRedisAction {
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;
     private static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
-
-    protected AbstractRedisAction() {
-    }
 
     private static <K, V> Object getRedisCommands(RedisDataSource<K, V> redisDataSource) {
         if (isClusterConnection(redisDataSource)) {
@@ -1407,78 +1406,7 @@ public abstract class AbstractRedisAction {
         return redisDataSource.isClusterConnection();
     }
 
-    private static BArray createBStringArrayFromSet(Set<String> set) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (String item : set) {
-            bStringArray.append(StringUtils.fromString(item));
-        }
-        return bStringArray;
-    }
-
-    private static BArray createBStringArrayFromList(List<String> list) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (String item : list) {
-            bStringArray.append(StringUtils.fromString(item));
-        }
-        return bStringArray;
-    }
-
-    private static <V> ScoredValue<V>[] createArrayFromScoredValueMap(Map<V, Double> valueScoreMap) {
-        ScoredValue<V>[] scoredValues = new ScoredValue[valueScoreMap.size()];
-        int i = 0;
-        for (Map.Entry<V, Double> entry : valueScoreMap.entrySet()) {
-            scoredValues[i] = (ScoredValue<V>) ScoredValue.just(entry.getValue(), entry.getKey());
-            i++;
-        }
-        return scoredValues;
-    }
-
-    private static <K> BMap<BString, Object> createBMapFromMap(Map<K, String> map) {
-        BMap<BString, Object> bMap = ValueCreator.createMapValue();
-        map.forEach((key, value) -> bMap.put(StringUtils.fromString((String) key), StringUtils.fromString(value)));
-        return bMap;
-    }
-
-    private static <K> BMap<BString, Object> createBMapFromKeyValueList(List<KeyValue<K, String>> list) {
-        BMap<BString, Object> bMap = ValueCreator.createMapValue();
-        for (KeyValue<K, String> item : list) {
-            String value;
-            try {
-                value = item.getValue();
-            } catch (NoSuchElementException e) {
-                value = null;
-            }
-            bMap.put(StringUtils.fromString((String) item.getKey()), StringUtils.fromString(value));
-        }
-        return bMap;
-    }
-
-    static String[] createStringArrayFromBArray(BArray bStringArray) {
-        String[] stringArray = new String[bStringArray.size()];
-        int i = 0;
-        for (Object item : bStringArray.getStringArray()) {
-            stringArray[i++] = item.toString();
-        }
-        return stringArray;
-    }
-
-    static Map<String, Object> createMapFromBMap(BMap<BString, Object> bMap) {
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
-            map.put(entry.getKey().toString(), entry.getValue().toString());
-        }
-        return map;
-    }
-
-    static BArray createBstringArrayFromBMap(BMap<BString, BString> bMap) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (Map.Entry<BString, BString> entry : bMap.entrySet()) {
-            bStringArray.append(entry.getValue());
-        }
-        return bStringArray;
-    }
-
-    private static <K, V> void releaseResources(Object redisCommands, RedisDataSource<K, V> redisDataSource) {
+    public static <K, V> void releaseResources(Object redisCommands, RedisDataSource<K, V> redisDataSource) {
         if (redisDataSource.isPoolingEnabled() && redisCommands != null) {
             redisDataSource.releaseResources(redisCommands);
         }

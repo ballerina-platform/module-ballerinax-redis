@@ -18,9 +18,6 @@
 
 package org.ballerinalang.redis;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Constants for Redis Connector.
  *
@@ -28,42 +25,8 @@ import java.util.Map;
  */
 public class Constants {
 
-    public static final String ERROR = "Error";
+    public static final String REDIS_ERROR_TYPE = "Error";
     static final int DEFAULT_REDIS_PORT = 6379;
-
-    /**
-     * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
-     */
-    public enum Codec {
-        BYTE_ARRAY_CODEC("ByteArrayCodec"), STRING_CODEC("StringCodec"), UTF8_STRING_CODEC("Utf8StringCodec");
-
-        static Map<String, Codec> codecMap = new HashMap<>(3);
-
-        static {
-            Codec[] codecs = values();
-            for (Codec codec : codecs) {
-                codecMap.put(codec.getCodecName(), codec);
-            }
-        }
-
-        String codec;
-
-        Codec(String codec) {
-            this.codec = codec;
-        }
-
-        public static Codec fromCodecName(String codecName) {
-            Codec codec = codecMap.get(codecName);
-            if (codec == null) {
-                throw new IllegalArgumentException("Unsupported Codec: " + codecName);
-            }
-            return codec;
-        }
-
-        public String getCodecName() {
-            return codec;
-        }
-    }
 
     /**
      * Endpoint configuration constants.

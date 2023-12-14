@@ -40,7 +40,7 @@ public isolated client class Client {
     # + clientEndpointConfig - Client end point configuration
     # + return - `error` if error occurs
     isolated function initClient(Client redisClient, ConnectionConfig clientEndpointConfig) returns Error? = @java:Method {
-        'class: "org.ballerinalang.redis.endpoint.InitRedisClient"
+        'class: "org.ballerinalang.redis.utils.RedisUtils"
     } external;
 
     // String operations
@@ -1287,7 +1287,7 @@ public isolated client class Client {
 
     # Stops the registered service.
     public isolated function close() = @java:Method {
-        'class: "org.ballerinalang.redis.endpoint.Close"
+        'class: "org.ballerinalang.redis.actions.ConnectionActions"
     } external;
 }
 
