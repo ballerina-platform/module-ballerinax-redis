@@ -19,10 +19,12 @@
 package org.ballerinalang.redis.utils;
 
 import io.ballerina.runtime.api.PredefinedTypes;
+import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
+import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
@@ -33,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import static org.ballerinalang.redis.utils.Constants.REDIS_ERROR_TYPE;
 
 /**
  * Utility methods for conversion between Ballerina and Java types.
@@ -158,5 +162,17 @@ public class ConversionUtils {
             bStringArray.append(entry.getValue());
         }
         return bStringArray;
+    }
+
+    /**
+     * Create a BError instance from a throwable.
+     *
+     * @param e the throwable
+     * @return the BError instance
+     */
+    public static BError createBError(Throwable e) {
+        return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
+                StringUtils.fromString(e.getMessage()),
+                ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
     }
 }

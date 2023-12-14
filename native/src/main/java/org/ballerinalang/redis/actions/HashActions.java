@@ -18,16 +18,14 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_ERROR_TYPE;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createMapFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
 
@@ -45,13 +43,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Number of fields that were removed from the hash, not including specified but non existing fields
      */
     public static Object hDel(BObject redisClient, BString key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hDel(StringUtils.fromString(key.getValue()), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -65,13 +61,11 @@ public class HashActions extends AbstractRedisAction {
      * does not exist
      */
     public static Object hExists(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hExists(key.getValue(), field.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -84,13 +78,11 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hGet(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return StringUtils.fromString(hGet(key.getValue(), field.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -102,13 +94,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Map of field-value pairs
      */
     public static Object hGetAll(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hGetAll(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -122,13 +112,11 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hIncrBy(BObject redisClient, BString key, BString field, int amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hIncrBy(key.getValue(), field.getValue(), amount, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -142,13 +130,11 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hIncrByFloat(BObject redisClient, BString key, BString field, double amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hIncrByFloat(key.getValue(), field.getValue(), amount, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -160,13 +146,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Array of hash fields
      */
     public static Object hKeys(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hKeys(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -178,13 +162,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Number of fields
      */
     public static Object hLen(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hLen(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -197,13 +179,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Map of field-value pairs
      */
     public static Object hMGet(BObject redisClient, BString key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hMGet(key.getValue(), redisDataSource, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -216,13 +196,11 @@ public class HashActions extends AbstractRedisAction {
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object hMSet(BObject redisClient, BString key, BMap fieldValueMap) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return StringUtils.fromString(hMSet(key.getValue(), createMapFromBMap(fieldValueMap), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -237,13 +215,11 @@ public class HashActions extends AbstractRedisAction {
      * exists in the hash and the value was updated
      */
     public static Object hSet(BObject redisClient, BString key, BString field, BString value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hSet(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -258,13 +234,11 @@ public class HashActions extends AbstractRedisAction {
      * exists in the hash and the value was updated
      */
     public static Object hSetNx(BObject redisClient, BString key, BString field, BString value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hSetNx(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -277,13 +251,11 @@ public class HashActions extends AbstractRedisAction {
      * @return The length of the field value, or 0 when field is not present in the hash or key does not exist at all
      */
     public static Object hStrln(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hStrln(key.getValue(), field.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -295,13 +267,11 @@ public class HashActions extends AbstractRedisAction {
      * @return Array of values in the hash, or an empty array when key does not exist
      */
     public static Object hVals(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return hVals(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 }

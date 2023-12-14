@@ -40,7 +40,12 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.ballerinalang.redis.Constants.DEFAULT_REDIS_PORT;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_CLIENT_NAME;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_CONNECTION_TIMEOUT;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_DATABASE;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_SSL_ENABLED;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_START_TLS_ENABLED;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED;
 
 /**
  * {@code {@link RedisDataSource}} Util class for Redis initialization.
@@ -51,16 +56,17 @@ import static org.ballerinalang.redis.Constants.DEFAULT_REDIS_PORT;
  */
 public class RedisDataSource<K, V> {
 
-    private static final String HOSTS_SEPARATOR = ",";
-    private static final String HOST_PORT_SEPARATOR = ":";
-    private RedisClient redisClient;
     private RedisClusterClient redisClusterClient;
-    private RedisCodec<K, V> codec;
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
-    private boolean isClusterConnection;
-    private boolean poolingEnabled;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
+    private final RedisCodec<K, V> codec;
+    private final boolean isClusterConnection;
+    private final boolean poolingEnabled;
+
+    private static final String HOSTS_SEPARATOR = ",";
+    private static final String HOST_PORT_SEPARATOR = ":";
+    public static final int DEFAULT_PORT = 6379;
 
     /**
      * Constructor for {@link RedisDataSource}.
@@ -88,8 +94,12 @@ public class RedisDataSource<K, V> {
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, password, options);
         } else {
-            setRedisStandaloneCommands(serverAddresses, password, options);
+            if (serverAddresses.size() > 1) {
+                throw new RuntimeException("Multiple hosts are not supported for standalone connections");
+            }
+            setRedisStandaloneCommands(serverAddresses.get(0), password, options);
         }
+
         //TODO: Add support for executing commands in async mode/ reactive mode
     }
 
@@ -143,25 +153,12 @@ public class RedisDataSource<K, V> {
         objectPool.close();
     }
 
-    private void setRedisStandaloneCommands(List<ServerAddress> serverAddresses, String password,
-                                            BMap<BString, Object> options) {
-        if (serverAddresses.size() > 1) {
-            throw new RuntimeException("More than one hosts have been provided for a non-cluster connection");
-        }
-        RedisURI redisUri;
-        StatefulRedisConnection<K, V> statefulRedisConnection;
-        RedisURI.Builder redisURIBuilder = RedisURI.Builder
-                .redis(serverAddresses.get(0).getHost(), serverAddresses.get(0).getPort());
-        redisURIBuilder = setOptions(redisURIBuilder, options);
-        if (!password.isEmpty()) {
-            redisUri = redisURIBuilder.withPassword(password).build();
-        } else {
-            redisUri = redisURIBuilder.build();
-        }
-        redisClient = RedisClient.create(redisUri);
+    private void setRedisStandaloneCommands(ServerAddress address, String password, BMap<BString, Object> options) {
+        RedisURI redisURI = constructRedisUri(address.host(), address.port(), password, options);
+        RedisClient redisClient = RedisClient.create(redisURI);
 
         if (!poolingEnabled) {
-            statefulRedisConnection = redisClient.connect(codec);
+            StatefulRedisConnection<K, V> statefulRedisConnection = redisClient.connect(codec);
             redisCommands = statefulRedisConnection.sync();
         } else {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
@@ -171,54 +168,52 @@ public class RedisDataSource<K, V> {
 
     private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password,
                                          BMap<BString, Object> options) {
-        StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection;
         List<RedisURI> redisURIS;
-        if (!password.isEmpty()) {
-            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options)
-                            .withPassword(password).build())
-                    .collect(Collectors.toList());
-        } else {
-            redisURIS = serverAddresses.stream().map(serverAddress -> setOptions(
-                            RedisURI.Builder.redis(serverAddress.getHost(), serverAddress.getPort()), options).build())
-                    .collect(Collectors.toList());
-        }
+        redisURIS = serverAddresses.stream()
+                .map(serverAddress -> constructRedisUri(serverAddress.host(), serverAddress.port(), password, options))
+                .collect(Collectors.toList());
+
         redisClusterClient = RedisClusterClient.create(redisURIS);
         if (!poolingEnabled) {
-            statefulRedisClusterConnection = redisClusterClient.connect(codec);
-            redisClusterCommands = statefulRedisClusterConnection.sync();
+            redisClusterCommands = redisClusterClient.connect(codec).sync();
         } else {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
-            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig());
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
         }
     }
 
-    private RedisURI.Builder setOptions(RedisURI.Builder builder, BMap<BString, Object> options) {
-        int database = options.getIntValue(StringUtils.fromString(ConnectionParam.DATABASE.getKey())).intValue();
-        int connectionTimeout = options.getIntValue(StringUtils.fromString(
-                ConnectionParam.CONNECTION_TIMEOUT.getKey())).intValue();
-        BString clientName = options.getStringValue(StringUtils.fromString(ConnectionParam.CLIENT_NAME.getKey()));
+    private RedisURI constructRedisUri(String host, int port, String password, BMap<BString, Object> options) {
+        RedisURI.Builder builder = RedisURI.builder()
+                .withHost(host)
+                .withPort(port);
 
-        boolean sslEnabled = options.getBooleanValue(StringUtils.fromString(ConnectionParam.SSL_ENABLED.getKey()));
-        boolean startTlsEnabled = options.getBooleanValue(StringUtils.fromString
-                (ConnectionParam.START_TLS_ENABLED.getKey()));
-        boolean verifyPeerEnabled = options.getBooleanValue(StringUtils.fromString(
-                ConnectionParam.VERIFY_PEER_ENABLED.getKey()));
-
-        if (database != -1) {
-            builder.withDatabase(database);
-        }
-        if (connectionTimeout != -1) {
-            builder.withTimeout(Duration.ofMillis(connectionTimeout));
-        }
-        if (!clientName.toString().equals("")) {
-            builder.withClientName(clientName.toString());
-        }
+        boolean sslEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_SSL_ENABLED));
+        boolean startTlsEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_START_TLS_ENABLED));
+        boolean verifyPeerEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_VERIFY_PEER_ENABLED));
         builder.withSsl(sslEnabled);
         builder.withStartTls(startTlsEnabled);
         builder.withVerifyPeer(verifyPeerEnabled);
 
-        return builder;
+        int database = options.getIntValue(StringUtils.fromString(CONFIG_DATABASE)).intValue();
+        if (database != -1) {
+            builder.withDatabase(database);
+        }
+
+        int connectionTimeout = options.getIntValue(StringUtils.fromString(CONFIG_CONNECTION_TIMEOUT)).intValue();
+        if (connectionTimeout != -1) {
+            builder.withTimeout(Duration.ofMillis(connectionTimeout));
+        }
+
+        BString clientName = options.getStringValue(StringUtils.fromString(CONFIG_CLIENT_NAME));
+        if (!clientName.getValue().isBlank()) {
+            builder.withClientName(clientName.toString());
+        }
+
+        if (password != null && !password.isBlank()) {
+            builder.withPassword(password);
+        }
+
+        return builder.build();
     }
 
     private List<ServerAddress> obtainServerAddresses(String hostStr) {
@@ -238,10 +233,10 @@ public class RedisDataSource<K, V> {
             try {
                 port = Integer.parseInt(hostPort[1]);
             } catch (NumberFormatException e) {
-                throw new RuntimeException("the port of the host string must be an integer: " + hostStr, e);
+                throw new RuntimeException("port of the host string must be an integer: " + hostStr, e);
             }
         } else {
-            port = DEFAULT_REDIS_PORT;
+            port = DEFAULT_PORT;
         }
         return new ServerAddress(host, port);
     }
@@ -262,44 +257,13 @@ public class RedisDataSource<K, V> {
         }
     }
 
-    private enum ConnectionParam {
-        //String params
-        CLIENT_NAME("clientName"),
+    /**
+     * Represents a Redis server address.
+     *
+     * @param host redis server host
+     * @param port redis server port
+     */
+    private record ServerAddress(String host, int port) {
 
-        //int params
-        DATABASE("database"), CONNECTION_TIMEOUT("connectionTimeout"),
-
-        //boolean params
-        POOLING_ENABLED("poolingEnabled"), IS_CLUSTER_CONNECTION("isClusterConnection"), SSL_ENABLED(
-                "ssl"), START_TLS_ENABLED("startTls"), VERIFY_PEER_ENABLED("verifyPeer");
-
-        private String key;
-
-        ConnectionParam(String key) {
-            this.key = key;
-        }
-
-        private String getKey() {
-            return key;
-        }
-    }
-
-    private static class ServerAddress {
-
-        private String host;
-        private int port;
-
-        ServerAddress(String host, int port) {
-            this.host = host;
-            this.port = port;
-        }
-
-        String getHost() {
-            return host;
-        }
-
-        int getPort() {
-            return port;
-        }
     }
 }

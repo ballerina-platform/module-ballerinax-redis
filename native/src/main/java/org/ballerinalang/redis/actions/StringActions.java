@@ -18,16 +18,14 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_ERROR_TYPE;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBstringArrayFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createMapFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
@@ -48,12 +46,10 @@ public class StringActions extends AbstractRedisAction {
     public static Object append(BObject redisClient,
                                 BString key, BString redisValue) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return append(key.getValue(), redisValue.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -66,12 +62,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object bitCount(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return bitCount(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -86,12 +80,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object bitOpAnd(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return bitopAnd(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -106,12 +98,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object bitOpOr(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return bitopOr(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -125,12 +115,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object bitOpNot(BObject redisClient, BString destination, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return bitopNot(destination.getValue(), key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -145,12 +133,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object bitOpXor(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return bitopXor(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -163,12 +149,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object decr(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return decr(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -182,12 +166,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object decrBy(BObject redisClient, BString key, int redisValue) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return decrBy(key.getValue(), redisValue, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -200,12 +182,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object get(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(get(key.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -219,12 +199,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object getBit(BObject redisClient, BString key, int offset) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return getBit(key.getValue(), offset, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -239,12 +217,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object getRange(BObject redisClient, BString key, int startPos, int end) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(getRange(key.getValue(), startPos, end, redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -258,12 +234,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object getSet(BObject redisClient, BString key, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(getSet(key.getValue(), value.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -276,12 +250,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object incr(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return incr(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -295,12 +267,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object incrBy(BObject redisClient, BString key, int value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return incrBy(key.getValue(), value, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -314,12 +284,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object incrByFloat(BObject redisClient, BString key, float value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return incrByFloat(key.getValue(), value, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -332,12 +300,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object mGet(BObject redisClient, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return createBstringArrayFromBMap(mGet(redisDataSource, createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -350,12 +316,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object mSet(BObject redisClient, BMap keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(mSet(createMapFromBMap(keys), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -368,12 +332,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object mSetNx(BObject redisClient, BMap keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return mSetnx(createMapFromBMap(keys), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -388,12 +350,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object pSetEx(BObject redisClient, BString key, BString value, int expirationTime) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(pSetex(key.getValue(), value.getValue(), expirationTime, redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -407,12 +367,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object set(BObject redisClient, BString key, BString redisValue) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(set(key.getValue(), redisValue.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -427,12 +385,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object setBit(BObject redisClient, BString key, int value, int offset) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return setBit(key.getValue(), value, offset, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -448,13 +404,11 @@ public class StringActions extends AbstractRedisAction {
     public static Object setEx(BObject redisClient, BString key, BString value,
                                int expirationPeriodSeconds) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return StringUtils.fromString(setEx(key.getValue(), value.getValue(), expirationPeriodSeconds,
                     redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -468,12 +422,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object setNx(BObject redisClient, BString key, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return setNx(key.getValue(), value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -488,12 +440,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object setRange(BObject redisClient, BString key, int offset, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return setRange(key.getValue(), offset, value.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -506,12 +456,10 @@ public class StringActions extends AbstractRedisAction {
      */
     public static Object strln(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return strln(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 }

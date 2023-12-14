@@ -18,14 +18,12 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.redis.utils.ModuleUtils;
 
-import static org.ballerinalang.redis.Constants.REDIS_ERROR_TYPE;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 
 /**
  * Redis connection actions.
@@ -38,13 +36,11 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param redisClient Client from the Ballerina redis client
      */
     public static Object ping(BObject redisClient) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return StringUtils.fromString(ping(redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -56,13 +52,11 @@ public class ConnectionActions extends AbstractRedisAction {
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object auth(BObject redisClient, BString password) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return StringUtils.fromString(auth(password.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -74,13 +68,11 @@ public class ConnectionActions extends AbstractRedisAction {
      * @return The message itself if the operation was successful
      */
     public static Object echo(BObject redisClient, BString message) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         try {
             return StringUtils.fromString(echo(message.getValue(), redisDataSource));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()),
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -90,7 +82,7 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param redisClient Client from the Ballerina redis client
      */
     public static void close(BObject redisClient) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
         close(redisDataSource);
     }
 }

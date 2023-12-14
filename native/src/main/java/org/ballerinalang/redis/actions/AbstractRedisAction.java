@@ -52,6 +52,8 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFr
  */
 public abstract class AbstractRedisAction {
 
+    public static final String DATA_SOURCE = "DATA_SOURCE";
+
     private static final String MUST_NOT_BE_NULL = "must not be null";
     private static final String KEY_MUST_NOT_BE_NULL = "Key " + MUST_NOT_BE_NULL;
     private static final String KEYS_MUST_NOT_BE_NULL = "Key(s) " + MUST_NOT_BE_NULL;

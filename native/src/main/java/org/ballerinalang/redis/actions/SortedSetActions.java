@@ -18,19 +18,16 @@
 
 package org.ballerinalang.redis.actions;
 
-import io.ballerina.runtime.api.creators.ErrorCreator;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.redis.RedisDataSource;
-import org.ballerinalang.redis.utils.ModuleUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.ballerinalang.redis.Constants.REDIS_ERROR_TYPE;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
 
 /**
@@ -50,16 +47,14 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zAdd(BObject redisClient, BString key,
                               BMap<BString, Object> memberScoreMap) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             Map<String, Double> map = new LinkedHashMap<>();
             for (Map.Entry<BString, Object> entry : memberScoreMap.entrySet()) {
                 map.put(entry.getKey().toString(), (Double) entry.getValue());
             }
             return zAdd(key.getValue(), redisDataSource, map);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -72,12 +67,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zCard(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zCard(key.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -92,12 +85,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zCount(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zCount(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -112,12 +103,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zIncrBy(BObject redisClient, BString key, float amount, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zIncrBy(key.getValue(), amount, member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -131,12 +120,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zInterStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zInterStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -151,12 +138,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zLexCount(BObject redisClient, BString destination, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zLexCount(destination.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -171,12 +156,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRange(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRange(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -191,12 +174,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -211,12 +192,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRevRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -231,12 +210,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -250,12 +227,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRank(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRank(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -269,12 +244,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRem(BObject redisClient, BString key, BArray memebers) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRem(key.getValue(), redisDataSource, createStringArrayFromBArray(memebers));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -289,12 +262,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRemRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -309,12 +280,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByRank(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRemRangeByRank(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -329,12 +298,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRemRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -349,12 +316,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRange(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRevRange(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -369,12 +334,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRevRangeByScore(key.getValue(), min, max, redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -388,12 +351,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRank(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zRevRank(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -407,12 +368,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zScore(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zScore(key.getValue(), member.getValue(), redisDataSource);
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 
@@ -426,12 +385,10 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zUnionStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData("DATA_SOURCE");
+            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return zUnionStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
-            return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
-                    StringUtils.fromString(e.getMessage()), 
-                    ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+            return createBError(e);
         }
     }
 }

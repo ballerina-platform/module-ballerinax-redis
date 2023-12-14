@@ -9,8 +9,14 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 import org.ballerinalang.redis.Codec;
-import org.ballerinalang.redis.Constants;
 import org.ballerinalang.redis.RedisDataSource;
+
+import static org.ballerinalang.redis.actions.AbstractRedisAction.DATA_SOURCE;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_HOST;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_PASSWORD;
+import static org.ballerinalang.redis.utils.Constants.CONFIG_POOLING_ENABLED;
 
 /**
  * Redis utility methods.
@@ -25,20 +31,18 @@ public class RedisUtils {
      * @param config configuration map
      */
     public static void initClient(BObject client, BMap<?, ?> config) {
-        BString host = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.HOST));
-        BString password = config.getStringValue(StringUtils.fromString(Constants.EndpointConfig.PASSWORD));
-        BString strOptions = StringUtils.fromString(Constants.EndpointConfig.OPTIONS);
+        BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
+        BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
+        BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
         BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
 
         RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
-        boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(
-                Constants.EndpointConfig.CLUSTERING_ENABLED));
-        boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(
-                Constants.EndpointConfig.POOLING_ENABLED));
-
+        boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
+        boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
         RedisDataSource<?, ?> dataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
+
         dataSource.init(host.toString(), password.toString(), options);
-        client.addNativeData("DATA_SOURCE", dataSource);
+        client.addNativeData(DATA_SOURCE, dataSource);
     }
 
     /**
