@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis;
+package org.ballerinalang.redis.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,8 @@ import java.util.Map;
 /**
  * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
  */
-public enum Codec {
+enum Codec {
+
     BYTE_ARRAY_CODEC("ByteArrayCodec"),
     STRING_CODEC("StringCodec"),
     UTF8_STRING_CODEC("Utf8StringCodec");
@@ -43,7 +44,7 @@ public enum Codec {
         this.codec = codec;
     }
 
-    public static Codec fromCodecName(String codecName) {
+    static Codec fromCodecName(String codecName) {
         Codec codec = CODEC_MAP.get(codecName);
         if (codec == null) {
             throw new IllegalArgumentException("Unsupported Codec: " + codecName);

@@ -56,7 +56,6 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED
  */
 public class RedisDataSource<K, V> {
 
-    private RedisClusterClient redisClusterClient;
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
@@ -173,7 +172,7 @@ public class RedisDataSource<K, V> {
                 .map(serverAddress -> constructRedisUri(serverAddress.host(), serverAddress.port(), password, options))
                 .collect(Collectors.toList());
 
-        redisClusterClient = RedisClusterClient.create(redisURIS);
+        RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURIS);
         if (!poolingEnabled) {
             redisClusterCommands = redisClusterClient.connect(codec).sync();
         } else {

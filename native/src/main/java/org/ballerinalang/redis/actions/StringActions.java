@@ -39,12 +39,11 @@ public class StringActions extends AbstractRedisAction {
      * Append a value to a key.
      *
      * @param redisClient Client from the Ballerina redis client
-     * @param key         key key
+     * @param key         key
      * @param redisValue  value
      * @return size of the new string
      */
-    public static Object append(BObject redisClient,
-                                BString key, BString redisValue) {
+    public static Object append(BObject redisClient, BString key, BString redisValue) {
         try {
             RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
             return append(key.getValue(), redisValue.getValue(), redisDataSource);
