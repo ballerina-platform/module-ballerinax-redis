@@ -25,9 +25,9 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
-import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.connection.RedisConnectionManager;
 
-import static org.ballerinalang.redis.actions.AbstractRedisAction.DATA_SOURCE;
+import static org.ballerinalang.redis.actions.AbstractRedisAction.CONN_OBJ;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_HOST;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
@@ -55,10 +55,11 @@ public class RedisUtils {
         RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
         boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
         boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
-        RedisDataSource<?, ?> dataSource = new RedisDataSource<>(codec, clusteringEnabled, poolingEnabled);
 
-        dataSource.init(host.toString(), password.toString(), options);
-        client.addNativeData(DATA_SOURCE, dataSource);
+        RedisConnectionManager<?, ?> redisConnectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
+                poolingEnabled);
+        redisConnectionManager.init(host.toString(), password.toString(), options);
+        client.addNativeData(CONN_OBJ, redisConnectionManager);
     }
 
     /**

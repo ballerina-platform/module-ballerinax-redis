@@ -22,7 +22,7 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,12 +47,12 @@ public class SortedSetActions extends AbstractRedisAction {
     public static Object zAdd(BObject redisClient, BString key,
                               BMap<BString, Object> memberScoreMap) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
             Map<String, Double> map = new LinkedHashMap<>();
             for (Map.Entry<BString, Object> entry : memberScoreMap.entrySet()) {
                 map.put(entry.getKey().toString(), (Double) entry.getValue());
             }
-            return zAdd(key.getValue(), redisDataSource, map);
+            return zAdd(key.getValue(), connectionManager, map);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -67,8 +67,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zCard(BObject redisClient, BString key) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zCard(key.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zCard(key.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -85,8 +85,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zCount(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zCount(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zCount(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -103,8 +103,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zIncrBy(BObject redisClient, BString key, float amount, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zIncrBy(key.getValue(), amount, member.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zIncrBy(key.getValue(), amount, member.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -120,8 +120,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zInterStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zInterStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zInterStore(destination.getValue(), connectionManager, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -138,8 +138,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zLexCount(BObject redisClient, BString destination, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zLexCount(destination.getValue(), min.getValue(), max.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zLexCount(destination.getValue(), min.getValue(), max.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -156,8 +156,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRange(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRange(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRange(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -174,8 +174,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRangeByLex(key.getValue(), min.getValue(), max.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -192,8 +192,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRevRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRevRangeByLex(key.getValue(), min.getValue(), max.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -210,8 +210,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRangeByScore(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRangeByScore(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -227,8 +227,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRank(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRank(key.getValue(), member.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRank(key.getValue(), member.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -244,8 +244,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRem(BObject redisClient, BString key, BArray memebers) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRem(key.getValue(), redisDataSource, createStringArrayFromBArray(memebers));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRem(key.getValue(), connectionManager, createStringArrayFromBArray(memebers));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -262,8 +262,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByLex(BObject redisClient, BString key, BString min, BString max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRemRangeByLex(key.getValue(), min.getValue(), max.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRemRangeByLex(key.getValue(), min.getValue(), max.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -280,8 +280,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByRank(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRemRangeByRank(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRemRangeByRank(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -298,8 +298,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRemRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRemRangeByScore(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRemRangeByScore(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -316,8 +316,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRange(BObject redisClient, BString key, int min, int max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRevRange(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRevRange(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -334,8 +334,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRangeByScore(BObject redisClient, BString key, float min, float max) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRevRangeByScore(key.getValue(), min, max, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRevRangeByScore(key.getValue(), min, max, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -351,8 +351,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zRevRank(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zRevRank(key.getValue(), member.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zRevRank(key.getValue(), member.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -368,8 +368,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zScore(BObject redisClient, BString key, BString member) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zScore(key.getValue(), member.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zScore(key.getValue(), member.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -385,8 +385,8 @@ public class SortedSetActions extends AbstractRedisAction {
      */
     public static Object zUnionStore(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return zUnionStore(destination.getValue(), redisDataSource, createStringArrayFromBArray(keys));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return zUnionStore(destination.getValue(), connectionManager, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }

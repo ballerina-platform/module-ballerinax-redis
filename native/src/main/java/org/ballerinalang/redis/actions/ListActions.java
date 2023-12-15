@@ -22,7 +22,7 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
@@ -42,8 +42,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lPushX(BObject redisClient, BString redisKey, BArray values) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lPushX(redisKey.getValue(), redisDataSource, createStringArrayFromBArray(values));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lPushX(redisKey.getValue(), connectionManager, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -61,8 +61,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object bLPop(BObject redisClient, int timeOut, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return bLPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return bLPop(timeOut, connectionManager, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -80,8 +80,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object bRPop(BObject redisClient, int timeOut, BArray keys) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return bRPop(timeOut, redisDataSource, createStringArrayFromBArray(keys));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return bRPop(timeOut, connectionManager, createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -97,8 +97,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lPush(BObject redisClient, BString redisKey, BArray values) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lPush(redisKey.getValue(), redisDataSource, createStringArrayFromBArray(values));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lPush(redisKey.getValue(), connectionManager, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -113,8 +113,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lPop(BObject redisClient, BString redisKey) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(lPop(redisKey.getValue(), redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(lPop(redisKey.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -130,8 +130,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lIndex(BObject redisClient, BString redisKey, int index) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(lIndex(redisKey.getValue(), index, redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(lIndex(redisKey.getValue(), index, connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -151,8 +151,8 @@ public class ListActions extends AbstractRedisAction {
     public static Object lInsert(BObject redisClient, BString key, boolean before, BString pivot,
                                  BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lInsert(key.getValue(), before, pivot.getValue(), value.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lInsert(key.getValue(), before, pivot.getValue(), value.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -167,8 +167,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lLen(BObject redisClient, BString redisKey) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lLen(redisKey.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lLen(redisKey.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -185,8 +185,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lRange(BObject redisClient, BString redisKey, int startPos, int stopPos) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lRange(redisKey.getValue(), startPos, stopPos, redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lRange(redisKey.getValue(), startPos, stopPos, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -203,8 +203,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lRem(BObject redisClient, BString redisKey, int count, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return lRem(redisKey.getValue(), count, value.getValue(), redisDataSource);
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return lRem(redisKey.getValue(), count, value.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -221,8 +221,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lSet(BObject redisClient, BString redisKey, int index, BString value) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(lSet(redisKey.getValue(), index, value.toString(), redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(lSet(redisKey.getValue(), index, value.toString(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -239,8 +239,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object lTrim(BObject redisClient, BString redisKey, int startPos, int stopPos) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(lTrim(redisKey.getValue(), startPos, startPos, redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(lTrim(redisKey.getValue(), startPos, startPos, connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -255,8 +255,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object rPop(BObject redisClient, BString redisKey) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(rPop(redisKey.getValue(), redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(rPop(redisKey.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -272,8 +272,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object rPopLPush(BObject redisClient, BString src, BString destination) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return StringUtils.fromString(rPopLPush(src.getValue(), destination.getValue(), redisDataSource));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return StringUtils.fromString(rPopLPush(src.getValue(), destination.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -289,8 +289,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object rPush(BObject redisClient, BString key, BArray values) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return rPush(key.getValue(), redisDataSource, createStringArrayFromBArray(values));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return rPush(key.getValue(), connectionManager, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -306,8 +306,8 @@ public class ListActions extends AbstractRedisAction {
      */
     public static Object rPushX(BObject redisClient, BString key, BArray values) {
         try {
-            RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-            return rPush(key.getValue(), redisDataSource, createStringArrayFromBArray(values));
+            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+            return rPush(key.getValue(), connectionManager, createStringArrayFromBArray(values));
         } catch (Throwable e) {
             return createBError(e);
         }

@@ -21,7 +21,7 @@ package org.ballerinalang.redis.actions;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 
@@ -36,9 +36,9 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param redisClient Client from the Ballerina redis client
      */
     public static Object ping(BObject redisClient) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(ping(redisDataSource));
+            return StringUtils.fromString(ping(connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -52,9 +52,9 @@ public class ConnectionActions extends AbstractRedisAction {
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object auth(BObject redisClient, BString password) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(auth(password.getValue(), redisDataSource));
+            return StringUtils.fromString(auth(password.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -68,9 +68,9 @@ public class ConnectionActions extends AbstractRedisAction {
      * @return The message itself if the operation was successful
      */
     public static Object echo(BObject redisClient, BString message) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(echo(message.getValue(), redisDataSource));
+            return StringUtils.fromString(echo(message.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -82,7 +82,7 @@ public class ConnectionActions extends AbstractRedisAction {
      * @param redisClient Client from the Ballerina redis client
      */
     public static void close(BObject redisClient) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
-        close(redisDataSource);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+        close(connectionManager);
     }
 }

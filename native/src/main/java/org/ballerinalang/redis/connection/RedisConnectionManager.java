@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis;
+package org.ballerinalang.redis.connection;
 
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
@@ -26,6 +26,12 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.api.sync.RedisHashCommands;
+import io.lettuce.core.api.sync.RedisKeyCommands;
+import io.lettuce.core.api.sync.RedisListCommands;
+import io.lettuce.core.api.sync.RedisSetCommands;
+import io.lettuce.core.api.sync.RedisSortedSetCommands;
+import io.lettuce.core.api.sync.RedisStringCommands;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
@@ -48,13 +54,13 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_START_TLS_ENABLED;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED;
 
 /**
- * {@code {@link RedisDataSource}} Util class for Redis initialization.
+ * Connection manager implementation for Redis connections.
  *
  * @param <K> Type of the Key
  * @param <V> Type of the Value
  * @since 0.5.0
  */
-public class RedisDataSource<K, V> {
+public class RedisConnectionManager<K, V> {
 
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
@@ -68,14 +74,14 @@ public class RedisDataSource<K, V> {
     public static final int DEFAULT_PORT = 6379;
 
     /**
-     * Constructor for {@link RedisDataSource}.
+     * Constructor for {@link RedisConnectionManager}.
      *
      * @param codec               The codec for transcoding keys/values between the application and the Redis DB.
      *                            Instance of {@link RedisCodec}
      * @param isClusterConnection Whether the connection is a cluster connection
      * @param poolingEnabled      Whether connection pooling is enabled
      */
-    public RedisDataSource(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
+    public RedisConnectionManager(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
         this.codec = codec;
         this.isClusterConnection = isClusterConnection;
         this.poolingEnabled = poolingEnabled;
@@ -102,6 +108,41 @@ public class RedisDataSource<K, V> {
         //TODO: Add support for executing commands in async mode/ reactive mode
     }
 
+    @SuppressWarnings("unchecked")
+    public RedisCommands<K, V> getBaseCommandConnection() {
+        return (RedisCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisStringCommands<K, V> getStringCommandConnection() {
+        return (RedisStringCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisListCommands<K, V> getListCommandConnection() {
+        return (RedisListCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisSetCommands<K, V> getSetCommandConnection() {
+        return (RedisSetCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisSortedSetCommands<K, V> getSortedSetCommandConnection() {
+        return (RedisSortedSetCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisHashCommands<K, V> getHashCommandConnection() {
+        return (RedisHashCommands<K, V>) getCommandConnection();
+    }
+
+    @SuppressWarnings("unchecked")
+    public RedisKeyCommands<K, V> getKeyCommandConnection() {
+        return (RedisKeyCommands<K, V>) getCommandConnection();
+    }
+
     /**
      * Returns {@link RedisCommands}, an interface for Redis commands available on a Redis instance.
      *
@@ -109,9 +150,7 @@ public class RedisDataSource<K, V> {
      */
     public RedisCommands<K, V> getRedisCommands() {
         if (poolingEnabled) {
-            StatefulRedisConnection<K, V> statefulRedisConnection = (StatefulRedisConnection<K, V>)
-                    getStatefulRedisConnectionFromPool();
-            return statefulRedisConnection.sync();
+            return ((StatefulRedisConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
         }
         return redisCommands;
     }
@@ -123,15 +162,13 @@ public class RedisDataSource<K, V> {
      */
     public RedisAdvancedClusterCommands<K, V> getRedisClusterCommands() {
         if (poolingEnabled) {
-            StatefulRedisClusterConnection<K, V> statefulRedisClusterConnection =
-                    (StatefulRedisClusterConnection<K, V>) getStatefulRedisConnectionFromPool();
-            return statefulRedisClusterConnection.sync();
+            ((StatefulRedisClusterConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
         }
         return redisClusterCommands;
     }
 
     /**
-     * Returns whether the connection made by the datasource is a cluster connection.
+     * Returns whether the connection made by the connection manager is a cluster connection.
      *
      * @return boolean true/false
      */
@@ -140,7 +177,7 @@ public class RedisDataSource<K, V> {
     }
 
     /**
-     * Returns whether the connection made by the datasource is a cluster connection.
+     * Returns whether the connection made by the connection manager is a pooled connection.
      *
      * @return boolean true/false
      */
@@ -156,12 +193,12 @@ public class RedisDataSource<K, V> {
         RedisURI redisURI = constructRedisUri(address.host(), address.port(), password, options);
         RedisClient redisClient = RedisClient.create(redisURI);
 
-        if (!poolingEnabled) {
-            StatefulRedisConnection<K, V> statefulRedisConnection = redisClient.connect(codec);
-            redisCommands = statefulRedisConnection.sync();
-        } else {
+        if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+        } else {
+            StatefulRedisConnection<K, V> statefulRedisConnection = redisClient.connect(codec);
+            redisCommands = statefulRedisConnection.sync();
         }
     }
 
@@ -173,11 +210,11 @@ public class RedisDataSource<K, V> {
                 .collect(Collectors.toList());
 
         RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURIS);
-        if (!poolingEnabled) {
-            redisClusterCommands = redisClusterClient.connect(codec).sync();
-        } else {
+        if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+        } else {
+            redisClusterCommands = redisClusterClient.connect(codec).sync();
         }
     }
 
@@ -249,10 +286,22 @@ public class RedisDataSource<K, V> {
     }
 
     public void releaseResources(Object redisCommands) {
+        if (!isPoolingEnabled()) {
+            return;
+        }
+
         if (isClusterConnection) {
             objectPool.returnObject(((RedisAdvancedClusterCommands<K, V>) redisCommands).getStatefulConnection());
         } else {
             objectPool.returnObject(((RedisCommands<K, V>) redisCommands).getStatefulConnection());
+        }
+    }
+
+    public Object getCommandConnection() {
+        if (isClusterConnection()) {
+            return getRedisClusterCommands();
+        } else {
+            return getRedisCommands();
         }
     }
 

@@ -23,7 +23,7 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.RedisDataSource;
+import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createMapFromBMap;
@@ -43,9 +43,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Number of fields that were removed from the hash, not including specified but non existing fields
      */
     public static Object hDel(BObject redisClient, BString key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hDel(StringUtils.fromString(key.getValue()), redisDataSource, createStringArrayFromBArray(fields));
+            return hDel(StringUtils.fromString(key.getValue()), connectionManager, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -61,9 +61,9 @@ public class HashActions extends AbstractRedisAction {
      * does not exist
      */
     public static Object hExists(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hExists(key.getValue(), field.getValue(), redisDataSource);
+            return hExists(key.getValue(), field.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -78,9 +78,9 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hGet(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(hGet(key.getValue(), field.getValue(), redisDataSource));
+            return StringUtils.fromString(hGet(key.getValue(), field.getValue(), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -94,9 +94,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Map of field-value pairs
      */
     public static Object hGetAll(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hGetAll(key.getValue(), redisDataSource);
+            return hGetAll(key.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -112,9 +112,9 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hIncrBy(BObject redisClient, BString key, BString field, int amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hIncrBy(key.getValue(), field.getValue(), amount, redisDataSource);
+            return hIncrBy(key.getValue(), field.getValue(), amount, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -130,9 +130,9 @@ public class HashActions extends AbstractRedisAction {
      * @return The value of the field
      */
     public static Object hIncrByFloat(BObject redisClient, BString key, BString field, double amount) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hIncrByFloat(key.getValue(), field.getValue(), amount, redisDataSource);
+            return hIncrByFloat(key.getValue(), field.getValue(), amount, connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -146,9 +146,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Array of hash fields
      */
     public static Object hKeys(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hKeys(key.getValue(), redisDataSource);
+            return hKeys(key.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -162,9 +162,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Number of fields
      */
     public static Object hLen(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hLen(key.getValue(), redisDataSource);
+            return hLen(key.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -179,9 +179,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Map of field-value pairs
      */
     public static Object hMGet(BObject redisClient, BString key, BArray fields) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hMGet(key.getValue(), redisDataSource, createStringArrayFromBArray(fields));
+            return hMGet(key.getValue(), connectionManager, createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -196,9 +196,9 @@ public class HashActions extends AbstractRedisAction {
      * @return A string with the value `OK` if the operation was successful
      */
     public static Object hMSet(BObject redisClient, BString key, BMap fieldValueMap) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(hMSet(key.getValue(), createMapFromBMap(fieldValueMap), redisDataSource));
+            return StringUtils.fromString(hMSet(key.getValue(), createMapFromBMap(fieldValueMap), connectionManager));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -215,9 +215,9 @@ public class HashActions extends AbstractRedisAction {
      * exists in the hash and the value was updated
      */
     public static Object hSet(BObject redisClient, BString key, BString field, BString value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hSet(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
+            return hSet(key.getValue(), field.getValue(), value.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -234,9 +234,9 @@ public class HashActions extends AbstractRedisAction {
      * exists in the hash and the value was updated
      */
     public static Object hSetNx(BObject redisClient, BString key, BString field, BString value) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hSetNx(key.getValue(), field.getValue(), value.getValue(), redisDataSource);
+            return hSetNx(key.getValue(), field.getValue(), value.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -251,9 +251,9 @@ public class HashActions extends AbstractRedisAction {
      * @return The length of the field value, or 0 when field is not present in the hash or key does not exist at all
      */
     public static Object hStrln(BObject redisClient, BString key, BString field) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hStrln(key.getValue(), field.getValue(), redisDataSource);
+            return hStrln(key.getValue(), field.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -267,9 +267,9 @@ public class HashActions extends AbstractRedisAction {
      * @return Array of values in the hash, or an empty array when key does not exist
      */
     public static Object hVals(BObject redisClient, BString key) {
-        RedisDataSource redisDataSource = (RedisDataSource) redisClient.getNativeData(DATA_SOURCE);
+        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hVals(key.getValue(), redisDataSource);
+            return hVals(key.getValue(), connectionManager);
         } catch (Throwable e) {
             return createBError(e);
         }

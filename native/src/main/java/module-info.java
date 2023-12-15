@@ -21,6 +21,4 @@ module org.ballerinalang.redis {
     requires io.ballerina.lang;
     requires lettuce.core;
     requires org.apache.commons.pool2;
-
-    exports org.ballerinalang.redis;
 }
