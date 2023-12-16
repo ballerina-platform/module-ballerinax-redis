@@ -21,8 +21,7 @@ package org.ballerinalang.redis;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.commands.RedisCommandBase;
-import org.ballerinalang.redis.connection.RedisConnectionManager;
+import org.ballerinalang.redis.connection.RedisConnectionCommandExecutor;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
@@ -30,20 +29,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 /**
  * Ballerina native util implementation for redis connection commands.
  */
-public class ConnectionCommands extends RedisCommandBase {
-
-    /**
-     * Ping the redis database server.
-     *
-     * @param redisClient Client from the Ballerina redis client
-     */
-    public static Object ping(BObject redisClient) {
-        try {
-            return StringUtils.fromString(ping(getConnection(redisClient)));
-        } catch (Throwable e) {
-            return createBError(e);
-        }
-    }
+public class ConnectionCommands {
 
     /**
      * Authenticate to the server.
@@ -54,7 +40,24 @@ public class ConnectionCommands extends RedisCommandBase {
      */
     public static Object auth(BObject redisClient, BString password) {
         try {
-            return StringUtils.fromString(auth(password.getValue(), getConnection(redisClient)));
+            RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
+            String response = executor.auth(password.getValue());
+            return StringUtils.fromString(response);
+        } catch (Throwable e) {
+            return createBError(e);
+        }
+    }
+
+    /**
+     * Ping the redis database server.
+     *
+     * @param redisClient Client from the Ballerina redis client
+     */
+    public static Object ping(BObject redisClient) {
+        try {
+            RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
+            String response = executor.ping();
+            return StringUtils.fromString(response);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -69,7 +72,9 @@ public class ConnectionCommands extends RedisCommandBase {
      */
     public static Object echo(BObject redisClient, BString message) {
         try {
-            return StringUtils.fromString(echo(message.getValue(), getConnection(redisClient)));
+            RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
+            String response = executor.echo(message.getValue());
+            return StringUtils.fromString(response);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -80,7 +85,13 @@ public class ConnectionCommands extends RedisCommandBase {
      *
      * @param redisClient Client from the Ballerina redis client
      */
-    public static void close(BObject redisClient) {
-        close(getConnection(redisClient));
+    public static Object close(BObject redisClient) {
+        try {
+            RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
+            executor.close();
+            return null;
+        } catch (Throwable e) {
+            return createBError(e);
+        }
     }
 }

@@ -23,18 +23,18 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.commands.RedisCommandBase;
-import org.ballerinalang.redis.connection.RedisConnectionManager;
+import org.ballerinalang.redis.connection.RedisStringCommandExecutor;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
-import static org.ballerinalang.redis.utils.ConversionUtils.createBstringArrayFromBMap;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createMapFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
+import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis string commands.
  */
-public class StringCommands extends RedisCommandBase {
+public class StringCommands {
 
     /**
      * Append a value to a key.
@@ -46,8 +46,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object append(BObject redisClient, BString key, BString redisValue) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return append(key.getValue(), redisValue.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.append(key.getValue(), redisValue.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -62,8 +62,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object bitCount(BObject redisClient, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return bitCount(key.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.bitCount(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -80,8 +80,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object bitOpAnd(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return bitopAnd(destination.getValue(), connectionManager, createStringArrayFromBArray(keys));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.bitopAnd(destination.getValue(), createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -98,8 +98,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object bitOpOr(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return bitopOr(destination.getValue(), connectionManager, createStringArrayFromBArray(keys));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.bitopOr(destination.getValue(), createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -115,8 +115,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object bitOpNot(BObject redisClient, BString destination, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return bitopNot(destination.getValue(), key.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.bitopNot(destination.getValue(), key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -133,8 +133,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object bitOpXor(BObject redisClient, BString destination, BArray keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return bitopXor(destination.getValue(), connectionManager, createStringArrayFromBArray(keys));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.bitopXor(destination.getValue(), createStringArrayFromBArray(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -149,8 +149,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object decr(BObject redisClient, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return decr(key.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.decr(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -166,8 +166,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object decrBy(BObject redisClient, BString key, int redisValue) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return decrBy(key.getValue(), redisValue, connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.decrBy(key.getValue(), redisValue);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -182,8 +182,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object get(BObject redisClient, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(get(key.getValue(), connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.get(key.getValue()));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -199,8 +199,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object getBit(BObject redisClient, BString key, int offset) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return getBit(key.getValue(), offset, connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.getBit(key.getValue(), offset);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -217,8 +217,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object getRange(BObject redisClient, BString key, int startPos, int end) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(getRange(key.getValue(), startPos, end, connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.getRange(key.getValue(), startPos, end));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -234,8 +234,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object getSet(BObject redisClient, BString key, BString value) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(getSet(key.getValue(), value.getValue(), connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.getSet(key.getValue(), value.getValue()));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -250,8 +250,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object incr(BObject redisClient, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return incr(key.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.incr(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -267,8 +267,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object incrBy(BObject redisClient, BString key, int value) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return incrBy(key.getValue(), value, connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.incrBy(key.getValue(), value);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -284,8 +284,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object incrByFloat(BObject redisClient, BString key, float value) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return incrByFloat(key.getValue(), value, connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.incrByFloat(key.getValue(), value);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -300,8 +300,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object mGet(BObject redisClient, BArray keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return createBstringArrayFromBMap(mGet(connectionManager, createStringArrayFromBArray(keys)));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return createBStringArrayFromBMap(executor.mGet(createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -314,10 +314,10 @@ public class StringCommands extends RedisCommandBase {
      * @param keys        A map of key-value pairs to be set
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object mSet(BObject redisClient, BMap keys) {
+    public static Object mSet(BObject redisClient, BMap<BString, Object> keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(mSet(createMapFromBMap(keys), connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.mSet(createMapFromBMap(keys)));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -330,10 +330,10 @@ public class StringCommands extends RedisCommandBase {
      * @param keys        A map of key-value pairs to be set
      * @return True if the operation was successful, false if it failed
      */
-    public static Object mSetNx(BObject redisClient, BMap keys) {
+    public static Object mSetNx(BObject redisClient, BMap<BString, Object> keys) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return mSetnx(createMapFromBMap(keys), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.mSetnx(createMapFromBMap(keys));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -350,8 +350,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object pSetEx(BObject redisClient, BString key, BString value, int expirationTime) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(pSetex(key.getValue(), value.getValue(), expirationTime, connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.pSetex(key.getValue(), value.getValue(), expirationTime));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -367,8 +367,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object set(BObject redisClient, BString key, BString redisValue) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(set(key.getValue(), redisValue.getValue(), connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.set(key.getValue(), redisValue.getValue()));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -385,8 +385,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object setBit(BObject redisClient, BString key, int value, int offset) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return setBit(key.getValue(), value, offset, connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.setBit(key.getValue(), value, offset);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -404,9 +404,8 @@ public class StringCommands extends RedisCommandBase {
     public static Object setEx(BObject redisClient, BString key, BString value,
                                int expirationPeriodSeconds) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return StringUtils.fromString(setEx(key.getValue(), value.getValue(), expirationPeriodSeconds,
-                    connectionManager));
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return StringUtils.fromString(executor.setEx(key.getValue(), value.getValue(), expirationPeriodSeconds));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -422,8 +421,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object setNx(BObject redisClient, BString key, BString value) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return setNx(key.getValue(), value.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.setNx(key.getValue(), value.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -440,8 +439,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object setRange(BObject redisClient, BString key, int offset, BString value) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return setRange(key.getValue(), offset, value.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.setRange(key.getValue(), offset, value.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -456,8 +455,8 @@ public class StringCommands extends RedisCommandBase {
      */
     public static Object strln(BObject redisClient, BString key) {
         try {
-            RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
-            return strln(key.getValue(), connectionManager);
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.strln(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }

@@ -28,12 +28,12 @@ import io.lettuce.core.codec.Utf8StringCodec;
 import org.ballerinalang.redis.connection.RedisConnectionManager;
 import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
-import static org.ballerinalang.redis.commands.RedisCommandBase.CONN_OBJ;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_HOST;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_PASSWORD;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_POOLING_ENABLED;
+import static org.ballerinalang.redis.utils.Constants.CONN_OBJ;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 
 /**

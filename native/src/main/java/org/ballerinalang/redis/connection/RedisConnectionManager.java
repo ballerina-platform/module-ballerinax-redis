@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2018, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org)
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http:www.apache.orglicensesLICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -109,8 +109,36 @@ public class RedisConnectionManager<K, V> {
         //TODO: Add support for executing commands in async mode/ reactive mode
     }
 
+    public RedisConnectionCommandExecutor getConnectionCommandExecutor() {
+        return new RedisConnectionCommandExecutor(this);
+    }
+
+    public RedisStringCommandExecutor getStringCommandExecutor() {
+        return new RedisStringCommandExecutor(this);
+    }
+
+    public RedisKeyCommandExecutor getKeyCommandExecutor() {
+        return new RedisKeyCommandExecutor(this);
+    }
+
+    public RedisHashCommandExecutor getHashCommandExecutor() {
+        return new RedisHashCommandExecutor(this);
+    }
+
+    public RedisSetCommandExecutor getSetCommandExecutor() {
+        return new RedisSetCommandExecutor(this);
+    }
+
+    public RedisListCommandsExecutor getListCommandExecutor() {
+        return new RedisListCommandsExecutor(this);
+    }
+
+    public RedisSortedSetCommandExecutor getSortedSetCommandExecutor() {
+        return new RedisSortedSetCommandExecutor(this);
+    }
+
     @SuppressWarnings("unchecked")
-    public RedisCommands<K, V> getBaseCommandConnection() {
+    public RedisCommands<K, V> getConnectionCommandConnection() {
         return (RedisCommands<K, V>) getCommandConnection();
     }
 

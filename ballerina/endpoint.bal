@@ -1285,8 +1285,10 @@ public isolated client class Client {
         'class: "org.ballerinalang.redis.ConnectionCommands"
     } external;
 
-    # Stops the registered service.
-    public isolated function close() = @java:Method {
+    # Close the connection.
+    #
+    # + return - `nil` if the operation was successful or an `error` if an error occurs
+    public isolated function close() returns error? = @java:Method {
         'class: "org.ballerinalang.redis.ConnectionCommands"
     } external;
 }

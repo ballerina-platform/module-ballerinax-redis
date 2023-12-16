@@ -151,9 +151,9 @@ public class ConversionUtils {
      * @param bMap the Ballerina map value
      * @return the Ballerina array
      */
-    public static BArray createBstringArrayFromBMap(BMap<BString, BString> bMap) {
+    public static BArray createBStringArrayFromBMap(BMap<BString, Object> bMap) {
         BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (Map.Entry<BString, BString> entry : bMap.entrySet()) {
+        for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
             bStringArray.append(entry.getValue());
         }
         return bStringArray;

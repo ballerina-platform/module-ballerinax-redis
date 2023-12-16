@@ -23,17 +23,17 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.commands.RedisCommandBase;
-import org.ballerinalang.redis.connection.RedisConnectionManager;
+import org.ballerinalang.redis.connection.RedisHashCommandExecutor;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createMapFromBMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
+import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis hash commands.
  */
-public class HashCommands extends RedisCommandBase {
+public class HashCommands {
 
     /**
      * Delete one or more hash fields.
@@ -44,9 +44,9 @@ public class HashCommands extends RedisCommandBase {
      * @return Number of fields that were removed from the hash, not including specified but non existing fields
      */
     public static Object hDel(BObject redisClient, BString key, BArray fields) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hDel(StringUtils.fromString(key.getValue()), connectionManager, createStringArrayFromBArray(fields));
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hDel(StringUtils.fromString(key.getValue()), createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -62,9 +62,9 @@ public class HashCommands extends RedisCommandBase {
      * does not exist
      */
     public static Object hExists(BObject redisClient, BString key, BString field) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hExists(key.getValue(), field.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hExists(key.getValue(), field.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -79,9 +79,9 @@ public class HashCommands extends RedisCommandBase {
      * @return The value of the field
      */
     public static Object hGet(BObject redisClient, BString key, BString field) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return StringUtils.fromString(hGet(key.getValue(), field.getValue(), connectionManager));
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return StringUtils.fromString(executor.hGet(key.getValue(), field.getValue()));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -95,9 +95,9 @@ public class HashCommands extends RedisCommandBase {
      * @return Map of field-value pairs
      */
     public static Object hGetAll(BObject redisClient, BString key) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hGetAll(key.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hGetAll(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -113,9 +113,9 @@ public class HashCommands extends RedisCommandBase {
      * @return The value of the field
      */
     public static Object hIncrBy(BObject redisClient, BString key, BString field, int amount) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hIncrBy(key.getValue(), field.getValue(), amount, connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hIncrBy(key.getValue(), field.getValue(), amount);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -131,9 +131,9 @@ public class HashCommands extends RedisCommandBase {
      * @return The value of the field
      */
     public static Object hIncrByFloat(BObject redisClient, BString key, BString field, double amount) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hIncrByFloat(key.getValue(), field.getValue(), amount, connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hIncrByFloat(key.getValue(), field.getValue(), amount);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -147,9 +147,10 @@ public class HashCommands extends RedisCommandBase {
      * @return Array of hash fields
      */
     public static Object hKeys(BObject redisClient, BString key) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+
         try {
-            return hKeys(key.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hKeys(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -163,9 +164,9 @@ public class HashCommands extends RedisCommandBase {
      * @return Number of fields
      */
     public static Object hLen(BObject redisClient, BString key) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hLen(key.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hLen(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -180,9 +181,9 @@ public class HashCommands extends RedisCommandBase {
      * @return Map of field-value pairs
      */
     public static Object hMGet(BObject redisClient, BString key, BArray fields) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hMGet(key.getValue(), connectionManager, createStringArrayFromBArray(fields));
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hMGet(key.getValue(), createStringArrayFromBArray(fields));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -196,10 +197,10 @@ public class HashCommands extends RedisCommandBase {
      * @param fieldValueMap Map of field-value pairs
      * @return A string with the value `OK` if the operation was successful
      */
-    public static Object hMSet(BObject redisClient, BString key, BMap fieldValueMap) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
+    public static Object hMSet(BObject redisClient, BString key, BMap<BString, Object> fieldValueMap) {
         try {
-            return StringUtils.fromString(hMSet(key.getValue(), createMapFromBMap(fieldValueMap), connectionManager));
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return StringUtils.fromString(executor.hMSet(key.getValue(), createMapFromBMap(fieldValueMap)));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -216,9 +217,9 @@ public class HashCommands extends RedisCommandBase {
      * exists in the hash and the value was updated
      */
     public static Object hSet(BObject redisClient, BString key, BString field, BString value) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hSet(key.getValue(), field.getValue(), value.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hSet(key.getValue(), field.getValue(), value.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -235,9 +236,9 @@ public class HashCommands extends RedisCommandBase {
      * exists in the hash and the value was updated
      */
     public static Object hSetNx(BObject redisClient, BString key, BString field, BString value) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hSetNx(key.getValue(), field.getValue(), value.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hSetNx(key.getValue(), field.getValue(), value.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -252,9 +253,9 @@ public class HashCommands extends RedisCommandBase {
      * @return The length of the field value, or 0 when field is not present in the hash or key does not exist at all
      */
     public static Object hStrln(BObject redisClient, BString key, BString field) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hStrln(key.getValue(), field.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hStrln(key.getValue(), field.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -268,9 +269,9 @@ public class HashCommands extends RedisCommandBase {
      * @return Array of values in the hash, or an empty array when key does not exist
      */
     public static Object hVals(BObject redisClient, BString key) {
-        RedisConnectionManager connectionManager = (RedisConnectionManager) redisClient.getNativeData(CONN_OBJ);
         try {
-            return hVals(key.getValue(), connectionManager);
+            RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
+            return executor.hVals(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }
