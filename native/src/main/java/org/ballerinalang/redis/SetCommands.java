@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2020, WSO2 Inc. (http:www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http:www.apache.orglicensesLICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,20 +16,21 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.actions;
+package org.ballerinalang.redis;
 
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.redis.commands.RedisCommandBase;
 import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
 
 /**
- * Redis set actions.
+ * Ballerina native util implementation for redis set commands.
  */
-public class SetActions extends AbstractRedisAction {
+public class SetCommands extends RedisCommandBase {
 
     /**
      * Add one or more members to a set.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.actions;
+package org.ballerinalang.redis.commands;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
@@ -47,11 +47,11 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFr
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromSet;
 
 /**
- * {@code {@link AbstractRedisAction}} is the base class for all Redis connector actions.
+ * Base class for Redis command implementations.
  *
  * @since 0.5.0
  */
-public abstract class AbstractRedisAction {
+public class RedisCommandBase {
 
     // Native redis connection object, which is stored in Ballerina redis client object
     public static final String CONN_OBJ = "CONNECTION_OBJECT";
@@ -62,9 +62,10 @@ public abstract class AbstractRedisAction {
     private static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
     private static final String REDIS_SERVER_ERROR = "Redis server error: ";
 
-    // ========================== String Commands  =============================== //
+    // ============================ String Commands  ================================= //
 
-    static <K, V> String set(K key, V value, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> String set(K key, V value, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -78,7 +79,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String get(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String get(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -92,7 +94,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static long append(String key, String value, RedisConnectionManager<String, String> connManager)
+    protected static long append(String key, String value, RedisConnectionManager<String, String> connManager)
             throws RedisConnectorException {
         RedisStringCommands<String, String> stringCommands = null;
         try {
@@ -107,7 +109,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static long bitCount(String key, RedisConnectionManager<String, String> connManager)
+    protected static long bitCount(String key, RedisConnectionManager<String, String> connManager)
             throws RedisConnectorException {
         RedisStringCommands<String, String> redisCommands = null;
         try {
@@ -122,7 +124,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long bitopAnd(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
+    protected static <K, V> long bitopAnd(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -137,7 +139,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long bitopOr(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
+    protected static <K, V> long bitopOr(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -152,7 +154,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long bitopNot(K destination, K key, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long bitopNot(K destination, K key, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -167,7 +169,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long bitopXor(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
+    protected static <K, V> long bitopXor(K destination, RedisConnectionManager<K, V> connManager, K[] keys)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -182,7 +184,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long decr(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long decr(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -196,7 +198,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long decrBy(K key, int value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long decrBy(K key, int value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -211,7 +213,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long getBit(K key, int offset, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long getBit(K key, int offset, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -226,7 +228,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String getRange(K key, int start, int end, RedisConnectionManager<K, String> connManager)
+    protected static <K> String getRange(K key, int start, int end, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
@@ -241,7 +243,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String getSet(K key, String value, RedisConnectionManager<K, String> connManager)
+    protected static <K> String getSet(K key, String value, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
@@ -256,7 +258,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long incr(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long incr(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -270,7 +272,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long incrBy(K key, int value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long incrBy(K key, int value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -285,7 +287,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> double incrByFloat(K key, double value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> double incrByFloat(K key, double value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -300,7 +302,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, Object> mGet(RedisConnectionManager<K, String> connManager, K[] key)
+    protected static <K> BMap<BString, Object> mGet(RedisConnectionManager<K, String> connManager, K[] key)
             throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
@@ -316,7 +318,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> String mSet(Map<K, V> map, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> String mSet(Map<K, V> map, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -330,7 +333,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean mSetnx(Map<K, V> map, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean mSetnx(Map<K, V> map, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -345,8 +348,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String pSetex(K key, String value, long expirationPeriodMs,
-                             RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String pSetex(K key, String value, long expirationPeriodMs,
+                                       RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -360,7 +363,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long setBit(K key, int value, long offset, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long setBit(K key, int value, long offset, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -375,8 +378,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String setEx(K key, String value, long expirationPeriodSeconds,
-                            RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String setEx(K key, String value, long expirationPeriodSeconds,
+                                      RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -390,7 +393,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> boolean setNx(K key, String value, RedisConnectionManager<K, String> connManager)
+    protected static <K> boolean setNx(K key, String value, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
@@ -405,7 +408,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long setRange(K key, long offset, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long setRange(K key, long offset, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
@@ -420,7 +423,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long strln(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long strln(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = connManager.getStringCommandConnection();
@@ -434,9 +437,9 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    //// ========================== List Commands  =============================== //
+    // ============================ List Commands  ================================= //
 
-    static <K, V> long lPush(K key, RedisConnectionManager<K, V> connManager, V[] value)
+    protected static <K, V> long lPush(K key, RedisConnectionManager<K, V> connManager, V[] value)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -451,7 +454,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String lPop(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String lPop(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -465,7 +469,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long lPushX(K key, RedisConnectionManager<K, V> connManager, V[] values)
+    protected static <K, V> long lPushX(K key, RedisConnectionManager<K, V> connManager, V[] values)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -480,8 +484,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, Object> bLPop(long timeout, RedisConnectionManager<K, String> connManager, K[] keys)
-            throws RedisConnectorException {
+    protected static <K> BMap<BString, Object> bLPop(long timeout, RedisConnectionManager<K, String> connManager,
+                                                     K[] keys) throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -502,8 +506,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, Object> bRPop(long timeout, RedisConnectionManager<K, String> connManager, K[] keys)
-            throws RedisConnectorException {
+    protected static <K> BMap<BString, Object> bRPop(long timeout, RedisConnectionManager<K, String> connManager,
+                                                     K[] keys) throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -524,7 +528,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String lIndex(K key, long index, RedisConnectionManager<K, String> connManager)
+    protected static <K> String lIndex(K key, long index, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
@@ -539,8 +543,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long lInsert(K key, boolean before, V pivot, V value,
-                               RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long lInsert(K key, boolean before, V pivot, V value,
+                                         RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -554,7 +558,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long lLen(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long lLen(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -568,7 +572,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray lRange(K key, long start, long stop, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray lRange(K key, long start, long stop, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
@@ -584,7 +588,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long lRem(K key, long count, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long lRem(K key, long count, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -599,7 +603,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> String lSet(K key, long index, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> String lSet(K key, long index, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -614,7 +618,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> String lTrim(K key, long start, long stop, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> String lTrim(K key, long start, long stop, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -629,7 +633,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String rPop(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String rPop(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
             listCommands = connManager.getListCommandConnection();
@@ -643,7 +648,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String rPopLPush(K src, K destination, RedisConnectionManager<K, String> connManager)
+    protected static <K> String rPopLPush(K src, K destination, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisListCommands<K, String> listCommands = null;
         try {
@@ -658,7 +663,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long rPush(K key, RedisConnectionManager<K, V> connManager, V[] values)
+    protected static <K, V> long rPush(K key, RedisConnectionManager<K, V> connManager, V[] values)
             throws RedisConnectorException {
         RedisListCommands<K, V> listCommands = null;
         try {
@@ -705,7 +710,7 @@ public abstract class AbstractRedisAction {
 
     // ============================= Set Commands  ================================== //
 
-    static <K, V> long sAdd(K key, RedisConnectionManager<K, V> connManager, V[] values)
+    protected static <K, V> long sAdd(K key, RedisConnectionManager<K, V> connManager, V[] values)
             throws RedisConnectorException {
         RedisSetCommands<K, V> setCommands = null;
         try {
@@ -720,7 +725,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long sCard(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long sCard(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisSetCommands<K, V> setCommands = null;
         try {
             setCommands = connManager.getSetCommandConnection();
@@ -734,7 +739,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sDiff(RedisConnectionManager<K, String> connManager, K[] keys) throws RedisConnectorException {
+    protected static <K> BArray sDiff(RedisConnectionManager<K, String> connManager, K[] keys)
+            throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
             setCommands = connManager.getSetCommandConnection();
@@ -749,7 +755,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long sDiffStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
+    protected static <K> long sDiffStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -764,7 +770,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sInter(RedisConnectionManager<K, String> connManager, K[] keys) throws RedisConnectorException {
+    protected static <K> BArray sInter(RedisConnectionManager<K, String> connManager, K[] keys)
+            throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
             setCommands = connManager.getSetCommandConnection();
@@ -779,7 +786,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long sInterStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
+    protected static <K> long sInterStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -794,7 +801,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean sIsMember(K key, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean sIsMember(K key, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSetCommands<K, V> setCommands = null;
         try {
@@ -809,7 +816,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sMembers(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> BArray sMembers(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
             setCommands = connManager.getSetCommandConnection();
@@ -824,7 +832,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean sMove(K source, K dest, V member, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean sMove(K source, K dest, V member, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSetCommands<K, V> setCommands = null;
         try {
@@ -839,7 +847,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sPop(K key, int count, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray sPop(K key, int count, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -855,7 +863,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sRandMember(K key, int count, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray sRandMember(K key, int count, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -871,7 +879,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long sRem(K key, RedisConnectionManager<K, String> connManager, String[] members)
+    protected static <K> long sRem(K key, RedisConnectionManager<K, String> connManager, String[] members)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -886,7 +894,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sUnion(RedisConnectionManager<K, String> connManager, K[] keys) throws RedisConnectorException {
+    protected static <K> BArray sUnion(RedisConnectionManager<K, String> connManager, K[] keys)
+            throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
             setCommands = connManager.getSetCommandConnection();
@@ -901,7 +910,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long sUnionStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
+    protected static <K> long sUnionStore(K dest, RedisConnectionManager<K, String> connManager, K[] keys)
             throws RedisConnectorException {
         RedisSetCommands<K, String> setCommands = null;
         try {
@@ -918,7 +927,7 @@ public abstract class AbstractRedisAction {
 
     // ============================= Sorted Set Commands  ================================== //
 
-    static <K, V> long zAdd(K key, RedisConnectionManager<K, V> connManager, Map<V, Double> valueScoreMap)
+    protected static <K, V> long zAdd(K key, RedisConnectionManager<K, V> connManager, Map<V, Double> valueScoreMap)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -933,7 +942,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zCard(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long zCard(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
             sortedSetCommands = connManager.getSortedSetCommandConnection();
@@ -947,7 +956,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zCount(K key, double min, double max, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long zCount(K key, double min, double max, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         Range<Double> range = Range.create(min, max);
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
@@ -963,7 +972,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> double zIncrBy(K key, double amount, V member, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> double zIncrBy(K key, double amount, V member, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -978,7 +987,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zInterStore(K dest, RedisConnectionManager<K, V> connManager, K[] keys)
+    protected static <K, V> long zInterStore(K dest, RedisConnectionManager<K, V> connManager, K[] keys)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -993,7 +1002,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zLexCount(K key, V min, V max, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long zLexCount(K key, V min, V max, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -1009,7 +1018,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRange(K key, long min, long max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRange(K key, long min, long max, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1025,7 +1034,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRangeByLex(K key, String min, String max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRangeByLex(K key, String min, String max,
+                                            RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1042,7 +1052,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRevRangeByLex(K key, String min, String max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRevRangeByLex(K key, String min, String max,
+                                               RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1059,7 +1070,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRangeByScore(K key, double min, double max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRangeByScore(K key, double min, double max,
+                                              RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1076,7 +1088,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zRank(K key, V member, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long zRank(K key, V member, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
             sortedSetCommands = connManager.getSortedSetCommandConnection();
@@ -1090,7 +1103,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zRem(K key, RedisConnectionManager<K, V> connManager, V[] members)
+    protected static <K, V> long zRem(K key, RedisConnectionManager<K, V> connManager, V[] members)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -1103,7 +1116,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long zRemRangeByLex(K key, String min, String max, RedisConnectionManager<K, String> connManager)
+    protected static <K> long zRemRangeByLex(K key, String min, String max, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1119,7 +1132,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long zRemRangeByRank(K key, long min, long max, RedisConnectionManager<K, String> connManager)
+    protected static <K> long zRemRangeByRank(K key, long min, long max, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1134,7 +1147,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long zRemRangeByScore(K key, double min, double max, RedisConnectionManager<K, String> connManager)
+    protected static <K> long zRemRangeByScore(K key, double min, double max,
+                                               RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1150,7 +1164,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRevRange(K key, long min, long max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRevRange(K key, long min, long max, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1166,7 +1180,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray zRevRangeByScore(K key, double min, double max, RedisConnectionManager<K, String> connManager)
+    protected static <K> BArray zRevRangeByScore(K key, double min, double max,
+                                                 RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, String> sortedSetCommands = null;
         try {
@@ -1183,7 +1198,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zRevRank(K key, V member, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> long zRevRank(K key, V member, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -1198,7 +1213,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> double zScore(K key, V member, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> double zScore(K key, V member, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -1213,7 +1228,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long zUnionStore(K dest, RedisConnectionManager<K, V> connManager, K[] keys)
+    protected static <K, V> long zUnionStore(K dest, RedisConnectionManager<K, V> connManager, K[] keys)
             throws RedisConnectorException {
         RedisSortedSetCommands<K, V> sortedSetCommands = null;
         try {
@@ -1230,7 +1245,7 @@ public abstract class AbstractRedisAction {
 
     // ============================= Hash Commands  ================================== //
 
-    static <K, V> long hDel(BString key, RedisConnectionManager<K, V> connManager, K[] fields)
+    protected static <K, V> long hDel(BString key, RedisConnectionManager<K, V> connManager, K[] fields)
             throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
@@ -1245,7 +1260,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean hExists(K key, K field, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean hExists(K key, K field, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
@@ -1260,7 +1275,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String hGet(K key, K field, RedisConnectionManager<K, String> connManager)
+    protected static <K> String hGet(K key, K field, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
@@ -1275,7 +1290,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, Object> hGetAll(K key, RedisConnectionManager<K, String> connManager)
+    protected static <K> BMap<BString, Object> hGetAll(K key, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
@@ -1291,7 +1306,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long hIncrBy(K key, K field, long amount, RedisConnectionManager<K, String> connManager)
+    protected static <K> long hIncrBy(K key, K field, long amount, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
@@ -1306,7 +1321,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> double hIncrByFloat(K key, K field, double amount, RedisConnectionManager<K, String> connManager)
+    protected static <K> double hIncrByFloat(K key, K field, double amount,
+                                             RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
@@ -1321,7 +1337,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static BArray hKeys(String key, RedisConnectionManager<String, String> connManager) throws RedisConnectorException {
+    protected static BArray hKeys(String key, RedisConnectionManager<String, String> connManager)
+            throws RedisConnectorException {
         RedisHashCommands<String, String> hashCommands = null;
         try {
             hashCommands = connManager.getHashCommandConnection();
@@ -1336,7 +1353,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> long hLen(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> long hLen(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
             hashCommands = connManager.getHashCommandConnection();
@@ -1350,7 +1368,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BMap<BString, Object> hMGet(K key, RedisConnectionManager<K, String> connManager, K[] fields)
+    protected static <K> BMap<BString, Object> hMGet(K key, RedisConnectionManager<K, String> connManager, K[] fields)
             throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
@@ -1366,7 +1384,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> String hMSet(K key, Map<K, V> fieldValueMap, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> String hMSet(K key, Map<K, V> fieldValueMap, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
@@ -1381,7 +1399,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean hSet(K key, K field, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean hSet(K key, K field, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
@@ -1396,7 +1414,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean hSetNx(K key, K field, V value, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean hSetNx(K key, K field, V value, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
@@ -1411,7 +1429,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long hStrln(K key, K field, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long hStrln(K key, K field, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
             hashCommands = connManager.getHashCommandConnection();
@@ -1425,7 +1444,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray hVals(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> BArray hVals(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisHashCommands<K, String> hashCommands = null;
         try {
             hashCommands = connManager.getHashCommandConnection();
@@ -1442,7 +1462,8 @@ public abstract class AbstractRedisAction {
 
     // ============================= Key Commands  ================================== //
 
-    static <K, V> long del(RedisConnectionManager<K, V> connManager, K[] keys) throws RedisConnectorException {
+    protected static <K, V> long del(RedisConnectionManager<K, V> connManager, K[] keys)
+            throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1456,7 +1477,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long exists(RedisConnectionManager<K, V> connManager, K[] keys) throws RedisConnectorException {
+    protected static <K, V> long exists(RedisConnectionManager<K, V> connManager, K[] keys)
+            throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1470,7 +1492,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean expire(K key, long seconds, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean expire(K key, long seconds, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
@@ -1485,7 +1507,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <V> BArray keys(String pattern, RedisConnectionManager<String, V> connManager)
+    protected static <V> BArray keys(String pattern, RedisConnectionManager<String, V> connManager)
             throws RedisConnectorException {
         RedisKeyCommands<String, V> keyCommands = null;
         try {
@@ -1501,7 +1523,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean move(K key, int db, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> boolean move(K key, int db, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1515,7 +1538,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean persist(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> boolean persist(K key, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1529,7 +1553,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> boolean pExpire(K key, long milliSeconds, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> boolean pExpire(K key, long milliSeconds, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
@@ -1544,7 +1568,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long pTtl(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long pTtl(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1558,7 +1582,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String randomKey(RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String randomKey(RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisKeyCommands<K, String> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1572,7 +1597,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String rename(K key, K newName, RedisConnectionManager<K, String> connManager)
+    protected static <K> String rename(K key, K newName, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisKeyCommands<K, String> keyCommands = null;
         try {
@@ -1587,7 +1612,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> boolean renameNx(K key, K newName, RedisConnectionManager<K, String> connManager)
+    protected static <K> boolean renameNx(K key, K newName, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisKeyCommands<K, String> keyCommands = null;
         try {
@@ -1602,7 +1627,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> BArray sort(K key, RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> BArray sort(K key, RedisConnectionManager<K, String> connManager)
+            throws RedisConnectorException {
         RedisKeyCommands<K, String> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1617,7 +1643,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> long ttl(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> long ttl(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1631,7 +1657,8 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K, V> String type(K key, RedisConnectionManager<K, V> connManager) throws RedisConnectorException {
+    protected static <K, V> String type(K key, RedisConnectionManager<K, V> connManager)
+            throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
             keyCommands = connManager.getKeyCommandConnection();
@@ -1662,7 +1689,7 @@ public abstract class AbstractRedisAction {
 
     // ============================= Connection Commands  ================================== //
 
-    static <K, V> String auth(String password, RedisConnectionManager<K, V> connManager)
+    protected static <K, V> String auth(String password, RedisConnectionManager<K, V> connManager)
             throws RedisConnectorException {
         RedisCommands<K, V> redisCommands = null;
         try {
@@ -1677,12 +1704,11 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String echo(String message, RedisConnectionManager<K, String> connManager)
+    protected static <K> String echo(String message, RedisConnectionManager<K, String> connManager)
             throws RedisConnectorException {
         RedisCommands<K, String> redisCommands = null;
         try {
             redisCommands = connManager.getBaseCommandConnection();
-            ;
             return redisCommands.echo(message);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
@@ -1691,7 +1717,7 @@ public abstract class AbstractRedisAction {
         }
     }
 
-    static <K> String ping(RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
+    protected static <K> String ping(RedisConnectionManager<K, String> connManager) throws RedisConnectorException {
         RedisCommands<K, String> redisCommands = null;
         try {
             redisCommands = connManager.getBaseCommandConnection();
@@ -1707,7 +1733,6 @@ public abstract class AbstractRedisAction {
         if (connManager.isPoolingEnabled()) {
             connManager.closeConnectionPool();
         } else if (connManager.isClusterConnection()) {
-
             connManager.getRedisClusterCommands().quit();
         } else {
             connManager.getRedisCommands().quit();

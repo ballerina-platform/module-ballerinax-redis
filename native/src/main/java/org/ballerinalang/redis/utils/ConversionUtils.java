@@ -128,12 +128,7 @@ public class ConversionUtils {
      * @return the Java array
      */
     public static String[] createStringArrayFromBArray(BArray bStringArray) {
-        String[] stringArray = new String[bStringArray.size()];
-        int i = 0;
-        for (Object item : bStringArray.getStringArray()) {
-            stringArray[i++] = item.toString();
-        }
-        return stringArray;
+        return bStringArray.getStringArray();
     }
 
     /**
@@ -145,7 +140,7 @@ public class ConversionUtils {
     public static Map<String, Object> createMapFromBMap(BMap<BString, Object> bMap) {
         Map<String, Object> map = new LinkedHashMap<>();
         for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
-            map.put(entry.getKey().toString(), entry.getValue().toString());
+            map.put(entry.getKey().getValue(), entry.getValue().toString());
         }
         return map;
     }

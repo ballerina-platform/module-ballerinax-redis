@@ -26,13 +26,15 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 import org.ballerinalang.redis.connection.RedisConnectionManager;
+import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
-import static org.ballerinalang.redis.actions.AbstractRedisAction.CONN_OBJ;
+import static org.ballerinalang.redis.commands.RedisCommandBase.CONN_OBJ;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_HOST;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_PASSWORD;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_POOLING_ENABLED;
+import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 
 /**
  * Redis utility methods.
@@ -46,20 +48,26 @@ public class RedisUtils {
      *
      * @param config redis client configuration as a map
      */
-    public static void initClient(BObject client, BMap<?, ?> config) {
-        BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
-        BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
-        BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
-        BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
+    public static Object initClient(BObject client, BMap<?, ?> config) {
+        try {
+            BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
+            BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
+            BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
+            BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
 
-        RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
-        boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
-        boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
+            RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
+            boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
+            boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
 
-        RedisConnectionManager<?, ?> redisConnectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
-                poolingEnabled);
-        redisConnectionManager.init(host.toString(), password.toString(), options);
-        client.addNativeData(CONN_OBJ, redisConnectionManager);
+            RedisConnectionManager<?, ?> redisConnectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
+                    poolingEnabled);
+            redisConnectionManager.init(host.toString(), password.toString(), options);
+            client.addNativeData(CONN_OBJ, redisConnectionManager);
+            return null;
+        } catch (Throwable e) {
+            String errMsg = "Error while initializing the redis client. " + e.getMessage();
+            return createBError(new RedisConnectorException(errMsg, e));
+        }
     }
 
     /**
@@ -89,5 +97,16 @@ public class RedisUtils {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Unsupported Codec: " + codecString);
         }
+    }
+
+    /**
+     * Retrieve the connection manager from the Ballerina redis client object.
+     *
+     * @param redisClient Client from the Ballerina redis client
+     * @return RedisConnectionManager
+     */
+    @SuppressWarnings("unchecked")
+    public static <K, V> RedisConnectionManager<K, V> getConnection(BObject redisClient) {
+        return (RedisConnectionManager<K, V>) redisClient.getNativeData(CONN_OBJ);
     }
 }

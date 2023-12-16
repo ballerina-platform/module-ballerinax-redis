@@ -16,21 +16,22 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.actions;
+package org.ballerinalang.redis;
 
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.redis.commands.RedisCommandBase;
 import org.ballerinalang.redis.connection.RedisConnectionManager;
 
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
 
 /**
- * Redis list actions.
+ * Ballerina native util implementation for redis list commands.
  */
-public class ListActions extends AbstractRedisAction {
+public class ListCommands extends RedisCommandBase {
 
     /**
      * Prepend one or multiple values to a list, only if the list exists.

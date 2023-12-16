@@ -39,6 +39,7 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -94,13 +95,13 @@ public class RedisConnectionManager<K, V> {
      * @param password The password required for authentication
      * @param options  The additional options
      */
-    public void init(String hosts, String password, BMap<BString, Object> options) {
+    public void init(String hosts, String password, BMap<BString, Object> options) throws RedisConnectorException {
         List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
         if (isClusterConnection) {
             setRedisClusterCommands(serverAddresses, password, options);
         } else {
             if (serverAddresses.size() > 1) {
-                throw new RuntimeException("Multiple hosts are not supported for standalone connections");
+                throw new RedisConnectorException("Multiple hosts are not supported for standalone connections");
             }
             setRedisStandaloneCommands(serverAddresses.get(0), password, options);
         }
@@ -277,14 +278,6 @@ public class RedisConnectionManager<K, V> {
         return new ServerAddress(host, port);
     }
 
-    private StatefulConnection<K, V> getStatefulRedisConnectionFromPool() {
-        try {
-            return objectPool.borrowObject();
-        } catch (Exception e) {
-            throw new RuntimeException("Error occurred while obtaining connection from the pool: " + e);
-        }
-    }
-
     public void releaseResources(Object redisCommands) {
         if (!isPoolingEnabled()) {
             return;
@@ -297,7 +290,15 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    public Object getCommandConnection() {
+    private StatefulConnection<K, V> getStatefulRedisConnectionFromPool() {
+        try {
+            return objectPool.borrowObject();
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while obtaining connection from the pool: " + e);
+        }
+    }
+
+    private Object getCommandConnection() {
         if (isClusterConnection()) {
             return getRedisClusterCommands();
         } else {
