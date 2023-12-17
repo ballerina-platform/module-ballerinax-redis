@@ -36,6 +36,11 @@ import static org.ballerinalang.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
 import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
 
+/**
+ * Executor implementation for Redis key commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisListCommandsExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;

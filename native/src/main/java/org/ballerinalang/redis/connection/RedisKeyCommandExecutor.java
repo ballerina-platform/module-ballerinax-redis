@@ -30,6 +30,11 @@ import static org.ballerinalang.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
 import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
 
+/**
+ * Executor implementation for Redis key commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisKeyCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;
@@ -44,7 +49,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.del(keys);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -58,7 +63,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.exists(keys);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEYS_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEYS_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -72,7 +77,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.expire(key, seconds);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -87,7 +92,7 @@ public class RedisKeyCommandExecutor {
             List<String> result = keyCommands.keys(pattern);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -101,7 +106,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.move(key, db);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -115,7 +120,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.persist(key);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -129,7 +134,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.pexpire(key, milliSeconds);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -143,7 +148,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.pttl(key);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -157,7 +162,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, String>) connManager.getKeyCommandConnection();
             return keyCommands.randomkey();
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -171,7 +176,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, String>) connManager.getKeyCommandConnection();
             return keyCommands.rename(key, newName);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -185,7 +190,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, String>) connManager.getKeyCommandConnection();
             return keyCommands.renamenx(key, newName);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -200,7 +205,7 @@ public class RedisKeyCommandExecutor {
             List<String> result = keyCommands.sort(key);
             return createBStringArrayFromList(result);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -214,7 +219,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.ttl(key);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -228,7 +233,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.type(key);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
@@ -243,7 +248,7 @@ public class RedisKeyCommandExecutor {
             keyCommands = (RedisKeyCommands<K, V>) connManager.getKeyCommandConnection();
             return keyCommands.dump(key);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException(KEY_MUST_NOT_BE_NULL, e);
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {

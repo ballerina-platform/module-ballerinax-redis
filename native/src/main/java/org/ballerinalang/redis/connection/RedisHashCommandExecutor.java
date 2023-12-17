@@ -36,6 +36,11 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromKeyVal
 import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
 
+/**
+ * Executor implementation for Redis hash commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisHashCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;

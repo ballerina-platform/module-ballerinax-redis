@@ -29,6 +29,8 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis set commands.
+ *
+ * @since 3.0.0
  */
 public class SetCommands {
 

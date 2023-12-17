@@ -34,6 +34,11 @@ import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 import static org.ballerinalang.redis.utils.ConversionUtils.createArrayFromScoredValueMap;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
 
+/**
+ * Executor implementation for Redis sorted set commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisSortedSetCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;

@@ -59,7 +59,7 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED
  *
  * @param <K> Type of the Key
  * @param <V> Type of the Value
- * @since 0.5.0
+ * @since 3.0.0
  */
 public class RedisConnectionManager<K, V> {
 
@@ -138,37 +138,37 @@ public class RedisConnectionManager<K, V> {
     }
 
     @SuppressWarnings("unchecked")
-    public RedisCommands<K, V> getConnectionCommandConnection() {
+    public RedisCommands<K, V> getConnectionCommandConnection() throws RedisConnectorException {
         return (RedisCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisStringCommands<K, V> getStringCommandConnection() {
+    public RedisStringCommands<K, V> getStringCommandConnection() throws RedisConnectorException {
         return (RedisStringCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisListCommands<K, V> getListCommandConnection() {
+    public RedisListCommands<K, V> getListCommandConnection() throws RedisConnectorException {
         return (RedisListCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisSetCommands<K, V> getSetCommandConnection() {
+    public RedisSetCommands<K, V> getSetCommandConnection() throws RedisConnectorException {
         return (RedisSetCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisSortedSetCommands<K, V> getSortedSetCommandConnection() {
+    public RedisSortedSetCommands<K, V> getSortedSetCommandConnection() throws RedisConnectorException {
         return (RedisSortedSetCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisHashCommands<K, V> getHashCommandConnection() {
+    public RedisHashCommands<K, V> getHashCommandConnection() throws RedisConnectorException {
         return (RedisHashCommands<K, V>) getCommandConnection();
     }
 
     @SuppressWarnings("unchecked")
-    public RedisKeyCommands<K, V> getKeyCommandConnection() {
+    public RedisKeyCommands<K, V> getKeyCommandConnection() throws RedisConnectorException {
         return (RedisKeyCommands<K, V>) getCommandConnection();
     }
 
@@ -177,7 +177,7 @@ public class RedisConnectionManager<K, V> {
      *
      * @return a {@link RedisCommands} instance
      */
-    public RedisCommands<K, V> getRedisCommands() {
+    public RedisCommands<K, V> getRedisCommands() throws RedisConnectorException {
         if (poolingEnabled) {
             return ((StatefulRedisConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
         }
@@ -189,7 +189,7 @@ public class RedisConnectionManager<K, V> {
      *
      * @return a {@link RedisAdvancedClusterCommands} instance
      */
-    public RedisAdvancedClusterCommands<K, V> getRedisClusterCommands() {
+    public RedisAdvancedClusterCommands<K, V> getRedisClusterCommands() throws RedisConnectorException {
         if (poolingEnabled) {
             ((StatefulRedisClusterConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
         }
@@ -281,7 +281,7 @@ public class RedisConnectionManager<K, V> {
         return builder.build();
     }
 
-    private List<ServerAddress> obtainServerAddresses(String hostStr) {
+    private List<ServerAddress> obtainServerAddresses(String hostStr) throws RedisConnectorException {
         String[] hosts = hostStr.split(HOSTS_SEPARATOR);
         List<ServerAddress> result = new ArrayList<>(hosts.length);
         for (String host : hosts) {
@@ -290,7 +290,7 @@ public class RedisConnectionManager<K, V> {
         return result;
     }
 
-    private ServerAddress createServerAddress(String hostStr) {
+    private ServerAddress createServerAddress(String hostStr) throws RedisConnectorException {
         String[] hostPort = hostStr.split(HOST_PORT_SEPARATOR);
         String host = hostPort[0];
         int port;
@@ -298,7 +298,7 @@ public class RedisConnectionManager<K, V> {
             try {
                 port = Integer.parseInt(hostPort[1]);
             } catch (NumberFormatException e) {
-                throw new RuntimeException("port of the host string must be an integer: " + hostStr, e);
+                throw new RedisConnectorException("port of the host string must be an integer: " + hostStr, e);
             }
         } else {
             port = DEFAULT_PORT;
@@ -318,15 +318,15 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private StatefulConnection<K, V> getStatefulRedisConnectionFromPool() {
+    private StatefulConnection<K, V> getStatefulRedisConnectionFromPool() throws RedisConnectorException {
         try {
             return objectPool.borrowObject();
         } catch (Exception e) {
-            throw new RuntimeException("Error occurred while obtaining connection from the pool: " + e);
+            throw new RedisConnectorException("Error occurred while obtaining connection from the pool: " + e);
         }
     }
 
-    private Object getCommandConnection() {
+    private Object getCommandConnection() throws RedisConnectorException {
         if (isClusterConnection()) {
             return getRedisClusterCommands();
         } else {

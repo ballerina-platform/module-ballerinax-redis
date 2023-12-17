@@ -25,6 +25,11 @@ import org.ballerinalang.redis.exceptions.RedisConnectorException;
 import static org.ballerinalang.redis.utils.Constants.MUST_NOT_BE_NULL;
 import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 
+/**
+ * Executor implementation for Redis connection commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisConnectionCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;
@@ -71,7 +76,7 @@ public class RedisConnectionCommandExecutor {
         }
     }
 
-    public <K, V> void close() {
+    public void close() throws RedisConnectorException {
         if (connManager.isPoolingEnabled()) {
             connManager.closeConnectionPool();
         } else if (connManager.isClusterConnection()) {

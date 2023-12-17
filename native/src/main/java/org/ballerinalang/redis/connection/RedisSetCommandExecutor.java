@@ -34,6 +34,11 @@ import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromSet;
 
+/**
+ * Executor implementation for Redis set commands.
+ *
+ * @since 3.0.0
+ */
 public class RedisSetCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;

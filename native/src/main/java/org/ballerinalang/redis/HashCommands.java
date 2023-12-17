@@ -32,6 +32,8 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis hash commands.
+ *
+ * @since 3.0.0
  */
 public class HashCommands {
 

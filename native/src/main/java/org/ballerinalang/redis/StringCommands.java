@@ -33,6 +33,8 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis string commands.
+ *
+ * @since 3.0.0
  */
 public class StringCommands {
 
