@@ -35,6 +35,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class HashCommands {
 
     /**
@@ -43,7 +44,7 @@ public class HashCommands {
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of the hash
      * @param fields      Array of fields to be deleted
-     * @return Number of fields that were removed from the hash, not including specified but non existing fields
+     * @return Number of fields that were removed from the hash, not including specified but non-existing fields
      */
     public static Object hDel(BObject redisClient, BString key, BArray fields) {
         try {

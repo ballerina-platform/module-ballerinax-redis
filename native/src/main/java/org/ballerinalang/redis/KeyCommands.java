@@ -33,6 +33,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class KeyCommands {
 
     /**
@@ -106,7 +107,7 @@ public class KeyCommands {
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key to be moved
      * @param database    The database to which the key needs to be moved
-     * @return boolean true if key was succesfully moved, boolean false otherwise
+     * @return boolean true if key was successfully moved, boolean false otherwise
      */
     public static Object move(BObject redisClient, BString key, int database) {
         try {
@@ -139,7 +140,7 @@ public class KeyCommands {
      *
      * @param redisClient      Client from the Ballerina redis client
      * @param key              he key of which expiry time should be removed
-     * @param timeMilliSeconds The expiry time in milli seconds
+     * @param timeMilliSeconds The expiry time in milliseconds
      * @return boolean `true` if the timeout was set. boolean false if key does not exist or the timeout could not be
      * set
      */
@@ -157,7 +158,7 @@ public class KeyCommands {
      *
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of which time-to-live should be obtained
-     * @return time-to-live of the key, in milli seconds
+     * @return time-to-live of the key, in milliseconds
      */
     public static Object pTtl(BObject redisClient, BString key) {
         try {
@@ -205,9 +206,9 @@ public class KeyCommands {
      *
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key to be renamed
-     * @param newName     The new name of the key boolean `true` if key was renamed to newkey. boolean
-     *                    `false` if newkey already exists.
-     * @return boolean `true` if key was renamed to newkey. boolean `false` if newkey already exists
+     * @param newName     The new name of the key boolean `true` if key was renamed to new key. boolean
+     *                    `false` if new key already exists.
+     * @return boolean `true` if key was renamed to new key. boolean `false` if new key already exists
      */
     public static Object renameNx(BObject redisClient, BString key, BString newName) {
         try {
@@ -222,7 +223,7 @@ public class KeyCommands {
      * Sort the elements in a list, set or sorted set.
      *
      * @param redisClient Client from the Ballerina redis client
-     * @param key         The key of the data typeure to be sorted
+     * @param key         The key of the data type to be sorted
      * @return Sorted array containing the members of the sorted data type
      */
     public static Object sort(BObject redisClient, BString key) {

@@ -36,6 +36,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class StringCommands {
 
     /**
@@ -59,8 +60,8 @@ public class StringCommands {
      * Count set bits in a string.
      *
      * @param redisClient Client from the Ballerina redis client
-     * @param key         key key
-     * @return bit count
+     * @param key         key
+     * @return the bit count
      */
     public static Object bitCount(BObject redisClient, BString key) {
         try {

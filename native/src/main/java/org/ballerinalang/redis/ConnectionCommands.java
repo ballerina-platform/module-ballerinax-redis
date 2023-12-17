@@ -31,6 +31,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class ConnectionCommands {
 
     /**

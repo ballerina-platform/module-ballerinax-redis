@@ -32,6 +32,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class SetCommands {
 
     /**
@@ -227,7 +228,7 @@ public class SetCommands {
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of the set
      * @param members     Array of members to remove
-     * @return The number of members that were removed from the set, not including non existing members
+     * @return The number of members that were removed from the set, not including non-existing members
      */
     public static Object sRem(BObject redisClient, BString key, BArray members) {
         try {

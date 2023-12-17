@@ -36,10 +36,11 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
  *
  * @since 3.0.0
  */
+@SuppressWarnings("unused")
 public class SortedSetCommands {
 
     /**
-     * Add one or more members to a sorted set, or update its score if it already exist.
+     * Add one or more members to a sorted set, or update its score if it already exists.
      *
      * @param redisClient    Client from the Ballerina redis client
      * @param key            The key of the sorted set
@@ -241,13 +242,13 @@ public class SortedSetCommands {
      *
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of the sorted set
-     * @param memebers    The members to be removed
-     * @return The number of members removed from the sorted set, not including non existing members
+     * @param members    The members to be removed
+     * @return The number of members removed from the sorted set, not including non-existing members
      */
-    public static Object zRem(BObject redisClient, BString key, BArray memebers) {
+    public static Object zRem(BObject redisClient, BString key, BArray members) {
         try {
             RedisSortedSetCommandExecutor executor = getConnection(redisClient).getSortedSetCommandExecutor();
-            return executor.zRem(key.getValue(), createStringArrayFromBArray(memebers));
+            return executor.zRem(key.getValue(), createStringArrayFromBArray(members));
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -366,7 +367,7 @@ public class SortedSetCommands {
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of the sorted set
      * @param member      The member of which the score needs to be obtained
-     * @return
+     * @return The score of the member
      */
     public static Object zScore(BObject redisClient, BString key, BString member) {
         try {

@@ -241,7 +241,7 @@ public class RedisKeyCommandExecutor {
         }
     }
 
-    // TODO: Add as a native action once byte type is supported in ballerina. When doing so retrun a BType
+    // TODO: Add as a native action once byte type is supported in ballerina. When doing so return a BType
     public <K, V> byte[] dump(K key) throws RedisConnectorException {
         RedisKeyCommands<K, V> keyCommands = null;
         try {
