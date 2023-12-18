@@ -48,6 +48,7 @@ public class RedisUtils {
      *
      * @param config redis client configuration as a map
      */
+    @SuppressWarnings("unused")
     public static Object initClient(BObject client, BMap<?, ?> config) {
         try {
             BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));

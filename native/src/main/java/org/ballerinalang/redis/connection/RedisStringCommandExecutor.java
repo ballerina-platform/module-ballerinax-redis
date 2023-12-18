@@ -88,8 +88,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public long bitCount(String key)
-            throws RedisConnectorException {
+    public long bitCount(String key) throws RedisConnectorException {
         RedisStringCommands<String, String> redisCommands = null;
         try {
             redisCommands = (RedisStringCommands<String, String>) connManager.getStringCommandConnection();
@@ -103,8 +102,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K, V> long bitopAnd(K destination, K[] keys)
-            throws RedisConnectorException {
+    public <K, V> long bitopAnd(K destination, K[] keys) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, V>) connManager.getStringCommandConnection();
@@ -118,8 +116,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K, V> long bitopOr(K destination, K[] keys)
-            throws RedisConnectorException {
+    public <K, V> long bitopOr(K destination, K[] keys) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, V>) connManager.getStringCommandConnection();
@@ -133,8 +130,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K, V> long bitopNot(K destination, K key)
-            throws RedisConnectorException {
+    public <K, V> long bitopNot(K destination, K key) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, V>) connManager.getStringCommandConnection();
@@ -148,8 +144,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K, V> long bitopXor(K destination, K[] keys)
-            throws RedisConnectorException {
+    public <K, V> long bitopXor(K destination, K[] keys) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, V>) connManager.getStringCommandConnection();

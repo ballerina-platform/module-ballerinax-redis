@@ -180,7 +180,7 @@ public class StringCommands {
      * Get a string value from redis database.
      *
      * @param redisClient Client from the Ballerina redis client
-     * @param key         key key
+     * @param key         key
      * @return value
      */
     public static Object get(BObject redisClient, BString key) {
@@ -348,7 +348,7 @@ public class StringCommands {
      * @param redisClient    Client from the Ballerina redis client
      * @param key            key
      * @param value          value
-     * @param expirationTime Expiration time in milli seconds
+     * @param expirationTime Expiration time in milliseconds
      * @return New value of the key
      */
     public static Object pSetEx(BObject redisClient, BString key, BString value, int expirationTime) {
@@ -364,7 +364,7 @@ public class StringCommands {
      * Set a string value for a given key value.
      *
      * @param redisClient Client from the Ballerina redis client
-     * @param key         key key
+     * @param key         key
      * @param redisValue  value
      * @return `OK` if successful
      */
@@ -454,7 +454,7 @@ public class StringCommands {
      *
      * @param redisClient Client from the Ballerina redis client
      * @param key         key
-     * @return The length of the string at key, or 0 when key does not exis
+     * @return The length of the string at key, or 0 when key does not exist
      */
     public static Object strln(BObject redisClient, BString key) {
         try {
