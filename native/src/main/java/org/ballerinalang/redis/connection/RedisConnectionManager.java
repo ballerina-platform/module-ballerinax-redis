@@ -270,7 +270,7 @@ public class RedisConnectionManager<K, V> {
         }
 
         BString clientName = options.getStringValue(StringUtils.fromString(CONFIG_CLIENT_NAME));
-        if (!clientName.getValue().isBlank()) {
+        if (clientName != null && !clientName.getValue().isBlank()) {
             builder.withClientName(clientName.toString());
         }
 

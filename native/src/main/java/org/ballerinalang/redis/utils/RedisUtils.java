@@ -34,6 +34,8 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_PASSWORD;
 import static org.ballerinalang.redis.utils.Constants.CONFIG_POOLING_ENABLED;
 import static org.ballerinalang.redis.utils.Constants.CONN_OBJ;
+import static org.ballerinalang.redis.utils.Constants.EMPTY_STRING;
+import static org.ballerinalang.redis.utils.Constants.LOCALHOST;
 import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 
 /**
@@ -53,6 +55,7 @@ public class RedisUtils {
         try {
             BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
             BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
+
             BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
             BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
 
@@ -60,13 +63,15 @@ public class RedisUtils {
             boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
             boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
 
-            RedisConnectionManager<?, ?> redisConnectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
+            RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
                     poolingEnabled);
-            redisConnectionManager.init(host.toString(), password.toString(), options);
-            client.addNativeData(CONN_OBJ, redisConnectionManager);
+            String hostStr = host != null ? host.getValue() : LOCALHOST;
+            String passwordStr = password != null ? password.getValue() : EMPTY_STRING;
+            connectionManager.init(hostStr, passwordStr, options);
+            client.addNativeData(CONN_OBJ, connectionManager);
             return null;
         } catch (Throwable e) {
-            String errMsg = "Error while initializing the redis client. " + e.getMessage();
+            String errMsg = "Error while initializing the redis client: " + e.getMessage();
             return createBError(new RedisConnectorException(errMsg, e));
         }
     }

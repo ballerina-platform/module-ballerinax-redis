@@ -51,4 +51,8 @@ public class Constants {
     public static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
     public static final String REDIS_SERVER_ERROR = "Redis server error: ";
 
+    // Other constants
+    public static final String LOCALHOST = "localhost";
+    public static final String EMPTY_STRING = "";
+
 }

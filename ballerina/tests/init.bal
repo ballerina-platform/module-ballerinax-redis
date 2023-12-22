@@ -17,8 +17,7 @@
 import ballerina/test;
 
 ConnectionConfig redisConfig = {
-    host: "localhost",
-    password: "",
+    host: "localhost:6379",
     options: {
         connectionPooling: true,
         isClusterConnection: false,
