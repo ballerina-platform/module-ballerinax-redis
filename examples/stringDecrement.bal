@@ -26,5 +26,5 @@ public function main() returns error? {
         io:println("Error in decrementing");
     }
 
-    conn.stop();
+    conn.close();
 }

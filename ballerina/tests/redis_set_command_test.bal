@@ -134,7 +134,7 @@ function testSPop() returns error? {
 function testSRandMember() {
     var result = redis->sRandMember("testSRandMemberKey", 2);
     if (result is string[]) {
-        test:assertEquals(result.length(), 3);
+        test:assertEquals(result.length(), 2);
         boolean allMembersPopped = true;
         string[] memberArray = ["testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"];
         foreach var r in result {
