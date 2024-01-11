@@ -25,6 +25,7 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.BaseRedisCommands;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.api.sync.RedisHashCommands;
 import io.lettuce.core.api.sync.RedisKeyCommands;
@@ -63,6 +64,7 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED
  */
 public class RedisConnectionManager<K, V> {
 
+    // Lettuce connection objects
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
@@ -70,9 +72,19 @@ public class RedisConnectionManager<K, V> {
     private final boolean isClusterConnection;
     private final boolean poolingEnabled;
 
+    // Command executors
+    private RedisConnectionCommandExecutor connectionCommandExecutor;
+    private RedisStringCommandExecutor stringCommandExecutor;
+    private RedisKeyCommandExecutor keyCommandExecutor;
+    private RedisHashCommandExecutor hashCommandExecutor;
+    private RedisSetCommandExecutor setCommandExecutor;
+    private RedisListCommandsExecutor listCommandsExecutor;
+    private RedisSortedSetCommandExecutor sortedSetCommandExecutor;
+
+    // Constants
     private static final String HOSTS_SEPARATOR = ",";
     private static final String HOST_PORT_SEPARATOR = ":";
-    public static final int DEFAULT_PORT = 6379;
+    private static final int DEFAULT_PORT = 6379;
 
     /**
      * Constructor for {@link RedisConnectionManager}.
@@ -110,66 +122,80 @@ public class RedisConnectionManager<K, V> {
     }
 
     public RedisConnectionCommandExecutor getConnectionCommandExecutor() {
-        return new RedisConnectionCommandExecutor(this);
+        if (connectionCommandExecutor == null) {
+            connectionCommandExecutor = new RedisConnectionCommandExecutor(this);
+        }
+        return connectionCommandExecutor;
     }
 
     public RedisStringCommandExecutor getStringCommandExecutor() {
-        return new RedisStringCommandExecutor(this);
+        if (stringCommandExecutor == null) {
+            stringCommandExecutor = new RedisStringCommandExecutor(this);
+        }
+        return stringCommandExecutor;
     }
 
     public RedisKeyCommandExecutor getKeyCommandExecutor() {
-        return new RedisKeyCommandExecutor(this);
+        if (keyCommandExecutor == null) {
+            keyCommandExecutor = new RedisKeyCommandExecutor(this);
+        }
+        return keyCommandExecutor;
     }
 
     public RedisHashCommandExecutor getHashCommandExecutor() {
-        return new RedisHashCommandExecutor(this);
+        if (hashCommandExecutor == null) {
+            hashCommandExecutor = new RedisHashCommandExecutor(this);
+        }
+        return hashCommandExecutor;
     }
 
     public RedisSetCommandExecutor getSetCommandExecutor() {
-        return new RedisSetCommandExecutor(this);
+        if (setCommandExecutor == null) {
+            setCommandExecutor = new RedisSetCommandExecutor(this);
+        }
+        return setCommandExecutor;
     }
 
     public RedisListCommandsExecutor getListCommandExecutor() {
-        return new RedisListCommandsExecutor(this);
+        if (listCommandsExecutor == null) {
+            listCommandsExecutor = new RedisListCommandsExecutor(this);
+        }
+        return listCommandsExecutor;
     }
 
     public RedisSortedSetCommandExecutor getSortedSetCommandExecutor() {
-        return new RedisSortedSetCommandExecutor(this);
+        if (sortedSetCommandExecutor == null) {
+            sortedSetCommandExecutor = new RedisSortedSetCommandExecutor(this);
+        }
+        return sortedSetCommandExecutor;
     }
 
-    @SuppressWarnings("unchecked")
-    public RedisCommands<K, V> getConnectionCommandConnection() throws RedisConnectorException {
-        return (RedisCommands<K, V>) getCommandConnection();
+    public BaseRedisCommands<K, V> getConnectionCommandConnection() throws RedisConnectorException {
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisStringCommands<K, V> getStringCommandConnection() throws RedisConnectorException {
-        return (RedisStringCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisListCommands<K, V> getListCommandConnection() throws RedisConnectorException {
-        return (RedisListCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisSetCommands<K, V> getSetCommandConnection() throws RedisConnectorException {
-        return (RedisSetCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisSortedSetCommands<K, V> getSortedSetCommandConnection() throws RedisConnectorException {
-        return (RedisSortedSetCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisHashCommands<K, V> getHashCommandConnection() throws RedisConnectorException {
-        return (RedisHashCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
-    @SuppressWarnings("unchecked")
     public RedisKeyCommands<K, V> getKeyCommandConnection() throws RedisConnectorException {
-        return (RedisKeyCommands<K, V>) getCommandConnection();
+        return isClusterConnection() ? getRedisClusterCommands() : getRedisCommands();
     }
 
     /**
@@ -191,7 +217,7 @@ public class RedisConnectionManager<K, V> {
      */
     public RedisAdvancedClusterCommands<K, V> getRedisClusterCommands() throws RedisConnectorException {
         if (poolingEnabled) {
-            ((StatefulRedisClusterConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
+            return ((StatefulRedisClusterConnection<K, V>) getStatefulRedisConnectionFromPool()).sync();
         }
         return redisClusterCommands;
     }
