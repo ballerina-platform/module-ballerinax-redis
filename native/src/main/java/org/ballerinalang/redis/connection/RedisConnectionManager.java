@@ -352,7 +352,7 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private Object getCommandConnection() throws RedisConnectorException {
+    private BaseRedisCommands<K, V> getCommandConnection() throws RedisConnectorException {
         if (isClusterConnection()) {
             return getRedisClusterCommands();
         } else {

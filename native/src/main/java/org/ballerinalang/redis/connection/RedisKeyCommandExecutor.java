@@ -156,7 +156,7 @@ public class RedisKeyCommandExecutor {
         }
     }
 
-    public <K> String randomKey() throws RedisConnectorException {
+    public <K> K randomKey() throws RedisConnectorException {
         RedisKeyCommands<K, String> keyCommands = null;
         try {
             keyCommands = (RedisKeyCommands<K, String>) connManager.getKeyCommandConnection();

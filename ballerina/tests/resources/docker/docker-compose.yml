@@ -1,7 +1,7 @@
 version: '3.0'
 
 services:
-  redis-no-ssl:
-    image: redis:5.0.7
+  redis-standalone:
+    image: redis:7.0.0
     ports:
-      - "6379:6379"
+      - '6379:6379'
