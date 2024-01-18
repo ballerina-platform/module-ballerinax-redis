@@ -333,7 +333,7 @@ public class RedisConnectionManager<K, V> {
     }
 
     public void releaseResources(Object redisCommands) {
-        if (!isPoolingEnabled()) {
+        if (!isPoolingEnabled() || redisCommands == null) {
             return;
         }
 
