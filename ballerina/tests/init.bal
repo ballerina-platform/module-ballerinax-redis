@@ -1,4 +1,3 @@
-
 // Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org)
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
@@ -14,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/log;
 import ballerina/os;
 import ballerina/test;
 
@@ -22,8 +23,14 @@ boolean clusterMode = os:getEnv("TEST_CLUSTER_MODE") == "true" ? true : false;
 
 Client redis = check new (clusterMode ? getClusterConfigs() : getStandaloneConfigs());
 
-@test:BeforeSuite 
+@test:BeforeSuite
 public function setUpValues() {
+    if (clusterMode) {
+        log:printInfo("Running tests in cluster mode");
+    } else {
+        log:printInfo("Running tests in standalone mode");
+    }
+
     setupStringValues();
     setupKeyValues();
     setupListValues();
