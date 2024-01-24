@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   redis-cluster-node1:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node1/node1.conf"
     ports:
       - '7000:7000'
@@ -12,7 +12,7 @@ services:
       - cluster-network
 
   redis-cluster-node2:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node2/node2.conf"
     ports:
       - '7001:7001'
@@ -22,7 +22,7 @@ services:
       - cluster-network
 
   redis-cluster-node3:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node3/node3.conf"
     ports:
       - '7002:7002'
@@ -32,7 +32,7 @@ services:
       - cluster-network
 
   redis-cluster-node4:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node4/node4.conf"
     ports:
       - '7003:7003'
@@ -42,7 +42,7 @@ services:
       - cluster-network
 
   redis-cluster-node5:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node5/node5.conf"
     ports:
       - '7004:7004'
@@ -52,7 +52,7 @@ services:
       - cluster-network
 
   redis-cluster-node6:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "redis-server /data/node6/node6.conf"
     ports:
       - '7005:7005'
@@ -62,7 +62,7 @@ services:
       - cluster-network
 
   create-cluster-container:
-    image: redis:7.0.0
+    image: redis:7.2.2
     command: sh -c "sleep 5 && redis-cli --cluster create redis-cluster-node1:7000 redis-cluster-node2:7001 redis-cluster-node3:7002 redis-cluster-node4:7003 redis-cluster-node5:7004 redis-cluster-node6:7005 --cluster-replicas 1 --cluster-yes"
     depends_on:
       - redis-cluster-node1

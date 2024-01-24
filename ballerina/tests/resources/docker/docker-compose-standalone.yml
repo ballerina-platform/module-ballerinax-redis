@@ -2,6 +2,6 @@ version: '3.0'
 
 services:
   redis-standalone:
-    image: redis:7.0.0
+    image: redis:7.2.2
     ports:
       - '6379:6379'
