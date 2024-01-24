@@ -61,7 +61,7 @@ function setupStringValues() {
         "testStrlnKey",
         "testMGetKey1",
         "testMGetKey2",
-        "testMSetNxKey1",
+        "{StringTag}testMSetNxKey1",
         "testPSetExKey"
     ];
 
@@ -113,8 +113,8 @@ function setupKeyValues() {
         "testPTtlKey",
         "{KeyTag}testRenameKey",
         "{KeyTag}testRenameNxKey",
-        "testRenameNxKey1",
-        "testRenameNxKeyExisting",
+        "{KeyTag}testRenameNxKey1",
+        "{KeyTag}testRenameNxKeyExisting",
         "testTypeKey"
     ];
 
@@ -491,7 +491,7 @@ function getStandaloneConfigs() returns ConnectionConfig => {
 };
 
 function getClusterConfigs() returns ConnectionConfig => {
-    host: "localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005",
+    host: "localhost:7000",
     options: {
         connectionPooling: true,
         isClusterConnection: true,

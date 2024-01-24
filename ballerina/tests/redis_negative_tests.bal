@@ -13,47 +13,52 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/test;
 
 @test:Config {
-    groups: ["standalone", "cluster"],
-    enable: false
+    groups: ["standalone", "cluster"]
 }
 function testMSetNxForExistingKey() returns error? {
     map<any> keyValueMap = {
-        "testMSetNxKey1": "testMSetNxNewValue1",
-        "testMSetNxKey2": "testMSetNxValue2",
-        "testMSetNxKey3": "testMSetNxValue3"
+        "{StringTag}testMSetNxKey1": "testMSetNxNewValue1",
+        "{StringTag}testMSetNxKey2": "testMSetNxValue2",
+        "{StringTag}testMSetNxKey3": "testMSetNxValue3"
     };
 
     boolean result = check redis->mSetNx(keyValueMap);
     test:assertFalse(result);
 
-    string? getResult1 = check redis->get("testMSetNxKey1");
+    string? getResult1 = check redis->get("{StringTag}testMSetNxKey1");
     test:assertEquals(getResult1, "testMSetNxValue1");
-    string? getResult2 = check redis->get("testMSetNxKey2");
+    string? getResult2 = check redis->get("{StringTag}testMSetNxKey2");
     test:assertEquals(getResult2, ());
-    string? getResult3 = check redis->get("testMSetNxKey3");
+    string? getResult3 = check redis->get("{StringTag}testMSetNxKey3");
     test:assertEquals(getResult3, ());
 }
 
 @test:Config {
-    groups: ["standalone", "cluster"],
-    enable: false
+    groups: ["standalone", "cluster"]
 }
 function testRenameNxForExistingKey() returns error? {
-    boolean renameResult2 = check redis->renameNx("testRenameNxKey1", "testRenameNxKeyExisting");
+    boolean renameResult2 = check redis->renameNx("{KeyTag}testRenameNxKey1", "{KeyTag}testRenameNxKeyExisting");
     test:assertFalse(renameResult2);
-    int existResult2 = check redis->exists(["testRenameNxKey1"]);
+    int existResult2 = check redis->exists(["{KeyTag}testRenameNxKey1"]);
     test:assertEquals(existResult2, 1);
 }
 
 @test:Config {
-    groups: ["cluster"],
-    enable: false
+    groups: ["cluster"]
 }
 function testMoveInClusterMode() returns error? {
-    boolean|error moveResult = check redis->move("testMoveKey", 1);
-    test:assertTrue(moveResult is error);
+    // TODO: remove this hack along with the test groups based approach, once https://github.com/ballerina-platform/ballerina-lang/issues/42028 is fixed   
+    if !clusterMode {
+        return ();
+    }
+
+    boolean|error moveResult = redis->move("testMoveKey", 1);
+    if (moveResult !is error) {
+        test:assertFail("move operation should not be supported in cluster mode");
+    }
+
+    test:assertEquals(moveResult.message(), "Redis server error: ERR MOVE is not allowed in cluster mode");
 }

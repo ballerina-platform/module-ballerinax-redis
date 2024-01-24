@@ -68,7 +68,7 @@ public function testBitOpAnd() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function tesBitOpOr() returns error? {
+public function testBitOpOr() returns error? {
     string[] keys = ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"];
     int result = check redis->bitOpOr("{StringTag}tesBitOpOrDest", keys);
     test:assertEquals(result, 3);
@@ -80,7 +80,7 @@ public function tesBitOpOr() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function tesBitOpNot() {
+public function testBitOpNot() {
     var result = redis->bitOpNot("{StringTag}tesBitOpNotDest", "{StringTag}testBitOpKey1");
     if (result is int) {
         test:assertEquals(result, 3);
@@ -92,7 +92,7 @@ public function tesBitOpNot() {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function tesBitOpXor() {
+function testBitOpXor() {
     var result = redis->bitOpXor("{StringTag}tesBitOpXorDest", ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"]);
     if (result is int) {
         test:assertEquals(result, 3);
