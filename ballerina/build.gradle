@@ -101,24 +101,37 @@ task commitTomlFiles {
 task startRedisServer() {
     doLast {
         println("Starting redis server...")
+
+        def dockerComposeFile = "docker-compose-standalone.yml"
+        if (System.getenv("TEST_CLUSTER_MODE")?.toBoolean()) {
+            dockerComposeFile = "docker-compose-cluster.yml"
+        }
+
         exec {
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/docker-compose.yml up && exit %%ERRORLEVEL%%"
+                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
             } else {
-                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/docker-compose.yml up -d"
+                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/${dockerComposeFile} up -d"
             }
         }
     }
 }
 
 task stopRedisServer() {
+
     doLast {
         println("Stopping redis server...")
+
+        def dockerComposeFile = "docker-compose-standalone.yml"
+        if (System.getenv("TEST_CLUSTER_MODE")?.toBoolean()) {
+            dockerComposeFile = "docker-compose-cluster.yml"
+        }
+
         exec {
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/docker-compose.yml down && exit %%ERRORLEVEL%%"
+                commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
             } else {
-                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/docker-compose.yml down"
+                commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/${dockerComposeFile} down"
             }
         }
     }

@@ -1,18 +1,13 @@
 version: '3.0'
 
 services:
-  redis-standalone:
-    image: redis:7.0.0
-    ports:
-      - '6379:6379'
-
   redis-cluster-node1:
     image: redis:7.0.0
     command: sh -c "redis-server /data/node1/node1.conf"
     ports:
       - '7000:7000'
     volumes:
-      - ./data/:/data/node1/
+      - ./config/:/data/node1/
     networks:
       - cluster-network
 
@@ -22,7 +17,7 @@ services:
     ports:
       - '7001:7001'
     volumes:
-      - ./data/:/data/node2/
+      - ./config/:/data/node2/
     networks:
       - cluster-network
 
@@ -32,7 +27,7 @@ services:
     ports:
       - '7002:7002'
     volumes:
-      - ./data/:/data/node3/
+      - ./config/:/data/node3/
     networks:
       - cluster-network
 
@@ -42,7 +37,7 @@ services:
     ports:
       - '7003:7003'
     volumes:
-      - ./data/:/data/node4/
+      - ./config/:/data/node4/
     networks:
       - cluster-network
 
@@ -52,7 +47,7 @@ services:
     ports:
       - '7004:7004'
     volumes:
-      - ./data/:/data/node5/
+      - ./config/:/data/node5/
     networks:
       - cluster-network
 
@@ -62,7 +57,7 @@ services:
     ports:
       - '7005:7005'
     volumes:
-      - ./data/:/data/node6/
+      - ./config/:/data/node6/
     networks:
       - cluster-network
 
