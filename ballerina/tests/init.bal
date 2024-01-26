@@ -19,7 +19,7 @@ import ballerina/os;
 import ballerina/test;
 
 // TODO: Replace the env variable with the test groups based approach, once https://github.com/ballerina-platform/ballerina-lang/issues/42028 is fixed
-boolean clusterMode = os:getEnv("TEST_CLUSTER_MODE") == "true" ? true : false;
+boolean clusterMode = os:getEnv("TEST_CLUSTER_MODE") == "true";
 
 Client redis = check new (clusterMode ? getClusterConfigs() : getStandaloneConfigs());
 

@@ -1260,7 +1260,7 @@ public isolated client class Client {
     # + return - a bulk-string-reply as a string array or, 
     # a `redis:Error` if the connection is non-clustered or encounters any other errors.
     isolated remote function clusterInfo() returns string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ConnectionCommands"
+        'class: "org.ballerinalang.redis.ClusterCommands"
     } external;
 
     // Connection commands

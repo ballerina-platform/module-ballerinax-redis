@@ -19,11 +19,11 @@ import ballerina/test;
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testClusterInfo() {
+function testClusterInfo() returns error? {
     if !clusterMode {
         return;
     }
 
-    string[]|error result = redis->clusterInfo();
-    test:assertTrue(result is string[], "Invalid result type returned.");
+    string[] result = check redis->clusterInfo();
+    test:assertTrue(result.length() > 0, "Cluster info is empty");
 }
