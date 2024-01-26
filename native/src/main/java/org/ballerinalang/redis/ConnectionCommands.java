@@ -97,4 +97,23 @@ public class ConnectionCommands {
             return createBError(e);
         }
     }
+
+    /**
+     * Retrieve information and statistics about the cluster observed by the current node. This command is
+     * exclusively available in cluster mode.
+     * If the connection is in a non-clustered mode, the API will return a `redis:Error`. Other errors will also be
+     * appropriately handled.
+     *
+     * @param redisClient redis client BObject
+     * @return a bulk-string-reply as a string array or, a `redis:Error` if the connection is non-clustered or
+     * encounters any other exceptions.
+     */
+    public static Object clusterInfo(BObject redisClient) {
+        try {
+            RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
+            return executor.clusterInfo();
+        } catch (Throwable e) {
+            return createBError(e);
+        }
+    }
 }

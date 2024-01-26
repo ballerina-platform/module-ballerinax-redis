@@ -18,12 +18,14 @@
 
 package org.ballerinalang.redis.connection;
 
+import io.ballerina.runtime.api.values.BArray;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.BaseRedisCommands;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import io.lettuce.core.cluster.api.sync.RedisClusterCommands;
 import org.ballerinalang.redis.exceptions.RedisConnectorException;
+import org.ballerinalang.redis.utils.ConversionUtils;
 
 import static org.ballerinalang.redis.utils.Constants.MUST_NOT_BE_NULL;
 import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
@@ -36,6 +38,7 @@ import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 public class RedisConnectionCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;
+    private static final String CLUSTER_INFO_SEPARATOR = "\\r\\n";
 
     public RedisConnectionCommandExecutor(RedisConnectionManager<?, ?> connManager) {
         this.connManager = connManager;
@@ -93,6 +96,24 @@ public class RedisConnectionCommandExecutor {
             connManager.getRedisClusterCommands().quit();
         } else {
             connManager.getRedisCommands().quit();
+        }
+    }
+
+    public BArray clusterInfo() throws RedisConnectorException {
+        if (!connManager.isClusterConnection()) {
+            throw new RedisConnectorException("Cannot execute cluster info command on a non-cluster connection");
+        }
+
+        RedisClusterCommands<?, String> clusterCommands = null;
+        try {
+            clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
+            String clusterInfo = clusterCommands.clusterInfo();
+            String[] infoArray = clusterInfo.split(CLUSTER_INFO_SEPARATOR);
+            return ConversionUtils.createBStringArrayJArray(infoArray);
+        } catch (RedisException e) {
+            throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
+        } finally {
+            connManager.releaseResources(clusterCommands);
         }
     }
 }

@@ -1251,6 +1251,18 @@ public isolated client class Client {
         'class: "org.ballerinalang.redis.KeyCommands"
     } external;
 
+    // Cluster Commands
+
+    # Retrieve information and statistics about the cluster observed by the current node.
+    # This command is exclusively available in cluster mode. If the connection is in a non-clustered mode,
+    # the API will return a `redis:Error`. Other errors will also be appropriately handled.
+    #
+    # + return - a bulk-string-reply as a string array or, 
+    # a `redis:Error` if the connection is non-clustered or encounters any other errors.
+    isolated remote function clusterInfo() returns string[]|Error = @java:Method {
+        'class: "org.ballerinalang.redis.ConnectionCommands"
+    } external;
+
     // Connection commands
 
     # Ping the server.

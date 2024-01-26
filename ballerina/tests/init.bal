@@ -491,7 +491,7 @@ function getStandaloneConfigs() returns ConnectionConfig => {
 };
 
 function getClusterConfigs() returns ConnectionConfig => {
-    host: "localhost:7000",
+    host: "localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005",
     options: {
         connectionPooling: true,
         isClusterConnection: true,

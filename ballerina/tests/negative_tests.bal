@@ -62,3 +62,18 @@ function testMoveInClusterMode() returns error? {
 
     test:assertEquals(moveResult.message(), "Redis server error: ERR MOVE is not allowed in cluster mode");
 }
+
+@test:Config {
+    groups: ["standalone"]
+}
+function testClusterInfoInStandaloneMode() returns error? {
+    if clusterMode {
+        return ();
+    }
+
+    string[]|error clusterInfoResult = redis->clusterInfo();
+    if (clusterInfoResult !is Error) {
+        test:assertFail("clusterInfo operation should not be supported in standalone mode");
+    }
+    test:assertTrue(clusterInfoResult.message() == "Cannot execute cluster info command on a non-cluster connection");
+}
