@@ -30,7 +30,7 @@ import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
 /**
  * Ballerina native util implementation for redis set commands.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 @SuppressWarnings("unused")
 public class SetCommands {

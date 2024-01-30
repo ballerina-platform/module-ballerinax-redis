@@ -37,7 +37,7 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFr
 /**
  * Executor implementation for Redis set commands.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class RedisSetCommandExecutor {
 

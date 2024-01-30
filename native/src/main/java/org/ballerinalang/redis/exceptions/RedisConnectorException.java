@@ -21,7 +21,7 @@ package org.ballerinalang.redis.exceptions;
 /**
  * Ballerina Redis Connector Exception.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class RedisConnectorException extends Exception {
 

@@ -41,7 +41,7 @@ import static org.ballerinalang.redis.utils.Constants.REDIS_ERROR_TYPE;
 /**
  * Utility methods for conversion between Ballerina and Java types.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class ConversionUtils {
 
