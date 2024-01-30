@@ -61,7 +61,7 @@ import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED
  *
  * @param <K> Type of the Key
  * @param <V> Type of the Value
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class RedisConnectionManager<K, V> {
 

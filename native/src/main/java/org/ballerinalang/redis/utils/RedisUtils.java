@@ -41,7 +41,7 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
 /**
  * Redis utility methods.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class RedisUtils {
 

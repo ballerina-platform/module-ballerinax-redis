@@ -36,7 +36,7 @@ import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromKeyVal
 /**
  * Executor implementation for Redis string commands.
  *
- * @since 3.0.0
+ * @since 2.6.0
  */
 public class RedisStringCommandExecutor {
 
