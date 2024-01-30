@@ -18,9 +18,14 @@
 
 package org.ballerinalang.redis.connection;
 
+import io.ballerina.runtime.api.values.BArray;
 import io.lettuce.core.RedisException;
+import io.lettuce.core.api.sync.BaseRedisCommands;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import io.lettuce.core.cluster.api.sync.RedisClusterCommands;
 import org.ballerinalang.redis.exceptions.RedisConnectorException;
+import org.ballerinalang.redis.utils.ConversionUtils;
 
 import static org.ballerinalang.redis.utils.Constants.MUST_NOT_BE_NULL;
 import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
@@ -33,29 +38,37 @@ import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
 public class RedisConnectionCommandExecutor {
 
     private final RedisConnectionManager<?, ?> connManager;
+    private static final String CLUSTER_INFO_SEPARATOR = "\\r\\n";
 
     public RedisConnectionCommandExecutor(RedisConnectionManager<?, ?> connManager) {
         this.connManager = connManager;
     }
 
     public String auth(String password) throws RedisConnectorException {
+        RedisClusterCommands<?, String> clusterCommands = null;
         RedisCommands<?, String> redisCommands = null;
         try {
-            redisCommands = (RedisCommands<?, String>) connManager.getConnectionCommandConnection();
-            return redisCommands.auth(password);
+            if (connManager.isClusterConnection()) {
+                clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
+                return clusterCommands.auth(password);
+            } else {
+                redisCommands = (RedisCommands<?, String>) connManager.getRedisCommands();
+                return redisCommands.auth(password);
+            }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Password " + MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
+            connManager.releaseResources(clusterCommands);
             connManager.releaseResources(redisCommands);
         }
     }
 
-    public String echo(String message) throws RedisConnectorException {
-        RedisCommands<?, String> redisCommands = null;
+    public <K> String echo(String message) throws RedisConnectorException {
+        BaseRedisCommands<K, String> redisCommands = null;
         try {
-            redisCommands = (RedisCommands<?, String>) connManager.getConnectionCommandConnection();
+            redisCommands = (BaseRedisCommands<K, String>) connManager.getConnectionCommandConnection();
             return redisCommands.echo(message);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
@@ -65,9 +78,9 @@ public class RedisConnectionCommandExecutor {
     }
 
     public <K> String ping() throws RedisConnectorException {
-        RedisCommands<K, String> redisCommands = null;
+        BaseRedisCommands<K, String> redisCommands = null;
         try {
-            redisCommands = (RedisCommands<K, String>) connManager.getConnectionCommandConnection();
+            redisCommands = (BaseRedisCommands<K, String>) connManager.getConnectionCommandConnection();
             return redisCommands.ping();
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
@@ -83,6 +96,24 @@ public class RedisConnectionCommandExecutor {
             connManager.getRedisClusterCommands().quit();
         } else {
             connManager.getRedisCommands().quit();
+        }
+    }
+
+    public BArray clusterInfo() throws RedisConnectorException {
+        if (!connManager.isClusterConnection()) {
+            throw new RedisConnectorException("Cannot execute cluster info command on a non-cluster connection");
+        }
+
+        RedisClusterCommands<?, String> clusterCommands = null;
+        try {
+            clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
+            String clusterInfo = clusterCommands.clusterInfo();
+            String[] infoArray = clusterInfo.split(CLUSTER_INFO_SEPARATOR);
+            return ConversionUtils.createBStringArrayJArray(infoArray);
+        } catch (RedisException e) {
+            throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
+        } finally {
+            connManager.releaseResources(clusterCommands);
         }
     }
 }

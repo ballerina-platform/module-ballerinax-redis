@@ -22,7 +22,7 @@ path = "../native/build/libs/redis-native-3.0.0-SNAPSHOT.jar"
 [[platform.java17.dependency]]
 groupId = "io.lettuce"
 artifactId = "lettuce-core"
-version = "5.1.2.RELEASE"
+version = "6.3.1.RELEASE"
 
 [[platform.java11.dependency]]
 groupId = "org.apache.commons"
@@ -92,8 +92,8 @@ path = "./lib/netty-codec-4.1.94.Final.jar"
 [[platform.java17.dependency]]
 groupId = "io.projectreactor"
 artifactId = "reactor-core"
-version = "3.2.2.RELEASE"
-path = "./lib/reactor-core-3.2.2.RELEASE.jar"
+version = "3.6.2"
+path = "./lib/reactor-core-3.6.2.jar"
 
 [[platform.java17.dependency]]
 groupId = "org.reactivestreams"

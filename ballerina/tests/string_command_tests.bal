@@ -17,7 +17,9 @@
 import ballerina/lang.runtime;
 import ballerina/test;
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSet() {
     var result = redis->set("Name", "Manuri");
     if (result is string) {
@@ -27,7 +29,9 @@ public function testSet() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testAppend() {
     var result = redis->append("AppendTestKey", "SomeValue");
     if (result is int) {
@@ -37,7 +41,9 @@ public function testAppend() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testBitCount() {
     var result = redis->bitCount("BitCountTestKey");
     if (result is int) {
@@ -47,29 +53,35 @@ public function testBitCount() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testBitOpAnd() returns error? {
-    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = check redis->bitOpAnd("tesBitOpAndDest", keys);
+    string[] keys = ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"];
+    int result = check redis->bitOpAnd("{StringTag}tesBitOpAndDest", keys);
     test:assertEquals(result, 3);
 
-    string? getResult = check redis->get("tesBitOpAndDest");
+    string? getResult = check redis->get("{StringTag}tesBitOpAndDest");
     test:assertEquals(getResult, "100");
 }
 
-@test:Config {}
-public function tesBitOpOr() returns error? {
-    string[] keys = ["testBitOpKey1", "testBitOpKey2"];
-    int result = check redis->bitOpOr("tesBitOpOrDest", keys);
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+public function testBitOpOr() returns error? {
+    string[] keys = ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"];
+    int result = check redis->bitOpOr("{StringTag}tesBitOpOrDest", keys);
     test:assertEquals(result, 3);
 
-    string? getResult = check redis->get("tesBitOpOrDest");
+    string? getResult = check redis->get("{StringTag}tesBitOpOrDest");
     test:assertEquals(getResult, "101");
 }
 
-@test:Config {}
-public function tesBitOpNot() {
-    var result = redis->bitOpNot("tesBitOpNotDest", "testBitOpKey1");
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+public function testBitOpNot() {
+    var result = redis->bitOpNot("{StringTag}tesBitOpNotDest", "{StringTag}testBitOpKey1");
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -77,9 +89,11 @@ public function tesBitOpNot() {
     }
 }
 
-@test:Config {}
-function tesBitOpXor() {
-    var result = redis->bitOpXor("tesBitOpXorDest", ["testBitOpKey1", "testBitOpKey2"]);
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testBitOpXor() {
+    var result = redis->bitOpXor("{StringTag}tesBitOpXorDest", ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"]);
     if (result is int) {
         test:assertEquals(result, 3);
     } else {
@@ -87,7 +101,9 @@ function tesBitOpXor() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testDecr() {
     var result = redis->decr("testDecrKey");
     if (result is int) {
@@ -97,7 +113,9 @@ public function testDecr() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testDecrBy() {
     var result = redis->decrBy("testDecrByKey", 3);
     if (result is int) {
@@ -107,7 +125,9 @@ function testDecrBy() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testGet() {
     var result = redis->get("GetTestKey");
     if (result is string) {
@@ -119,7 +139,9 @@ public function testGet() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testGetBit() {
     var result = redis->getBit("testGetBitKey", 4);
     if (result is int) {
@@ -129,7 +151,9 @@ public function testGetBit() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testGetRange() {
     var result = redis->getRange("testGetRangekey", 2, 5);
     if (result is string) {
@@ -139,7 +163,9 @@ public function testGetRange() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testGetSet() returns error? {
     string? result = check redis->getSet("testGetSetKey", "testGetSetNewValue");
     test:assertEquals(result, "testGetSetValue");
@@ -148,7 +174,9 @@ public function testGetSet() returns error? {
     test:assertEquals(getResult, "testGetSetNewValue");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testIncr() {
     var result = redis->incr("testIncrKey");
     if (result is int) {
@@ -158,7 +186,9 @@ public function testIncr() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testIncrBy() {
     var result = redis->incrBy("testIncrByKey", 2);
     if (result is int) {
@@ -180,7 +210,9 @@ public function testIncrByFloat() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMGet() returns error? {
     string[] result = check redis->mGet(["testMGetKey1", "testMGetKey2"]);
     test:assertEquals(result.length(), 2);
@@ -193,7 +225,9 @@ function testMGet() returns error? {
     test:assertEquals(getResult3, ());
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMSet() returns error? {
     map<any> keyValueMap = {
         testMSetKey1: "testMSetValue1",
@@ -212,26 +246,30 @@ function testMSet() returns error? {
     test:assertEquals(getResult3, "testMSetValue3");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMSetNx() returns error? {
     map<any> keyValueMap = {
-        testMSetNxKey1: "testMSetNxNewValue1",
-        testMSetNxKey2: "testMSetNxValue2",
-        testMSetNxKey3: "testMSetNxValue3"
+        testMSetNxKey101: "testMSetNxNewValue1",
+        testMSetNxKey102: "testMSetNxValue2",
+        testMSetNxKey103: "testMSetNxValue3"
     };
 
     boolean result = check redis->mSetNx(keyValueMap);
-    test:assertFalse(result);
+    test:assertTrue(result);
 
-    string? getResult1 = check redis->get("testMSetNxKey1");
-    test:assertEquals(getResult1, "testMSetNxValue1");
-    string? getResult2 = check redis->get("testMSetNxKey2");
-    test:assertEquals(getResult2, ());
-    string? getResult3 = check redis->get("testMSetNxKey3");
-    test:assertEquals(getResult3, ());
+    string? getResult1 = check redis->get("testMSetNxKey101");
+    test:assertEquals(getResult1, "testMSetNxNewValue1");
+    string? getResult2 = check redis->get("testMSetNxKey102");
+    test:assertEquals(getResult2, "testMSetNxValue2");
+    string? getResult3 = check redis->get("testMSetNxKey103");
+    test:assertEquals(getResult3, "testMSetNxValue3");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 
 public function testPSetEx() returns error? {
     string result = check redis->pSetEx("testPSetExKey", "testPSetExNewValue", 5000);
@@ -244,7 +282,9 @@ public function testPSetEx() returns error? {
     test:assertEquals(getResult2, ());
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSetBit() {
     var result = redis->setBit("testSetBitKey", 1, 2);
     if (result is int) {
@@ -254,7 +294,9 @@ public function testSetBit() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSetEx() returns error? {
     string result = check redis->setEx("testSetExKey", "testSetExNewValue", 5);
     test:assertEquals(result, "OK");
@@ -266,7 +308,9 @@ public function testSetEx() returns error? {
     test:assertEquals(getResult2, ());
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSetNx() returns error? {
     boolean result = check redis->setNx("testSetNxKey", "testSetNxValue");
     test:assertEquals(result, true);
@@ -275,7 +319,9 @@ public function testSetNx() returns error? {
     test:assertEquals(getResult, "testSetNxValue");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSetRange() returns error? {
     int result = check redis->setRange("testSetRangeKey", 2, "!!!");
     test:assertEquals(result, 17);
@@ -284,7 +330,9 @@ public function testSetRange() returns error? {
     test:assertEquals(getResult, "te!!!etRangeValue");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testStrln() {
     var result = redis->strln("testStrlnKey");
     if (result is int) {

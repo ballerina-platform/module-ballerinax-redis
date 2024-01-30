@@ -74,6 +74,20 @@ public class ConversionUtils {
     }
 
     /**
+     * Create a Ballerina array value from a Java array.
+     *
+     * @param array the Java array
+     * @return the Ballerina array
+     */
+    public static BArray createBStringArrayJArray(String[] array) {
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
+        for (String item : array) {
+            bStringArray.append(StringUtils.fromString(item));
+        }
+        return bStringArray;
+    }
+
+    /**
      * Create a Ballerina array value from a redis scored value map value.
      *
      * @param valueScoreMap the redis scored value map

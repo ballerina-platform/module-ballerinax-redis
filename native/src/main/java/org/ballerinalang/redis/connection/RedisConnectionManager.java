@@ -45,6 +45,7 @@ import org.ballerinalang.redis.exceptions.RedisConnectorException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -333,7 +334,7 @@ public class RedisConnectionManager<K, V> {
     }
 
     public void releaseResources(Object redisCommands) {
-        if (!isPoolingEnabled()) {
+        if (!isPoolingEnabled() || Objects.isNull(redisCommands)) {
             return;
         }
 

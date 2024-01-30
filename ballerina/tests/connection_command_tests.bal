@@ -17,6 +17,7 @@
 import ballerina/test;
 
 @test:Config {
+    groups: ["standalone", "cluster"]
 }
 function testPing() {
     var result = redis->ping();
@@ -28,6 +29,7 @@ function testPing() {
 }
 
 @test:Config {
+    groups: ["standalone", "cluster"]
 }
 function testEcho() {
     var result = redis->echo("Manuri");

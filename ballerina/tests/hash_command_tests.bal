@@ -13,9 +13,12 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 import ballerina/test;
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHDel() returns error? {
     int result = check redis->hDel("testHDelKey", ["testHDelField1", "testHDelField2", "testHDelField3"]);
     test:assertEquals(result, 3);
@@ -26,7 +29,9 @@ function testHDel() returns error? {
     test:assertTrue(!hExistsResult && !hExistsResult2 && !hExistsResult3);
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHExists() {
     var result = redis->hExists("testHExistsKey", "testHExistsField1");
     if (result is boolean) {
@@ -36,7 +41,9 @@ function testHExists() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHGet() {
     var result = redis->hGet("testHGetKey", "testHGetField1");
     if (result is string) {
@@ -46,7 +53,9 @@ function testHGet() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHGetAll() {
     var result = redis->hGetAll("testHGetAllKey");
     if (result is map<any>) {
@@ -58,7 +67,9 @@ function testHGetAll() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHIncrByFloat() {
     var result = redis->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
     if (result is float) {
@@ -68,7 +79,9 @@ function testHIncrByFloat() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHIncrBy() {
     var result = redis->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
     if (result is int) {
@@ -78,7 +91,9 @@ function testHIncrBy() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHLen() {
     var result = redis->hLen("testHLenKey");
     if (result is int) {
@@ -88,7 +103,9 @@ function testHLen() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHMGet() {
     var result = redis->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
     if (result is map<any>) {
@@ -101,7 +118,9 @@ function testHMGet() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHMSet() returns error? {
     map<any> fieldValueMap = {testHMSetField1: "testHMSetValue1", testHMSetField2: "testHMSetValue2"};
     string result = check redis->hMSet("testHMSetKey", fieldValueMap);
@@ -114,7 +133,9 @@ function testHMSet() returns error? {
     test:assertTrue(hExistsResult && hGetResult == "testHMSetValue1" && hExistsResult2 && hGetResult2 == "testHMSetValue2");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHKeys() {
     var result = redis->hKeys("testHKeysKey");
     if (result is string[]) {
@@ -140,7 +161,9 @@ function testHKeys() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHSet() returns error? {
     boolean hSetResult = check redis->hSet("testHSetKey", "testHSetField1", "testHSetValue1");
     test:assertTrue(hSetResult);
@@ -150,7 +173,9 @@ function testHSet() returns error? {
     test:assertTrue(hExistsResult && hGetResult == "testHSetValue1");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHSetNx() returns error? {
     boolean hSetResult = check redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
     test:assertTrue(hSetResult);
@@ -160,7 +185,9 @@ function testHSetNx() returns error? {
     test:assertTrue(hExistsResult && hGetResult == "testHSetNxValue1");
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHStrln() {
     var result = redis->hStrln("testHStrlnKey", "testHStrlnField1");
     if (result is int) {
@@ -170,7 +197,9 @@ function testHStrln() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testHVals() {
     var result = redis->hVals("testHValsKey");
     if (result is string[]) {

@@ -14,24 +14,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/log;
+import ballerina/os;
 import ballerina/test;
 
-ConnectionConfig redisConfig = {
-    host: "localhost:6379",
-    options: {
-        connectionPooling: true,
-        isClusterConnection: false,
-        ssl: false,
-        startTls: false,
-        verifyPeer: false,
-        connectionTimeout: 500
-    }
-};
+// TODO: Replace the env variable with the test groups based approach, once https://github.com/ballerina-platform/ballerina-lang/issues/42028 is fixed
+boolean clusterMode = os:getEnv("TEST_CLUSTER_MODE") == "true";
 
-Client redis = check new (redisConfig);
+Client redis = check new (clusterMode ? getClusterConfigs() : getStandaloneConfigs());
 
 @test:BeforeSuite
-public function initDb() {
+public function setUpValues() {
+    if (clusterMode) {
+        log:printInfo("Running tests in cluster mode");
+    } else {
+        log:printInfo("Running tests in standalone mode");
+    }
+
     setupStringValues();
     setupKeyValues();
     setupListValues();
@@ -46,8 +45,8 @@ function setupStringValues() {
         "GetTestKey",
         "AppendTestKey",
         "BitCountTestKey",
-        "testBitOpKey1",
-        "testBitOpKey2",
+        "{StringTag}testBitOpKey1",
+        "{StringTag}testBitOpKey2",
         "testDecrKey",
         "testDecrByKey",
         "testGetBitKey",
@@ -62,7 +61,7 @@ function setupStringValues() {
         "testStrlnKey",
         "testMGetKey1",
         "testMGetKey2",
-        "testMSetNxKey1",
+        "{StringTag}testMSetNxKey1",
         "testPSetExKey"
     ];
 
@@ -112,10 +111,10 @@ function setupKeyValues() {
         "testPersistKey",
         "testPExpireKey",
         "testPTtlKey",
-        "testRenameKey",
-        "testRenameNxKey",
-        "testRenameNxKey1",
-        "testRenameNxKeyExisting",
+        "{KeyTag}testRenameKey",
+        "{KeyTag}testRenameNxKey",
+        "{KeyTag}testRenameNxKey1",
+        "{KeyTag}testRenameNxKeyExisting",
         "testTypeKey"
     ];
 
@@ -169,11 +168,12 @@ function setupListValues() {
         "testLSetKey",
         "testLTrimKey",
         "testRPopKey",
-        "testRPopLPushKey1",
-        "testRPopLPushKey2",
+        "{ListTag}testRPopLPushKey1",
+        "{ListTag}testRPopLPushKey2",
         "testRPushKey",
         "testRPushXKey"
     ];
+
     string[][] valueArray = [
         ["testBLPopValue1", "testBLPopValue2"],
         ["testBRPopValue1", "testBRPopValue2"],
@@ -261,17 +261,17 @@ function setupHashValues() {
 function setupSetValues() {
     string[] keyArray = [
         "testSAddKey",
-        "testSDiffKey1",
-        "testSDiffKey2",
-        "testSInterKey1",
-        "testSInterKey2",
+        "{SetTag}testSDiffKey1",
+        "{SetTag}testSDiffKey2",
+        "{SetTag}testSInterKey1",
+        "{SetTag}testSInterKey2",
         "testSIsMemberKey",
         "testSMembersKey",
         "testSPopKey",
         "testSRandMemberKey",
         "testSRemKey",
-        "testUnionKey1",
-        "testUnionKey2"
+        "{SetTag}testUnionKey1",
+        "{SetTag}testUnionKey2"
 
     ];
 
@@ -304,8 +304,8 @@ function setupSortedSetValues() {
         "testZCardKey",
         "testZCountKey",
         "testZIncrByKey",
-        "testZInterStoreKey1",
-        "testZInterStoreKey2",
+        "{SortedSetTag}testZInterStoreKey1",
+        "{SortedSetTag}testZInterStoreKey2",
         "testZInterStoreDestKey",
         "testZLexCountKey",
         "testZRangeKey",
@@ -316,8 +316,8 @@ function setupSortedSetValues() {
         "testZRemRangeByScoreKey",
         "testZRangeByLexKey",
         "testZScoreKey",
-        "testZUnionStoreKey1",
-        "testZUnionStoreKey2"
+        "{SortedSetTag}testZUnionStoreKey1",
+        "{SortedSetTag}testZUnionStoreKey2"
     ];
 
     map<float>[] memberScoreMap = [];
@@ -477,3 +477,27 @@ function setupSortedSetValues() {
         }
     }
 }
+
+function getStandaloneConfigs() returns ConnectionConfig => {
+    host: "localhost:6379",
+    options: {
+        connectionPooling: true,
+        isClusterConnection: false,
+        ssl: false,
+        startTls: false,
+        verifyPeer: false,
+        connectionTimeout: 500
+    }
+};
+
+function getClusterConfigs() returns ConnectionConfig => {
+    host: "localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005",
+    options: {
+        connectionPooling: true,
+        isClusterConnection: true,
+        ssl: false,
+        startTls: false,
+        verifyPeer: false,
+        connectionTimeout: 500
+    }
+};
