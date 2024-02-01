@@ -16,20 +16,20 @@
  * under the License.
  */
 
-package org.ballerinalang.redis;
+package io.ballerina.lib.redis;
 
+import io.ballerina.lib.redis.connection.RedisSortedSetCommandExecutor;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.connection.RedisSortedSetCommandExecutor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
-import static org.ballerinalang.redis.utils.ConversionUtils.createStringArrayFromBArray;
-import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createStringArrayFromBArray;
+import static io.ballerina.lib.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis sorted set commands.
@@ -242,7 +242,7 @@ public class SortedSetCommands {
      *
      * @param redisClient Client from the Ballerina redis client
      * @param key         The key of the sorted set
-     * @param members    The members to be removed
+     * @param members     The members to be removed
      * @return The number of members removed from the sorted set, not including non-existing members
      */
     public static Object zRem(BObject redisClient, BString key, BArray members) {

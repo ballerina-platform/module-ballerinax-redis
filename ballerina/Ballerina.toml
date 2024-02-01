@@ -13,9 +13,9 @@ license = ["Apache-2.0"]
 graalvmCompatible = true
 
 [[platform.java17.dependency]]
-groupId = "org.ballerinalang"
-artifactId = "redis-utils"
-module = "redis-utils" 
+groupId = "io.ballerina.lib"
+artifactId = "redis-native"
+module = "redis-native"
 version="2.6.0-SNAPSHOT"
 path = "../native/build/libs/redis-native-2.6.0-SNAPSHOT.jar"
 

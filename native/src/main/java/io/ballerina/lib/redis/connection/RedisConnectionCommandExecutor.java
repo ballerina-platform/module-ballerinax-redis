@@ -16,19 +16,19 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.connection;
+package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
+import io.ballerina.lib.redis.utils.ConversionUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.BaseRedisCommands;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import io.lettuce.core.cluster.api.sync.RedisClusterCommands;
-import org.ballerinalang.redis.exceptions.RedisConnectorException;
-import org.ballerinalang.redis.utils.ConversionUtils;
 
-import static org.ballerinalang.redis.utils.Constants.MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
+import static io.ballerina.lib.redis.utils.Constants.MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.REDIS_SERVER_ERROR;
 
 /**
  * Executor implementation for Redis connection commands.

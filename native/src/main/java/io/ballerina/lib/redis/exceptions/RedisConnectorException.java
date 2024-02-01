@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.exceptions;
+package io.ballerina.lib.redis.exceptions;
 
 /**
  * Ballerina Redis Connector Exception.

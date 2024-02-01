@@ -16,8 +16,9 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.connection;
+package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
@@ -26,15 +27,14 @@ import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisListCommands;
-import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
 import java.util.List;
 
-import static org.ballerinalang.redis.utils.Constants.ARGUMENTS_MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.KEYS_MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
-import static org.ballerinalang.redis.utils.ConversionUtils.createBStringArrayFromList;
+import static io.ballerina.lib.redis.utils.Constants.ARGUMENTS_MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.KEYS_MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.REDIS_SERVER_ERROR;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBStringArrayFromList;
 
 /**
  * Executor implementation for Redis key commands.

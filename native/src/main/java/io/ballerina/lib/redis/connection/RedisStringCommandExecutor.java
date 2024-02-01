@@ -16,22 +16,22 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.connection;
+package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.ballerinalang.redis.utils.Constants.KEYS_MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
-import static org.ballerinalang.redis.utils.Constants.REDIS_SERVER_ERROR;
-import static org.ballerinalang.redis.utils.ConversionUtils.createBMapFromKeyValueList;
+import static io.ballerina.lib.redis.utils.Constants.KEYS_MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
+import static io.ballerina.lib.redis.utils.Constants.REDIS_SERVER_ERROR;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBMapFromKeyValueList;
 
 /**
  * Executor implementation for Redis string commands.

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-package org.ballerinalang.redis;
+package io.ballerina.lib.redis;
 
+import io.ballerina.lib.redis.connection.RedisConnectionCommandExecutor;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.redis.connection.RedisConnectionCommandExecutor;
 
-import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
-import static org.ballerinalang.redis.utils.RedisUtils.getConnection;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
+import static io.ballerina.lib.redis.utils.RedisUtils.getConnection;
 
 /**
  * Ballerina native util implementation for redis connection commands.

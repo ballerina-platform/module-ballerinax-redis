@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.utils;
+package io.ballerina.lib.redis.utils;
 
 import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.creators.ErrorCreator;
@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import static org.ballerinalang.redis.utils.Constants.REDIS_ERROR_TYPE;
 
 /**
  * Utility methods for conversion between Ballerina and Java types.
@@ -180,7 +178,7 @@ public class ConversionUtils {
      * @return the BError instance
      */
     public static BError createBError(Throwable e) {
-        return ErrorCreator.createError(ModuleUtils.getModule(), REDIS_ERROR_TYPE,
+        return ErrorCreator.createError(ModuleUtils.getModule(), Constants.REDIS_ERROR_TYPE,
                 StringUtils.fromString(e.getMessage()),
                 ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
     }

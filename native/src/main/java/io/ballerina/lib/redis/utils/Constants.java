@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.utils;
+package io.ballerina.lib.redis.utils;
 
 /**
  * Constants for Redis client.
