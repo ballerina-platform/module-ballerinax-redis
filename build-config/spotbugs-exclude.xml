@@ -18,7 +18,7 @@
 <FindBugsFilter>
     <!-- Exclude warning about private method not being called -->
     <Match>
-        <Class name="org.ballerinalang.redis.connection.RedisConnectionManager$ConnectionParam"/>
+        <Class name="io.ballerina.lib.redis.connection.RedisConnectionManager$ConnectionParam"/>
         <Method name="getKey"/>
     </Match>
 </FindBugsFilter>

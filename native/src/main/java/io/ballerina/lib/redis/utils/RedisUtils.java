@@ -15,8 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.ballerinalang.redis.utils;
+package io.ballerina.lib.redis.utils;
 
+import io.ballerina.lib.redis.connection.RedisConnectionManager;
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
@@ -25,18 +27,16 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
-import org.ballerinalang.redis.connection.RedisConnectionManager;
-import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
-import static org.ballerinalang.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_HOST;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_OPTIONS;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_PASSWORD;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_POOLING_ENABLED;
-import static org.ballerinalang.redis.utils.Constants.CONN_OBJ;
-import static org.ballerinalang.redis.utils.Constants.EMPTY_STRING;
-import static org.ballerinalang.redis.utils.Constants.LOCALHOST;
-import static org.ballerinalang.redis.utils.ConversionUtils.createBError;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_HOST;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_OPTIONS;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_PASSWORD;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_POOLING_ENABLED;
+import static io.ballerina.lib.redis.utils.Constants.CONN_OBJ;
+import static io.ballerina.lib.redis.utils.Constants.EMPTY_STRING;
+import static io.ballerina.lib.redis.utils.Constants.LOCALHOST;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
 
 /**
  * Redis utility methods.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.utils;
+package io.ballerina.lib.redis.utils;
 
 import java.util.HashMap;
 import java.util.Map;

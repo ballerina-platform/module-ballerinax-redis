@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.utils;
+package io.ballerina.lib.redis.utils;
 
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.Module;

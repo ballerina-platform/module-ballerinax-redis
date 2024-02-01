@@ -16,8 +16,9 @@
  * under the License.
  */
 
-package org.ballerinalang.redis.connection;
+package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -40,7 +41,6 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.ballerinalang.redis.exceptions.RedisConnectorException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -49,12 +49,12 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.ballerinalang.redis.utils.Constants.CONFIG_CLIENT_NAME;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_CONNECTION_TIMEOUT;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_DATABASE;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_SSL_ENABLED;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_START_TLS_ENABLED;
-import static org.ballerinalang.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_CLIENT_NAME;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_CONNECTION_TIMEOUT;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_DATABASE;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_SSL_ENABLED;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_START_TLS_ENABLED;
+import static io.ballerina.lib.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED;
 
 /**
  * Connection manager implementation for Redis connections.

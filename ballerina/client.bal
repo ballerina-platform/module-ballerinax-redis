@@ -36,7 +36,7 @@ public isolated client class Client {
     # + clientEndpointConfig - Client end point configuration
     # + return - `redis:Error` if error occurs
     isolated function initClient(Client redisClient, ConnectionConfig clientEndpointConfig) returns Error? = @java:Method {
-        'class: "org.ballerinalang.redis.utils.RedisUtils"
+        'class: "io.ballerina.lib.redis.utils.RedisUtils"
     } external;
 
     // String operations
@@ -49,7 +49,7 @@ public isolated client class Client {
     @display {label: "Enrich Value"}
     isolated remote function append(@display {label: "Key"} string key, @display {label: "Value To Append"} string value) 
                            returns int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Count set bits in a string.
@@ -59,7 +59,7 @@ public isolated client class Client {
     @display {label: "Get Bits of String"}
     isolated remote function bitCount(@display {label: "Key"} string key) 
                              returns @display {label: "Bits of String"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Perform bitwise AND between strings.
@@ -72,7 +72,7 @@ public isolated client class Client {
     isolated remote function bitOpAnd(@display {label: "Result key"} string destination, 
                              @display {label: "Key Array To Perform AND"} string[] keys)
                              returns @display {label: "Size of string"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Perform bitwise OR between strings.
@@ -85,7 +85,7 @@ public isolated client class Client {
     isolated remote function bitOpOr(@display {label: "Result key"} string destination, 
                             @display {label: "Key Array To Perform OR"} string[] keys)
                             returns @display {label: "Size of string"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Perform bitwise NOT on a string.
@@ -97,7 +97,7 @@ public isolated client class Client {
     isolated remote function bitOpNot(@display {label: "Result key"} string destination, 
                              @display {label: "Key To Perform NOT"} string key)
                              returns @display {label: "Size of String"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Perform bitwise XOR between strings.
@@ -110,7 +110,7 @@ public isolated client class Client {
     isolated remote function bitOpXor(@display {label: "Result key"} string destination, 
                              @display {label: "Key Array To Perform XOR"} string[] keys)
                              returns @display {label: "Size of String"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Decrement integer value of a key by one.
@@ -119,7 +119,7 @@ public isolated client class Client {
     # + return - Value of key after the decrement
     @display {label: "Decrement(By One)"}
     isolated remote function decr(@display {label: "Key"} string key) returns @display {label: "Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Decrement integer value of a key by the given number.
@@ -130,7 +130,7 @@ public isolated client class Client {
     @display {label: "Decrement (By Number)"}
     isolated remote function decrBy(@display {label: "Key"} string key, @display {label: "Value To Decrement"} int value) 
                            returns @display {label: "Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Returns bit value at offset in the string value stored at key.
@@ -141,7 +141,7 @@ public isolated client class Client {
     @display {label: "Get Bit At Offset"}
     isolated remote function getBit(@display {label: "Key"} string key, @display {label: "Offset"} int offset) 
                            returns @display {label: "Bit Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Get substring of string stored at a key.
@@ -154,7 +154,7 @@ public isolated client class Client {
     isolated remote function getRange(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                              @display {label: "End Position"} int end) 
                              returns @display {label: "Substring"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set string value of key and return its existing value.
@@ -165,7 +165,7 @@ public isolated client class Client {
     @display {label: "Get And Set Value"}
     isolated remote function getSet(@display {label: "Key"} string key, @display {label: "New Value"} string value) 
                            returns @display {label: "Old Value"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Get value of key.
@@ -174,7 +174,7 @@ public isolated client class Client {
     # + return - Value of key, or nil when key does not exist or `redis:Error` if an error occurs
     @display {label: "Get Value"}
     isolated remote function get(@display {label: "Key"} string key) returns @display {label: "Value"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Increment integer value of a key by one.
@@ -183,7 +183,7 @@ public isolated client class Client {
     # + return - Value of key after increment
     @display {label: "Increment (By One)"}
     isolated remote function incr(@display {label: "Key"} string key) returns @display {label: "Result Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Increment integer value of key by the given amount.
@@ -194,7 +194,7 @@ public isolated client class Client {
     @display {label: "Increment (By Number)"}
     isolated remote function incrBy(@display {label: "Key"} string key, @display {label: "Increment Value"} int value) 
                            returns @display {label: "Result Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Increment integer value of key by the given float.
@@ -206,7 +206,7 @@ public isolated client class Client {
     isolated remote function incrByFloat(@display {label: "Key"} string key, 
                                 @display {label: "Increment Value"} float value) 
                                 returns @display {label: "Float Result Value"} float|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Get values of all given keys.
@@ -216,7 +216,7 @@ public isolated client class Client {
     @display {label: "Get Values"}
     isolated remote function mGet(@display {label: "Keys"} string[] keys) 
                          returns @display {label: "Values"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set multiple keys to multiple values.
@@ -226,7 +226,7 @@ public isolated client class Client {
     @display {label: "Set Values"}
     isolated remote function mSet(@display {label: "Key-Value Pair Map"} map<any> keyValueMap) 
                          returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set multiple keys to multiple values, only if none of the keys exist.
@@ -236,7 +236,7 @@ public isolated client class Client {
     @display {label: "Set Values If Absent"}
     isolated remote function mSetNx(@display{label: "Map of Key Value Pairs"} map<any> keyValueMap)
                            returns @display{label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set value and expiration in milliseconds of a key.
@@ -249,7 +249,7 @@ public isolated client class Client {
     isolated remote function pSetEx(@display {label: "Key"} string key, @display {label: "Value"} string value,
                            @display {label: "TTL (ms)"} int expirationTime)
                            returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set the value of a key.
@@ -260,7 +260,7 @@ public isolated client class Client {
     @display {label: "Set Value"}
     isolated remote function set(@display {label: "Key"} string key, @display {label: "Value"} string value) 
                         returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Sets or clears the bit at offset in the string value stored at key.
@@ -273,7 +273,7 @@ public isolated client class Client {
     isolated remote function setBit(@display {label: "Key"} string key, @display {label: "Value"} int value, 
                            @display {label: "Offset"} int offset) 
                            returns @display {label: "Old Bit At Offset"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set the value and expiration of a key.
@@ -286,7 +286,7 @@ public isolated client class Client {
     isolated remote function setEx(@display {label: "Key"} string key, @display {label: "Value"} string value, 
                           @display {label: "TTL (s)"} int expirationPeriodSeconds)
                           returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Set value of a key, only if key does not exist.
@@ -297,7 +297,7 @@ public isolated client class Client {
     @display {label: "Set Value If Absent"} 
     isolated remote function setNx(@display {label: "Key"} string key, @display {label: "Value"} string value) 
                           returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Overwrite part of string at key starting at the specified offset.
@@ -311,7 +311,7 @@ public isolated client class Client {
                              @display {label: "Start Position"} int offset,
                              @display {label: "Value"} string value) 
                              returns @display {label: "Result String Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     # Get length of value stored in a key.
@@ -321,7 +321,7 @@ public isolated client class Client {
     @display {label: "Get String Length"} 
     isolated remote function strln(@display {label: "Key"} string key) 
                           returns @display {label: "String Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.StringCommands"
+        'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
     // list operations
@@ -334,7 +334,7 @@ public isolated client class Client {
     @display {label: "Push Value To List"}
     isolated remote function lPush(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
                           returns @display {label: "List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove and get the first element in a list.
@@ -344,7 +344,7 @@ public isolated client class Client {
     @display {label: "Pop Value From List"}
     isolated remote function lPop(@display {label: "Key"} string key) 
                          returns @display {label: "First Element Popped"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Prepend one or multiple values to a list, only if the list exists.
@@ -355,7 +355,7 @@ public isolated client class Client {
     @display {label: "Push To Available List"}
     isolated remote function lPushX(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
                            returns @display {label: "List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove and get the first element in a list, or block until one is available.
@@ -368,7 +368,7 @@ public isolated client class Client {
     @display {label: "Pop List First Element And Block If Absent"}
     isolated remote function bLPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Keys"} string[] keys)
                           returns @display {label: "Key-Value Pair"} map<any>|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove and get the last element in a list, or block until one is available.
@@ -381,7 +381,7 @@ public isolated client class Client {
     @display {label: "Pop List Last Element And Block If Absent"}
     isolated remote function bRPop(@display {label: "Timeout (s)"} int timeOut, @display {label: "Key Referring To a Values"} string[] keys)
                           returns @display {label: "Key-Value Pair"} map<any>|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Get an element from list by its index.
@@ -392,7 +392,7 @@ public isolated client class Client {
     @display {label: "Get List Element By Index"}
     isolated remote function lIndex(@display {label: "Key"} string key, @display {label: "Index"} int index) 
                            returns @display {label: "Value"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Insert an element before or after another element in a list.
@@ -408,7 +408,7 @@ public isolated client class Client {
                             @display {label: "Insert Before or Not"} boolean before,
                             @display {label: "Place To Insert"} string pivot, @display {label: "Value"} string value) 
                             returns @display {label: "Result List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Get length of a list.
@@ -417,7 +417,7 @@ public isolated client class Client {
     # + return - Length of list at key or `redis:Error` if an error occurs
     @display {label: "Get List Length"}
     isolated remote function lLen(@display {label: "Key"} string key) returns @display {label: "List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Get a range of elements from a list.
@@ -430,7 +430,7 @@ public isolated client class Client {
     isolated remote function lRange(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                            @display {label: "End Position"} int stopPos) 
                            returns @display {label: "Elements In Range"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove elements from list.
@@ -443,7 +443,7 @@ public isolated client class Client {
     isolated remote function lRem(@display {label: "Key"} string key, @display {label: "Member Count"} int count, 
                          @display {label: "Value"} string value) 
                          returns @display {label: "Removed Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Set the value of an element in a list by its index.
@@ -456,7 +456,7 @@ public isolated client class Client {
     isolated remote function lSet(@display {label: "Key"} string key, @display {label: "Index"} int index, 
                          @display {label: "Value"} string value) 
                          returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Trim list to the specified range.
@@ -469,7 +469,7 @@ public isolated client class Client {
     isolated remote function lTrim(@display {label: "Key"} string key, @display {label: "Start Position"} int startPos, 
                           @display {label: "End Position"} int stopPos) 
                           returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove and get the last element in a list.
@@ -479,7 +479,7 @@ public isolated client class Client {
     @display {label: "Pop List Last Element"}
     isolated remote function rPop(@display {label: "Key"} string key) 
                          returns @display {label: "Popped Value"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Remove the last element in a list, append it to another list and return it.
@@ -491,7 +491,7 @@ public isolated client class Client {
     isolated remote function rPopLPush(@display {label: "Current Key"} string src, 
                               @display {label: "Destination Key"} string destination) 
                               returns @display {label: "Value"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Append one or multiple values to a list.
@@ -502,7 +502,7 @@ public isolated client class Client {
     @display {label: "Enrich Values To List"}
     isolated remote function rPush(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
                           returns @display {label: "List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     # Append one or multiple values to a list, only if the list exists.
@@ -513,7 +513,7 @@ public isolated client class Client {
     @display {label: "Enrich Values To List If Exists"}
     isolated remote function rPushX(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
                            returns @display {label: "List Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ListCommands"
+        'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
     // Set Commands
@@ -527,7 +527,7 @@ public isolated client class Client {
     @display {label: "Add Members To Set"}
     isolated remote function sAdd(@display {label: "Key"} string key, @display {label: "Values"} string[] values) 
                          returns @display {label: "Number of Elements Added"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Get the number of members in a set
@@ -537,7 +537,7 @@ public isolated client class Client {
     @display {label: "Get Member Count In Set"}
     isolated remote function sCard(@display {label: "Key"} string key) 
                           returns @display {label: "Elements In Set"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Return set resulting from the difference between the first set and all the successive sets
@@ -547,7 +547,7 @@ public isolated client class Client {
     @display {label: "Get Difference of Set"}
     isolated remote function sDiff(@display {label: "Keys"} string[] keys) 
                           returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Obtain the set resulting from the difference between the first set and all the successive.
@@ -560,7 +560,7 @@ public isolated client class Client {
     isolated remote function sDiffStore(@display {label: "Destination Key"} string destination, 
                                @display {label: "Keys"} string[] keys) 
                                returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Return the intersection of the provided sets.
@@ -570,7 +570,7 @@ public isolated client class Client {
     @display {label: "Get Intersections of Sets"}
     isolated remote function sInter(@display {label: "Keys"} string[] keys) 
                            returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Obtain the intersection of the provided sets and store at the provided destination.
@@ -582,7 +582,7 @@ public isolated client class Client {
     isolated remote function sInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Determine if a given value is a member of a set.
@@ -594,7 +594,7 @@ public isolated client class Client {
     @display {label: "Check Value In Set"}
     isolated remote function sIsMember(@display {label: "Key"} string key, @display {label: "Value"} string value) 
                               returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Get all members in a set.
@@ -604,7 +604,7 @@ public isolated client class Client {
     @display {label: "Get Members In Set"}
     isolated remote function sMembers(@display {label: "Key"} string key) 
                              returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Move a member from one set to another.
@@ -619,7 +619,7 @@ public isolated client class Client {
                           @display {label: "Destination Key"} string destination, 
                           @display {label: "Member"} string member) 
                           returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
 
@@ -631,7 +631,7 @@ public isolated client class Client {
     @display {label: "Pop Set Random Member"}
     isolated remote function sPop(@display {label: "Key"} string key, @display {label: "Member Count"} int count) 
                          returns @display {label: "Removed Elements"} string[]?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Get one or multiple random members from a set.
@@ -642,7 +642,7 @@ public isolated client class Client {
     @display {label: "Get Random Members In Set"}
     isolated remote function sRandMember(@display {label: "Key"} string key, @display {label: "Member Count"} int count) 
                                 returns @display {label: "Elements"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Remove one or more members from a set.
@@ -654,7 +654,7 @@ public isolated client class Client {
     @display {label: "Remove Members In Set"}
     isolated remote function sRem(@display {label: "Key"} string key, @display {label: "Members"} string[] members) 
                          returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Return the union of multiple sets.
@@ -664,7 +664,7 @@ public isolated client class Client {
     @display {label: "Get Multiple Sets Union"}
     isolated remote function sUnion(@display {label: "Keys"} string[] keys) 
                            returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     # Return the union of multiple sets.
@@ -676,7 +676,7 @@ public isolated client class Client {
     isolated remote function sUnionStore(@display {label: "Destination Key"} string destination,
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SetCommands"
+        'class: "io.ballerina.lib.redis.SetCommands"
     } external;
 
     // Sorted set Commands
@@ -691,7 +691,7 @@ public isolated client class Client {
     isolated remote function zAdd(@display {label: "Key"} string key, 
                          @display {label: "Member-Value Pairs"} map<any> memberScoreMap) 
                          returns @display {label: "Added Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Get the number of members in a sorted set.
@@ -701,7 +701,7 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Member Count"}
     isolated remote function zCard(@display {label: "Key"} string key) 
                           returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Count the members in a sorted set with scores within the given range.
@@ -714,7 +714,7 @@ public isolated client class Client {
     isolated remote function zCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                            @display {label: "Maximum Value"} float max) 
                            returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Increment the score of a member in a sorted set.
@@ -727,7 +727,7 @@ public isolated client class Client {
     isolated remote function zIncrBy(@display {label: "Key"} string key, @display {label: "Value"} float amount, 
                             @display {label: "Member"} string member) 
                             returns @display {label: "Incremented Member Score"} float|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Intersect multiple sorted sets and store the resulting sorted set in a new key.
@@ -739,7 +739,7 @@ public isolated client class Client {
     isolated remote function zInterStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Count the members in a sorted set within the given lexicographical range.
@@ -752,7 +752,7 @@ public isolated client class Client {
     isolated remote function zLexCount(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                               @display {label: "Maximum Value"} string max) 
                               returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by index.
@@ -765,7 +765,7 @@ public isolated client class Client {
     isolated remote function zRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                            @display {label: "Maximum Index"} int max) 
                            returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by lexicographical range from lowest to highest.
@@ -779,7 +779,7 @@ public isolated client class Client {
     isolated remote function zRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                 @display {label: "Maximum Value"} string max) 
                                 returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by lexicographical range ordered from highest to
@@ -794,7 +794,7 @@ public isolated client class Client {
     isolated remote function zRevRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                    @display {label: "Maximum Value"} string max) 
                                    returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by score from lowest to highest.
@@ -808,7 +808,7 @@ public isolated client class Client {
     isolated remote function zRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                   @display {label: "Maximum Value"} float max) 
                                   returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Determine index of a member in a sorted set.
@@ -819,7 +819,7 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Member Index"}
     isolated remote function zRank(@display {label: "Key"} string key, @display {label: "Member"} string member) 
                           returns @display {label: "Index"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Remove one or more members from a sorted set
@@ -831,7 +831,7 @@ public isolated client class Client {
     @display {label: "Remove Sorted Set Members"}
     isolated remote function zRem(@display {label: "Key"} string key, @display {label: "Members"} string[] members) 
                          returns @display {label: "Removed Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
 
@@ -845,7 +845,7 @@ public isolated client class Client {
     isolated remote function zRemRangeByLex(@display {label: "Key"} string key, @display {label: "Minimum Value"} string min, 
                                    @display {label: "Maximum Value"} string max) 
                                    returns @display {label: "Removed Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Remove all members in a sorted set within the given indices.
@@ -858,7 +858,7 @@ public isolated client class Client {
     isolated remote function zRemRangeByRank(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                                     @display {label: "Maximum Index"} int max) 
                                     returns @display {label: "Removed Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Remove all members in a sorted set within the given scores.
@@ -871,7 +871,7 @@ public isolated client class Client {
     isolated remote function zRemRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                      @display {label: "Maximum Value"} float max) 
                                      returns @display {label: "Removed Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by index, ordered highest to lowest.
@@ -884,7 +884,7 @@ public isolated client class Client {
     isolated remote function zRevRange(@display {label: "Key"} string key, @display {label: "Minimum Index"} int min, 
                               @display {label: "Maximum Index"} int max) 
                               returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return a range of members in a sorted set, by score from highest to lowest.
@@ -898,7 +898,7 @@ public isolated client class Client {
     isolated remote function zRevRangeByScore(@display {label: "Key"} string key, @display {label: "Minimum Value"} float min, 
                                      @display {label: "Maximum Value"} float max) 
                                      returns @display {label: "Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Determine the index of a member in a sorted set
@@ -909,7 +909,7 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Member Index"}
     isolated remote function zRevRank(@display {label: "Key"} string key, @display {label: "Member"} string member) 
                              returns @display {label: "Index"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Determine the score of a member in a sorted set
@@ -920,7 +920,7 @@ public isolated client class Client {
     @display {label: "Get Sorted Set Member Score"}
     isolated remote function zScore(@display {label: "Key"} string key, @display {label: "Member"} string member) 
                            returns @display {label: "Score"} float|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     # Return the union of multiple sorted sets
@@ -932,7 +932,7 @@ public isolated client class Client {
     isolated remote function zUnionStore(@display {label: "Destination Key"} string destination, 
                                 @display {label: "Keys"} string[] keys) 
                                 returns @display {label: "Member Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.SortedSetCommands"
+        'class: "io.ballerina.lib.redis.SortedSetCommands"
     } external;
 
     // Hash Commands
@@ -946,7 +946,7 @@ public isolated client class Client {
     @display {label: "Delete Hash Fields"}
     isolated remote function hDel(@display {label: "Key"} string key, @display {label: "Fields"} string[] fields) 
                          returns @display {label: "Deleted Fields Count"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Determine if a hash field exists.
@@ -958,7 +958,7 @@ public isolated client class Client {
     @display {label: "Check Hash Field Availability"}
     isolated remote function hExists(@display {label: "Key"} string key, @display {label: "Field"} string 'field) 
                             returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get the value of a hash field.
@@ -969,7 +969,7 @@ public isolated client class Client {
     @display {label: "Get Hash Field Value"} 
     isolated remote function hGet(@display {label: "Key"} string key, @display {label: "Field"} string 'field) 
                          returns @display {label: "Value of Field"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get the all values of a hash.
@@ -979,7 +979,7 @@ public isolated client class Client {
     @display {label: "Get Hash Values"} 
     isolated remote function hGetAll(@display {label: "Key"} string key) 
                             returns @display {label: "Field-value Pairs"} map<any>|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Increment the integer value of a hash field by the given number.
@@ -992,7 +992,7 @@ public isolated client class Client {
     isolated remote function hIncrBy(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
                             @display {label: "Increment Value"} int amount) 
                             returns @display {label: "Incremented Value"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Increment the float value of a hash field by the given number.
@@ -1005,7 +1005,7 @@ public isolated client class Client {
     isolated remote function hIncrByFloat(@display {label: "Key"} string key, @display {label: "Field"} string 'field, 
                                  @display {label: "Value To Increment"} float amount)
                                  returns @display {label: "Incremented Value"} float|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get all the fields in a hash.
@@ -1015,7 +1015,7 @@ public isolated client class Client {
     @display {label: "Get Hash Fields"} 
     isolated remote function hKeys(@display {label: "Key"} string key) 
                           returns @display {label: "Hash Fields"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get the number of fields in a hash.
@@ -1025,7 +1025,7 @@ public isolated client class Client {
     @display {label: "Get Hash Fields Count"} 
     isolated remote function hLen(@display {label: "Key"} string key) 
                          returns @display {label: "Number of hash fields"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get the values of all the given hash fields.
@@ -1036,7 +1036,7 @@ public isolated client class Client {
     @display {label: "Get Hash Fields Values"} 
     isolated remote function hMGet(@display {label: "Key"} string key, @display {label: "Fields"} string[] fields) 
                           returns @display {label: "Field-Value Pairs"} map<any>|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Set multiple hash fields to multiple values.
@@ -1048,7 +1048,7 @@ public isolated client class Client {
     isolated remote function hMSet(@display {label: "Key"} string key, 
                           @display {label: "Field-Value Pairs"} map<any> fieldValueMap) 
                           returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Set the string value of a hash field.
@@ -1061,7 +1061,7 @@ public isolated client class Client {
     @display {label: "Set Hash Field"} 
     isolated remote function hSet(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field,
                          @display {label: "Value"} string value) returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Set the string value of a hash field, only if the field does not exist.
@@ -1074,7 +1074,7 @@ public isolated client class Client {
     @display {label: "Set Hash Field If Absent"} 
     isolated remote function hSetNx(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field, 
                            @display {label: "Value"} string value) returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get the string length of the field value in a hash.
@@ -1086,7 +1086,7 @@ public isolated client class Client {
     @display {label: "Get Value String Length"}
     isolated remote function hStrln(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field) 
                            returns @display {label: "String Length"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     # Get all the values in a hash.
@@ -1096,7 +1096,7 @@ public isolated client class Client {
     @display {label: "Get Values In Hash"}
     isolated remote function hVals(@display {label: "Key"} string key) 
                           returns @display {label: "Values"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.HashCommands"
+        'class: "io.ballerina.lib.redis.HashCommands"
     } external;
 
     // Key Commands
@@ -1108,7 +1108,7 @@ public isolated client class Client {
     @display {label: "Delete Keys"}
     isolated remote function del(@display {label: "Keys"} string[] keys) 
                         returns @display {label: "Number of keys deleted"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Determine how many keys exist.
@@ -1118,7 +1118,7 @@ public isolated client class Client {
     @display {label: "Check Keys"}
     isolated remote function exists(@display {label: "Keys"} string[] keys) 
                            returns @display {label: "Number of Keys Exists"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Set a key's time to live in seconds.
@@ -1130,7 +1130,7 @@ public isolated client class Client {
     @display {label: "Set TTL (s)"}
     isolated remote function expire(@display {label: "Key"} string key, @display {label: "TTL (s)"} int seconds)
                            returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Find all keys matching the given pattern.
@@ -1140,7 +1140,7 @@ public isolated client class Client {
     @display {label: "Get Matching Keys"}
     isolated remote function keys(@display {label: "Pattern String"} string pattern) 
                          returns @display {label: "Keys"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Move a key to another database.
@@ -1152,7 +1152,7 @@ public isolated client class Client {
     isolated remote function move(@display {label: "Key"} string key, 
                          @display {label: "Destination Database"} int database) 
                          returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Remove the expiration from a key.
@@ -1162,7 +1162,7 @@ public isolated client class Client {
     #            an associated timeout, or `redis:Error` if an error occurs
     @display {label: "Remove Key Timeout"}
     isolated remote function persist(@display {label: "Key"} string key) returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Set a key's time to live in milliseconds.
@@ -1175,7 +1175,7 @@ public isolated client class Client {
     isolated remote function pExpire(@display {label: "Key"} string key, 
                             @display {label: "TTL (ms)"} int timeMilliSeconds)
                             returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Get the time to live for a key in milliseconds.
@@ -1185,7 +1185,7 @@ public isolated client class Client {
     @display {label: "Get TTL (ms)"}
     isolated remote function pTtl(@display {label: "Key"} string key) 
                          returns @display {label: "TTL (ms)"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Return a random key from the keyspace.
@@ -1193,7 +1193,7 @@ public isolated client class Client {
     # + return - Random key, or `nil` when the database is empty or `redis:Error` if an error occurs
     @display {label: "Get Random Key"}
     isolated remote function randomKey() returns @display {label: "Key"} string?|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Rename a key.
@@ -1204,7 +1204,7 @@ public isolated client class Client {
     @display {label: "Rename Key"}
     isolated remote function rename(@display {label: "Key"} string key, @display {label: "New Key Name"} string newName)
                            returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Rename a key, only if the new key does not exist.
@@ -1216,7 +1216,7 @@ public isolated client class Client {
     @display {label: "Rename Key If Absent"}
     isolated remote function renameNx(@display {label: "Key"} string key, @display {label: "New Key Name"} string newName)
                              returns @display {label: "Result"} boolean|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Sort elements in a list, set or sorted set.
@@ -1226,7 +1226,7 @@ public isolated client class Client {
     @display {label: "Sort Elements"}
     isolated remote function sort(@display {label: "Key"} string key) 
                          returns @display {label: "Sorted Members"} string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Get the time to live for a key.
@@ -1238,7 +1238,7 @@ public isolated client class Client {
     @display {label: "Get Key TTL"}
     isolated remote function ttl(@display {label: "Key"} string key) 
                         returns @display {label: "TTL (s)"} int|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     # Determine the type stored at key.
@@ -1248,7 +1248,7 @@ public isolated client class Client {
     @display {label: "Get Key Type"}
     isolated remote function redisType(@display {label: "Key"} string key) 
                               returns @display {label: "Type Of Key"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.KeyCommands"
+        'class: "io.ballerina.lib.redis.KeyCommands"
     } external;
 
     // Cluster Commands
@@ -1260,7 +1260,7 @@ public isolated client class Client {
     # + return - a bulk-string-reply as a string array or, 
     # a `redis:Error` if the connection is non-clustered or encounters any other errors.
     isolated remote function clusterInfo() returns string[]|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ClusterCommands"
+        'class: "io.ballerina.lib.redis.ClusterCommands"
     } external;
 
     // Connection commands
@@ -1270,7 +1270,7 @@ public isolated client class Client {
     # + return - String with the value `PONG` if the operation was successful
     @display {label: "Ping the server"}
     isolated remote function ping() returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ConnectionCommands"
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
     } external;
 
     # Authenticate to the server.
@@ -1280,7 +1280,7 @@ public isolated client class Client {
     @display {label: "Authenticate Server"}
     isolated remote function auth(@display {label: "Password"} string password) 
                          returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ConnectionCommands"
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
     } external;
 
     # Echo the given string.
@@ -1290,13 +1290,13 @@ public isolated client class Client {
     @display {label: "Echo Input String"}
     isolated remote function echo(@display {label: "String To Echo"} string message)
                          returns @display {label: "Result"} string|Error = @java:Method {
-        'class: "org.ballerinalang.redis.ConnectionCommands"
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
     } external;
 
     # Close the connection.
     #
     # + return - `nil` if the operation was successful or an `redis:Error` if an error occurs
     public isolated function close() returns Error? = @java:Method {
-        'class: "org.ballerinalang.redis.ConnectionCommands"
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
     } external;
 }

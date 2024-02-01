@@ -21,5 +21,5 @@ function init() {
 }
 
 function setModule() = @java:Method {
-    'class: "org.ballerinalang.redis.utils.ModuleUtils"
+    'class: "io.ballerina.lib.redis.utils.ModuleUtils"
 } external;
