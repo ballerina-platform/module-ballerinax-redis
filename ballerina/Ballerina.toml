@@ -14,8 +14,8 @@ graalvmCompatible = true
 
 [[platform.java17.dependency]]
 groupId = "io.ballerina.lib"
-artifactId = "redis-utils"
-module = "redis-utils" 
+artifactId = "redis-native"
+module = "redis-native"
 version="2.6.0-SNAPSHOT"
 path = "../native/build/libs/redis-native-2.6.0-SNAPSHOT.jar"
 
