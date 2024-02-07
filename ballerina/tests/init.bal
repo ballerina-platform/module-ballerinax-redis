@@ -58,7 +58,7 @@ function setupStringValues() {
         "testSetBitKey",
         "testSetExKey",
         "testSetRangeKey",
-        "testStrlnKey",
+        "testStrLenKey",
         "testMGetKey1",
         "testMGetKey2",
         "{StringTag}testMSetNxKey1",
@@ -82,7 +82,7 @@ function setupStringValues() {
         "10101",
         "testSetExValue",
         "testSetRangeValue",
-        "testStrlnValue",
+        "testStrLenValue",
         "testMGetValue1",
         "testMGetValue2",
         "testMSetNxValue1",
@@ -213,7 +213,7 @@ function setupHashValues() {
         "testHKeysKey",
         "testHLenKey",
         "testHMGetKey",
-        "testHStrlnKey",
+        "testHStrLenKey",
         "testHValsKey"
     ];
 
@@ -227,7 +227,7 @@ function setupHashValues() {
         ["testHKeysField1", "testHKeysField2", "testHKeysField3"],
         ["testHLenField1", "testHLenField2", "testHLenField3"],
         ["testHMGetField1", "testHMGetField2", "testHMGetField3"],
-        ["testHStrlnField1"],
+        ["testHStrLenField1"],
         ["testHValsField1", "testHValsField2", "testHValsField3"]
     ];
 
@@ -241,7 +241,7 @@ function setupHashValues() {
         ["testHKeysValue1", "testHKeysValue2", "testHKeysValue3"],
         ["testHLenValue1", "testHLenValue2", "testHLenValue3"],
         ["testHMGetValue1", "testHMGetValue2", "testHMGetValue3"],
-        ["testHStrlnValue1"],
+        ["testHStrLenValue1"],
         ["testHValsValue1", "testHValsValue2", "testHValsValue3"]
     ];
 

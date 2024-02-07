@@ -220,7 +220,7 @@ public class RedisHashCommandExecutor {
         }
     }
 
-    public <K, V> long hStrln(K key, K field) throws RedisConnectorException {
+    public <K, V> long hStrLen(K key, K field) throws RedisConnectorException {
         RedisHashCommands<K, V> hashCommands = null;
         try {
             hashCommands = (RedisHashCommands<K, V>) connManager.getHashCommandConnection();
