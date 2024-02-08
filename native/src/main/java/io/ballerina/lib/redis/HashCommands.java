@@ -255,10 +255,10 @@ public class HashCommands {
      * @param field       The field
      * @return The length of the field value, or 0 when field is not present in the hash or key does not exist at all
      */
-    public static Object hStrln(BObject redisClient, BString key, BString field) {
+    public static Object hStrLen(BObject redisClient, BString key, BString field) {
         try {
             RedisHashCommandExecutor executor = getConnection(redisClient).getHashCommandExecutor();
-            return executor.hStrln(key.getValue(), field.getValue());
+            return executor.hStrLen(key.getValue(), field.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }

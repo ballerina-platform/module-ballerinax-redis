@@ -188,10 +188,10 @@ function testHSetNx() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHStrln() {
-    var result = redis->hStrln("testHStrlnKey", "testHStrlnField1");
+function testHStrLen() {
+    var result = redis->hStrLen("testHStrLenKey", "testHStrLenField1");
     if (result is int) {
-        test:assertEquals(result, 16);
+        test:assertEquals(result, 17);
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
