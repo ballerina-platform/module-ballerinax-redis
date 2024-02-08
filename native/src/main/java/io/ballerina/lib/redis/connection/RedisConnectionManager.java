@@ -19,7 +19,6 @@
 package io.ballerina.lib.redis.connection;
 
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.RedisClient;
@@ -279,24 +278,24 @@ public class RedisConnectionManager<K, V> {
                 .withHost(host)
                 .withPort(port);
 
-        boolean sslEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_SSL_ENABLED));
-        boolean startTlsEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_START_TLS_ENABLED));
-        boolean verifyPeerEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_VERIFY_PEER_ENABLED));
+        boolean sslEnabled = options.getBooleanValue(CONFIG_SSL_ENABLED);
         builder.withSsl(sslEnabled);
+        boolean startTlsEnabled = options.getBooleanValue(CONFIG_START_TLS_ENABLED);
         builder.withStartTls(startTlsEnabled);
+        boolean verifyPeerEnabled = options.getBooleanValue(CONFIG_VERIFY_PEER_ENABLED);
         builder.withVerifyPeer(verifyPeerEnabled);
 
-        int database = options.getIntValue(StringUtils.fromString(CONFIG_DATABASE)).intValue();
-        if (database != -1) {
+        int database = options.getIntValue(CONFIG_DATABASE).intValue();
+        if (database >= 0) {
             builder.withDatabase(database);
         }
 
-        int connectionTimeout = options.getIntValue(StringUtils.fromString(CONFIG_CONNECTION_TIMEOUT)).intValue();
+        int connectionTimeout = options.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
         if (connectionTimeout != -1) {
             builder.withTimeout(Duration.ofMillis(connectionTimeout));
         }
 
-        BString clientName = options.getStringValue(StringUtils.fromString(CONFIG_CLIENT_NAME));
+        BString clientName = options.getStringValue(CONFIG_CLIENT_NAME);
         if (clientName != null && !clientName.getValue().isBlank()) {
             builder.withClientName(clientName.toString());
         }

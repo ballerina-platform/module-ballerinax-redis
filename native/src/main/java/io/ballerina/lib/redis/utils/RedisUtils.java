@@ -19,7 +19,6 @@ package io.ballerina.lib.redis.utils;
 
 import io.ballerina.lib.redis.connection.RedisConnectionManager;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
@@ -53,15 +52,14 @@ public class RedisUtils {
     @SuppressWarnings("unused")
     public static Object initClient(BObject client, BMap<?, ?> config) {
         try {
-            BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
-            BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
+            BString host = config.getStringValue(CONFIG_HOST);
+            BString password = config.getStringValue(CONFIG_PASSWORD);
 
-            BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
-            BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
+            BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(CONFIG_OPTIONS);
 
             RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
-            boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
-            boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
+            boolean clusteringEnabled = options.getBooleanValue(CONFIG_CLUSTERING_ENABLED);
+            boolean poolingEnabled = options.getBooleanValue(CONFIG_POOLING_ENABLED);
 
             RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
                     poolingEnabled);
