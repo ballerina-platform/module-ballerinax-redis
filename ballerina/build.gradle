@@ -49,6 +49,7 @@ ballerina {
     module = packageName
     testCoverageParam = "--code-coverage --coverage-format=xml"
     isConnector = true
+    platform = "java17"
 }
 
 configurations {
@@ -153,3 +154,6 @@ test {
 clean {
     delete 'build'
 }
+
+publishToMavenLocal.dependsOn build
+publish.dependsOn build
