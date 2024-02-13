@@ -17,6 +17,8 @@
  */
 package io.ballerina.lib.redis.utils;
 
+import io.ballerina.lib.redis.config.ConfigMapper;
+import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.connection.RedisConnectionManager;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.values.BMap;
@@ -27,14 +29,7 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_HOST;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_OPTIONS;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_PASSWORD;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_POOLING_ENABLED;
 import static io.ballerina.lib.redis.utils.Constants.CONN_OBJ;
-import static io.ballerina.lib.redis.utils.Constants.EMPTY_STRING;
-import static io.ballerina.lib.redis.utils.Constants.LOCALHOST;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
 
 /**
@@ -50,22 +45,12 @@ public class RedisUtils {
      * @param config redis client configuration as a map
      */
     @SuppressWarnings("unused")
-    public static Object initClient(BObject client, BMap<?, ?> config) {
+    public static Object initClient(BObject client, BMap<BString, Object> config) {
         try {
-            BString host = config.getStringValue(CONFIG_HOST);
-            BString password = config.getStringValue(CONFIG_PASSWORD);
-
-            BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(CONFIG_OPTIONS);
-
+            ConnectionConfig connectionConfig = ConfigMapper.from(config);
             RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
-            boolean clusteringEnabled = options.getBooleanValue(CONFIG_CLUSTERING_ENABLED);
-            boolean poolingEnabled = options.getBooleanValue(CONFIG_POOLING_ENABLED);
-
-            RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
-                    poolingEnabled);
-            String hostStr = host != null ? host.getValue() : LOCALHOST;
-            String passwordStr = password != null ? password.getValue() : EMPTY_STRING;
-            connectionManager.init(hostStr, passwordStr, options);
+            RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec);
+            connectionManager.init(connectionConfig);
             client.addNativeData(CONN_OBJ, connectionManager);
             return null;
         } catch (Throwable e) {

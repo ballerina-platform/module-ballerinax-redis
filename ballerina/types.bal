@@ -16,45 +16,63 @@
 
 # The client endpoint configuration for Redis.
 #
-# + host - The host address of the Redis database. 
-# If not specified, the client will try to connect to `localhost:6379` (default redis port)
-# + password - Password for the database connection
-# + options - Properties for the connection configuration
+# + connection - connection configuration for the Redis database
+# + connectionPooling - whether connection pooling is enabled
+# + isClusterConnection - whether the connection is a cluster connection
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
+    @display {label: "Connection Type"}
+    ConnectionString|ConnectionParams connection;
+    @display {label: "Connection Pooling Enabled"}
+    boolean connectionPooling = false;
+    @display {label: "Cluster Mode Enabled"}
+    boolean isClusterConnection = false;
+|};
+
+# The connection parameters based configurations.
+#
+# + host - host address of the Redis database
+# + port - port of the Redis database
+# + options - other connection options of the connection configuration
+@display {label: "Connection Parameters"}
+type ConnectionParams record {|
     @display {label: "Host"}
-    string host?;
-    @display {label: "Password"}
-    string password?;
+    string host;
+    @display {label: "Port"}
+    int port;
     @display {label: "Connection Options"}
     Options options = {};
 |};
 
+# The connection string(URI) based configurations.
+#
+# + uri - The connection string for the Redis database
+@display {label: "Connection String"}
+type ConnectionString record {|
+    string uri;
+|};
+
 # Connection options for Redis client endpoint.
 #
-# + clientName - The clientName of the connection
-# + connectionPooling - Boolean value depending on whether the connection
-# pooling is enabled or not
-# + isClusterConnection - Whether to enable cluster connection or not
-# + ssl - Boolean value depending on whether SSL is enabled or not
-# + startTls - Boolean value depending on whether startTLS is enabled or not
-# + verifyPeer - Boolean value depending on whether peer verification is
-# enabled or not
-# + database - The database to be used with the connection
-# + connectionTimeout - The timeout value for the connection
+# + clientName - The name of the client.
+# + password - The password for the Redis database.
+# + ssl - Whether SSL is enabled.
+# + startTls - Whether STARTTLS is enabled.
+# + verifyPeer - Whether peer verification is enabled.
+# + database - The database index.
+# + connectionTimeout - The connection timeout in milliseconds.
+@display {label: "Connection Options"}
 public type Options record {|
-    @display {label: "Client Name"}
-    string clientName?;
-    @display {label: "Connection Pooling Enabled"}
-    boolean connectionPooling = false;
-    @display {label: "Cluster Connection Enabled"}
-    boolean isClusterConnection = false;
     @display {label: "SSL Enabled"}
     boolean ssl = false;
     @display {label: "STARTTLS Enabled"}
     boolean startTls = false;
     @display {label: "Peer Verification Enabled"}
     boolean verifyPeer = false;
+    @display {label: "Client Name"}
+    string clientName?;
+    @display {label: "Password"}
+    string password?;
     @display {label: "Database"}
     int database = -1;
     @display {label: "Connection Timeout"}

@@ -18,28 +18,12 @@
 
 package io.ballerina.lib.redis.utils;
 
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BString;
-
 /**
  * Constants for Redis client.
  *
  * @since 0.5.0
  */
 public class Constants {
-
-    // Redis client config names as Ballerina string objects
-    public static final BString CONFIG_HOST = StringUtils.fromString("host");
-    public static final BString CONFIG_PASSWORD = StringUtils.fromString("password");
-    public static final BString CONFIG_OPTIONS = StringUtils.fromString("options");
-    public static final BString CONFIG_CLUSTERING_ENABLED = StringUtils.fromString("isClusterConnection");
-    public static final BString CONFIG_POOLING_ENABLED = StringUtils.fromString("connectionPooling");
-    public static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
-    public static final BString CONFIG_DATABASE = StringUtils.fromString("database");
-    public static final BString CONFIG_CONNECTION_TIMEOUT = StringUtils.fromString("connectionTimeout");
-    public static final BString CONFIG_SSL_ENABLED = StringUtils.fromString("ssl");
-    public static final BString CONFIG_START_TLS_ENABLED = StringUtils.fromString("startTls");
-    public static final BString CONFIG_VERIFY_PEER_ENABLED = StringUtils.fromString("verifyPeer");
 
     // Native redis connection object, which is stored in Ballerina redis client object
     public static final String CONN_OBJ = "CONNECTION_OBJECT";

@@ -77,7 +77,7 @@ public class ConversionUtils {
      * @param array the Java array
      * @return the Ballerina array
      */
-    public static BArray createBStringArrayJArray(String[] array) {
+    public static BArray createBStringArrayFromJArray(String[] array) {
         BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : array) {
             bStringArray.append(StringUtils.fromString(item));

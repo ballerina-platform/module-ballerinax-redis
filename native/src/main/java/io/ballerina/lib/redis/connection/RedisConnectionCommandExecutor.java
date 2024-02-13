@@ -109,7 +109,7 @@ public class RedisConnectionCommandExecutor {
             clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
             String clusterInfo = clusterCommands.clusterInfo();
             String[] infoArray = clusterInfo.split(CLUSTER_INFO_SEPARATOR);
-            return ConversionUtils.createBStringArrayJArray(infoArray);
+            return ConversionUtils.createBStringArrayFromJArray(infoArray);
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
         } finally {
