@@ -40,7 +40,7 @@ public final class ConfigMapper {
     public static final BString CONFIG_USERNAME = StringUtils.fromString("username");
     public static final BString CONFIG_PASSWORD = StringUtils.fromString("password");
     public static final BString CONFIG_OPTIONS = StringUtils.fromString("options");
-    public static final BString IS_CLUSTER_CONNECTION = StringUtils.fromString("isClusterConnection");
+    public static final BString CONFIG_IS_CLUSTER_CONNECTION = StringUtils.fromString("isClusterConnection");
     public static final BString CONFIG_POOLING_ENABLED = StringUtils.fromString("connectionPooling");
     public static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
     public static final BString CONFIG_DATABASE = StringUtils.fromString("database");
@@ -53,7 +53,7 @@ public final class ConfigMapper {
     }
 
     public static ConnectionConfig from(BMap<BString, Object> config) {
-        boolean isClusterConnection = config.getBooleanValue(IS_CLUSTER_CONNECTION);
+        boolean isClusterConnection = config.getBooleanValue(CONFIG_IS_CLUSTER_CONNECTION);
         boolean poolingEnabled = config.getBooleanValue(CONFIG_POOLING_ENABLED);
 
         BMap<BString, Object> connection = (BMap<BString, Object>) config.getMapValue(CONFIG_CONNECTION);

@@ -21,9 +21,9 @@ package io.ballerina.lib.redis.config;
 /**
  * Represents Redis connection string based configurations.
  *
- * @param uri                 The redis URI
- * @param isClusterConnection Whether the connection is a cluster connection
- * @param poolingEnabled      Whether pooling is enabled
+ * @param uri                 redis URI string
+ * @param isClusterConnection whether the connection is a cluster connection
+ * @param poolingEnabled      whether pooling is enabled
  * @since 3.0.0
  */
 public record ConnectionString(String uri, boolean isClusterConnection, boolean poolingEnabled)
