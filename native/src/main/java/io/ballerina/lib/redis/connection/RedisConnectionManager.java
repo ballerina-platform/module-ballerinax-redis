@@ -271,7 +271,7 @@ public class RedisConnectionManager<K, V> {
 
         int connectionTimeout = options.connectionTimeout();
         if (connectionTimeout != -1) {
-            builder.withTimeout(Duration.ofMillis(connectionTimeout));
+            builder.withTimeout(Duration.ofSeconds(connectionTimeout));
         }
 
         String clientName = options.clientName();

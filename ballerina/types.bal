@@ -32,7 +32,8 @@ public type ConnectionConfig record {|
 # The connection parameters based configurations.
 #
 # + host - host address of the Redis database
-# + port - port of the Redis database
+# + port - port of the Redis database 
+# + password - The password for the Redis database  
 # + options - other connection options of the connection configuration
 @display {label: "Connection Parameters"}
 type ConnectionParams record {|
@@ -40,6 +41,8 @@ type ConnectionParams record {|
     string host;
     @display {label: "Port"}
     int port;
+    @display {label: "Password"}
+    string password?;
     @display {label: "Connection Options"}
     Options options = {};
 |};
@@ -54,13 +57,12 @@ type ConnectionString record {|
 
 # Connection options for Redis client endpoint.
 #
-# + clientName - The name of the client.
-# + password - The password for the Redis database.
-# + ssl - Whether SSL is enabled.
-# + startTls - Whether STARTTLS is enabled.
-# + verifyPeer - Whether peer verification is enabled.
-# + database - The database index.
-# + connectionTimeout - The connection timeout in milliseconds.
+# + ssl - Whether SSL is enabled 
+# + startTls - Whether STARTTLS is enabled
+# + verifyPeer - Whether peer verification is enabled
+# + clientName - The name of the client
+# + database - The database index
+# + connectionTimeout - The connection timeout in seconds
 @display {label: "Connection Options"}
 public type Options record {|
     @display {label: "SSL Enabled"}
@@ -71,10 +73,8 @@ public type Options record {|
     boolean verifyPeer = false;
     @display {label: "Client Name"}
     string clientName?;
-    @display {label: "Password"}
-    string password?;
     @display {label: "Database"}
     int database = -1;
     @display {label: "Connection Timeout"}
-    int connectionTimeout = -1;
+    int connectionTimeout = 60;
 |};
