@@ -22,6 +22,9 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 
+import static io.ballerina.lib.redis.utils.Constants.EMPTY_STRING;
+import static io.ballerina.lib.redis.utils.ConversionUtils.getStringValueOrDefault;
+
 /**
  * This class maps the Ballerina Redis client config to the Java Redis client config.
  *
@@ -34,6 +37,7 @@ public final class ConfigMapper {
     public static final BString CONFIG_URI = StringUtils.fromString("uri");
     public static final BString CONFIG_HOST = StringUtils.fromString("host");
     public static final BString CONFIG_PORT = StringUtils.fromString("port");
+    public static final BString CONFIG_USERNAME = StringUtils.fromString("username");
     public static final BString CONFIG_PASSWORD = StringUtils.fromString("password");
     public static final BString CONFIG_OPTIONS = StringUtils.fromString("options");
     public static final BString IS_CLUSTER_CONNECTION = StringUtils.fromString("isClusterConnection");
@@ -59,8 +63,10 @@ public final class ConfigMapper {
         } else {
             String host = connection.getStringValue(CONFIG_HOST).getValue();
             int port = connection.getIntValue(CONFIG_PORT).intValue();
+            String userName = getStringValueOrDefault(connection.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
+            String password = getStringValueOrDefault(connection.getStringValue(CONFIG_PASSWORD), EMPTY_STRING);
             BMap<BString, Object> options = (BMap<BString, Object>) connection.getMapValue(CONFIG_OPTIONS);
-            return new ConnectionParams(host, port, isClusterConnection, poolingEnabled,
+            return new ConnectionParams(host, port, userName, password, isClusterConnection, poolingEnabled,
                     getConnectionOptionsFromBObject(options));
         }
     }
@@ -71,14 +77,9 @@ public final class ConfigMapper {
         boolean verifyPeer = connection.getBooleanValue(CONFIG_VERIFY_PEER_ENABLED);
         int database = connection.getIntValue(CONFIG_DATABASE).intValue();
         int connectionTimeout = connection.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
+        String clientName = getStringValueOrDefault(connection.getStringValue(CONFIG_CLIENT_NAME), EMPTY_STRING);
 
-        BString passwordBStr = connection.getStringValue(CONFIG_PASSWORD);
-        String password = passwordBStr != null ? passwordBStr.getValue() : "";
-
-        BString clientNameBStr = connection.getStringValue(CONFIG_CLIENT_NAME);
-        String clientName = clientNameBStr != null ? clientNameBStr.getValue() : "";
-
-        return new Options(password, sslEnabled, startTls, verifyPeer, clientName, database, connectionTimeout);
+        return new Options(sslEnabled, startTls, verifyPeer, clientName, database, connectionTimeout);
     }
 
     private static boolean isConnectionStringConfig(BMap<BString, Object> connection) {

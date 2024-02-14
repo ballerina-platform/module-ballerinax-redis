@@ -39,7 +39,5 @@ public class Constants {
     public static final String REDIS_SERVER_ERROR = "Redis server error: ";
 
     // Other constants
-    public static final String LOCALHOST = "localhost";
     public static final String EMPTY_STRING = "";
-
 }

@@ -182,4 +182,15 @@ public class ConversionUtils {
                 StringUtils.fromString(e.getMessage()),
                 ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
     }
+
+    /**
+     * Returns the string value of a Ballerina string value or a default value if the Ballerina string value is null.
+     *
+     * @param value        the Ballerina string value
+     * @param defaultValue the default value
+     * @return the string value
+     */
+    public static String getStringValueOrDefault(BString value, String defaultValue) {
+        return value != null ? value.getValue() : defaultValue;
+    }
 }

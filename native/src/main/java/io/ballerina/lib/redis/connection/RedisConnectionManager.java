@@ -60,7 +60,7 @@ public class RedisConnectionManager<K, V> {
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
-    private RedisCodec<K, V> codec;
+    private final RedisCodec<K, V> codec;
     private boolean isClusterConnection;
     private boolean poolingEnabled;
 
@@ -222,7 +222,7 @@ public class RedisConnectionManager<K, V> {
         if (connectionConfig instanceof ConnectionString connectionString) {
             redisURI = RedisURI.create(connectionString.uri());
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
-            redisURI = constructRedisUri(connectionParams.host(), connectionParams.port(), connectionParams.options());
+            redisURI = constructRedisUri(connectionParams);
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
@@ -242,7 +242,7 @@ public class RedisConnectionManager<K, V> {
         if (connectionConfig instanceof ConnectionString connectionString) {
             redisURI = RedisURI.create(connectionString.uri());
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
-            redisURI = constructRedisUri(connectionParams.host(), connectionParams.port(), connectionParams.options());
+            redisURI = constructRedisUri(connectionParams);
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
@@ -256,10 +256,12 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private RedisURI constructRedisUri(String host, int port, Options options) {
+    private RedisURI constructRedisUri(ConnectionParams connectionParams) {
+        Options options = connectionParams.options();
+
         RedisURI.Builder builder = RedisURI.builder()
-                .withHost(host)
-                .withPort(port)
+                .withHost(connectionParams.host())
+                .withPort(connectionParams.port())
                 .withSsl(options.sslEnabled())
                 .withStartTls(options.startTls())
                 .withVerifyPeer(options.verifyPeer());
@@ -279,8 +281,11 @@ public class RedisConnectionManager<K, V> {
             builder.withClientName(clientName);
         }
 
-        String password = options.password();
-        if (password != null && !password.isBlank()) {
+        String userName = connectionParams.userName();
+        String password = connectionParams.password();
+        if (userName != null && !userName.isBlank()) {
+            builder.withAuthentication(userName, password);
+        } else if (password != null && !password.isBlank()) {
             builder.withPassword(password);
         }
 

@@ -21,9 +21,15 @@ package io.ballerina.lib.redis.config;
 /**
  * Represents the parameter based connection options.
  *
+ * @param sslEnabled        Whether SSL is enabled
+ * @param startTls          Whether start TLS is enabled
+ * @param verifyPeer        Whether peer verification is enabled
+ * @param clientName        The client name
+ * @param database          The database index
+ * @param connectionTimeout The connection timeout
  * @since 3.0.0
  */
-public record Options(String password, boolean sslEnabled, boolean startTls, boolean verifyPeer, String clientName,
+public record Options(boolean sslEnabled, boolean startTls, boolean verifyPeer, String clientName,
                       int database, int connectionTimeout) {
 
 }

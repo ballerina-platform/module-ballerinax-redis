@@ -31,8 +31,9 @@ public type ConnectionConfig record {|
 
 # The connection parameters based configurations.
 #
-# + host - host address of the Redis database
-# + port - port of the Redis database 
+# + host - host address of the Redis database  
+# + port - port of the Redis database  
+# + username - field description  
 # + password - The password for the Redis database  
 # + options - other connection options of the connection configuration
 @display {label: "Connection Parameters"}
@@ -41,6 +42,8 @@ type ConnectionParams record {|
     string host;
     @display {label: "Port"}
     int port;
+    @display {label: "Username"}
+    string username?;
     @display {label: "Password"}
     string password?;
     @display {label: "Connection Options"}
