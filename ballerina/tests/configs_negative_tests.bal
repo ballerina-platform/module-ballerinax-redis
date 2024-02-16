@@ -38,6 +38,6 @@ function testInvalidPort() {
     Client|Error initResult = new (connection = {uri: "redis://localhost:6380"});
     test:assertTrue(initResult is Error);
     if (initResult is Error) {
-        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6380'");
+        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6380");
     }
 }
