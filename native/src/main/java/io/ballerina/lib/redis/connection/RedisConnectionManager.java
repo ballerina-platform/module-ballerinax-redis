@@ -21,7 +21,7 @@ package io.ballerina.lib.redis.connection;
 import io.ballerina.lib.redis.config.CertKey;
 import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.config.ConnectionParams;
-import io.ballerina.lib.redis.config.ConnectionString;
+import io.ballerina.lib.redis.config.ConnectionURI;
 import io.ballerina.lib.redis.config.KeyStore;
 import io.ballerina.lib.redis.config.Options;
 import io.ballerina.lib.redis.config.SecureSocket;
@@ -228,8 +228,8 @@ public class RedisConnectionManager<K, V> {
     private void setRedisStandaloneCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
         RedisClient redisClient;
-        if (connectionConfig instanceof ConnectionString connectionString) {
-            redisURI = RedisURI.create(connectionString.uri());
+        if (connectionConfig instanceof ConnectionURI uriConfig) {
+            redisURI = RedisURI.create(uriConfig.uri());
             redisClient = RedisClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
@@ -262,8 +262,8 @@ public class RedisConnectionManager<K, V> {
     private void setRedisClusterCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
         RedisClusterClient redisClusterClient;
-        if (connectionConfig instanceof ConnectionString connectionString) {
-            redisURI = RedisURI.create(connectionString.uri());
+        if (connectionConfig instanceof ConnectionURI uriConfig) {
+            redisURI = RedisURI.create(uriConfig.uri());
             redisClusterClient = RedisClusterClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);

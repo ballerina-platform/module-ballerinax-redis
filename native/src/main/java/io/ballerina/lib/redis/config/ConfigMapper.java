@@ -79,7 +79,7 @@ public final class ConfigMapper {
 
         BMap<BString, Object> connection = (BMap<BString, Object>) config.getMapValue(CONFIG_CONNECTION);
         if (isConnectionStringConfig(connection)) {
-            return new ConnectionString(connection.getStringValue(CONFIG_URI).getValue(), isClusterConnection,
+            return new ConnectionURI(connection.getStringValue(CONFIG_URI).getValue(), isClusterConnection,
                     poolingEnabled);
         } else {
             String host = connection.getStringValue(CONFIG_HOST).getValue();

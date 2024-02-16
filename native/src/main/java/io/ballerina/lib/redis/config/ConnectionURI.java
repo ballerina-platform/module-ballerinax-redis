@@ -19,14 +19,14 @@
 package io.ballerina.lib.redis.config;
 
 /**
- * Represents Redis connection string based configurations.
+ * Represents Redis connection URI string based configurations.
  *
  * @param uri                 redis URI string
  * @param isClusterConnection whether the connection is a cluster connection
  * @param poolingEnabled      whether pooling is enabled
  * @since 3.0.0
  */
-public record ConnectionString(String uri, boolean isClusterConnection, boolean poolingEnabled)
+public record ConnectionURI(String uri, boolean isClusterConnection, boolean poolingEnabled)
         implements ConnectionConfig {
 
 }

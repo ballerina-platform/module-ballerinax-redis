@@ -23,7 +23,7 @@ import ballerina/crypto;
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     @display {label: "Connection Type"}
-    ConnectionString|ConnectionParams connection;
+    ConnectionUri|ConnectionParams connection?;
     @display {label: "Connection Pooling Enabled"}
     boolean connectionPooling = false;
     @display {label: "Cluster Mode Enabled"}
@@ -40,9 +40,9 @@ public type ConnectionConfig record {|
 @display {label: "Connection Parameters"}
 type ConnectionParams record {|
     @display {label: "Host"}
-    string host;
+    string host = "localhost";
     @display {label: "Port"}
-    int port;
+    int port = 6379;
     @display {label: "Username"}
     string username?;
     @display {label: "Password"}
@@ -51,11 +51,12 @@ type ConnectionParams record {|
     Options options = {};
 |};
 
-# The connection string(URI) based configurations.
+# The redis Connection URI based configurations. This can become useful when working with 
+# managed Redis databases, where the cloud provider usually provides a connection URI.
 #
-# + uri - The connection string for the Redis database
-@display {label: "Connection String"}
-type ConnectionString record {|
+# + uri - The connection URI for the Redis database
+@display {label: "Connection URI"}
+type ConnectionUri record {|
     string uri;
 |};
 
