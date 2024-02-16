@@ -18,13 +18,19 @@
 
 package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.config.CertKey;
 import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.config.ConnectionParams;
 import io.ballerina.lib.redis.config.ConnectionString;
+import io.ballerina.lib.redis.config.KeyStore;
 import io.ballerina.lib.redis.config.Options;
+import io.ballerina.lib.redis.config.SecureSocket;
+import io.ballerina.lib.redis.config.TrustStore;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SslOptions;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.BaseRedisCommands;
@@ -35,6 +41,7 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
@@ -43,6 +50,7 @@ import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -219,15 +227,29 @@ public class RedisConnectionManager<K, V> {
 
     private void setRedisStandaloneCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
+        RedisClient redisClient;
         if (connectionConfig instanceof ConnectionString connectionString) {
             redisURI = RedisURI.create(connectionString.uri());
+            redisClient = RedisClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
+            SecureSocket secureSocket = connectionParams.options().secureSocket();
+            if (secureSocket != null) {
+                redisURI.setSsl(true);
+                redisURI.setVerifyPeer(secureSocket.verifyPeer());
+                redisURI.setStartTls(secureSocket.startTls());
+                redisClient = RedisClient.create(redisURI);
+
+                SslOptions sslOptions = constructSslOptions(secureSocket);
+                ClientOptions clientOptions = ClientOptions.builder().sslOptions(sslOptions).build();
+                redisClient.setOptions(clientOptions);
+            } else {
+                redisClient = RedisClient.create(redisURI);
+            }
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
 
-        RedisClient redisClient = RedisClient.create(redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -239,15 +261,29 @@ public class RedisConnectionManager<K, V> {
 
     private void setRedisClusterCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
+        RedisClusterClient redisClusterClient;
         if (connectionConfig instanceof ConnectionString connectionString) {
             redisURI = RedisURI.create(connectionString.uri());
+            redisClusterClient = RedisClusterClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
+            SecureSocket secureSocket = connectionParams.options().secureSocket();
+            if (secureSocket != null) {
+                redisURI.setSsl(true);
+                redisURI.setVerifyPeer(secureSocket.verifyPeer());
+                redisURI.setStartTls(secureSocket.startTls());
+                redisClusterClient = RedisClusterClient.create(redisURI);
+
+                SslOptions sslOptions = constructSslOptions(secureSocket);
+                ClusterClientOptions clientOptions = ClusterClientOptions.builder().sslOptions(sslOptions).build();
+                redisClusterClient.setOptions(clientOptions);
+            } else {
+                redisClusterClient = RedisClusterClient.create(redisURI);
+            }
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
 
-        RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -261,10 +297,7 @@ public class RedisConnectionManager<K, V> {
 
         RedisURI.Builder builder = RedisURI.builder()
                 .withHost(connectionParams.host())
-                .withPort(connectionParams.port())
-                .withSsl(options.sslEnabled())
-                .withStartTls(options.startTls())
-                .withVerifyPeer(options.verifyPeer());
+                .withPort(connectionParams.port());
 
         int database = options.database();
         if (database >= 0) {
@@ -318,5 +351,43 @@ public class RedisConnectionManager<K, V> {
         } else {
             return getRedisCommands();
         }
+    }
+
+    private SslOptions constructSslOptions(SecureSocket secureSocket) {
+
+        SslOptions.Builder sslOptionsBuilder = SslOptions.builder();
+
+        TrustStore trustStore = secureSocket.trustStoreCert();
+        if (trustStore != null) {
+            sslOptionsBuilder.truststore(new File(trustStore.trustStorePath()), trustStore.trustStorePassword());
+        }
+
+        String certPath = secureSocket.strCert();
+        if (certPath != null) {
+            sslOptionsBuilder.truststore(new File(certPath));
+        }
+
+        KeyStore keyStore = secureSocket.keyStore();
+        if (keyStore != null) {
+            sslOptionsBuilder.keystore(new File(keyStore.keyStorePath()), keyStore.keyStorePassword().toCharArray());
+        }
+
+        CertKey certKey = secureSocket.CertKey();
+        if (certKey != null) {
+            sslOptionsBuilder.keyManager(new File(certKey.certFile()), new File(certKey.keyFile()),
+                    certKey.keyPassword() != null ? certKey.keyPassword().toCharArray() : null);
+        }
+
+        String[] protocols = secureSocket.protocols();
+        if (protocols != null) {
+            sslOptionsBuilder.protocols(protocols);
+        }
+
+        String[] ciphers = secureSocket.ciphers();
+        if (ciphers != null) {
+            sslOptionsBuilder.cipherSuites(ciphers);
+        }
+
+        return sslOptionsBuilder.build();
     }
 }

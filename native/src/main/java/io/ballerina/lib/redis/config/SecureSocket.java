@@ -19,14 +19,19 @@
 package io.ballerina.lib.redis.config;
 
 /**
- * Represents parameter based Redis connection options.
+ * Represents Redis connection secure socket configurations.
  *
- * @param clientName        client name
- * @param database          database index
- * @param connectionTimeout connection timeout
- * @param secureSocket      secure socket configurations
+ * @param trustStoreCert trust store certificate
+ * @param strCert        certificate in string format
+ * @param keyStore       key store
+ * @param CertKey        certificate and private key
+ * @param protocols      SSL/TLS protocols
+ * @param ciphers        SSL/TLS ciphers
+ * @param verifyPeer     whether to verify the peer
+ * @param startTls       whether to enable startTLS
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout, SecureSocket secureSocket) {
+public record SecureSocket(TrustStore trustStoreCert, String strCert, KeyStore keyStore, CertKey CertKey,
+                           String[] protocols, String[] ciphers, boolean verifyPeer, boolean startTls) {
 
 }

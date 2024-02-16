@@ -19,14 +19,12 @@
 package io.ballerina.lib.redis.config;
 
 /**
- * Represents parameter based Redis connection options.
+ * Represents a combination of keystore file path and password.
  *
- * @param clientName        client name
- * @param database          database index
- * @param connectionTimeout connection timeout
- * @param secureSocket      secure socket configurations
+ * @param keyStorePath     - file containing the key store
+ * @param keyStorePassword - password of the key store
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout, SecureSocket secureSocket) {
+public record KeyStore(String keyStorePath, String keyStorePassword) {
 
 }

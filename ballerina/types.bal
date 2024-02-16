@@ -13,6 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+import ballerina/crypto;
 
 # The client endpoint configuration for Redis.
 #
@@ -60,24 +61,57 @@ type ConnectionString record {|
 
 # Connection options for Redis client endpoint.
 #
-# + ssl - Whether SSL is enabled 
-# + startTls - Whether STARTTLS is enabled
-# + verifyPeer - Whether peer verification is enabled
-# + clientName - The name of the client
-# + database - The database index
-# + connectionTimeout - The connection timeout in seconds
+# + secureSocket - configurations related to SSL/TLS encryption
+# + clientName - name of the client
+# + database - database index
+# + connectionTimeout - connection timeout in seconds
 @display {label: "Connection Options"}
 public type Options record {|
-    @display {label: "SSL Enabled"}
-    boolean ssl = false;
-    @display {label: "STARTTLS Enabled"}
-    boolean startTls = false;
-    @display {label: "Peer Verification Enabled"}
-    boolean verifyPeer = false;
+    @display {label: "Secure Socket Configurations"}
+    SecureSocket secureSocket?;
     @display {label: "Client Name"}
     string clientName?;
     @display {label: "Database"}
     int database = -1;
     @display {label: "Connection Timeout"}
     int connectionTimeout = 60;
+|};
+
+# Configurations for secure communication with the Redis server.
+#
+# + cert - configurations associated with `crypto:TrustStore` or single certificate file that the client trusts  
+# + key - configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client  
+# + protocols - list of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
+# + ciphers - list of ciphers to be used for SSL connections
+# + verifyPeer - whether peer verification is enabled
+# + startTls - whether StartTLS is enabled
+@display {label: "Secure Socket Configurations"}
+public type SecureSocket record {|
+    @display {label: "Certificate"}
+    crypto:TrustStore|string cert;
+    @display {label: "Key"}
+    crypto:KeyStore|CertKey key?;
+    @display {label: "Protocols to be used for the connection to the Redis Serve"}
+    string[] protocols?;
+    @display {label: "Ciphers"}
+    string[] ciphers?;
+    @display {label: "Peer Verification Enabled"}
+    boolean verifyPeer?;
+    @display {label: "StartTLS Enabled"}
+    boolean startTls?;
+|};
+
+# Represents a combination of certificate, private key, and private key password if encrypted.
+#
+# + certFile - file containing the certificate
+# + keyFile - file containing the private key in PKCS8 format
+# + keyPassword - Password of the private key if it is encrypted
+@display {label: "Certificate Key Configurations"}
+public type CertKey record {|
+    @display {label: "Certificate File Path"}
+    string certFile;
+    @display {label: "Private Key File Path"}
+    string keyFile;
+    @display {label: "Private Key Password"}
+    string keyPassword?;
 |};

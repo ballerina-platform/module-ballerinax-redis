@@ -19,14 +19,13 @@
 package io.ballerina.lib.redis.config;
 
 /**
- * Represents parameter based Redis connection options.
+ * Represents a combination of certificate, private key, and private key password if encrypted.
  *
- * @param clientName        client name
- * @param database          database index
- * @param connectionTimeout connection timeout
- * @param secureSocket      secure socket configurations
+ * @param certFile    - file containing the certificate
+ * @param keyFile     - file containing the private key in PKCS8 format
+ * @param keyPassword - password of the private key if it is encrypted
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout, SecureSocket secureSocket) {
+public record CertKey(String certFile, String keyFile, String keyPassword) {
 
 }
