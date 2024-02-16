@@ -26,7 +26,7 @@ public isolated client class Client {
     #
     # + config - Configuration for the connector
     # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized
-    public isolated function init(ConnectionConfig config) returns Error? {
+    public isolated function init(*ConnectionConfig config) returns Error? {
         check self.initClient(self, config);
     }
 
