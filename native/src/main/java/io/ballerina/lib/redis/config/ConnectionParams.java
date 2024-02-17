@@ -23,14 +23,14 @@ package io.ballerina.lib.redis.config;
  *
  * @param host                host name
  * @param port                port number
- * @param userName            username of the connection
+ * @param username            username of the connection
  * @param password            password of the connection
  * @param isClusterConnection whether the connection is a cluster connection
  * @param poolingEnabled      whether pooling is enabled
  * @param options             redis connection options
  * @since 3.0.0
  */
-public record ConnectionParams(String host, int port, String userName, String password, boolean isClusterConnection,
+public record ConnectionParams(String host, int port, String username, String password, boolean isClusterConnection,
                                boolean poolingEnabled, Options options) implements ConnectionConfig {
 
 }

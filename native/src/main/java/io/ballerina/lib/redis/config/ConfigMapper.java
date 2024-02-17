@@ -84,10 +84,10 @@ public final class ConfigMapper {
         } else {
             String host = connection.getStringValue(CONFIG_HOST).getValue();
             int port = connection.getIntValue(CONFIG_PORT).intValue();
-            String userName = getStringValueOrDefault(connection.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
+            String username = getStringValueOrDefault(connection.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
             String password = getStringValueOrDefault(connection.getStringValue(CONFIG_PASSWORD), EMPTY_STRING);
             BMap<BString, Object> options = (BMap<BString, Object>) connection.getMapValue(CONFIG_OPTIONS);
-            return new ConnectionParams(host, port, userName, password, isClusterConnection, poolingEnabled,
+            return new ConnectionParams(host, port, username, password, isClusterConnection, poolingEnabled,
                     getConnectionOptionsFromBObject(options));
         }
     }
@@ -164,6 +164,6 @@ public final class ConfigMapper {
     }
 
     private static boolean isConnectionStringConfig(BMap<BString, Object> connection) {
-        return connection.containsKey(StringUtils.fromString("uri"));
+        return connection.containsKey(CONFIG_URI);
     }
 }

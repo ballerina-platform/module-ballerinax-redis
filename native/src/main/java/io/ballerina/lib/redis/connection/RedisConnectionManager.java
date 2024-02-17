@@ -314,10 +314,10 @@ public class RedisConnectionManager<K, V> {
             builder.withClientName(clientName);
         }
 
-        String userName = connectionParams.userName();
+        String username = connectionParams.username();
         String password = connectionParams.password();
-        if (userName != null && !userName.isBlank()) {
-            builder.withAuthentication(userName, password);
+        if (username != null && !username.isBlank()) {
+            builder.withAuthentication(username, password);
         } else if (password != null && !password.isBlank()) {
             builder.withPassword(password);
         }

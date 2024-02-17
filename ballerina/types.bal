@@ -92,7 +92,7 @@ public type SecureSocket record {|
     crypto:TrustStore|string cert;
     @display {label: "Key"}
     crypto:KeyStore|CertKey key?;
-    @display {label: "Protocols to be used for the connection to the Redis Serve"}
+    @display {label: "Protocols to be used for the connection to the Redis Server"}
     string[] protocols?;
     @display {label: "Ciphers"}
     string[] ciphers?;
