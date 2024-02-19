@@ -22,10 +22,10 @@ import ballerina/jballerina.java;
 @display {label: "Redis Client", iconPath: "icon.png"}
 public isolated client class Client {
 
-    # Initializes the connector. During initialization you have to pass needed configurations such as host name, port number and password.
+    # Initialize the Redis client. 
     #
-    # + config - Configuration for the connector
-    # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized
+    # + config - configuration for the connector
+    # + return - `redis:Error` in case of failures or `nil` if successful. 
     public isolated function init(*ConnectionConfig config) returns Error? {
         check self.initClient(self, config);
     }
