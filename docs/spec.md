@@ -31,24 +31,41 @@ specification is considered a bug.
 
 1. [Overview](#1-overview)
 2. [Client](#2-client)  
-   2.1. [Handle connection pools](#21-handle-connection-pools)  
-   2.2. [Close the client](#22-close-the-client)
-3. [Commands and responses](#3-commands-and-responses)
-4. [Key operations](#4-key-operations)
-5. [List operations](#5-list-operations)
+   2.1. [Initialize the client](#21-initialize-the-client)  
+   2.2. [Handle connection pools](#22-handle-connection-pools)  
+   2.3. [Close the client](#23-close-the-client)
+3. [Supported Operations](#3-supported-operations)  
+   3.1. [Hash Operations](#31-hash-operations)  
+   3.2. [Key Operations](#32-key-operations)  
+   3.3. [List Operations](#33-list-operations)  
+   3.4. [Set Operations](#34-set-operations)  
+   3.5. [Sorted Set Operations](#35-sorted-set-operations)  
+   3.6. [String Operations](#36-string-operations)  
+   3.7. [Cluster Operations](#37-cluster-operations)
 
 # 1. Overview
 
-This section describes the usage of the Redis `Client` object for interfacing with a Redis server.
+Redis (REmote DIctionary Server) is an open-source, in-memory data structure store that can be used as a database, cache, and message broker. 
+It supports various data structures such as strings, hashes, lists, sets, and more. Redis has its own protocol for communication between clients and the server.
 
-The `Client` supports various Redis commands for key-value operations, list operations, and more.
+The `Client` supports various Redis commands related to different data structures, such as key-value operations, list
+operations, and more.
+
+The client also supports connecting to Redis clusters, which allows working with multiple Redis nodes using a single
+client.
+
+It also comes with advanced connection features such as connection pooling, which allows reusing connections to the
+Redis server, and SSL/TLS encryption for secure communication with the Redis server.
 
 # 2. Client
 
 The Redis `Client` represents a connection to the Redis server. It maintains a pool of connections throughout its
 lifetime.
 
-**Initialization of the Client:**
+## 2.1. Initialize the client
+
+- Redis client can be initialized using the `init` function. Client initialization requires a `ConnectionConfig` object,
+  which contains the connection details for the Redis server.
 
   ```ballerina
   # Initialize the Redis client. 
@@ -60,9 +77,7 @@ lifetime.
   }
   ```
 
-**Configurations available for initializing the Redis client:**
-
-* Connection options:
+- Redis connection configurations are defined using the `ConnectionConfig` record, which contains the following fields:
   ```ballerina
   # The client endpoint configuration for Redis.
   #
@@ -74,30 +89,41 @@ lifetime.
       boolean connectionPooling = false;
       boolean isClusterConnection = false;
   |};
-    
-  # The connection parameters based configurations.
-  #
-  # + host - host address of the Redis database
-  # + port - port of the Redis database
-  # + username - field description
-  # + password - The password for the Redis database
-  # + options - other connection options of the connection configuration
-  type ConnectionParams record {|
-      string host = "localhost";
-      int port = 6379;
-      string username?;
-      string password?;
-      Options options = {};
-  |};
-    
-  # The redis Connection URI based configurations. This can become useful when working with
-  # managed Redis databases, where the cloud provider usually provides a connection URI.
-  #
-  # + uri - The connection URI for the Redis database
-  type ConnectionUri record {|
-      string uri;
-  |};
-    
+  ```
+
+- the connection parameters can be provided either as a single redis URI or, as individual parameters.
+  The `ConnectionUri` and `ConnectionParams` records are defined as follows:
+
+    1. Redis URI based configurations:
+   ```ballerina
+   # The redis Connection URI based configurations. This can become useful when working with
+   # managed Redis databases, where the cloud provider usually provides a connection URI.
+   #
+   # + uri - The connection URI for the Redis database
+   type ConnectionUri record {|
+       string uri;
+   |}; 
+   ```
+
+    2. Redis connection parameters based configurations:
+   ```ballerina
+   # The connection parameters based configurations.
+   #
+   # + host - host address of the Redis database
+   # + port - port of the Redis database
+   # + username - field description
+   # + password - The password for the Redis database
+   # + options - other connection options of the connection configuration
+   type ConnectionParams record {|
+     string host = "localhost";
+     int port = 6379;
+     string username?;
+     string password?;
+     Options options = {};
+   |};
+   ```
+
+  ```ballerina
   # Connection options for Redis client endpoint.
   #
   # + secureSocket - configurations related to SSL/TLS encryption
@@ -110,7 +136,8 @@ lifetime.
       int database = -1;
       int connectionTimeout = 60;
   |};
-    
+  ```
+  ```ballerina  
   # Configurations for secure communication with the Redis server.
   #
   # + cert - configurations associated with `crypto:TrustStore` or single certificate file that the client trusts
@@ -127,7 +154,8 @@ lifetime.
       boolean verifyPeer?;
       boolean startTls?;
   |};
-    
+  ```
+  ```ballerina
   # Represents a combination of certificate, private key, and private key password if encrypted.
   #
   # + certFile - file containing the certificate
@@ -141,14 +169,18 @@ lifetime.
   |};
   ``` 
 
-## 2.1. Handle connection pools
+## 2.2. Handle connection pools
 
-Connection pooling is supported using the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
+The existing connection pooling implementation for Redis is based on the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
 library.
 
-The `ConnectionConfig` record has a `connectionPooling` field that can be set to `true` to enable connection pooling.
+The `ConnectionConfig` has a `connectionPooling` field that can be set to `true` to enable connection pooling. 
+Currently, the connection pooling has limited configuration options, and the default pool size and other configurations 
+of the underlying connection pool are used by the client.
 
-## 2.2. Close the client
+```ballerina
+
+## 2.3. Close the client
 
 The `close()` operation shuts down the Redis client and closes the associated connection pool.
 
@@ -159,18 +191,18 @@ The `close()` operation shuts down the Redis client and closes the associated co
 public isolated function close() returns Error?;
 ```
 
-# 3. Commands and responses
+# 3. Supported Operations
 
-The Redis library supports various commands and responses specified by Redis.
+The Ballerina Redis connector supports various operations for interacting with Redis data structures.
 
-For more details on supported commands and responses, refer to
-the [Redis Commands Reference](https://redis.io/commands).
+For complete details on all available operations in Redis, refer to
+the [Redis Command Reference](https://redis.io/commands).
 
-## 3.1 Hash Commands
+## 3.1 Hash Operations
 
-Hash commands allow manipulation of hash data structures in Redis.
+Hash operations allow manipulation of hash data structures in Redis.
 
-Ballerina Redis connector supports the following hash commands:
+Ballerina Redis connector supports the following hash operations:
 
 - `hDel`: Delete one or more hash fields.
 - `hExists`: Determine if a hash field exists.
@@ -187,7 +219,7 @@ Ballerina Redis connector supports the following hash commands:
 - `hStrLen`: Get the string length of the field value in a hash.
 - `hVals`: Get all the values in a hash.
 
-## 3.2 Key Commands
+## 3.2 Key Operations
 
 Key operations involve setting, retrieving, and deleting keys in the Redis database.
 
@@ -208,11 +240,11 @@ Ballerina Redis connector supports the following key operations:
 - `ttl`: Get the time to live for a key.
 - `RedisType`: Determine the type stored at key.
 
-# 3.3 List Commands
+# 3.3 List Operations
 
 List operations allow manipulation of lists stored in Redis.
 
-Ballerina Redis connector supports the following list commands:
+Ballerina Redis connector supports the following list operations:
 
 - `lPushX`: Prepend one or multiple values to a list, only if the list exists.
 - `bLPop`: Remove and get the first element in a list, or block until one is available.
@@ -231,11 +263,11 @@ Ballerina Redis connector supports the following list commands:
 - `rPush`: Append one or multiple values to a list.
 - `rPushX`: Append one or multiple values to a list, only if the list exists.
 
-## 3.4 Set Commands
+## 3.4 Set Operations
 
 Set Operations allow manipulation of sets in Redis.
 
-Ballerina Redis connector supports the following set commands:
+Ballerina Redis connector supports the following set operations:
 
 - `sAdd`: Add one or more members to a set.
 - `sCard`: Get the number of members in a set.
@@ -253,11 +285,11 @@ Ballerina Redis connector supports the following set commands:
 - `sUnion`: Return the union of multiple sets.
 - `sUnionStore`: Return the union of multiple sets and store it at the provided destination.
 
-## 3.5 Sorted Set Commands
+## 3.5 Sorted Set Operations
 
 Sorted Set operations allow manipulation of sorted sets in Redis.
 
-Ballerina Redis connector supports the following sorted set commands:
+Ballerina Redis connector supports the following sorted set operations:
 
 - `zAdd`: Add one or more members to a sorted set or update its score if it already exists.
 - `zCard`: Get the number of members in a sorted set.
@@ -280,11 +312,11 @@ Ballerina Redis connector supports the following sorted set commands:
 - `zScore`: Determine the score of a member in a sorted set.
 - `zUnionStore`: Union multiple sorted sets and store the resulting sorted set in a new key.
 
-## 3.6 String Commands
+## 3.6 String Operations
 
 String operations allow manipulation of string values in Redis.
 
-Ballerina Redis connector supports the following string commands:
+Ballerina Redis connector supports the following string operations:
 
 - `append`: Appends a value to a key.
 - `bitCount`: Counts set bits in a string.
@@ -312,12 +344,10 @@ Ballerina Redis connector supports the following string commands:
 - `setRange`: Overwrites part of a string at a key starting at the specified offset.
 - `strLen`: Gets the length of the value stored in a key.
 
-## 3.7 Cluster Commands
+## 3.7 Cluster Operations
 
-The Redis library supports cluster specific commands for Redis cluster operations.
+The Redis library supports cluster specific operations for Redis cluster operations.
 
-Ballerina Redis connector supports the following cluster commands:
+Ballerina Redis connector supports the following cluster operations:
 
 - `clusterInfo`: Retrieve information and statistics about the Redis Cluster observed by the current node.
-
-----
