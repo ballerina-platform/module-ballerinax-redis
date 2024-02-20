@@ -45,16 +45,14 @@ specification is considered a bug.
 
 # 1. Overview
 
-Redis (REmote DIctionary Server) is an open-source, in-memory data structure store that can be used as a database, cache, and message broker. 
-It supports various data structures such as strings, hashes, lists, sets, and more. Redis has its own protocol for communication between clients and the server.
+Redis (REmote DIctionary Server) is an open-source, in-memory data structure store that can be used as a database,
+cache, and message broker.
+It supports various data structures such as strings, hashes, lists, sets, and more. Redis has its own protocol for
+communication between clients and the server.
 
-The `Client` supports various Redis commands related to different data structures, such as key-value operations, list
-operations, and more.
-
-The client also supports connecting to Redis clusters, which allows working with multiple Redis nodes using a single
-client.
-
-It also comes with advanced connection features such as connection pooling, which allows reusing connections to the
+The Ballerina Redis client library supports a multitude of Redis operations related to different data structures, such as key-value operations, list
+operations, and more. The client also supports connecting to Redis clusters, which allows working with multiple Redis nodes using a single
+client. It also comes with the support for various connection features such as connection pooling, which allows reusing connections to the
 Redis server, and SSL/TLS encryption for secure communication with the Redis server.
 
 # 2. Client
@@ -174,8 +172,8 @@ lifetime.
 The existing connection pooling implementation for Redis is based on the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
 library.
 
-The `ConnectionConfig` has a `connectionPooling` field that can be set to `true` to enable connection pooling. 
-Currently, the connection pooling has limited configuration options, and the default pool size and other configurations 
+The `ConnectionConfig` has a `connectionPooling` field that can be set to `true` to enable connection pooling.
+Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
 
 ```ballerina
