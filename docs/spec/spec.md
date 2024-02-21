@@ -1,16 +1,15 @@
 # Specification: Ballerina Redis Library
 
-_Authors_: @NipunaRanasinghe
-_Reviewers_: @AyeshLK @AzeemMuzammil
-_Created_: 2022/02/19  
-_Updated_: 2022/02/19  
+_Authors_: @NipunaRanasinghe \
+_Reviewers_: @AyeshLK @AzeemMuzammil \
+_Created_: 2024/02/19 \
+_Updated_: 2024/02/19 \
 _Edition_: Swan Lake
 
 ## Introduction
 
-This specification outlines the functionality provided by the Redis connector for
-the [Ballerina language](https://ballerina.io/).
-The library facilitates interaction with Redis, enabling users to store, retrieve, and manipulate data using Ballerina.
+This is the specification for the Redis connector library of the [Ballerina language](https://ballerina.io),
+which provides a comprehensive set of operations to interact with Redis servers using Ballerina.
 
 The Redis library specification undergoes continuous refinement, and any updates are documented and released under
 relevant GitHub tags.
@@ -50,10 +49,11 @@ cache, and message broker.
 It supports various data structures such as strings, hashes, lists, sets, and more. Redis has its own protocol for
 communication between clients and the server.
 
-The Ballerina Redis client library supports a multitude of Redis operations related to different data structures, such as key-value operations, list
-operations, and more. The client also supports connecting to Redis clusters, which allows working with multiple Redis nodes using a single
-client. It also comes with the support for various connection features such as connection pooling, which allows reusing connections to the
-Redis server, and SSL/TLS encryption for secure communication with the Redis server.
+The Ballerina Redis client library supports a multitude of Redis operations related to different data structures, such
+as key-value operations, list operations, and more. The client also supports connecting to Redis clusters, which allows 
+working with multiple Redis nodes using a single client. It also comes with the support for various connection features 
+such as connection pooling, which allows reusing connections to the Redis server, and SSL/TLS encryption for secure 
+communication with the Redis server.
 
 # 2. Client
 
@@ -70,113 +70,103 @@ lifetime.
   #
   # + config - configuration for the connector
   # + return - `redis:Error` in case of failures or `nil` if successful. 
-  public isolated function init(*ConnectionConfig config) returns Error? {
-      check self.initClient(self, config);
-  }
+  public isolated function init(*ConnectionConfig config) returns redis:Error?;
   ```
 
 - Redis connection configurations are defined using the `ConnectionConfig` record, which contains the following fields:
   ```ballerina
   # The client endpoint configuration for Redis.
   #
-  # + connection - connection configuration for the Redis database
-  # + connectionPooling - whether connection pooling is enabled
-  # + isClusterConnection - whether the connection is a cluster connection
+  # + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
+  # + connectionPooling - Whether connection pooling is enabled
+  # + isClusterConnection - Whether the connection is a cluster connection
+  # + secureSocket - Configurations related to SSL/TLS encryption
   public type ConnectionConfig record {|
       ConnectionUri|ConnectionParams connection?;
       boolean connectionPooling = false;
       boolean isClusterConnection = false;
+      SecureSocket secureSocket?;
   |};
   ```
 
-- the connection parameters can be provided either as a single redis URI or, as individual parameters.
+- The connection parameters can be provided either as a single redis URI or, as individual parameters.
   The `ConnectionUri` and `ConnectionParams` records are defined as follows:
 
     1. Redis URI based configurations:
    ```ballerina
-   # The redis Connection URI based configurations. This can become useful when working with
+   # The redis Connection URI based configurations. This can become useful when working with 
    # managed Redis databases, where the cloud provider usually provides a connection URI.
    #
    # + uri - The connection URI for the Redis database
-   type ConnectionUri record {|
-       string uri;
-   |}; 
+   type ConnectionUri string;
    ```
 
     2. Redis connection parameters based configurations:
-   ```ballerina
+  ```ballerina
    # The connection parameters based configurations.
    #
-   # + host - host address of the Redis database
-   # + port - port of the Redis database
-   # + username - field description
+   # + host - Host address of the Redis database
+   # + port - Port of the Redis database
+   # + username - Field description
    # + password - The password for the Redis database
-   # + options - other connection options of the connection configuration
+   # + options - Other connection options of the connection configuration
    type ConnectionParams record {|
-     string host = "localhost";
-     int port = 6379;
-     string username?;
-     string password?;
-     Options options = {};
+       string host = "localhost";
+       int port = 6379;
+       string username?;
+       string password?; 
+       Options options = {};
    |};
-   ```
 
-  ```ballerina
-  # Connection options for Redis client endpoint.
-  #
-  # + secureSocket - configurations related to SSL/TLS encryption
-  # + clientName - name of the client
-  # + database - database index
-  # + connectionTimeout - connection timeout in seconds
-  public type Options record {|
-      SecureSocket secureSocket?;
-      string clientName?;
-      int database = -1;
-      int connectionTimeout = 60;
-  |};
-  ```
-  ```ballerina  
-  # Configurations for secure communication with the Redis server.
-  #
-  # + cert - configurations associated with `crypto:TrustStore` or single certificate file that the client trusts
-  # + key - configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client
-  # + protocols - list of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
-  # + ciphers - list of ciphers to be used for SSL connections
-  # + verifyPeer - whether peer verification is enabled
-  # + startTls - whether StartTLS is enabled
-  public type SecureSocket record {|
-      crypto:TrustStore|string cert;
-      crypto:KeyStore|CertKey key?;
-      string[] protocols?;
-      string[] ciphers?;
-      boolean verifyPeer?;
-      boolean startTls?;
-  |};
-  ```
-  ```ballerina
-  # Represents a combination of certificate, private key, and private key password if encrypted.
-  #
-  # + certFile - file containing the certificate
-  # + keyFile - file containing the private key in PKCS8 format
-  # + keyPassword - Password of the private key if it is encrypted
-  @display {label: "Certificate Key Configurations"}
-  public type CertKey record {|
-      string certFile;
-      string keyFile;
-      string keyPassword?;
-  |};
+   # Connection options for Redis client endpoint.
+   #
+   # + clientName - Name of the client
+   # + database - Database index which the client should interact with. Not applicable for cluster connections
+   # + connectionTimeout - Connection timeout in seconds
+   public type Options record {|
+       string clientName?;
+       int database = 0;
+       int connectionTimeout = 60;
+   |};
+  
+   # Configurations for secure communication with the Redis server.
+   #
+   # + cert - Configurations associated with `crypto:TrustStore` or single certificate file that the client trusts
+   # + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client
+   # + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
+   # + ciphers - List of ciphers to be used for SSL connections
+   # + verifyPeer - Whether peer verification is enabled
+   # + startTls - Whether StartTLS is enabled
+   public type SecureSocket record {|
+       crypto:TrustStore|string cert;
+       crypto:KeyStore|CertKey key?;
+       string[] protocols?;
+       string[] ciphers?;
+       boolean verifyPeer?;
+       boolean startTls?;
+   |};
+
+   # Represents a combination of certificate, private key, and private key password if encrypted.
+   #
+   # + certFile - File containing the certificate
+   # + keyFile - File containing the private key in PKCS8 format
+   # + keyPassword - Password of the private key if it is encrypted
+   public type CertKey record {|
+       string certFile;
+       string keyFile;
+       string keyPassword?;
+   |};
   ``` 
 
 ## 2.2. Handle connection pools
 
-The existing connection pooling implementation for Redis is based on the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
+The existing connection pooling implementation for Redis is based on
+the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
 library.
 
 The `ConnectionConfig` has a `connectionPooling` field that can be set to `true` to enable connection pooling.
 Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
-
-```ballerina
 
 ## 2.3. Close the client
 
@@ -263,7 +253,7 @@ Ballerina Redis connector supports the following list operations:
 
 ## 3.4 Set Operations
 
-Set Operations allow manipulation of sets in Redis.
+Set operations allow manipulation of sets in Redis.
 
 Ballerina Redis connector supports the following set operations:
 
