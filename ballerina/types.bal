@@ -18,8 +18,8 @@ import ballerina/crypto;
 # The client endpoint configuration for Redis.
 #
 # + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
-# + connectionPooling - Whether connection pooling is enabled
-# + isClusterConnection - Whether the connection is a cluster connection
+# + connectionPooling - Flag to indicate whether connection pooling is enabled
+# + isClusterConnection - Flag to indicate whether the connection is a cluster connection
 # + secureSocket - Configurations related to SSL/TLS encryption
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
@@ -37,7 +37,7 @@ public type ConnectionConfig record {|
 #
 # + host - Host address of the Redis database  
 # + port - Port of the Redis database  
-# + username - Field description  
+# + username - The username for the Redis database
 # + password - The password for the Redis database  
 # + options - Other connection options of the connection configuration
 @display {label: "Connection Parameters"}

@@ -227,29 +227,15 @@ public class RedisConnectionManager<K, V> {
 
     private void setRedisStandaloneCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
-        RedisClient redisClient;
         if (connectionConfig instanceof ConnectionURI uriConfig) {
             redisURI = RedisURI.create(uriConfig.uri());
-            redisClient = RedisClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
-            SecureSocket secureSocket = connectionParams.secureSocket();
-            if (secureSocket != null) {
-                redisURI.setSsl(true);
-                redisURI.setVerifyPeer(secureSocket.verifyPeer());
-                redisURI.setStartTls(secureSocket.startTls());
-                redisClient = RedisClient.create(redisURI);
-
-                SslOptions sslOptions = constructSslOptions(secureSocket);
-                ClientOptions clientOptions = ClientOptions.builder().sslOptions(sslOptions).build();
-                redisClient.setOptions(clientOptions);
-            } else {
-                redisClient = RedisClient.create(redisURI);
-            }
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
 
+        RedisClient redisClient = initializeClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -261,29 +247,15 @@ public class RedisConnectionManager<K, V> {
 
     private void setRedisClusterCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
         RedisURI redisURI;
-        RedisClusterClient redisClusterClient;
         if (connectionConfig instanceof ConnectionURI uriConfig) {
             redisURI = RedisURI.create(uriConfig.uri());
-            redisClusterClient = RedisClusterClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
-            SecureSocket secureSocket = connectionParams.secureSocket();
-            if (secureSocket != null) {
-                redisURI.setSsl(true);
-                redisURI.setVerifyPeer(secureSocket.verifyPeer());
-                redisURI.setStartTls(secureSocket.startTls());
-                redisClusterClient = RedisClusterClient.create(redisURI);
-
-                SslOptions sslOptions = constructSslOptions(secureSocket);
-                ClusterClientOptions clientOptions = ClusterClientOptions.builder().sslOptions(sslOptions).build();
-                redisClusterClient.setOptions(clientOptions);
-            } else {
-                redisClusterClient = RedisClusterClient.create(redisURI);
-            }
         } else {
             throw new RedisConnectorException("Invalid connection configuration provided");
         }
 
+        RedisClusterClient redisClusterClient = initializeClusterClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -351,6 +323,40 @@ public class RedisConnectionManager<K, V> {
         } else {
             return getRedisCommands();
         }
+    }
+
+    private RedisClient initializeClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
+        SecureSocket secureSocket = connectionConfig.secureSocket();
+        if (secureSocket == null) {
+            return RedisClient.create(redisURI);
+        }
+
+        redisURI.setSsl(true);
+        redisURI.setVerifyPeer(secureSocket.verifyPeer());
+        redisURI.setStartTls(secureSocket.startTls());
+        RedisClient redisClient = RedisClient.create(redisURI);
+
+        SslOptions sslOptions = constructSslOptions(secureSocket);
+        ClientOptions clientOptions = ClientOptions.builder().sslOptions(sslOptions).build();
+        redisClient.setOptions(clientOptions);
+        return redisClient;
+    }
+
+    private RedisClusterClient initializeClusterClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
+        SecureSocket secureSocket = connectionConfig.secureSocket();
+        if (secureSocket == null) {
+            return RedisClusterClient.create(redisURI);
+        }
+
+        redisURI.setSsl(true);
+        redisURI.setVerifyPeer(secureSocket.verifyPeer());
+        redisURI.setStartTls(secureSocket.startTls());
+        RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
+
+        SslOptions sslOptions = constructSslOptions(secureSocket);
+        ClusterClientOptions clientOptions = ClusterClientOptions.builder().sslOptions(sslOptions).build();
+        redisClient.setOptions(clientOptions);
+        return redisClient;
     }
 
     private SslOptions constructSslOptions(SecureSocket secureSocket) {
