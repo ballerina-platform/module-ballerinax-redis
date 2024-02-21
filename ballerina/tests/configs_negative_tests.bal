@@ -16,8 +16,8 @@
 import ballerina/test;
 
 @test:Config {}
-function testInvalidRedisUrl() {
-    Client|Error initResult = new (connection = {uri: "invalidscheme://localhost:6379"});
+function testInvalidSchemaInRedisUri() {
+    Client|Error initResult = new (connection = "invalidscheme://localhost:6379");
     test:assertTrue(initResult is Error);
     if initResult is Error {
         test:assertEquals(initResult.message(), "Error while initializing the redis client: Scheme invalidscheme not supported");
@@ -25,8 +25,8 @@ function testInvalidRedisUrl() {
 }
 
 @test:Config {}
-function testInvalidHost() {
-    Client|Error initResult = new (connection = {uri: "redis://invalidhost:6379"});
+function testInvalidHostInRedisUri() {
+    Client|Error initResult = new (connection = "redis://invalidhost:6379");
     test:assertTrue(initResult is Error);
     if initResult is Error {
         test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to invalidhost/<unresolved>:6379");
@@ -34,8 +34,8 @@ function testInvalidHost() {
 }
 
 @test:Config {}
-function testInvalidPort() {
-    Client|Error initResult = new (connection = {uri: "redis://localhost:6380"});
+function testInvalidPortInRedisUri() {
+    Client|Error initResult = new (connection = "redis://localhost:6380");
     test:assertTrue(initResult is Error);
     if initResult is Error {
         test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6380");

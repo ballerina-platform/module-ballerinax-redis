@@ -38,4 +38,11 @@ public interface ConnectionConfig {
      * @return true if pooling is enabled, false otherwise
      */
     boolean poolingEnabled();
+
+    /**
+     * Get secure socket options.
+     *
+     * @return connection options
+     */
+    SecureSocket secureSocket();
 }

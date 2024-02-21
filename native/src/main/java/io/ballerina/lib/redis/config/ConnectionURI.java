@@ -24,9 +24,10 @@ package io.ballerina.lib.redis.config;
  * @param uri                 redis URI string
  * @param isClusterConnection whether the connection is a cluster connection
  * @param poolingEnabled      whether pooling is enabled
+ * @param secureSocket        secure socket configurations
  * @since 3.0.0
  */
-public record ConnectionURI(String uri, boolean isClusterConnection, boolean poolingEnabled)
+public record ConnectionURI(String uri, boolean isClusterConnection, boolean poolingEnabled, SecureSocket secureSocket)
         implements ConnectionConfig {
 
 }

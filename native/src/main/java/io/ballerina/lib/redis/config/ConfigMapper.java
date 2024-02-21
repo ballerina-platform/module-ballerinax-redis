@@ -76,19 +76,20 @@ public final class ConfigMapper {
     public static ConnectionConfig from(BMap<BString, Object> config) {
         boolean isClusterConnection = config.getBooleanValue(CONFIG_IS_CLUSTER_CONNECTION);
         boolean poolingEnabled = config.getBooleanValue(CONFIG_POOLING_ENABLED);
+        SecureSocket secureSocket = getSecureSocketFromBObject(config);
 
-        BMap<BString, Object> connection = (BMap<BString, Object>) config.getMapValue(CONFIG_CONNECTION);
-        if (isConnectionStringConfig(connection)) {
-            return new ConnectionURI(connection.getStringValue(CONFIG_URI).getValue(), isClusterConnection,
-                    poolingEnabled);
+        Object connection = config.get(CONFIG_CONNECTION);
+        if (connection instanceof BString connectionUri) {
+            return new ConnectionURI(connectionUri.getValue(), isClusterConnection, poolingEnabled, secureSocket);
         } else {
-            String host = connection.getStringValue(CONFIG_HOST).getValue();
-            int port = connection.getIntValue(CONFIG_PORT).intValue();
-            String username = getStringValueOrDefault(connection.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
-            String password = getStringValueOrDefault(connection.getStringValue(CONFIG_PASSWORD), EMPTY_STRING);
-            BMap<BString, Object> options = (BMap<BString, Object>) connection.getMapValue(CONFIG_OPTIONS);
+            BMap<BString, Object> connectionParams = (BMap<BString, Object>) connection;
+            String host = connectionParams.getStringValue(CONFIG_HOST).getValue();
+            int port = connectionParams.getIntValue(CONFIG_PORT).intValue();
+            String username = getStringValueOrDefault(connectionParams.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
+            String password = getStringValueOrDefault(connectionParams.getStringValue(CONFIG_PASSWORD), EMPTY_STRING);
+            BMap<BString, Object> options = (BMap<BString, Object>) connectionParams.getMapValue(CONFIG_OPTIONS);
             return new ConnectionParams(host, port, username, password, isClusterConnection, poolingEnabled,
-                    getConnectionOptionsFromBObject(options));
+                    secureSocket, getConnectionOptionsFromBObject(options));
         }
     }
 
@@ -97,7 +98,7 @@ public final class ConfigMapper {
         int connectionTimeout = connection.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
         String clientName = getStringValueOrDefault(connection.getStringValue(CONFIG_CLIENT_NAME), EMPTY_STRING);
 
-        return new Options(clientName, database, connectionTimeout, getSecureSocketFromBObject(connection));
+        return new Options(clientName, database, connectionTimeout);
     }
 
     private static SecureSocket getSecureSocketFromBObject(BMap<BString, Object> connection) {

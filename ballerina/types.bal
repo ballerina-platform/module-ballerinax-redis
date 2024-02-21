@@ -17,9 +17,10 @@ import ballerina/crypto;
 
 # The client endpoint configuration for Redis.
 #
-# + connection - connection configuration for the Redis database
-# + connectionPooling - whether connection pooling is enabled
-# + isClusterConnection - whether the connection is a cluster connection
+# + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
+# + connectionPooling - Whether connection pooling is enabled
+# + isClusterConnection - Whether the connection is a cluster connection
+# + secureSocket - Configurations related to SSL/TLS encryption
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     @display {label: "Connection Type"}
@@ -28,15 +29,17 @@ public type ConnectionConfig record {|
     boolean connectionPooling = false;
     @display {label: "Cluster Mode Enabled"}
     boolean isClusterConnection = false;
+    @display {label: "Secure Socket Configurations"}
+    SecureSocket secureSocket?;
 |};
 
 # The connection parameters based configurations.
 #
-# + host - host address of the Redis database  
-# + port - port of the Redis database  
-# + username - field description  
+# + host - Host address of the Redis database  
+# + port - Port of the Redis database  
+# + username - Field description  
 # + password - The password for the Redis database  
-# + options - other connection options of the connection configuration
+# + options - Other connection options of the connection configuration
 @display {label: "Connection Parameters"}
 type ConnectionParams record {|
     @display {label: "Host"}
@@ -56,36 +59,31 @@ type ConnectionParams record {|
 #
 # + uri - The connection URI for the Redis database
 @display {label: "Connection URI"}
-type ConnectionUri record {|
-    string uri;
-|};
+type ConnectionUri string;
 
 # Connection options for Redis client endpoint.
 #
-# + secureSocket - configurations related to SSL/TLS encryption
-# + clientName - name of the client
-# + database - database index
-# + connectionTimeout - connection timeout in seconds
+# + clientName - Name of the client
+# + database - Database index which the client should interact with. Not applicable for cluster connections
+# + connectionTimeout - Connection timeout in seconds
 @display {label: "Connection Options"}
 public type Options record {|
-    @display {label: "Secure Socket Configurations"}
-    SecureSocket secureSocket?;
     @display {label: "Client Name"}
     string clientName?;
-    @display {label: "Database"}
-    int database = -1;
+    @display {label: "Database Index"}
+    int database = 0;
     @display {label: "Connection Timeout"}
     int connectionTimeout = 60;
 |};
 
 # Configurations for secure communication with the Redis server.
 #
-# + cert - configurations associated with `crypto:TrustStore` or single certificate file that the client trusts  
-# + key - configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client  
-# + protocols - list of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
-# + ciphers - list of ciphers to be used for SSL connections
-# + verifyPeer - whether peer verification is enabled
-# + startTls - whether StartTLS is enabled
+# + cert - Configurations associated with `crypto:TrustStore` or single certificate file that the client trusts  
+# + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client  
+# + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
+# + ciphers - List of ciphers to be used for SSL connections
+# + verifyPeer - Whether peer verification is enabled
+# + startTls - Whether StartTLS is enabled
 @display {label: "Secure Socket Configurations"}
 public type SecureSocket record {|
     @display {label: "Certificate"}
@@ -104,8 +102,8 @@ public type SecureSocket record {|
 
 # Represents a combination of certificate, private key, and private key password if encrypted.
 #
-# + certFile - file containing the certificate
-# + keyFile - file containing the private key in PKCS8 format
+# + certFile - File containing the certificate
+# + keyFile - File containing the private key in PKCS8 format
 # + keyPassword - Password of the private key if it is encrypted
 @display {label: "Certificate Key Configurations"}
 public type CertKey record {|

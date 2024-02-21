@@ -233,7 +233,7 @@ public class RedisConnectionManager<K, V> {
             redisClient = RedisClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
-            SecureSocket secureSocket = connectionParams.options().secureSocket();
+            SecureSocket secureSocket = connectionParams.secureSocket();
             if (secureSocket != null) {
                 redisURI.setSsl(true);
                 redisURI.setVerifyPeer(secureSocket.verifyPeer());
@@ -267,7 +267,7 @@ public class RedisConnectionManager<K, V> {
             redisClusterClient = RedisClusterClient.create(redisURI);
         } else if (connectionConfig instanceof ConnectionParams connectionParams) {
             redisURI = constructRedisUri(connectionParams);
-            SecureSocket secureSocket = connectionParams.options().secureSocket();
+            SecureSocket secureSocket = connectionParams.secureSocket();
             if (secureSocket != null) {
                 redisURI.setSsl(true);
                 redisURI.setVerifyPeer(secureSocket.verifyPeer());
