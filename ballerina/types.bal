@@ -87,7 +87,7 @@ public type Options record {|
 @display {label: "Secure Socket Configurations"}
 public type SecureSocket record {|
     @display {label: "Certificate"}
-    crypto:TrustStore|string cert;
+    crypto:TrustStore|string cert?;
     @display {label: "Key"}
     crypto:KeyStore|CertKey key?;
     @display {label: "Protocols to be used for the connection to the Redis Server"}
@@ -95,7 +95,7 @@ public type SecureSocket record {|
     @display {label: "Ciphers"}
     string[] ciphers?;
     @display {label: "Peer Verification Mode"}
-    SslVerifyMode verifyMode = NONE;
+    SslVerifyMode verifyMode = FULL;
     @display {label: "StartTLS Enabled"}
     boolean startTls = false;
 |};
