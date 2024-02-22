@@ -18,20 +18,22 @@
 
 package io.ballerina.lib.redis.config;
 
+import io.lettuce.core.SslVerifyMode;
+
 /**
  * Represents Redis connection secure socket configurations.
  *
  * @param trustStoreCert trust store certificate
- * @param strCert        certificate in string format
+ * @param certPath       certificate path
  * @param keyStore       key store
  * @param CertKey        certificate and private key
  * @param protocols      SSL/TLS protocols
  * @param ciphers        SSL/TLS ciphers
- * @param verifyPeer     whether to verify the peer
+ * @param verifyMode     SSL/TLS verification mode
  * @param startTls       whether to enable startTLS
  * @since 3.0.0
  */
-public record SecureSocket(TrustStore trustStoreCert, String strCert, KeyStore keyStore, CertKey CertKey,
-                           String[] protocols, String[] ciphers, boolean verifyPeer, boolean startTls) {
+public record SecureSocket(TrustStore trustStoreCert, String certPath, KeyStore keyStore, CertKey CertKey,
+                           String[] protocols, String[] ciphers, SslVerifyMode verifyMode, boolean startTls) {
 
 }

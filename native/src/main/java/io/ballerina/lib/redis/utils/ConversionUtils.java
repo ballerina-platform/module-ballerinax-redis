@@ -184,13 +184,40 @@ public class ConversionUtils {
     }
 
     /**
-     * Returns the string value of a Ballerina string value or a default value if the Ballerina string value is null.
+     * Returns the map value from a Ballerina map for a given key or, null if a non-map value is found.
      *
-     * @param value        the Ballerina string value
-     * @param defaultValue the default value
-     * @return the string value
+     * @param map the Ballerina map value
+     * @param key the key
+     * @return the map value or null
      */
-    public static String getStringValueOrDefault(BString value, String defaultValue) {
-        return value != null ? value.getValue() : defaultValue;
+    public static BMap<BString, Object> getMapValueOrNull(BMap<BString, Object> map, BString key) {
+        if (map == null) {
+            return null;
+        }
+
+        try {
+            return (BMap<BString, Object>) map.getMapValue(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the string value from a Ballerina map for a given key or, null if a non-string value is found.
+     *
+     * @param map the Ballerina map value
+     * @param key the key
+     * @return the string value or null
+     */
+    public static String getStringValueOrNull(BMap<BString, Object> map, BString key) {
+        if (map == null) {
+            return null;
+        }
+
+        try {
+            return map.getStringValue(key).getValue();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

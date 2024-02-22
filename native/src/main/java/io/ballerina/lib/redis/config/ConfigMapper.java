@@ -23,9 +23,10 @@ import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
+import io.lettuce.core.SslVerifyMode;
 
-import static io.ballerina.lib.redis.utils.Constants.EMPTY_STRING;
-import static io.ballerina.lib.redis.utils.ConversionUtils.getStringValueOrDefault;
+import static io.ballerina.lib.redis.utils.ConversionUtils.getMapValueOrNull;
+import static io.ballerina.lib.redis.utils.ConversionUtils.getStringValueOrNull;
 
 /**
  * This class maps the Ballerina Redis client config to the Java Redis client config.
@@ -61,7 +62,7 @@ public final class ConfigMapper {
     public static final BString CONFIG_KEY_PASSWORD = StringUtils.fromString("keyPassword");
     private static final BString CONFIG_PROTOCOLS = StringUtils.fromString("protocols");
     private static final BString CONFIG_CIPHERS = StringUtils.fromString("ciphers");
-    private static final BString CONFIG_VERIFY_PEER_ENABLED = StringUtils.fromString("verifyPeer");
+    private static final BString VERIFY_MODE = StringUtils.fromString("verifyMode");
     private static final BString CONFIG_START_TLS_ENABLED = StringUtils.fromString("startTls");
 
     private ConfigMapper() {
@@ -85,9 +86,10 @@ public final class ConfigMapper {
             BMap<BString, Object> connectionParams = (BMap<BString, Object>) connection;
             String host = connectionParams.getStringValue(CONFIG_HOST).getValue();
             int port = connectionParams.getIntValue(CONFIG_PORT).intValue();
-            String username = getStringValueOrDefault(connectionParams.getStringValue(CONFIG_USERNAME), EMPTY_STRING);
-            String password = getStringValueOrDefault(connectionParams.getStringValue(CONFIG_PASSWORD), EMPTY_STRING);
-            BMap<BString, Object> options = (BMap<BString, Object>) connectionParams.getMapValue(CONFIG_OPTIONS);
+            String username = getStringValueOrNull(connectionParams, CONFIG_USERNAME);
+            String password = getStringValueOrNull(connectionParams, CONFIG_PASSWORD);
+            BMap<BString, Object> options = getMapValueOrNull(connectionParams, CONFIG_OPTIONS);
+
             return new ConnectionParams(host, port, username, password, isClusterConnection, poolingEnabled,
                     secureSocket, getConnectionOptionsFromBObject(options));
         }
@@ -96,24 +98,24 @@ public final class ConfigMapper {
     private static Options getConnectionOptionsFromBObject(BMap<BString, Object> connection) {
         int database = connection.getIntValue(CONFIG_DATABASE).intValue();
         int connectionTimeout = connection.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
-        String clientName = getStringValueOrDefault(connection.getStringValue(CONFIG_CLIENT_NAME), EMPTY_STRING);
+        String clientName = getStringValueOrNull(connection, CONFIG_CLIENT_NAME);
 
         return new Options(clientName, database, connectionTimeout);
     }
 
     private static SecureSocket getSecureSocketFromBObject(BMap<BString, Object> connection) {
-        BMap<BString, Object> secureSocket = (BMap<BString, Object>) connection.getMapValue(CONFIG_SECURE_SOCKET);
+        BMap<BString, Object> secureSocket = getMapValueOrNull(connection, CONFIG_SECURE_SOCKET);
         if (secureSocket == null) {
             return null;
         }
 
-        String certPath = getStringValueOrDefault(secureSocket.getStringValue(CONFIG_CERT), null);
-        BMap<BString, Object> trustStoreMap = (BMap<BString, Object>) secureSocket.getMapValue(CONFIG_CERT);
+        String certPath = getStringValueOrNull(secureSocket, CONFIG_CERT);
+        BMap<BString, Object> trustStoreMap = getMapValueOrNull(secureSocket, CONFIG_CERT);
         TrustStore trustStore = trustStoreMap != null ? getTrustStoreFromBObject(trustStoreMap) : null;
 
         KeyStore keyStore = null;
         CertKey certKey = null;
-        BMap<BString, Object> keyMap = (BMap<BString, Object>) secureSocket.getMapValue(CONFIG_KEY);
+        BMap<BString, Object> keyMap = getMapValueOrNull(secureSocket, CONFIG_KEY);
         if (isKeyStoreConfig(keyMap)) {
             keyStore = getKeyStoreFromBObject(keyMap);
         } else if (isCertKeyConfig(keyMap)) {
@@ -126,18 +128,19 @@ public final class ConfigMapper {
         BArray ciphersBArr = secureSocket.getArrayValue(CONFIG_CIPHERS);
         String[] ciphers = ciphersBArr != null ? ConversionUtils.createStringArrayFromBArray(ciphersBArr) : null;
 
-        Boolean verifyPeer = secureSocket.getBooleanValue(CONFIG_VERIFY_PEER_ENABLED);
-        verifyPeer = verifyPeer != null ? verifyPeer : false;
+        String verifyModeStr = getStringValueOrNull(secureSocket, VERIFY_MODE);
+        SslVerifyMode verifyMode = verifyModeStr != null ? SslVerifyMode.valueOf(verifyModeStr) : null;
         Boolean startTLS = secureSocket.getBooleanValue(CONFIG_START_TLS_ENABLED);
         startTLS = startTLS != null ? startTLS : false;
 
-        return new SecureSocket(trustStore, certPath, keyStore, certKey, protocols, ciphers, verifyPeer, startTLS);
+        return new SecureSocket(trustStore, certPath, keyStore, certKey, protocols, ciphers, verifyMode, startTLS);
     }
 
     private static CertKey getCertKeyFromBObject(BMap<BString, Object> keyMap) {
         BString certFile = keyMap.getStringValue(CONFIG_CERT_FILE);
         BString keyFile = keyMap.getStringValue(CONFIG_KEY_FILE);
         BString keyPassword = keyMap.getStringValue(CONFIG_KEY_PASSWORD);
+
         return new CertKey(certFile.getValue(), keyFile.getValue(), keyPassword.getValue());
     }
 
@@ -161,10 +164,7 @@ public final class ConfigMapper {
         }
         BString path = keyStoreObj.getStringValue(CONFIG_KEY_STORE_PATH);
         BString password = keyStoreObj.getStringValue(CONFIG_KEY_STORE_PASSWORD);
-        return new KeyStore(path.getValue(), password.getValue());
-    }
 
-    private static boolean isConnectionStringConfig(BMap<BString, Object> connection) {
-        return connection.containsKey(CONFIG_URI);
+        return new KeyStore(path.getValue(), password.getValue());
     }
 }

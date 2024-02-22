@@ -82,7 +82,7 @@ public type Options record {|
 # + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client  
 # + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
 # + ciphers - List of ciphers to be used for SSL connections
-# + verifyPeer - Whether peer verification is enabled
+# + verifyMode - The SSL/TLS verification mode. This can be either NONE, CA, or FULL.
 # + startTls - Whether StartTLS is enabled
 @display {label: "Secure Socket Configurations"}
 public type SecureSocket record {|
@@ -94,10 +94,10 @@ public type SecureSocket record {|
     string[] protocols?;
     @display {label: "Ciphers"}
     string[] ciphers?;
-    @display {label: "Peer Verification Enabled"}
-    boolean verifyPeer?;
+    @display {label: "Peer Verification Mode"}
+    SslVerifyMode verifyMode = NONE;
     @display {label: "StartTLS Enabled"}
-    boolean startTls?;
+    boolean startTls = false;
 |};
 
 # Represents a combination of certificate, private key, and private key password if encrypted.
@@ -114,3 +114,14 @@ public type CertKey record {|
     @display {label: "Private Key Password"}
     string keyPassword?;
 |};
+
+# Represents the SSL/TLS verification mode.
+#
+# + NONE - No verification
+# + CA - Verify the server's certificate against the provided CA certificates
+# + FULL - Verify the server's certificate against the provided CA certificates and also verify the server's hostname
+public enum SslVerifyMode {
+    NONE,
+    CA,
+    FULL
+}

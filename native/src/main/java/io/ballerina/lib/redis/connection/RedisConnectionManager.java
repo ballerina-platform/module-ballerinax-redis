@@ -332,7 +332,7 @@ public class RedisConnectionManager<K, V> {
         }
 
         redisURI.setSsl(true);
-        redisURI.setVerifyPeer(secureSocket.verifyPeer());
+        redisURI.setVerifyPeer(secureSocket.verifyMode());
         redisURI.setStartTls(secureSocket.startTls());
         RedisClient redisClient = RedisClient.create(redisURI);
 
@@ -349,7 +349,7 @@ public class RedisConnectionManager<K, V> {
         }
 
         redisURI.setSsl(true);
-        redisURI.setVerifyPeer(secureSocket.verifyPeer());
+        redisURI.setVerifyPeer(secureSocket.verifyMode());
         redisURI.setStartTls(secureSocket.startTls());
         RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
 
@@ -368,7 +368,7 @@ public class RedisConnectionManager<K, V> {
             sslOptionsBuilder.truststore(new File(trustStore.trustStorePath()), trustStore.trustStorePassword());
         }
 
-        String certPath = secureSocket.strCert();
+        String certPath = secureSocket.certPath();
         if (certPath != null) {
             sslOptionsBuilder.truststore(new File(certPath));
         }
