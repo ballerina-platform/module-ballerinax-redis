@@ -37,7 +37,6 @@ public final class ConfigMapper {
 
     // Redis client config names as Ballerina string objects
     public static final BString CONFIG_CONNECTION = StringUtils.fromString("connection");
-    public static final BString CONFIG_URI = StringUtils.fromString("uri");
     public static final BString CONFIG_HOST = StringUtils.fromString("host");
     public static final BString CONFIG_PORT = StringUtils.fromString("port");
     public static final BString CONFIG_USERNAME = StringUtils.fromString("username");
@@ -137,11 +136,11 @@ public final class ConfigMapper {
     }
 
     private static CertKey getCertKeyFromBObject(BMap<BString, Object> keyMap) {
-        BString certFile = keyMap.getStringValue(CONFIG_CERT_FILE);
-        BString keyFile = keyMap.getStringValue(CONFIG_KEY_FILE);
-        BString keyPassword = keyMap.getStringValue(CONFIG_KEY_PASSWORD);
+        String certFile = getStringValueOrNull(keyMap, CONFIG_CERT_FILE);
+        String keyFile = getStringValueOrNull(keyMap, CONFIG_KEY_FILE);
+        String keyPassword = getStringValueOrNull(keyMap, CONFIG_KEY_PASSWORD);
 
-        return new CertKey(certFile.getValue(), keyFile.getValue(), keyPassword.getValue());
+        return new CertKey(certFile, keyFile, keyPassword);
     }
 
     private static boolean isCertKeyConfig(BMap<BString, Object> keyMap) {
@@ -153,18 +152,22 @@ public final class ConfigMapper {
     }
 
     private static TrustStore getTrustStoreFromBObject(BMap<BString, Object> trustStoreObj) {
-        BString path = trustStoreObj.getStringValue(CONFIG_TRUST_STORE_PATH);
-        BString password = trustStoreObj.getStringValue(CONFIG_TRUST_STORE_PASSWORD);
-        return new TrustStore(path.getValue(), password.getValue());
+        if (trustStoreObj == null) {
+            return null;
+        }
+        String path = getStringValueOrNull(trustStoreObj, CONFIG_TRUST_STORE_PATH);
+        String password = getStringValueOrNull(trustStoreObj, CONFIG_TRUST_STORE_PASSWORD);
+
+        return new TrustStore(path, password);
     }
 
     private static KeyStore getKeyStoreFromBObject(BMap<BString, Object> keyStoreObj) {
         if (keyStoreObj == null) {
             return null;
         }
-        BString path = keyStoreObj.getStringValue(CONFIG_KEY_STORE_PATH);
-        BString password = keyStoreObj.getStringValue(CONFIG_KEY_STORE_PASSWORD);
+        String path = getStringValueOrNull(keyStoreObj, CONFIG_KEY_STORE_PATH);
+        String password = getStringValueOrNull(keyStoreObj, CONFIG_KEY_STORE_PASSWORD);
 
-        return new KeyStore(path.getValue(), password.getValue());
+        return new KeyStore(path, password);
     }
 }

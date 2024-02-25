@@ -15,7 +15,9 @@
 // under the License.
 import ballerina/test;
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testInvalidSchemaInRedisUri() {
     Client|Error initResult = new (connection = "invalidscheme://localhost:6379");
     test:assertTrue(initResult is Error);
@@ -24,7 +26,9 @@ function testInvalidSchemaInRedisUri() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testInvalidHostInRedisUri() {
     Client|Error initResult = new (connection = "redis://invalidhost:6379");
     test:assertTrue(initResult is Error);
@@ -33,11 +37,13 @@ function testInvalidHostInRedisUri() {
     }
 }
 
-@test:Config {}
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testInvalidPortInRedisUri() {
-    Client|Error initResult = new (connection = "redis://localhost:6380");
+    Client|Error initResult = new (connection = "redis://localhost:6");
     test:assertTrue(initResult is Error);
     if initResult is Error {
-        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6380");
+        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6");
     }
 }

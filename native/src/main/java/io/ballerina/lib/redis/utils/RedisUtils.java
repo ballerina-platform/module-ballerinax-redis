@@ -29,6 +29,7 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 
+import static io.ballerina.lib.redis.utils.Codec.STRING_CODEC;
 import static io.ballerina.lib.redis.utils.Constants.CONN_OBJ;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
 
@@ -48,44 +49,28 @@ public class RedisUtils {
     public static Object initClient(BObject client, BMap<BString, Object> config) {
         try {
             ConnectionConfig connectionConfig = ConfigMapper.from(config);
-            RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
+            RedisCodec<?, ?> codec = retrieveRedisCodec(STRING_CODEC);
             RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec);
             connectionManager.init(connectionConfig);
             client.addNativeData(CONN_OBJ, connectionManager);
             return null;
         } catch (Throwable e) {
             String errMsg = "Error while initializing the redis client: " + e.getMessage();
-            return createBError(new RedisConnectorException(errMsg, e));
+            return createBError(new RedisConnectorException(errMsg, e.getCause()));
         }
     }
 
     /**
      * Retrieve redis codec.
      *
-     * @param codecString codec string
      * @return redis codec
      */
-    public static RedisCodec<?, ?> retrieveRedisCodec(String codecString) {
-        Codec codec = retrieveCodec(codecString);
+    public static RedisCodec<?, ?> retrieveRedisCodec(Codec codec) {
         return switch (codec) {
             case BYTE_ARRAY_CODEC -> new ByteArrayCodec();
             case STRING_CODEC -> new StringCodec();
             case UTF8_STRING_CODEC -> new Utf8StringCodec();
         };
-    }
-
-    /**
-     * Retreive a codec name.
-     *
-     * @param codecString codec string
-     * @return codec name
-     */
-    private static Codec retrieveCodec(String codecString) {
-        try {
-            return Codec.fromCodecName(codecString);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Unsupported Codec: " + codecString);
-        }
     }
 
     /**

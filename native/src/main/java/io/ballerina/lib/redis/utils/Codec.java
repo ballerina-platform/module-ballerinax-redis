@@ -18,41 +18,11 @@
 
 package io.ballerina.lib.redis.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
  */
 enum Codec {
-
-    BYTE_ARRAY_CODEC("ByteArrayCodec"),
-    STRING_CODEC("StringCodec"),
-    UTF8_STRING_CODEC("Utf8StringCodec");
-
-    static final Map<String, Codec> CODEC_MAP = new HashMap<>(3);
-    final String codec;
-
-    static {
-        Codec[] codecs = values();
-        for (Codec codec : codecs) {
-            CODEC_MAP.put(codec.getCodecName(), codec);
-        }
-    }
-
-    Codec(String codec) {
-        this.codec = codec;
-    }
-
-    static Codec fromCodecName(String codecName) {
-        Codec codec = CODEC_MAP.get(codecName);
-        if (codec == null) {
-            throw new IllegalArgumentException("Unsupported Codec: " + codecName);
-        }
-        return codec;
-    }
-
-    public String getCodecName() {
-        return codec;
-    }
+    BYTE_ARRAY_CODEC,
+    STRING_CODEC,
+    UTF8_STRING_CODEC
 }

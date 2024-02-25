@@ -370,7 +370,7 @@ public class RedisConnectionManager<K, V> {
 
         String certPath = secureSocket.certPath();
         if (certPath != null) {
-            sslOptionsBuilder.truststore(new File(certPath));
+            sslOptionsBuilder.trustManager(new File(certPath));
         }
 
         KeyStore keyStore = secureSocket.keyStore();

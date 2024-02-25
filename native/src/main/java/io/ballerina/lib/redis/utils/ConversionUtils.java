@@ -180,7 +180,7 @@ public class ConversionUtils {
     public static BError createBError(Throwable e) {
         return ErrorCreator.createError(ModuleUtils.getModule(), Constants.REDIS_ERROR_TYPE,
                 StringUtils.fromString(e.getMessage()),
-                ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+                e.getCause() != null ? ErrorCreator.createError(e.getCause()) : null, null);
     }
 
     /**
