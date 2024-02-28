@@ -23,7 +23,7 @@ function testSecureSocketWithoutCert() returns error? {
         return;
     }
 
-    Client redis = check new (
+    Client rediss = check new (
         connection = {
             host: "localhost",
             port: 6380
@@ -33,10 +33,10 @@ function testSecureSocketWithoutCert() returns error? {
         }
     );
 
-    string ping = check redis->ping();
+    string ping = check rediss->ping();
     test:assertEquals(ping, "PONG");
 
-    check redis.close();
+    check rediss.close();
 }
 
 @test:Config {
@@ -47,7 +47,7 @@ function testSecureSocketWithCert() returns error? {
         return;
     }
 
-    Client redis = check new (
+    Client rediss = check new (
         connection = {
             host: "localhost",
             port: 6380
@@ -57,8 +57,94 @@ function testSecureSocketWithCert() returns error? {
         }
     );
 
-    string ping = check redis->ping();
+    string ping = check rediss->ping();
     test:assertEquals(ping, "PONG");
 
-    check redis.close();
+    check rediss.close();
+}
+
+@test:Config {
+    groups: ["standalone"]
+}
+function testSecureSocketWithTrustStore() returns error? {
+    if clusterMode {
+        return;
+    }
+
+    Client rediss = check new (
+        connection = {
+            host: "localhost",
+            port: 6380
+        },
+        secureSocket = {
+            cert: {
+                path: "./tests/resources/docker/secrets/clientTrustStore.p12",
+                password: "password"
+            }
+        }
+    );
+
+    string ping = check rediss->ping();
+    test:assertEquals(ping, "PONG");
+
+    check rediss.close();
+}
+
+@test:Config {
+    groups: ["standalone"]
+}
+function testMutualSecureSocketWithTrustStoreKeyStore() returns error? {
+    if clusterMode {
+        return;
+    }
+
+    Client rediss = check new (
+        connection = {
+            host: "localhost",
+            port: 6380
+        },
+        secureSocket = {
+            cert: {
+                path: "./tests/resources/docker/secrets/clientTrustStore.p12",
+                password: "password"
+            },
+            key: {
+                path: "./tests/resources/docker/secrets/clientKeyStore.p12",
+                password: "password"
+            }
+        }
+    );
+
+    string ping = check rediss->ping();
+    test:assertEquals(ping, "PONG");
+
+    check rediss.close();
+}
+
+@test:Config {
+    groups: ["standalone"]
+}
+function testMutualSecureSocketWithServerCertAndClientCertKey() returns error? {
+    if clusterMode {
+        return;
+    }
+
+    Client rediss = check new (
+        connection = {
+            host: "localhost",
+            port: 6380
+        },
+        secureSocket = {
+            cert: "./tests/resources/docker/secrets/server.crt",
+            key: {
+                certFile: "./tests/resources/docker/secrets/client.crt",
+                keyFile: "./tests/resources/docker/secrets/client.key"
+            }
+        }
+    );
+
+    string ping = check rediss->ping();
+    test:assertEquals(ping, "PONG");
+
+    check rediss.close();
 }
