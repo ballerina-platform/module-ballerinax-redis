@@ -3,7 +3,7 @@
 _Authors_: @NipunaRanasinghe \
 _Reviewers_: @AyeshLK @AzeemMuzammil \
 _Created_: 2024/02/19 \
-_Updated_: 2024/02/19 \
+_Updated_: 2024/02/28 \
 _Edition_: Swan Lake
 
 ## Introduction
@@ -30,9 +30,11 @@ specification is considered a bug.
 
 1. [Overview](#1-overview)
 2. [Client](#2-client)  
-   2.1. [Initialize the client](#21-initialize-the-client)  
-   2.2. [Handle connection pools](#22-handle-connection-pools)  
-   2.3. [Close the client](#23-close-the-client)
+   2.1. [Client Initialization](#21-client-initialization)  
+   2.2. [Secure communication](#22-secure-communication)  
+   2.3. [Cluster connections](#23-cluster-connections)  
+   2.4. [Connection pooling](#24-connection-pooling)   
+   2.5. [Closing the client](#25-closing-the-client)  
 3. [Supported Operations](#3-supported-operations)  
    3.1. [Hash Operations](#31-hash-operations)  
    3.2. [Key Operations](#32-key-operations)  
@@ -50,9 +52,9 @@ It supports various data structures such as strings, hashes, lists, sets, and mo
 communication between clients and the server.
 
 The Ballerina Redis client library supports a multitude of Redis operations related to different data structures, such
-as key-value operations, list operations, and more. The client also supports connecting to Redis clusters, which allows 
-working with multiple Redis nodes using a single client. It also comes with the support for various connection features 
-such as connection pooling, which allows reusing connections to the Redis server, and SSL/TLS encryption for secure 
+as key-value operations, list operations, and more. The client also supports connecting to Redis clusters, which allows
+working with multiple Redis nodes using a single client. It also comes with the support for various connection features
+such as connection pooling, which allows reusing connections to the Redis server, and SSL/TLS encryption for secure
 communication with the Redis server.
 
 # 2. Client
@@ -60,7 +62,7 @@ communication with the Redis server.
 The Redis `Client` represents a connection to the Redis server. It maintains a pool of connections throughout its
 lifetime.
 
-## 2.1. Initialize the client
+## 2.1. Client Initialization
 
 - Redis client can be initialized using the `init` function. Client initialization requires a `ConnectionConfig` object,
   which contains the connection details for the Redis server.
@@ -78,8 +80,8 @@ lifetime.
   # The client endpoint configuration for Redis.
   #
   # + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
-  # + connectionPooling - Whether connection pooling is enabled
-  # + isClusterConnection - Whether the connection is a cluster connection
+  # + connectionPooling - Flag to indicate whether connection pooling is enabled
+  # + isClusterConnection - Flag to indicate whether the connection is a cluster connection
   # + secureSocket - Configurations related to SSL/TLS encryption
   public type ConnectionConfig record {|
       ConnectionUri|ConnectionParams connection?;
@@ -107,14 +109,14 @@ lifetime.
    #
    # + host - Host address of the Redis database
    # + port - Port of the Redis database
-   # + username - Field description
+   # + username - The username for the Redis database
    # + password - The password for the Redis database
    # + options - Other connection options of the connection configuration
    type ConnectionParams record {|
        string host = "localhost";
        int port = 6379;
        string username?;
-       string password?; 
+       string password?;
        Options options = {};
    |};
 
@@ -135,15 +137,15 @@ lifetime.
    # + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client
    # + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
    # + ciphers - List of ciphers to be used for SSL connections
-   # + verifyPeer - Whether peer verification is enabled
+   # + verifyMode - The SSL/TLS verification mode. This can be either NONE, CA, or FULL.
    # + startTls - Whether StartTLS is enabled
    public type SecureSocket record {|
-       crypto:TrustStore|string cert;
+       crypto:TrustStore|string cert?;
        crypto:KeyStore|CertKey key?;
        string[] protocols?;
        string[] ciphers?;
-       boolean verifyPeer?;
-       boolean startTls?;
+       SslVerifyMode verifyMode = FULL;
+       boolean startTls = false;
    |};
 
    # Represents a combination of certificate, private key, and private key password if encrypted.
@@ -156,9 +158,39 @@ lifetime.
        string keyFile;
        string keyPassword?;
    |};
+   
+   # Represents the SSL/TLS verification mode.
+   #
+   # + NONE - No verification
+   # + CA - Verify the server's certificate against the provided CA certificates
+   # + FULL - Verify the server's certificate against the provided CA certificates and also verify the server's hostname
+   public enum SslVerifyMode {
+       NONE,
+       CA,
+       FULL
+   }
   ``` 
 
-## 2.2. Handle connection pools
+## 2.2. Secure communication
+
+The `ConnectionConfig` record contains a `secureSocket` field, which can be used to configure secure communication with
+the Redis server. The `secureSocket` field is of type `SecureSocket`, which contains the following fields:
+
+- `cert`: Configurations associated with `crypto:TrustStore` or a single certificate file that the client trusts.
+- `key`: Configurations associated with `crypto:KeyStore` or a combination of certificate and private key of the client.
+- `protocols`: List of protocols used for the connection established to the Redis server, such
+  as `TLSv1.2`, `TLSv1.1`, `TLSv1`.
+- `ciphers`: List of ciphers to be used for SSL connections.
+- `verifyMode`: The SSL/TLS verification mode. This can be either `NONE`, `CA`, or `FULL`.
+- `startTls`: Whether `StartTLS` is enabled.
+
+## 2.3. Cluster connections
+
+The `ConnectionConfig` has an `isClusterConnection` field that can be set to `true` to enable cluster connections.
+When this field is set to `true`, the client can connect to any given node in the Redis cluster and resolve the rest of
+the cluster topology.
+
+## 2.4. Connection pooling
 
 The existing connection pooling implementation for Redis is based on
 the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
@@ -168,7 +200,7 @@ The `ConnectionConfig` has a `connectionPooling` field that can be set to `true`
 Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
 
-## 2.3. Close the client
+## 2.5. Closing the client
 
 The `close()` operation shuts down the Redis client and closes the associated connection pool.
 
@@ -176,7 +208,7 @@ The `close()` operation shuts down the Redis client and closes the associated co
 # Closes the Redis client and shuts down the connection pool.
 #
 # + return - Possible error when closing the client
-public isolated function close() returns Error?;
+public isolated function close() returns redis:Error?;
 ```
 
 # 3. Supported Operations
