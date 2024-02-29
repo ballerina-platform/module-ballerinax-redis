@@ -30,11 +30,15 @@ specification is considered a bug.
 
 1. [Overview](#1-overview)
 2. [Client](#2-client)  
-   2.1. [Client Initialization](#21-client-initialization)  
-   2.2. [Secure communication](#22-secure-communication)  
-   2.3. [Cluster connections](#23-cluster-connections)  
-   2.4. [Connection pooling](#24-connection-pooling)   
-   2.5. [Closing the client](#25-closing-the-client)  
+    2.1. [Configurations](#21-configurations)  
+    &nbsp;&nbsp;&nbsp;&nbsp;2.1.1. [Connection configurations](#211-connection-configurations)  
+    &nbsp;&nbsp;&nbsp;&nbsp;2.1.2. [Connection URI and Connection parameters](#212-connection-uri-and-connection-parameters)  
+    &nbsp;&nbsp;&nbsp;&nbsp;2.1.3. [Secure Socket configurations](#213-secure-socket-configurations)  
+    2.2. [Initialization](#22-initialization)  
+    2.3. [Secure communication](#23-secure-communication)  
+    2.4. [Cluster connections](#24-cluster-connections)  
+    2.5. [Connection pooling](#25-connection-pooling)  
+    2.6. [Closing the connection](#26-closing-the-connection)
 3. [Supported Operations](#3-supported-operations)  
    3.1. [Hash Operations](#31-hash-operations)  
    3.2. [Key Operations](#32-key-operations)  
@@ -126,7 +130,7 @@ and `ConnectionParams` records are defined as follows:
   |};
   ```
 
-### Secure Socket configurations
+### 2.1.3. Secure Socket configurations
 
 The `SecureSocket` record represents the configurations related to secure communication with the Redis server. It consists
 of the below fields and sub records.
@@ -174,7 +178,7 @@ of the below fields and sub records.
 
 ## 2.2. Initialization
 
-- Redis client can be initialized using the `init` function. Client initialization requires the `ConnectionConfig` record 
+Redis client can be initialized using the `init` function. Client initialization requires the `ConnectionConfig` record 
 which is mentioned in the previous section.
 
   ```ballerina
@@ -185,7 +189,7 @@ which is mentioned in the previous section.
   public isolated function init(*ConnectionConfig config) returns redis:Error?;
   ```
 
-## 2.2. Secure communication
+## 2.3. Secure communication
 
 The `ConnectionConfig` record contains a `secureSocket` field, which can be used to configure secure communication with
 the Redis server. The `secureSocket` field is of type `SecureSocket`, which contains the following fields:
@@ -198,13 +202,13 @@ the Redis server. The `secureSocket` field is of type `SecureSocket`, which cont
 - `verifyMode`: The SSL/TLS verification mode. This can be either `NONE`, `CA`, or `FULL`.
 - `startTls`: Whether `StartTLS` is enabled.
 
-## 2.3. Cluster connections
+## 2.4. Cluster connections
 
 The `ConnectionConfig` has an `isClusterConnection` field that can be set to `true` to enable cluster connections.
 When this field is set to `true`, the client can connect to any given node in the Redis cluster and resolve the rest of
 the cluster topology.
 
-## 2.4. Connection pooling
+## 2.5. Connection pooling
 
 The existing connection pooling implementation for Redis is based on
 the [Apache Commons Pool](https://commons.apache.org/proper/commons-pool/)
@@ -214,7 +218,7 @@ The `ConnectionConfig` has a `connectionPooling` field that can be set to `true`
 Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
 
-## 2.5. Closing the connection
+## 2.6. Closing the connection
 
 The `close()` operation shuts down the Redis client and closes the associated connection pool.
 
