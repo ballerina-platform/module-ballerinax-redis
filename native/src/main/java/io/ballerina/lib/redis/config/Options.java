@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org)
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,16 @@
  * under the License.
  */
 
-package io.ballerina.lib.redis.utils;
+package io.ballerina.lib.redis.config;
 
 /**
- * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
+ * Represents parameter based Redis connection options.
+ *
+ * @param clientName        client name
+ * @param database          database index
+ * @param connectionTimeout connection timeout
+ * @since 3.0.0
  */
-enum Codec {
-    BYTE_ARRAY_CODEC,
-    STRING_CODEC,
-    UTF8_STRING_CODEC
+public record Options(String clientName, int database, int connectionTimeout) {
+
 }

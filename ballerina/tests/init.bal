@@ -479,25 +479,19 @@ function setupSortedSetValues() {
 }
 
 function getStandaloneConfigs() returns ConnectionConfig => {
-    host: "localhost:6379",
-    options: {
-        connectionPooling: true,
-        isClusterConnection: false,
-        ssl: false,
-        startTls: false,
-        verifyPeer: false,
-        connectionTimeout: 500
-    }
+    connection: {
+        host: "localhost",
+        port: 6379
+    },
+    connectionPooling: true,
+    isClusterConnection: false
 };
 
 function getClusterConfigs() returns ConnectionConfig => {
-    host: "localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005",
-    options: {
-        connectionPooling: true,
-        isClusterConnection: true,
-        ssl: false,
-        startTls: false,
-        verifyPeer: false,
-        connectionTimeout: 500
-    }
+    connection: {
+        host: "localhost",
+        port: 7000
+    },
+    connectionPooling: true,
+    isClusterConnection: true
 };

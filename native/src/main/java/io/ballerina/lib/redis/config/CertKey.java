@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org)
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,16 @@
  * under the License.
  */
 
-package io.ballerina.lib.redis.utils;
+package io.ballerina.lib.redis.config;
 
 /**
- * Enum of Codecs which map with classes of type {@link io.lettuce.core.codec.RedisCodec}.
+ * Represents a combination of certificate, private key, and private key password if encrypted.
+ *
+ * @param certFile    - file containing the certificate
+ * @param keyFile     - file containing the private key in PKCS8 format
+ * @param keyPassword - password of the private key if it is encrypted
+ * @since 3.0.0
  */
-enum Codec {
-    BYTE_ARRAY_CODEC,
-    STRING_CODEC,
-    UTF8_STRING_CODEC
+public record CertKey(String certFile, String keyFile, String keyPassword) {
+
 }

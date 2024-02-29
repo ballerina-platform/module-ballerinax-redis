@@ -18,12 +18,19 @@
 
 package io.ballerina.lib.redis.connection;
 
+import io.ballerina.lib.redis.config.CertKey;
+import io.ballerina.lib.redis.config.ConnectionConfig;
+import io.ballerina.lib.redis.config.ConnectionParams;
+import io.ballerina.lib.redis.config.ConnectionURI;
+import io.ballerina.lib.redis.config.KeyStore;
+import io.ballerina.lib.redis.config.Options;
+import io.ballerina.lib.redis.config.SecureSocket;
+import io.ballerina.lib.redis.config.TrustStore;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SslOptions;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.BaseRedisCommands;
@@ -34,6 +41,7 @@ import io.lettuce.core.api.sync.RedisListCommands;
 import io.lettuce.core.api.sync.RedisSetCommands;
 import io.lettuce.core.api.sync.RedisSortedSetCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
@@ -42,19 +50,10 @@ import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import java.io.File;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_CLIENT_NAME;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_CONNECTION_TIMEOUT;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_DATABASE;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_SSL_ENABLED;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_START_TLS_ENABLED;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_VERIFY_PEER_ENABLED;
 
 /**
  * Connection manager implementation for Redis connections.
@@ -70,8 +69,8 @@ public class RedisConnectionManager<K, V> {
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
     private GenericObjectPool<StatefulConnection<K, V>> objectPool;
     private final RedisCodec<K, V> codec;
-    private final boolean isClusterConnection;
-    private final boolean poolingEnabled;
+    private boolean isClusterConnection;
+    private boolean poolingEnabled;
 
     // Command executors
     private RedisConnectionCommandExecutor connectionCommandExecutor;
@@ -82,44 +81,25 @@ public class RedisConnectionManager<K, V> {
     private RedisListCommandsExecutor listCommandsExecutor;
     private RedisSortedSetCommandExecutor sortedSetCommandExecutor;
 
-    // Constants
-    private static final String HOSTS_SEPARATOR = ",";
-    private static final String HOST_PORT_SEPARATOR = ":";
-    private static final int DEFAULT_PORT = 6379;
-
-    /**
-     * Constructor for {@link RedisConnectionManager}.
-     *
-     * @param codec               The codec for transcoding keys/values between the application and the Redis DB.
-     *                            Instance of {@link RedisCodec}
-     * @param isClusterConnection Whether the connection is a cluster connection
-     * @param poolingEnabled      Whether connection pooling is enabled
-     */
-    public RedisConnectionManager(RedisCodec<K, V> codec, boolean isClusterConnection, boolean poolingEnabled) {
+    public RedisConnectionManager(RedisCodec<K, V> codec) {
         this.codec = codec;
-        this.isClusterConnection = isClusterConnection;
-        this.poolingEnabled = poolingEnabled;
     }
 
     /**
-     * This method initializes a Redis client with the provided options.
+     * Initializes a Redis client with the provided options.
      *
-     * @param hosts    The host(s) of the Redis instance/cluster
-     * @param password The password required for authentication
-     * @param options  The additional options
+     * @param connectionConfig Redis connection configurations
      */
-    public void init(String hosts, String password, BMap<BString, Object> options) throws RedisConnectorException {
-        List<ServerAddress> serverAddresses = obtainServerAddresses(hosts);
+    public void init(ConnectionConfig connectionConfig) throws RedisConnectorException {
+        this.isClusterConnection = connectionConfig.isClusterConnection();
+        this.poolingEnabled = connectionConfig.poolingEnabled();
         if (isClusterConnection) {
-            setRedisClusterCommands(serverAddresses, password, options);
+            setRedisClusterCommands(connectionConfig);
         } else {
-            if (serverAddresses.size() > 1) {
-                throw new RedisConnectorException("Multiple hosts are not supported for standalone connections");
-            }
-            setRedisStandaloneCommands(serverAddresses.get(0), password, options);
+            setRedisStandaloneCommands(connectionConfig);
         }
 
-        //TODO: Add support for executing commands in async mode/ reactive mode
+        // TODO: Add support for executing commands in async mode/ reactive mode?
     }
 
     public RedisConnectionCommandExecutor getConnectionCommandExecutor() {
@@ -245,10 +225,17 @@ public class RedisConnectionManager<K, V> {
         objectPool.close();
     }
 
-    private void setRedisStandaloneCommands(ServerAddress address, String password, BMap<BString, Object> options) {
-        RedisURI redisURI = constructRedisUri(address.host(), address.port(), password, options);
-        RedisClient redisClient = RedisClient.create(redisURI);
+    private void setRedisStandaloneCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
+        RedisURI redisURI;
+        if (connectionConfig instanceof ConnectionURI uriConfig) {
+            redisURI = RedisURI.create(uriConfig.uri());
+        } else if (connectionConfig instanceof ConnectionParams connectionParams) {
+            redisURI = constructRedisUri(connectionParams);
+        } else {
+            throw new RedisConnectorException("Invalid connection configuration provided");
+        }
 
+        RedisClient redisClient = initializeClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -258,14 +245,17 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private void setRedisClusterCommands(List<ServerAddress> serverAddresses, String password,
-                                         BMap<BString, Object> options) {
-        List<RedisURI> redisURIS;
-        redisURIS = serverAddresses.stream()
-                .map(serverAddress -> constructRedisUri(serverAddress.host(), serverAddress.port(), password, options))
-                .collect(Collectors.toList());
+    private void setRedisClusterCommands(ConnectionConfig connectionConfig) throws RedisConnectorException {
+        RedisURI redisURI;
+        if (connectionConfig instanceof ConnectionURI uriConfig) {
+            redisURI = RedisURI.create(uriConfig.uri());
+        } else if (connectionConfig instanceof ConnectionParams connectionParams) {
+            redisURI = constructRedisUri(connectionParams);
+        } else {
+            throw new RedisConnectorException("Invalid connection configuration provided");
+        }
 
-        RedisClusterClient redisClusterClient = RedisClusterClient.create(redisURIS);
+        RedisClusterClient redisClusterClient = initializeClusterClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
@@ -274,63 +264,37 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private RedisURI constructRedisUri(String host, int port, String password, BMap<BString, Object> options) {
+    private RedisURI constructRedisUri(ConnectionParams connectionParams) {
+        Options options = connectionParams.options();
+
         RedisURI.Builder builder = RedisURI.builder()
-                .withHost(host)
-                .withPort(port);
+                .withHost(connectionParams.host())
+                .withPort(connectionParams.port());
 
-        boolean sslEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_SSL_ENABLED));
-        boolean startTlsEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_START_TLS_ENABLED));
-        boolean verifyPeerEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_VERIFY_PEER_ENABLED));
-        builder.withSsl(sslEnabled);
-        builder.withStartTls(startTlsEnabled);
-        builder.withVerifyPeer(verifyPeerEnabled);
-
-        int database = options.getIntValue(StringUtils.fromString(CONFIG_DATABASE)).intValue();
-        if (database != -1) {
+        int database = options.database();
+        if (database >= 0) {
             builder.withDatabase(database);
         }
 
-        int connectionTimeout = options.getIntValue(StringUtils.fromString(CONFIG_CONNECTION_TIMEOUT)).intValue();
+        int connectionTimeout = options.connectionTimeout();
         if (connectionTimeout != -1) {
-            builder.withTimeout(Duration.ofMillis(connectionTimeout));
+            builder.withTimeout(Duration.ofSeconds(connectionTimeout));
         }
 
-        BString clientName = options.getStringValue(StringUtils.fromString(CONFIG_CLIENT_NAME));
-        if (clientName != null && !clientName.getValue().isBlank()) {
-            builder.withClientName(clientName.toString());
+        String clientName = options.clientName();
+        if (clientName != null && !clientName.isBlank()) {
+            builder.withClientName(clientName);
         }
 
-        if (password != null && !password.isBlank()) {
+        String username = connectionParams.username();
+        String password = connectionParams.password();
+        if (username != null && !username.isBlank()) {
+            builder.withAuthentication(username, password);
+        } else if (password != null && !password.isBlank()) {
             builder.withPassword(password);
         }
 
         return builder.build();
-    }
-
-    private List<ServerAddress> obtainServerAddresses(String hostStr) throws RedisConnectorException {
-        String[] hosts = hostStr.split(HOSTS_SEPARATOR);
-        List<ServerAddress> result = new ArrayList<>(hosts.length);
-        for (String host : hosts) {
-            result.add(createServerAddress(host));
-        }
-        return result;
-    }
-
-    private ServerAddress createServerAddress(String hostStr) throws RedisConnectorException {
-        String[] hostPort = hostStr.split(HOST_PORT_SEPARATOR);
-        String host = hostPort[0];
-        int port;
-        if (hostPort.length > 1) {
-            try {
-                port = Integer.parseInt(hostPort[1]);
-            } catch (NumberFormatException e) {
-                throw new RedisConnectorException("port of the host string must be an integer: " + hostStr, e);
-            }
-        } else {
-            port = DEFAULT_PORT;
-        }
-        return new ServerAddress(host, port);
     }
 
     public void releaseResources(Object redisCommands) {
@@ -361,13 +325,75 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    /**
-     * Represents a Redis server address.
-     *
-     * @param host redis server host
-     * @param port redis server port
-     */
-    private record ServerAddress(String host, int port) {
+    private RedisClient initializeClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
+        SecureSocket secureSocket = connectionConfig.secureSocket();
+        if (secureSocket == null) {
+            return RedisClient.create(redisURI);
+        }
 
+        redisURI.setSsl(true);
+        redisURI.setVerifyPeer(secureSocket.verifyMode());
+        redisURI.setStartTls(secureSocket.startTls());
+        RedisClient redisClient = RedisClient.create(redisURI);
+
+        SslOptions sslOptions = constructSslOptions(secureSocket);
+        ClientOptions clientOptions = ClientOptions.builder().sslOptions(sslOptions).build();
+        redisClient.setOptions(clientOptions);
+        return redisClient;
+    }
+
+    private RedisClusterClient initializeClusterClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
+        SecureSocket secureSocket = connectionConfig.secureSocket();
+        if (secureSocket == null) {
+            return RedisClusterClient.create(redisURI);
+        }
+
+        redisURI.setSsl(true);
+        redisURI.setVerifyPeer(secureSocket.verifyMode());
+        redisURI.setStartTls(secureSocket.startTls());
+        RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
+
+        SslOptions sslOptions = constructSslOptions(secureSocket);
+        ClusterClientOptions clientOptions = ClusterClientOptions.builder().sslOptions(sslOptions).build();
+        redisClient.setOptions(clientOptions);
+        return redisClient;
+    }
+
+    private SslOptions constructSslOptions(SecureSocket secureSocket) {
+
+        SslOptions.Builder sslOptionsBuilder = SslOptions.builder();
+
+        TrustStore trustStore = secureSocket.trustStoreCert();
+        if (trustStore != null) {
+            sslOptionsBuilder.truststore(new File(trustStore.trustStorePath()), trustStore.trustStorePassword());
+        }
+
+        String certPath = secureSocket.certPath();
+        if (certPath != null) {
+            sslOptionsBuilder.trustManager(new File(certPath));
+        }
+
+        KeyStore keyStore = secureSocket.keyStore();
+        if (keyStore != null) {
+            sslOptionsBuilder.keystore(new File(keyStore.keyStorePath()), keyStore.keyStorePassword().toCharArray());
+        }
+
+        CertKey certKey = secureSocket.CertKey();
+        if (certKey != null) {
+            sslOptionsBuilder.keyManager(new File(certKey.certFile()), new File(certKey.keyFile()),
+                    certKey.keyPassword() != null ? certKey.keyPassword().toCharArray() : null);
+        }
+
+        String[] protocols = secureSocket.protocols();
+        if (protocols != null) {
+            sslOptionsBuilder.protocols(protocols);
+        }
+
+        String[] ciphers = secureSocket.ciphers();
+        if (ciphers != null) {
+            sslOptionsBuilder.cipherSuites(ciphers);
+        }
+
+        return sslOptionsBuilder.build();
     }
 }
