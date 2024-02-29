@@ -62,20 +62,12 @@ communication with the Redis server.
 The Redis `Client` represents a connection to the Redis server. It maintains a pool of connections throughout its
 lifetime.
 
-## 2.1. Client Initialization
+## 2.1. Configurations
 
-- Redis client can be initialized using the `init` function. Client initialization requires a `ConnectionConfig` object,
-  which contains the connection details for the Redis server.
+### 2.1.1. Connection configurations
 
-  ```ballerina
-  # Initialize the Redis client. 
-  #
-  # + config - configuration for the connector
-  # + return - `redis:Error` in case of failures or `nil` if successful. 
-  public isolated function init(*ConnectionConfig config) returns redis:Error?;
-  ```
-
-- Redis connection configurations are defined using the `ConnectionConfig` record, which contains the following fields:
+The `ConnectionConfig` record represents the client endpoint configuration for Redis. It contains the following fields:
+  
   ```ballerina
   # The client endpoint configuration for Redis.
   #
@@ -91,85 +83,107 @@ lifetime.
   |};
   ```
 
-- The connection parameters can be provided either as a single redis URI or, as individual parameters.
-  The `ConnectionUri` and `ConnectionParams` records are defined as follows:
+### 2.1.2. Connection URI and Connection parameters
 
-    1. Redis URI based configurations:
-   ```ballerina
-   # The redis Connection URI based configurations. This can become useful when working with 
-   # managed Redis databases, where the cloud provider usually provides a connection URI.
-   #
-   # + uri - The connection URI for the Redis database
-   type ConnectionUri string;
-   ```
+The connection parameters can be provided either as a single Redis URI or as individual parameters. The `ConnectionUri`
+and `ConnectionParams` records are defined as follows:
 
-    2. Redis connection parameters based configurations:
+  1. The `ConnectionUri` record represents the connection URI string for the Redis database.
   ```ballerina
-   # The connection parameters based configurations.
-   #
-   # + host - Host address of the Redis database
-   # + port - Port of the Redis database
-   # + username - The username for the Redis database
-   # + password - The password for the Redis database
-   # + options - Other connection options of the connection configuration
-   type ConnectionParams record {|
-       string host = "localhost";
-       int port = 6379;
-       string username?;
-       string password?;
-       Options options = {};
-   |};
+  # The redis Connection URI based configurations. This can become useful when working with 
+  # managed Redis databases, where the cloud provider usually provides a connection URI.
+  #
+  # + uri - The connection URI for the Redis database
+  type ConnectionUri string;
+  ```
 
-   # Connection options for Redis client endpoint.
-   #
-   # + clientName - Name of the client
-   # + database - Database index which the client should interact with. Not applicable for cluster connections
-   # + connectionTimeout - Connection timeout in seconds
-   public type Options record {|
-       string clientName?;
-       int database = 0;
-       int connectionTimeout = 60;
-   |};
-  
-   # Configurations for secure communication with the Redis server.
-   #
-   # + cert - Configurations associated with `crypto:TrustStore` or single certificate file that the client trusts
-   # + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client
-   # + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
-   # + ciphers - List of ciphers to be used for SSL connections
-   # + verifyMode - The SSL/TLS verification mode. This can be either NONE, CA, or FULL.
-   # + startTls - Whether StartTLS is enabled
-   public type SecureSocket record {|
-       crypto:TrustStore|string cert?;
-       crypto:KeyStore|CertKey key?;
-       string[] protocols?;
-       string[] ciphers?;
-       SslVerifyMode verifyMode = FULL;
-       boolean startTls = false;
-   |};
-
-   # Represents a combination of certificate, private key, and private key password if encrypted.
-   #
-   # + certFile - File containing the certificate
-   # + keyFile - File containing the private key in PKCS8 format
-   # + keyPassword - Password of the private key if it is encrypted
-   public type CertKey record {|
-       string certFile;
-       string keyFile;
-       string keyPassword?;
-   |};
+  2. The `ConnectionParams` record represents the configurations related to Redis client connection.
+  ```ballerina
+  # The connection parameters based configurations.
+  #
+  # + host - Host address of the Redis database
+  # + port - Port of the Redis database
+  # + username - The username for the Redis database
+  # + password - The password for the Redis database
+  # + options - Other connection options of the connection configuration
+  type ConnectionParams record {|
+      string host = "localhost";
+      int port = 6379;
+      string username?;
+      string password?;
+      Options options = {};
+  |};
    
-   # Represents the SSL/TLS verification mode.
-   #
-   # + NONE - No verification
-   # + CA - Verify the server's certificate against the provided CA certificates
-   # + FULL - Verify the server's certificate against the provided CA certificates and also verify the server's hostname
-   public enum SslVerifyMode {
-       NONE,
-       CA,
-       FULL
-   }
-  ``` 
+  # Connection options for Redis client endpoint.
+  #
+  # + clientName - Name of the client
+  # + database - Database index which the client should interact with. Not applicable for cluster connections
+  # + connectionTimeout - Connection timeout in seconds
+  public type Options record {|
+      string clientName?;
+      int database = 0;
+      int connectionTimeout = 60;
+  |};
+  ```
+
+### Secure Socket configurations
+
+The `SecureSocket` record represents the configurations related to secure communication with the Redis server. It consists
+of the below fields and sub records.
+
+  ```ballerina
+  # Configurations for secure communication with the Redis server.
+  #
+  # + cert - Configurations associated with `crypto:TrustStore` or single certificate file that the client trusts
+  # + key - Configurations associated with `crypto:KeyStore` or combination of certificate and private key of the client
+  # + protocols - List of protocols used for the connection established to Redis Server, such as TLSv1.2, TLSv1.1, TLSv1.
+  # + ciphers - List of ciphers to be used for SSL connections
+  # + verifyMode - The SSL/TLS verification mode. This can be either NONE, CA, or FULL.
+  # + startTls - Whether StartTLS is enabled
+  public type SecureSocket record {|
+      crypto:TrustStore|string cert?;
+      crypto:KeyStore|CertKey key?;
+      string[] protocols?;
+      string[] ciphers?;
+      SslVerifyMode verifyMode = FULL;
+      boolean startTls = false;
+  |};
+
+  # Represents a combination of certificate, private key, and private key password if encrypted.
+  #
+  # + certFile - File containing the certificate
+  # + keyFile - File containing the private key in PKCS8 format
+  # + keyPassword - Password of the private key if it is encrypted
+  public type CertKey record {|
+      string certFile;
+      string keyFile;
+      string keyPassword?;
+  |};
+   
+  # Represents the SSL/TLS verification mode.
+  #
+  # + NONE - No verification
+  # + CA - Verify the server's certificate against the provided CA certificates
+  # + FULL - Verify the server's certificate against the provided CA certificates and also verify the server's hostname
+  public enum SslVerifyMode {
+      NONE,
+      CA,
+      FULL
+  }
+  ```
+
+## 2.2. Initialization
+
+- Redis client can be initialized using the `init` function. Client initialization requires the `ConnectionConfig` record 
+which is mentioned in the previous section.
+
+  ```ballerina
+  # Initialize the Redis client. 
+  #
+  # + config - configuration for the connector
+  # + return - `redis:Error` in case of failures or `nil` if successful. 
+  public isolated function init(*ConnectionConfig config) returns redis:Error?;
+  ```
 
 ## 2.2. Secure communication
 
@@ -200,7 +214,7 @@ The `ConnectionConfig` has a `connectionPooling` field that can be set to `true`
 Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
 
-## 2.5. Closing the client
+## 2.5. Closing the connection
 
 The `close()` operation shuts down the Redis client and closes the associated connection pool.
 
