@@ -15,7 +15,7 @@ Install a Redis client library for your programming language. Most languages hav
 
 ## Configuration
 
-Update IBM MQ related configurations in `Config.toml` in the example directory:
+Update Redis client related configurations in `Config.toml` in the example directory:
 
 ```toml
 host = "<host>"

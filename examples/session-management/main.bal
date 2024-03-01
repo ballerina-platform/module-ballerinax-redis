@@ -43,7 +43,7 @@ service / on new http:Listener(9090) {
         string password = (check req.getFormParams()).get("password");
 
         // Validate username and password (dummy implementation)
-        if (username == "user" && password == "pass") {
+        if username == "user" && password == "pass" {
             // Generate a unique session ID
             string sessionId = uuid:createType1AsString();
 
@@ -56,7 +56,6 @@ service / on new http:Listener(9090) {
 
             // Return session ID in the response
             return sessionId;
-
         } else {
             // Return unauthorized if credentials are invalid
             return http:UNAUTHORIZED;

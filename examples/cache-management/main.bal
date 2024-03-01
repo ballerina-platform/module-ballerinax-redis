@@ -31,28 +31,6 @@ redis:ConnectionConfig redisConfig = {
 // Initialize the Redis client
 redis:Client redis = check new (redisConfig);
 
-// Define the caching functions
-function addOrUpdateCache(string key, string value) returns redis:Error? {
-    // Set the value in the Redis cache
-    string|redis:Error? result = redis->set(key, value);
-    if result is redis:Error {
-        log:printError("Error adding/updating cache: ", result);
-        return result;
-    }
-}
-
-function getFromCache(string key) returns string|redis:Error? {
-    // Get the value from the Redis cache
-    string|redis:Error? result = redis->get(key);
-    if result is string {
-        return result;
-    } else if (result is error) {
-        log:printError("Error getting from cache: ", result);
-        return result;
-    }
-    return ();
-}
-
 public function main() {
     // Add or update cache
     redis:Error? setResult = addOrUpdateCache("key1", "value1");
@@ -65,7 +43,38 @@ public function main() {
     string|redis:Error? cachedValue = getFromCache("key1");
     if cachedValue is string {
         log:printInfo("Value retrieved from cache: " + cachedValue);
-    } else if cachedValue is error {
+    } else if cachedValue is redis:Error {
         log:printError("Error retrieving from cache: ", cachedValue);
     }
+}
+
+# This function adds or updates a value in the Redis cache.
+#
+# + key - cache key
+# + value - cache value
+# + return - error if any
+function addOrUpdateCache(string key, string value) returns redis:Error? {
+    // Set the value in the Redis cache
+    string|redis:Error? result = redis->set(key, value);
+    if result is redis:Error {
+        log:printError("Error adding/updating cache: ", result);
+        return result;
+    }
+}
+
+# This function retrieves a value from the Redis cache.
+# 
+# + key - cache key
+# + return - cache value or error if any
+function getFromCache(string key) returns string|redis:Error? {
+    // Get the value from the Redis cache
+    string|redis:Error? result = redis->get(key);
+    if result is string {
+        return result;
+    } else if result is redis:Error {
+        log:printError("Error getting from cache: ", result);
+        return result;
+    }
+
+    return result;
 }

@@ -35,6 +35,7 @@ int maxRequests = 5; // Maximum number of requests allowed within the window
 
 // Define the HTTP service
 service / on new http:Listener(9090) {
+
     resource function get rateLimitedEndpoint(http:Request req) returns http:Response|http:TooManyRequests|error {
         // Extract API key from the request
         string apiKey = check req.getHeader("X-API-Key");
@@ -43,7 +44,7 @@ service / on new http:Listener(9090) {
         boolean|redis:Error allowed = isAllowed(apiKey);
 
         if allowed is boolean {
-            if (allowed) {
+            if allowed {
                 // Process the request if it's allowed
                 http:Response response = new;
                 response.setTextPayload("Request allowed");
@@ -59,7 +60,11 @@ service / on new http:Listener(9090) {
     }
 }
 
-// Define the rate limiting function
+
+# Function to check if a request is allowed based on rate limiting.
+#
+# + apiKey - API key of the request
+# + return - Whether the request is allowed or an error if there was an issue
 function isAllowed(string apiKey) returns boolean|redis:Error {
     // Generate a unique key for the rate limiting window based on the API key
     string rateLimitKey = "ratelimit:" + apiKey;
