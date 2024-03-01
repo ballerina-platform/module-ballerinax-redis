@@ -99,10 +99,8 @@ bal run
 
 The Redis connector provides practical examples illustrating usage in various scenarios. Explore these examples covering common Redis operations.
 
-1. [Cache Management](#cache-management) - Implement caching using Redis to improve application performance.
+1. [Cache Management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/cache-management) - Implement caching using Redis to improve application performance.
 
-2. [Session Management](#session-management) - Use Redis to manage user sessions efficiently.
+2. [Session Management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/session-management) - Use Redis to manage user sessions efficiently.
 
-3. [Pub/Sub Messaging](#pubsub-messaging) - Implement publish-subscribe messaging pattern using Redis.
-
-4. [Rate Limiting](#rate-limiting) - Implement rate limiting for API endpoints using Redis.
+3. [Rate Limiting](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/rate-limiting) - Implement rate limiting for API endpoints using Redis.

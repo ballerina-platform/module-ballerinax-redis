@@ -1,0 +1,8 @@
+[package]
+org = "nino"
+name = "rate_limiting"
+version = "0.1.0"
+distribution = "2201.8.3"
+
+[build-options]
+observabilityIncluded = true

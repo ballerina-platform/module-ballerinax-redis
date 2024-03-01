@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, WSO2 LLC. (http://www.wso2.org)
+ * Copyright (c) 2024, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,40 +16,61 @@
  * under the License.
  */
 
-apply plugin: 'java-library'
+import org.apache.tools.ant.taskdefs.condition.Os
 
-description = 'Ballerina - Redis Examples'
+apply plugin: 'java'
 
-def filePath = project.fileTree("${project.projectDir}")
-def examples = filePath.matching {
-    include("**/*.bal")
-    exclude("**/deprecated/**/*.bal")
-}
+def graalvmFlag = ""
 
 task testExamples {
-    dependsOn ":${project.packageName}-ballerina:build"
-
+    if (project.hasProperty("balGraalVMTest")) {
+        graalvmFlag = "--graalvm"
+    }
     doLast {
-        // TODO - enable
-        // examples.each { example ->  executeBalCommand ("run ${example}", "${project.rootDir}") }
+        try {
+            exec {
+                workingDir project.projectDir
+                println("Working dir: ${workingDir}")
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    commandLine 'sh', "/c", "chmod +x ./build.sh && ./build.sh run && exit %%ERRORLEVEL%%"
+                } else {
+                    commandLine 'sh', "-c", "chmod +x ./build.sh && ./build.sh run"
+                }
+            }
+        } catch (Exception e) {
+            println("Example Build failed: " + e.message)
+            throw e
+        }
     }
 }
 
 task buildExamples {
-    dependsOn ":${project.packageName}-ballerina:build"
-    
     gradle.taskGraph.whenReady { graph ->
-        if (graph.hasTask(":${project.packageName}-examples:test")) {
+        if (graph.hasTask(":redis-examples:test")) {
             buildExamples.enabled = false
         } else {
             testExamples.enabled = false
         }
     }
     doLast {
-        // TODO: Enabled --offline due to a bug in pulling incorrect versions from the central repository.
-        // examples.each { example ->  executeBalCommand ("build --offline ${example}", "${project.rootDir}") }
+        try {
+            exec {
+                workingDir project.projectDir
+                println("Working dir: ${workingDir}")
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    commandLine 'sh', "/c", "chmod +x ./build.s && ./build.sh build && exit %%ERRORLEVEL%%"
+                } else {
+                    commandLine 'sh', "-c", "chmod +x ./build.sh && ./build.sh build"
+                }
+            }
+        } catch (Exception e) {
+            println("Example Build failed: " + e.message)
+            throw e
+        }
     }
 }
 
+buildExamples.dependsOn ":redis-ballerina:build"
+testExamples.dependsOn ":redis-ballerina:build"
 test.dependsOn testExamples
 build.dependsOn buildExamples
