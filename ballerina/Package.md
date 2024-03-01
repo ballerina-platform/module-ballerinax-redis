@@ -1,11 +1,11 @@
 ## Overview
 
-Redis (REmote DIctionary Server) is an open-source, in-memory data structure store that can be used as a database,
+[Redis](https://redis.io/) is an open-source, in-memory data structure store that can be used as a database,
 cache, and message broker. It supports various data structures such as strings, hashes, lists, sets, and more.
 
-The `ballerinax/redis` package enables you to connect to Redis servers and to manipulate key-value data, providing
-functionality to utilize Redis both as a database and cache. The Ballerina Redis connector supports redis server
-versions upto 7.2.x.
+The `ballerinax/redis` package offers APIs to connect to Redis servers and to manipulate key-value data, providing
+functionality to utilize Redis both as a database and cache. The current connector is compatible Redis server
+versions up to 7.2.x.
 
 ## Setup guide
 
