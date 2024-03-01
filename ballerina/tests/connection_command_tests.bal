@@ -13,7 +13,6 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/test;
 
 @test:Config {
@@ -21,7 +20,7 @@ import ballerina/test;
 }
 function testPing() {
     var result = redis->ping();
-    if (result is string) {
+    if result is string {
         test:assertEquals(result, "PONG");
     } else {
         test:assertFail("error from Connector: " + result.message());
@@ -32,9 +31,9 @@ function testPing() {
     groups: ["standalone", "cluster"]
 }
 function testEcho() {
-    var result = redis->echo("Manuri");
-    if (result is string) {
-        test:assertEquals(result, "Manuri");
+    var result = redis->echo("Hello");
+    if result is string {
+        test:assertEquals(result, "Hello");
     } else {
         test:assertFail("error from Connector: " + result.message());
     }

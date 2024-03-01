@@ -456,10 +456,10 @@ public class StringCommands {
      * @param key         key
      * @return The length of the string at key, or 0 when key does not exist
      */
-    public static Object strln(BObject redisClient, BString key) {
+    public static Object strLen(BObject redisClient, BString key) {
         try {
             RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
-            return executor.strln(key.getValue());
+            return executor.strLen(key.getValue());
         } catch (Throwable e) {
             return createBError(e);
         }

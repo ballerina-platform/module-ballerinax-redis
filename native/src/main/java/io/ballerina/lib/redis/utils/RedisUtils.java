@@ -17,9 +17,10 @@
  */
 package io.ballerina.lib.redis.utils;
 
+import io.ballerina.lib.redis.config.ConfigMapper;
+import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.connection.RedisConnectionManager;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
@@ -28,14 +29,8 @@ import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.codec.Utf8StringCodec;
 
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_CLUSTERING_ENABLED;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_HOST;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_OPTIONS;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_PASSWORD;
-import static io.ballerina.lib.redis.utils.Constants.CONFIG_POOLING_ENABLED;
+import static io.ballerina.lib.redis.utils.Codec.STRING_CODEC;
 import static io.ballerina.lib.redis.utils.Constants.CONN_OBJ;
-import static io.ballerina.lib.redis.utils.Constants.EMPTY_STRING;
-import static io.ballerina.lib.redis.utils.Constants.LOCALHOST;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
 
 /**
@@ -51,58 +46,31 @@ public class RedisUtils {
      * @param config redis client configuration as a map
      */
     @SuppressWarnings("unused")
-    public static Object initClient(BObject client, BMap<?, ?> config) {
+    public static Object initClient(BObject client, BMap<BString, Object> config) {
         try {
-            BString host = config.getStringValue(StringUtils.fromString(CONFIG_HOST));
-            BString password = config.getStringValue(StringUtils.fromString(CONFIG_PASSWORD));
-
-            BString strOptions = StringUtils.fromString(CONFIG_OPTIONS);
-            BMap<BString, Object> options = (BMap<BString, Object>) config.getMapValue(strOptions);
-
-            RedisCodec<?, ?> codec = retrieveRedisCodec(Codec.STRING_CODEC.getCodecName());
-            boolean clusteringEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_CLUSTERING_ENABLED));
-            boolean poolingEnabled = options.getBooleanValue(StringUtils.fromString(CONFIG_POOLING_ENABLED));
-
-            RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec, clusteringEnabled,
-                    poolingEnabled);
-            String hostStr = host != null ? host.getValue() : LOCALHOST;
-            String passwordStr = password != null ? password.getValue() : EMPTY_STRING;
-            connectionManager.init(hostStr, passwordStr, options);
+            ConnectionConfig connectionConfig = ConfigMapper.from(config);
+            RedisCodec<?, ?> codec = retrieveRedisCodec(STRING_CODEC);
+            RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec);
+            connectionManager.init(connectionConfig);
             client.addNativeData(CONN_OBJ, connectionManager);
             return null;
         } catch (Throwable e) {
             String errMsg = "Error while initializing the redis client: " + e.getMessage();
-            return createBError(new RedisConnectorException(errMsg, e));
+            return createBError(new RedisConnectorException(errMsg, e.getCause()));
         }
     }
 
     /**
      * Retrieve redis codec.
      *
-     * @param codecString codec string
      * @return redis codec
      */
-    public static RedisCodec<?, ?> retrieveRedisCodec(String codecString) {
-        Codec codec = retrieveCodec(codecString);
+    public static RedisCodec<?, ?> retrieveRedisCodec(Codec codec) {
         return switch (codec) {
             case BYTE_ARRAY_CODEC -> new ByteArrayCodec();
             case STRING_CODEC -> new StringCodec();
             case UTF8_STRING_CODEC -> new Utf8StringCodec();
         };
-    }
-
-    /**
-     * Retreive a codec name.
-     *
-     * @param codecString codec string
-     * @return codec name
-     */
-    private static Codec retrieveCodec(String codecString) {
-        try {
-            return Codec.fromCodecName(codecString);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Unsupported Codec: " + codecString);
-        }
     }
 
     /**

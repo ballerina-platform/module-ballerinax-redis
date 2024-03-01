@@ -383,7 +383,7 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K, V> long strln(K key) throws RedisConnectorException {
+    public <K, V> long strLen(K key) throws RedisConnectorException {
         RedisStringCommands<K, V> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, V>) connManager.getStringCommandConnection();

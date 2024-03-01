@@ -333,10 +333,10 @@ public function testSetRange() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testStrln() {
-    var result = redis->strln("testStrlnKey");
+public function testStrLen() {
+    var result = redis->strLen("testStrLenKey");
     if (result is int) {
-        test:assertEquals(result, 14);
+        test:assertEquals(result, 15);
     } else {
         test:assertFail("error from Connector: " + result.message());
     }

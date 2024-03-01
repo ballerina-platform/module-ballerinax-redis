@@ -3,7 +3,7 @@ version: '3.0'
 services:
   redis-cluster-node1:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node1/node1.conf"
+    command: sh -c "redis-server /data/node1/cluster-node1.conf"
     ports:
       - '7000:7000'
     volumes:
@@ -13,7 +13,7 @@ services:
 
   redis-cluster-node2:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node2/node2.conf"
+    command: sh -c "redis-server /data/node2/cluster-node2.conf"
     ports:
       - '7001:7001'
     volumes:
@@ -23,7 +23,7 @@ services:
 
   redis-cluster-node3:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node3/node3.conf"
+    command: sh -c "redis-server /data/node3/cluster-node3.conf"
     ports:
       - '7002:7002'
     volumes:
@@ -33,7 +33,7 @@ services:
 
   redis-cluster-node4:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node4/node4.conf"
+    command: sh -c "redis-server /data/node4/cluster-node4.conf"
     ports:
       - '7003:7003'
     volumes:
@@ -43,7 +43,7 @@ services:
 
   redis-cluster-node5:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node5/node5.conf"
+    command: sh -c "redis-server /data/node5/cluster-node5.conf"
     ports:
       - '7004:7004'
     volumes:
@@ -53,7 +53,7 @@ services:
 
   redis-cluster-node6:
     image: redis:7.2.2
-    command: sh -c "redis-server /data/node6/node6.conf"
+    command: sh -c "redis-server /data/node6/cluster-node6.conf"
     ports:
       - '7005:7005'
     volumes:

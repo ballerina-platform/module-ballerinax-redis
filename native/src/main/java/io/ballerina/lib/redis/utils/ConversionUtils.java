@@ -77,7 +77,7 @@ public class ConversionUtils {
      * @param array the Java array
      * @return the Ballerina array
      */
-    public static BArray createBStringArrayJArray(String[] array) {
+    public static BArray createBStringArrayFromJArray(String[] array) {
         BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
         for (String item : array) {
             bStringArray.append(StringUtils.fromString(item));
@@ -180,6 +180,44 @@ public class ConversionUtils {
     public static BError createBError(Throwable e) {
         return ErrorCreator.createError(ModuleUtils.getModule(), Constants.REDIS_ERROR_TYPE,
                 StringUtils.fromString(e.getMessage()),
-                ErrorCreator.createError(StringUtils.fromString(e.getMessage()), e), null);
+                e.getCause() != null ? ErrorCreator.createError(e.getCause()) : null, null);
+    }
+
+    /**
+     * Returns the map value from a Ballerina map for a given key or, null if a non-map value is found.
+     *
+     * @param map the Ballerina map value
+     * @param key the key
+     * @return the map value or null
+     */
+    public static BMap<BString, Object> getMapValueOrNull(BMap<BString, Object> map, BString key) {
+        if (map == null) {
+            return null;
+        }
+
+        try {
+            return (BMap<BString, Object>) map.getMapValue(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the string value from a Ballerina map for a given key or, null if a non-string value is found.
+     *
+     * @param map the Ballerina map value
+     * @param key the key
+     * @return the string value or null
+     */
+    public static String getStringValueOrNull(BMap<BString, Object> map, BString key) {
+        if (map == null) {
+            return null;
+        }
+
+        try {
+            return map.getStringValue(key).getValue();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

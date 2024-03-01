@@ -22,11 +22,11 @@ import ballerina/jballerina.java;
 @display {label: "Redis Client", iconPath: "icon.png"}
 public isolated client class Client {
 
-    # Initializes the connector. During initialization you have to pass needed configurations such as host name, port number and password.
+    # Initialize the Redis client. 
     #
-    # + config - Configuration for the connector
-    # + return - `http:Error` in case of failure to initialize or `null` if successfully initialized
-    public isolated function init(ConnectionConfig config) returns Error? {
+    # + config - configuration for the connector
+    # + return - `redis:Error` in case of failures or `nil` if successful. 
+    public isolated function init(*ConnectionConfig config) returns Error? {
         check self.initClient(self, config);
     }
 
@@ -319,7 +319,7 @@ public isolated client class Client {
     # + key - Key referring to a value
     # + return - Length of string at key, or 0 when key does not exist or `redis:Error` if an error occurs
     @display {label: "Get String Length"} 
-    isolated remote function strln(@display {label: "Key"} string key) 
+    isolated remote function strLen(@display {label: "Key"} string key)
                           returns @display {label: "String Length"} int|Error = @java:Method {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
@@ -1084,7 +1084,7 @@ public isolated client class Client {
     # + return - Length of the field value, or 0 when field is not present in the hash or key does
     #            not exist at all, or `redis:Error` if an error occurs
     @display {label: "Get Value String Length"}
-    isolated remote function hStrln(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field) 
+    isolated remote function hStrLen(@display {label: "Key"} string key, @display {label: "Hash Field"} string 'field)
                            returns @display {label: "String Length"} int|Error = @java:Method {
         'class: "io.ballerina.lib.redis.HashCommands"
     } external;
@@ -1221,7 +1221,7 @@ public isolated client class Client {
 
     # Sort elements in a list, set or sorted set.
     #
-    # + key - Key of the data typeure to be sorted
+    # + key - Key of the data type to be sorted
     # + return - Sorted array containing the members of the sorted data type or `redis:Error` if an error occurs
     @display {label: "Sort Elements"}
     isolated remote function sort(@display {label: "Key"} string key) 
