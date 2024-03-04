@@ -14,18 +14,18 @@ Redis locally or use a cloud-based Redis service.
 
 ### Setting up a Redis server locally
 
-#### Step 1: Install Redis Server
+#### Step 1: Install Redis server
 1. Download and install Redis from the [official website](https://redis.io/download/).
 
 2. Follow the installation instructions based on your operating system.
 
-#### Step 2: Start Redis Server
+#### Step 2: Start Redis server
 After installation, start the Redis server by executing the appropriate command based on your operating system.
 ```bash
 redis-server
 ```
 
-#### Step 3: Verify Redis Connectivity
+#### Step 3: Verify Redis connectivity
 Ensure that the Redis server is running and accessible.
 
 ```bash
@@ -75,13 +75,13 @@ redis:Client redis = new (
 
 Now, you can use the available connector operations to interact with Redis.
 
-#### Set a Key-Value Pair
+#### Set a key-value pair
 
 ```ballerina
 check redis->set("key", "value");
 ```
 
-#### Get Value by Key
+#### Get value by key
 
 ```ballerina
 string value = check redis->get("key");
