@@ -31,13 +31,25 @@ redis:ConnectionConfig redisConfig = {
 };
 
 // Initialize the Redis client
-redis:Client redis = check new (redisConfig);
+final redis:Client redis = check new (redisConfig);
 
-// Define the HTTP service
+# The service that handles login and logout. The service is secured with basic auth with the file user store.
+# Authorization is based on scopes, which can be specified in the `scopes` field.
+@http:ServiceConfig {
+    auth: [
+        {
+            fileUserStoreConfig: {},
+            scopes: ["admin"]
+        }
+    ]
+}
 service / on new http:Listener(9090) {
 
-    // Resource to handle login and session creation
-    resource function post login(http:Request req) returns string|http:Unauthorized|error {
+    # Resource to handle login and session creation.
+    #
+    # + req - The HTTP request
+    # + return - The session ID if the login is successful, or an error if the login fails
+    isolated resource function post login(http:Request req) returns string|http:Unauthorized|error {
         // Extract username and password from the request
         string username = (check req.getFormParams()).get("username");
         string password = (check req.getFormParams()).get("password");
@@ -62,8 +74,11 @@ service / on new http:Listener(9090) {
         }
     }
 
-    // Resource to handle logout and session deletion
-    resource function post logout(http:Request req) returns error? {
+    # Resource to handle logout and session deletion
+    #
+    # + req - The HTTP request
+    # + return - An error if the session deletion fails
+    isolated resource function post logout(http:Request req) returns error? {
         // Extract username from the request
         string username = (check req.getFormParams()).get("username");
 
