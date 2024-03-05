@@ -77,3 +77,15 @@ function testClusterInfoInStandaloneMode() returns error? {
     }
     test:assertTrue(clusterInfoResult.message() == "Cannot execute cluster info command on a non-cluster connection");
 }
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testAuthWithInvalidPassword() returns error? {
+    string|Error authResult = redis->auth("invalidPassword");
+    if (authResult !is Error) {
+        test:assertFail("auth operation should not be supported with invalid password");
+    }
+    test:assertEquals(authResult.message(), "Redis server error: ERR AUTH <password> called " +
+        "without any password configured for the default user. Are you sure your configuration is correct?");
+}
