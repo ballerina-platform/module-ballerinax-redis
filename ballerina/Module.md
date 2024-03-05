@@ -39,7 +39,7 @@ If the server is running, you will receive a response of 'PONG'.
 Several cloud providers offer managed Redis services. Some of the popular ones are:
 
 1. **Redis Labs:** [Redis Labs](https://redis.com/) offers Redis Enterprise Cloud, a fully-managed Redis service in the cloud.
-2. **AWS ElastiCache:** Amazon Web Services provides [ElastiCache](https://aws.amazon.com/elasticache/), a managed Redis service for deploying, operating, and scaling Redis in the AWS Cloud.
+2. **Amazon ElastiCache:** Amazon Web Services provides [ElastiCache](https://aws.amazon.com/elasticache/), a managed Redis service for deploying, operating, and scaling Redis in the AWS Cloud.
 3. **Google Cloud Memorystore:** Google Cloud offers [Memorystore](https://cloud.google.com/memorystore?hl=en) for Redis, a fully-managed Redis service on Google Cloud Platform.
 4. **Microsoft Azure Cache for Redis:** [Azure Cache for Redis](https://azure.microsoft.com/en-us/products/cache) is a fully-managed Redis service provided by Microsoft Azure.
 
