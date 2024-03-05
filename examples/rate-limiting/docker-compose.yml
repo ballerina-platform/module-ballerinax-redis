@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: secret
+  redis-insight:
+    image: redis/redisinsight:latest
+    restart: always
+    ports:
+      - "5540:5540"
+    environment:
+      - REDIS_URI=redis://redis:6379
+    depends_on:
+      - redis

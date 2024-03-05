@@ -27,16 +27,16 @@ redis:ConnectionConfig redisConfig = {
 };
 
 // Initialize the Redis client
-redis:Client redis = check new (redisConfig);
+final redis:Client redis = check new (redisConfig);
 
 // Define the rate limiting parameters
-int windowSeconds = 60; // Time window for rate limiting in seconds
-int maxRequests = 5; // Maximum number of requests allowed within the window
+final int windowSeconds = 60; // Time window for rate limiting in seconds
+final int maxRequests = 5; // Maximum number of requests allowed within the window
 
 // Define the HTTP service
 service / on new http:Listener(9090) {
 
-    resource function get rateLimitedEndpoint(http:Request req) returns http:Response|http:TooManyRequests|error {
+    isolated resource function get rateLimitedEndpoint(http:Request req) returns http:Response|http:TooManyRequests|error {
         // Extract API key from the request
         string apiKey = check req.getHeader("X-API-Key");
 
@@ -60,12 +60,11 @@ service / on new http:Listener(9090) {
     }
 }
 
-
 # Function to check if a request is allowed based on rate limiting.
 #
 # + apiKey - API key of the request
 # + return - Whether the request is allowed or an error if there was an issue
-function isAllowed(string apiKey) returns boolean|redis:Error {
+isolated function isAllowed(string apiKey) returns boolean|redis:Error {
     // Generate a unique key for the rate limiting window based on the API key
     string rateLimitKey = "ratelimit:" + apiKey;
 
@@ -78,7 +77,7 @@ function isAllowed(string apiKey) returns boolean|redis:Error {
         }
         // Set the expiry time for the rate limiting window if it's the first request in the window
         if result == 1 {
-            var expireResult = redis->expire(rateLimitKey, windowSeconds);
+            boolean|redis:Error expireResult = redis->expire(rateLimitKey, windowSeconds);
             if (expireResult is error) {
                 log:printError("Error setting expiry for rate limit key: ", expireResult);
                 return expireResult;

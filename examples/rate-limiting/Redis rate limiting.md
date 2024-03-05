@@ -6,14 +6,18 @@ This example demonstrates how to implement rate limiting for API endpoints using
 
 ### 1. Setup Redis Server
 
-Ensure you have Redis server installed and running locally or on a server accessible by your application. 
-Refer to the [Setup Guide](https://central.ballerina.io/ballerinax/redis/latest#setup-guide) to set up the Redis server locally.
+Use the following command to start a Redis server using Docker. It will start the Redis server and the 
+[`RedisInsight`](https://redis.com/redis-enterprise/redis-insight/), which is a web-based Redis GUI that allows you to 
+interact with Redis. 
+
+```bash
+docker-compose up
+```
+
+Once you run the following command, you can access the RedisInsight web interface by navigating to
+[http://localhost:5540](http://localhost:5540) in your web browser.
 
 ### 2. Configuration
-
-Install a Redis client library for your programming language. Most languages have official or community-supported Redis client libraries. Make sure to install the appropriate library for your programming environment.
-
-## Configuration
 
 Update Redis client related configurations in `Config.toml` in the example directory:
 
