@@ -41,7 +41,7 @@ public type ConnectionConfig record {|
 # + password - The password for the Redis database  
 # + options - Other connection options of the connection configuration
 @display {label: "Connection Parameters"}
-type ConnectionParams record {|
+public type ConnectionParams record {|
     @display {label: "Host"}
     string host = "localhost";
     @display {label: "Port"}
@@ -59,7 +59,7 @@ type ConnectionParams record {|
 #
 # + uri - The connection URI for the Redis database
 @display {label: "Connection URI"}
-type ConnectionUri string;
+public type ConnectionUri string;
 
 # Connection options for Redis client endpoint.
 #

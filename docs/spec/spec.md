@@ -98,7 +98,7 @@ and `ConnectionParams` records are defined as follows:
   # managed Redis databases, where the cloud provider usually provides a connection URI.
   #
   # + uri - The connection URI for the Redis database
-  type ConnectionUri string;
+  public type ConnectionUri string;
   ```
 
   2. The `ConnectionParams` record represents the configurations related to Redis client connection.
@@ -110,7 +110,7 @@ and `ConnectionParams` records are defined as follows:
   # + username - The username for the Redis database
   # + password - The password for the Redis database
   # + options - Other connection options of the connection configuration
-  type ConnectionParams record {|
+  public type ConnectionParams record {|
       string host = "localhost";
       int port = 6379;
       string username?;
