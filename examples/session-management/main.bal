@@ -37,7 +37,7 @@ redis:Client redis = check new (redisConfig);
 service / on new http:Listener(9090) {
 
     // Resource to handle login and session creation
-    resource function post loginAndCreateSession(http:Request req) returns string|http:Unauthorized|error {
+    resource function post login(http:Request req) returns string|http:Unauthorized|error {
         // Extract username and password from the request
         string username = (check req.getFormParams()).get("username");
         string password = (check req.getFormParams()).get("password");
@@ -63,7 +63,7 @@ service / on new http:Listener(9090) {
     }
 
     // Resource to handle logout and session deletion
-    resource function post logoutAndDeleteSession(http:Request req) returns error? {
+    resource function post logout(http:Request req) returns error? {
         // Extract username from the request
         string username = (check req.getFormParams()).get("username");
 

@@ -14,67 +14,81 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/log;
+import ballerina/http;
 import ballerinax/redis;
 
-// Define the Redis client configuration
-configurable string host = ?;
-configurable int port = ?;
-
+// Initialize the Redis client configuration.
 redis:ConnectionConfig redisConfig = {
     connection: {
-        host,
-        port
+        host: "localhost",
+        port: 6379
     }
 };
 
-// Initialize the Redis client
-redis:Client redis = check new (redisConfig);
+// Create the Redis client.
+final redis:Client redis = check new (redisConfig);
 
-public function main() {
-    // Add or update cache
-    redis:Error? setResult = addOrUpdateCache("key1", "value1");
-    if setResult is redis:Error {
-        log:printError("Error adding/updating cache: ", setResult);
-        return;
-    }
-
-    // Retrieve from cache
-    string|redis:Error? cachedValue = getFromCache("key1");
-    if cachedValue is string {
-        log:printInfo("Value retrieved from cache: " + cachedValue);
-    } else if cachedValue is redis:Error {
-        log:printError("Error retrieving from cache: ", cachedValue);
-    }
-}
-
-# This function adds or updates a value in the Redis cache.
+# The user profile record.
 #
-# + key - cache key
-# + value - cache value
-# + return - error if any
-function addOrUpdateCache(string key, string value) returns redis:Error? {
-    // Set the value in the Redis cache
-    string|redis:Error? result = redis->set(key, value);
-    if result is redis:Error {
-        log:printError("Error adding/updating cache: ", result);
-        return result;
-    }
-}
+# + userId - The user ID
+# + name - The user's name
+# + email - The user's email
+public type UserProfile record {
+    string userId;
+    string name;
+    string email;
+};
 
-# This function retrieves a value from the Redis cache.
-# 
-# + key - cache key
-# + return - cache value or error if any
-function getFromCache(string key) returns string|redis:Error? {
-    // Get the value from the Redis cache
-    string|redis:Error? result = redis->get(key);
-    if result is string {
-        return result;
-    } else if result is redis:Error {
-        log:printError("Error getting from cache: ", result);
-        return result;
+# A service that provides user profile management.
+service /userProfile on new http:Listener(8080) {
+
+    # Resource to get a user profile.
+    #
+    # + userId - The user ID
+    # + return - The user profile if found, or an error if not found
+    isolated resource function get .(string userId) returns UserProfile|error {
+        string? cachedProfile = check redis->get(userId);
+        if (cachedProfile is string) {
+            // Extend the cache expiry time
+            boolean _ = check redis->expire(userId, 3600);
+            // Use the cached profile
+            UserProfile userProfile = check (check cachedProfile.fromBalString()).cloneWithType();
+            return userProfile;
+        } else {
+            // Simulate database fetch
+            json userProfile = {"userId": userId, "name": "John Doe", "email": "john@example.com"};
+            // Save to cache
+            string _ = check redis->setEx(userId, userProfile.toJsonString(), 3600);
+            return check userProfile.cloneWithType();
+        }
     }
 
-    return result;
+    # Resource to save a new user profile.
+    #
+    # + request - The HTTP request
+    # + return - An error if the user profile data is invalid
+    isolated resource function post .(http:Request request) returns error? {
+        UserProfile|error userProfile = (check request.getJsonPayload()).cloneWithType();
+        if (userProfile is UserProfile) {
+            string userId = userProfile.userId;
+            // Simulate saving to database and cache
+            string _ = check redis->setEx("userProfile:" + userId, userProfile.toJsonString(), 3600);
+        } else {
+            return error("Invalid user profile data");
+        }
+    }
+
+    # Resource to update an existing user profile.
+    #
+    # + request - The HTTP request
+    # + return - An error if the user profile data is invalid
+    isolated resource function put .(http:Request request) returns error? {
+        UserProfile|error userProfile = (check request.getJsonPayload()).cloneWithType();
+        if (userProfile is UserProfile) {
+            // Simulate update in database and cache
+            string _ = check redis->setEx(userProfile.userId, userProfile.toJsonString(), 3600);
+        } else {
+            return error("Invalid user profile data");
+        }
+    }
 }
