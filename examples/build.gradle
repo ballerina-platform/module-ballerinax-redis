@@ -72,5 +72,7 @@ task buildExamples {
 
 buildExamples.dependsOn ":redis-ballerina:build"
 testExamples.dependsOn ":redis-ballerina:build"
-test.dependsOn testExamples
-build.dependsOn buildExamples
+
+// TODO: Enable the examples build once https://github.com/ballerina-platform/ballerina-library/issues/6135 is fixed
+// test.dependsOn testExamples
+// build.dependsOn buildExamples
