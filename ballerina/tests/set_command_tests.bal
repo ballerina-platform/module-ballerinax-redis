@@ -33,6 +33,14 @@ function testSAdd() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+function testSCard() returns error? {
+    int sCardResult = check redis->sCard("testSCardKey");
+    test:assertEquals(sCardResult, 2);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testSDiff() {
     var result = redis->sDiff(["{SetTag}testSDiffKey1", "{SetTag}testSDiffKey2"]);
     if (result is string[]) {
@@ -123,6 +131,24 @@ function testSMembers() {
     } else {
         test:assertFail("error from Connector: " + result.message());
     }
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testSMove() returns error? {
+    boolean sIsMemberResult = check redis->sIsMember("{SetTag}testSMoveKey1", "testSMoveValue");
+    test:assertTrue(sIsMemberResult);
+    boolean sIsMemberResult2 = check redis->sIsMember("{SetTag}testSMoveKey2", "testSMoveValue");
+    test:assertFalse(sIsMemberResult2);
+
+    boolean moveResult = check redis->sMove("{SetTag}testSMoveKey1", "{SetTag}testSMoveKey2", "testSMoveValue");
+    test:assertTrue(moveResult);
+
+    boolean sIsMemberResult3 = check redis->sIsMember("{SetTag}testSMoveKey1", "testSMoveValue");
+    test:assertFalse(sIsMemberResult3);
+    boolean sIsMemberResult4 = check redis->sIsMember("{SetTag}testSMoveKey2", "testSMoveValue");
+    test:assertTrue(sIsMemberResult4);
 }
 
 @test:Config {

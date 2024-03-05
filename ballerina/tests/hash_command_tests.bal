@@ -177,7 +177,7 @@ function testHSet() returns error? {
     groups: ["standalone", "cluster"]
 }
 function testHSetNx() returns error? {
-    boolean hSetResult = check redis->hSet("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
+    boolean hSetResult = check redis->hSetNx("testHSetNxKey", "testHSetNxField1", "testHSetNxValue1");
     test:assertTrue(hSetResult);
 
     boolean hExistsResult = check redis->hExists("testHSetNxKey", "testHSetNxField1");
