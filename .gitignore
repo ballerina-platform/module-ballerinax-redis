@@ -44,3 +44,6 @@ build
 
 # Ballerina configuartion files
 **/Config.toml
+
+# Ballerina dependencies toml files in the examples
+examples/**/Dependencies.toml
