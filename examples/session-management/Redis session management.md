@@ -1,10 +1,10 @@
-# Redis Session Management
+# Redis session management
 
 This example demonstrates how to use Redis to manage user sessions efficiently.
 
 ## Prerequisites
 
-### 1. Setup Redis Server
+### 1. Setup Redis server
 
 Ensure you have Redis server installed and running locally or on a server accessible by your application.
 Refer to the [Setup Guide](https://central.ballerina.io/ballerinax/redis/latest#setup-guide) to set up the Redis server locally.
@@ -34,7 +34,7 @@ username="eve"
 password="eve@123"
 ```
 
-## Run the Example
+## Run the example
 
 Execute the following command to run the example:
 

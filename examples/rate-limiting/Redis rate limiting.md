@@ -1,10 +1,10 @@
-# Redis Rate Limiting
+# Redis rate limiting
 
 This example demonstrates how to implement rate limiting for API endpoints using Redis.
 
 ## Prerequisites
 
-### 1. Setup Redis Server
+### 1. Setup Redis server
 
 Use the following command to start a Redis server using Docker. It will start the Redis server and the 
 [`RedisInsight`](https://redis.com/redis-enterprise/redis-insight/), which is a web-based Redis GUI that allows you to 
@@ -26,7 +26,7 @@ host = "<host>"
 port = "<port>"
 ```
 
-## Run the Example
+## Run the example
 
 Execute the following command to run the example:
 
