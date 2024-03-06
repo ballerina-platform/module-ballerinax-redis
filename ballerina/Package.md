@@ -20,19 +20,21 @@ Redis locally or use a cloud-based Redis service.
 2. Follow the installation instructions based on your operating system.
 
 #### Step 2: Start Redis server
-After installation, start the Redis server by executing the appropriate command based on your operating system.
+To start the Redis server, open a terminal and execute the following command.
+
 ```bash
 redis-server
 ```
 
 #### Step 3: Verify Redis connectivity
-Ensure that the Redis server is running and accessible.
+After starting the Redis server, you can verify the connectivity using the Redis CLI.
+Open a new terminal and execute the following command.
 
 ```bash
 redis-cli ping
 ```
 
-If the server is running, you will receive a response of 'PONG'.
+If the server is running, you will receive a response of `"PONG"`.
 
 ### Setting up a cloud-based Redis service
 
@@ -97,10 +99,11 @@ bal run
 
 ## Examples
 
-The Redis connector provides practical examples illustrating usage in various scenarios. Explore these examples covering common Redis operations.
+The Redis connector provides practical examples illustrating usage in various scenarios.
+Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/) covering common Redis operations.
 
-1. [Cache Management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/cache-management) - Implement caching using Redis to improve application performance.
+1. [Cache management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/cache-management) - Implement caching using Redis to improve application performance.
 
-2. [Session Management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/session-management) - Use Redis to manage user sessions efficiently.
+2. [Session management](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/session-management) - Use Redis to manage user sessions efficiently.
 
-3. [Rate Limiting](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/rate-limiting) - Implement rate limiting for API endpoints using Redis.
+3. [Rate limiting](https://github.com/ballerina-platform/module-ballerinax-redis/tree/master/examples/rate-limiting) - Implement rate limiting for API endpoints using Redis.
