@@ -261,12 +261,15 @@ function setupHashValues() {
 function setupSetValues() {
     string[] keyArray = [
         "testSAddKey",
+        "testSCardKey",
         "{SetTag}testSDiffKey1",
         "{SetTag}testSDiffKey2",
         "{SetTag}testSInterKey1",
         "{SetTag}testSInterKey2",
         "testSIsMemberKey",
         "testSMembersKey",
+        "{SetTag}testSMoveKey1",
+        "{SetTag}testSMoveKey2",
         "testSPopKey",
         "testSRandMemberKey",
         "testSRemKey",
@@ -277,12 +280,15 @@ function setupSetValues() {
 
     string[][] valueArray = [
         ["testSAddValue1", "testSAddValue2"],
+        ["testSCardValue1", "testSCardValue2"],
         ["One", "Two", "Three", "Four"],
         ["One", "Two"],
         ["One", "Two", "Three", "Four"],
         ["One", "Two"],
         ["testSIsMemberValue"],
         ["testSMembersValue1", "testSMembersValue2", "testSMembersValue3"],
+        ["testSMoveValue"],
+        ["testSMoveValue2"],
         ["testSPopValue1", "testSPopValue2", "testSPopValue3"],
         ["testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"],
         ["testSRemValue1", "testSRemValue2", "testSRemValue3"],

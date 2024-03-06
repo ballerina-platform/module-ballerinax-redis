@@ -246,16 +246,12 @@ function testZRevRange() {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testZRevRangeByScore() {
-    var result = redis->zRangeByScore("testZRangeKey", 2.0, 4.0);
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-        test:assertEquals(result[0], "b");
-        test:assertEquals(result[1], "e");
-        test:assertEquals(result[2], "f");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testZRevRangeByScore() returns error? {
+    string[] result = check redis->zRevRangeByScore("testZRangeKey", 2.0, 4.0);
+    test:assertEquals(result.length(), 3);
+    test:assertEquals(result[0], "f");
+    test:assertEquals(result[1], "e");
+    test:assertEquals(result[2], "b");
 }
 
 @test:Config {
