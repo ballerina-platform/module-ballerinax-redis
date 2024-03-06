@@ -83,7 +83,7 @@ function testClusterInfoInStandaloneMode() returns error? {
 }
 function testAuthWithInvalidPassword() returns error? {
     string|Error authResult = redis->auth("invalidPassword");
-    if (authResult !is Error) {
+    if authResult !is Error {
         test:assertFail("auth operation should not be supported with invalid password");
     }
     test:assertEquals(authResult.message(), "Redis server error: ERR AUTH <password> called " +
