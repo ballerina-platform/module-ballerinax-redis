@@ -13,44 +13,31 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/lang.runtime;
 import ballerina/test;
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testSet() {
-    var result = redis->set("Name", "Manuri");
-    if (result is string) {
-        test:assertEquals(result, "OK");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testSet() returns error? {
+    string result = check redis->set("Name", "Manuri");
+    test:assertEquals(result, "OK");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testAppend() {
-    var result = redis->append("AppendTestKey", "SomeValue");
-    if (result is int) {
-        test:assertEquals(result, 24);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testAppend() returns error? {
+    int result = check redis->append("AppendTestKey", "SomeValue");
+    test:assertEquals(result, 24);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testBitCount() {
-    var result = redis->bitCount("BitCountTestKey");
-    if (result is int) {
-        test:assertEquals(result, 69);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testBitCount() returns error? {
+    int result = check redis->bitCount("BitCountTestKey");
+    test:assertEquals(result, 69);
 }
 
 @test:Config {
@@ -80,87 +67,61 @@ public function testBitOpOr() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testBitOpNot() {
-    var result = redis->bitOpNot("{StringTag}tesBitOpNotDest", "{StringTag}testBitOpKey1");
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testBitOpNot() returns error? {
+    int result = check redis->bitOpNot("{StringTag}tesBitOpNotDest", "{StringTag}testBitOpKey1");
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testBitOpXor() {
-    var result = redis->bitOpXor("{StringTag}tesBitOpXorDest", ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testBitOpXor() returns error? {
+    int result = check redis->bitOpXor("{StringTag}tesBitOpXorDest", ["{StringTag}testBitOpKey1", "{StringTag}testBitOpKey2"]);
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testDecr() {
-    var result = redis->decr("testDecrKey");
-    if (result is int) {
-        test:assertEquals(result, 7);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testDecr() returns error? {
+    var result = check redis->decr("testDecrKey");
+    test:assertEquals(result, 7);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testDecrBy() {
-    var result = redis->decrBy("testDecrByKey", 3);
-    if (result is int) {
-        test:assertEquals(result, 7);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testDecrBy() returns error? {
+    int result = check redis->decrBy("testDecrByKey", 3);
+    test:assertEquals(result, 7);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testGet() {
-    var result = redis->get("GetTestKey");
-    if (result is string) {
+public function testGet() returns error? {
+    string? result = check redis->get("GetTestKey");
+    if result is string {
         test:assertEquals(result, "GetTestValue");
-    } else if (result is ()) {
+    } else {
         test:assertFail("Key not found");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
     }
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testGetBit() {
-    var result = redis->getBit("testGetBitKey", 4);
-    if (result is int) {
-        test:assertEquals(result, 0);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testGetBit() returns error? {
+    int result = check redis->getBit("testGetBitKey", 4);
+    test:assertEquals(result, 0);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testGetRange() {
-    var result = redis->getRange("testGetRangekey", 2, 5);
-    if (result is string) {
-        test:assertEquals(result, "3456");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testGetRange() returns error? {
+    string result = check redis->getRange("testGetRangekey", 2, 5);
+    test:assertEquals(result, "3456");
 }
 
 @test:Config {
@@ -177,37 +138,25 @@ public function testGetSet() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testIncr() {
-    var result = redis->incr("testIncrKey");
-    if (result is int) {
-        test:assertEquals(result, 7);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testIncr() returns error? {
+    int result = check redis->incr("testIncrKey");
+    test:assertEquals(result, 7);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testIncrBy() {
-    var result = redis->incrBy("testIncrByKey", 2);
-    if (result is int) {
-        test:assertEquals(result, 7);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testIncrBy() returns error? {
+    int result = check redis->incrBy("testIncrByKey", 2);
+    test:assertEquals(result, 7);
 }
 
 @test:Config {
     dependsOn: [testIncrBy]
 }
-public function testIncrByFloat() {
-    var result = redis->incrByFloat("testIncrByKey", 0.2);
-    if (result is float) {
-        test:assertEquals(result, 7.200000002980232);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testIncrByFloat() returns error? {
+    float result = check redis->incrByFloat("testIncrByKey", 0.2);
+    test:assertEquals(result, 7.200000002980232);
 }
 
 @test:Config {
@@ -285,13 +234,9 @@ public function testPSetEx() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testSetBit() {
-    var result = redis->setBit("testSetBitKey", 1, 2);
-    if (result is int) {
-        test:assertEquals(result, 1);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testSetBit() returns error? {
+    int result = check redis->setBit("testSetBitKey", 1, 2);
+    test:assertEquals(result, 1);
 }
 
 @test:Config {
@@ -333,11 +278,7 @@ public function testSetRange() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-public function testStrLen() {
-    var result = redis->strLen("testStrLenKey");
-    if (result is int) {
-        test:assertEquals(result, 15);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+public function testStrLen() returns error? {
+    int result = check redis->strLen("testStrLenKey");
+    test:assertEquals(result, 15);
 }

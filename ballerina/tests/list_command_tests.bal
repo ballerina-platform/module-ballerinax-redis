@@ -13,131 +13,94 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/test;
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testBLPop() {
-    var result = redis->bLPop(1, ["testBLPopKey"]);
-    if (result is map<any>) {
-        test:assertEquals(<anydata|error>result.get("testBLPopKey"), "testBLPopValue2");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testBLPop() returns error? {
+    map<any> result = check redis->bLPop(1, ["testBLPopKey"]);
+    test:assertEquals(<anydata|error>result.get("testBLPopKey"), "testBLPopValue2");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testBRPop() {
-    var result = redis->bRPop(1, ["testBRPopKey"]);
-    if (result is map<any>) {
-        test:assertEquals(<anydata|error>result.get("testBRPopKey"), "testBRPopValue1");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testBRPop() returns error? {
+    map<any> result = check redis->bRPop(1, ["testBRPopKey"]);
+    test:assertEquals(<anydata|error>result.get("testBRPopKey"), "testBRPopValue1");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLPush() {
-    var result = redis->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLPush() returns error? {
+    int result = check redis->lPush("testLPushKey", ["testLPushValue2", "testLPushValue3"]);
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLPop() {
-    var result = redis->lPop("testLPopKey");
-    if (result is string) {
+function testLPop() returns error? {
+    string? result = check redis->lPop("testLPopKey");
+    if result is string {
         test:assertEquals(result, "testLPopValue2");
-    } else if (result is ()) {
+    } else {
         test:assertFail("Key not found");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
     }
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLPushX() {
-    var result = redis->lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLPushX() returns error? {
+    int result = check redis->lPushX("testLPushXKey", ["testLPushXValue2", "testLPushXValue3"]);
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLIndex() {
-    var result = redis->lIndex("testLIndexKey", 0);
-    if (result is string) {
+function testLIndex() returns error? {
+    string? result = check redis->lIndex("testLIndexKey", 0);
+    if result is string {
         test:assertEquals(result, "testLIndexValue2");
-    } else if (result is ()) {
+    } else {
         test:assertFail("Key not found");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
     }
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLInsert() {
-    var result = redis->lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
-    if (result is int) {
-        test:assertEquals(result, 5);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLInsert() returns error? {
+    int result = check redis->lInsert("testLInsertKey", true, "pivotValue", "beforePivotValue");
+    test:assertEquals(result, 5);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLLen() {
-    var result = redis->lLen("testLLenKey");
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLLen() returns error? {
+    int result = check redis->lLen("testLLenKey");
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLRange() {
-    var result = redis->lRange("testLRangeKey", 1, 3);
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLRange() returns error? {
+    string[] result = check redis->lRange("testLRangeKey", 1, 3);
+    test:assertEquals(result.length(), 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLRem() {
-    var result = redis->lRem("testLRemKey", 0, "toBeRemovedValue");
-    if (result is int) {
-        test:assertEquals(result, 2);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLRem() returns error? {
+    int result = check redis->lRem("testLRemKey", 0, "toBeRemovedValue");
+    test:assertEquals(result, 2);
 }
 
 @test:Config {
@@ -154,61 +117,43 @@ function testLSet() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testLTrim() {
-    var result = redis->lTrim("testLTrimKey", 1, -1);
-    if (result is string) {
-        test:assertEquals(result, "OK");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testLTrim() returns error? {
+    string result = check redis->lTrim("testLTrimKey", 1, -1);
+    test:assertEquals(result, "OK");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testRPop() {
-    var result = redis->rPop("testRPopKey");
-    if (result is string) {
+function testRPop() returns error? {
+    string? result = check redis->rPop("testRPopKey");
+    if result is string {
         test:assertEquals(result, "testRPopValue1");
-    } else if (result is ()) {
+    } else {
         test:assertFail("Key not found");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
     }
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testRPopLPush() {
-    var result = redis->rPopLPush("{ListTag}testRPopLPushKey1", "{ListTag}testRPopLPushKey2");
-    if (result is string) {
-        test:assertEquals(result, "One");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testRPopLPush() returns error? {
+    string result = check redis->rPopLPush("{ListTag}testRPopLPushKey1", "{ListTag}testRPopLPushKey2");
+    test:assertEquals(result, "One");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testRPush() {
-    var result = redis->rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testRPush() returns error? {
+    int result = check redis->rPush("testRPushKey", ["testRPushValue2", "testRPushValue3"]);
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testRPushX() {
-    var result = redis->rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testRPushX() returns error? {
+    int result = check redis->rPushX("testRPushXKey", ["testRPushXValue2", "testRPushXValue3"]);
+    test:assertEquals(result, 3);
 }

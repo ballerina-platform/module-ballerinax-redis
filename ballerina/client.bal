@@ -170,7 +170,7 @@ public isolated client class Client {
     @display {label: "Get And Set Value"}
     isolated remote function getSet(@display {label: "Key"} string key, 
                                     @display {label: "New Value"} string value)
-                            returns @display {label: "Old Value"} string?|Error = @java:Method {
+                            returns @display {label: "Old Value"} string|Error? = @java:Method {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
@@ -180,7 +180,7 @@ public isolated client class Client {
     # + return - Value of key, or nil when key does not exist or `redis:Error` if an error occurs
     @display {label: "Get Value"}
     isolated remote function get(@display {label: "Key"} string key) 
-                         returns @display {label: "Value"} string?|Error = @java:Method {
+                         returns @display {label: "Value"} string|Error? = @java:Method {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
@@ -358,7 +358,7 @@ public isolated client class Client {
     # + return - Value of the first element, or nil when key does not exist or `redis:Error` if an error occurs
     @display {label: "Pop Value From List"}
     isolated remote function lPop(@display {label: "Key"} string key)
-                          returns @display {label: "First Element Popped"} string?|Error = @java:Method {
+                          returns @display {label: "First Element Popped"} string|Error? = @java:Method {
         'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
@@ -379,8 +379,8 @@ public isolated client class Client {
     # + timeOut - Timeout in seconds
     # + keys - Keys referring to values
     # + return - `Nil` when no element could be popped and the timeout expired. A map containing one item, with the
-    # key being  the name of the key where an element was popped and the second element  being the value of the
-    # popped element, or `redis:Error` if an error occurs
+    #             key being  the name of the key where an element was popped and the second element  being the value of the
+    #             popped element, or `redis:Error` if an error occurs
     @display {label: "Pop List First Element And Block If Absent"}
     isolated remote function bLPop(@display {label: "Timeout (s)"} int timeOut, 
                                    @display {label: "Keys"} string[] keys)
@@ -410,7 +410,7 @@ public isolated client class Client {
     @display {label: "Get List Element By Index"}
     isolated remote function lIndex(@display {label: "Key"} string key, 
                                     @display {label: "Index"} int index)
-                            returns @display {label: "Value"} string?|Error = @java:Method {
+                            returns @display {label: "Value"} string|Error? = @java:Method {
         'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
@@ -502,7 +502,7 @@ public isolated client class Client {
     # + return - Value of the last element, or `nil` when key does not exist or `redis:Error` if an error occurs
     @display {label: "Pop List Last Element"}
     isolated remote function rPop(@display {label: "Key"} string key)
-                          returns @display {label: "Popped Value"} string?|Error = @java:Method {
+                          returns @display {label: "Popped Value"} string|Error? = @java:Method {
         'class: "io.ballerina.lib.redis.ListCommands"
     } external;
 
@@ -1317,7 +1317,7 @@ public isolated client class Client {
         'class: "io.ballerina.lib.redis.ClusterCommands"
     } external;
 
-    // Connection commands
+    // Connection Commands
 
     # Ping the server.
     #

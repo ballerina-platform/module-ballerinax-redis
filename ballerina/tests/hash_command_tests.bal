@@ -13,7 +13,6 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/test;
 
 @test:Config {
@@ -32,90 +31,62 @@ function testHDel() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHExists() {
-    var result = redis->hExists("testHExistsKey", "testHExistsField1");
-    if (result is boolean) {
-        test:assertEquals(result, true);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHExists() returns error? {
+    boolean result = check redis->hExists("testHExistsKey", "testHExistsField1");
+    test:assertTrue(result);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHGet() {
-    var result = redis->hGet("testHGetKey", "testHGetField1");
-    if (result is string) {
-        test:assertEquals(result, "testHGetValue1");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHGet() returns error? {
+    string result = check redis->hGet("testHGetKey", "testHGetField1");
+    test:assertEquals(result, "testHGetValue1");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHGetAll() {
-    var result = redis->hGetAll("testHGetAllKey");
-    if (result is map<any>) {
-        test:assertEquals(result.length(), 2);
-        test:assertTrue(result.get("testHGetAllField1").toString() == "testHGetAllValue1" &&
-            result.get("testHGetAllField2").toString() == "testHGetAllValue2");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHGetAll() returns error? {
+    map<any> result = check redis->hGetAll("testHGetAllKey");
+    test:assertEquals(result.length(), 2);
+    test:assertTrue(result.get("testHGetAllField1").toString() == "testHGetAllValue1");
+    test:assertTrue(result.get("testHGetAllField2").toString() == "testHGetAllValue2");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHIncrByFloat() {
-    var result = redis->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
-    if (result is float) {
-        test:assertEquals(result, 7.2f);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHIncrByFloat() returns error? {
+    float result = check redis->hIncrByFloat("testHIncrByFloatKey", "testHIncrByFloatField1", 0.2);
+    test:assertEquals(result, 7.2f);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHIncrBy() {
-    var result = redis->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
-    if (result is int) {
-        test:assertEquals(result, 8);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHIncrBy() returns error? {
+    int result = check redis->hIncrBy("testHIncrByKey", "testHIncrByField1", 2);
+    test:assertEquals(result, 8);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHLen() {
-    var result = redis->hLen("testHLenKey");
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHLen() returns error? {
+    int result = check redis->hLen("testHLenKey");
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHMGet() {
-    var result = redis->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
-    if (result is map<any>) {
-        test:assertEquals(result.length(), 3);
-        test:assertTrue(result.get("testHMGetField1").toString() == "testHMGetValue1" &&
-            result.get("testHMGetField2").toString() == "testHMGetValue2" &&
-            result.get("testHMGetField3").toString() == "testHMGetValue3");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHMGet() returns error? {
+    map<any> result = check redis->hMGet("testHMGetKey", ["testHMGetField1", "testHMGetField2", "testHMGetField3"]);
+    test:assertEquals(result.length(), 3);
+    test:assertTrue(result.get("testHMGetField1").toString() == "testHMGetValue1");
+    test:assertTrue(result.get("testHMGetField2").toString() == "testHMGetValue2");
+    test:assertTrue(result.get("testHMGetField3").toString() == "testHMGetValue3");
 }
 
 @test:Config {
@@ -136,29 +107,26 @@ function testHMSet() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHKeys() {
-    var result = redis->hKeys("testHKeysKey");
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-        boolean allFieldsRetrieved = true;
-        string[] hKeys = ["testHKeysField1", "testHKeysField2", "testHKeysField3"];
-        foreach var k in hKeys {
-            boolean keyExists = false;
-            foreach var r in result {
-                if (k == r) {
-                    keyExists = true;
-                    break;
-                }
-            }
-            if (!keyExists) {
-                allFieldsRetrieved = false;
+function testHKeys() returns error? {
+    string[] result = check redis->hKeys("testHKeysKey");
+
+    test:assertEquals(result.length(), 3);
+    boolean allFieldsRetrieved = true;
+    string[] hKeys = ["testHKeysField1", "testHKeysField2", "testHKeysField3"];
+    foreach var k in hKeys {
+        boolean keyExists = false;
+        foreach var r in result {
+            if (k == r) {
+                keyExists = true;
                 break;
             }
         }
-        test:assertTrue(allFieldsRetrieved);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!keyExists) {
+            allFieldsRetrieved = false;
+            break;
+        }
     }
+    test:assertTrue(allFieldsRetrieved);
 }
 
 @test:Config {
@@ -188,39 +156,32 @@ function testHSetNx() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHStrLen() {
-    var result = redis->hStrLen("testHStrLenKey", "testHStrLenField1");
-    if (result is int) {
-        test:assertEquals(result, 17);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testHStrLen() returns error? {
+    int result = check redis->hStrLen("testHStrLenKey", "testHStrLenField1");
+    test:assertEquals(result, 17);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testHVals() {
-    var result = redis->hVals("testHValsKey");
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-        boolean allValuesRetrieved = true;
-        string[] hVals = ["testHValsValue1", "testHValsValue1", "testHValsValue1"];
-        foreach var v in hVals {
-            boolean keyExists = false;
-            foreach var r in result {
-                if (v == r) {
-                    keyExists = true;
-                    break;
-                }
-            }
-            if (!keyExists) {
-                allValuesRetrieved = false;
+function testHVals() returns error? {
+    string[] result = check redis->hVals("testHValsKey");
+
+    test:assertEquals(result.length(), 3);
+    boolean allValuesRetrieved = true;
+    string[] hVals = ["testHValsValue1", "testHValsValue1", "testHValsValue1"];
+    foreach var v in hVals {
+        boolean keyExists = false;
+        foreach var r in result {
+            if (v == r) {
+                keyExists = true;
                 break;
             }
         }
-        test:assertTrue(allValuesRetrieved);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!keyExists) {
+            allValuesRetrieved = false;
+            break;
+        }
     }
+    test:assertTrue(allValuesRetrieved);
 }

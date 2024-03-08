@@ -18,31 +18,19 @@ import ballerina/test;
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testDel() {
-    var result = redis->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
-    if (result is int) {
-        test:assertEquals(result, 3);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testDel() returns error? {
+    int result = check redis->del(["testDelKey1", "testDelKey2", "testDelKey3"]);
+    test:assertEquals(result, 3);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testExists() {
-    var result1 = redis->exists(["testExistsKey"]);
-    var result2 = redis->exists(["nonExistentKey"]);
-    if (result1 is int) {
-        test:assertEquals(result1, 1);
-    } else {
-        test:assertFail("error from Connector: " + result1.message());
-    }
-    if (result2 is int) {
-        test:assertEquals(result2, 0);
-    } else {
-        test:assertFail("error from Connector: " + result2.message());
-    }
+function testExists() returns error? {
+    int result1 = check redis->exists(["testExistsKey"]);
+    int result2 = check redis->exists(["nonExistentKey"]);
+    test:assertEquals(result1, 1);
+    test:assertEquals(result2, 0);
 }
 
 @test:Config {
@@ -60,29 +48,26 @@ function testExpire() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testKeys() {
-    var result = redis->keys("testKeysKey*");
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-        boolean allMatchingKeysRetrieved = true;
-        string[] keys = ["testKeysKey1", "testKeysKey2", "testKeysKey3"];
-        foreach var k in keys {
-            boolean keyExists = false;
-            foreach var r in result {
-                if (k == r) {
-                    keyExists = true;
-                    break;
-                }
-            }
-            if (!keyExists) {
-                allMatchingKeysRetrieved = false;
+function testKeys() returns error? {
+    string[] result = check redis->keys("testKeysKey*");
+
+    test:assertEquals(result.length(), 3);
+    boolean allMatchingKeysRetrieved = true;
+    string[] keys = ["testKeysKey1", "testKeysKey2", "testKeysKey3"];
+    foreach var k in keys {
+        boolean keyExists = false;
+        foreach var r in result {
+            if (k == r) {
+                keyExists = true;
                 break;
             }
         }
-        test:assertTrue(allMatchingKeysRetrieved);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!keyExists) {
+            allMatchingKeysRetrieved = false;
+            break;
+        }
     }
+    test:assertTrue(allMatchingKeysRetrieved);
 }
 
 @test:Config {
@@ -139,14 +124,12 @@ function testPTtl() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testRandomKey() {
-    var result = redis->randomKey();
-    if (result is string) {
+function testRandomKey() returns error? {
+    string? result = check redis->randomKey();
+    if result is string {
         test:assertNotEquals(result, "");
-    } else if (result is ()) {
-        test:assertFail("Key not found");
     } else {
-        test:assertFail("error from Connector: " + result.message());
+        test:assertFail("Key not found");
     }
 }
 
@@ -179,24 +162,21 @@ function testRenameNx() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSort() {
-    var result = redis->sort("testSortKey");
-    if (result is string[]) {
-        test:assertEquals(result.length(), 6);
-        boolean elementsInOrder = true;
-        string[] values = ["0", "1", "2", "3", "4", "8"];
-        int count = 0;
-        foreach var v in values {
-            if (v != values[count]) {
-                elementsInOrder = false;
-                break;
-            }
-            count += 1;
+function testSort() returns error? {
+    string[] result = check redis->sort("testSortKey");
+
+    test:assertEquals(result.length(), 6);
+    boolean elementsInOrder = true;
+    string[] values = ["0", "1", "2", "3", "4", "8"];
+    int count = 0;
+    foreach var v in values {
+        if (v != values[count]) {
+            elementsInOrder = false;
+            break;
         }
-        test:assertTrue(elementsInOrder);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        count += 1;
     }
+    test:assertTrue(elementsInOrder);
 }
 
 @test:Config {
@@ -212,11 +192,7 @@ function testTtl() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testType() {
-    var result = redis->redisType("testTypeKey");
-    if (result is string) {
-        test:assertEquals(result, "string");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testType() returns error? {
+    string result = check redis->redisType("testTypeKey");
+    test:assertEquals(result, "string");
 }
