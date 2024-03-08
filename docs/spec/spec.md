@@ -30,23 +30,23 @@ specification is considered a bug.
 
 1. [Overview](#1-overview)
 2. [Client](#2-client)  
-    2.1. [Configurations](#21-configurations)  
-    &nbsp;&nbsp;&nbsp;&nbsp;2.1.1. [Connection configurations](#211-connection-configurations)  
-    &nbsp;&nbsp;&nbsp;&nbsp;2.1.2. [Connection URI and Connection parameters](#212-connection-uri-and-connection-parameters)  
-    &nbsp;&nbsp;&nbsp;&nbsp;2.1.3. [Secure Socket configurations](#213-secure-socket-configurations)  
-    2.2. [Initialization](#22-initialization)  
-    2.3. [Secure communication](#23-secure-communication)  
-    2.4. [Cluster connections](#24-cluster-connections)  
-    2.5. [Connection pooling](#25-connection-pooling)  
-    2.6. [Closing the connection](#26-closing-the-connection)
-3. [Supported Operations](#3-supported-operations)  
-   3.1. [Hash Operations](#31-hash-operations)  
-   3.2. [Key Operations](#32-key-operations)  
-   3.3. [List Operations](#33-list-operations)  
-   3.4. [Set Operations](#34-set-operations)  
-   3.5. [Sorted Set Operations](#35-sorted-set-operations)  
-   3.6. [String Operations](#36-string-operations)  
-   3.7. [Cluster Operations](#37-cluster-operations)
+    * 2.1. [Configurations](#21-configurations)  
+      * 2.1.1. [Connection configurations](#211-connection-configurations)  
+      * 2.1.2. [Connection URI and Connection parameters](#212-connection-uri-and-connection-parameters)  
+      * 2.1.3. [Secure Socket configurations](#213-secure-socket-configurations)  
+    * 2.2. [Initialization](#22-initialization)  
+    * 2.3. [Secure communication](#23-secure-communication)  
+    * 2.4. [Cluster connections](#24-cluster-connections)  
+    * 2.5. [Connection pooling](#25-connection-pooling)  
+    * 2.6. [Closing the connection](#26-closing-the-connection)
+    * 2.7. [Supported Operations](#27-supported-operations)  
+      * 2.7.1. [Hash Operations](#271-hash-operations)  
+      * 2.7.2. [Key Operations](#272-key-operations)  
+      * 2.7.3. [List Operations](#273-list-operations)  
+      * 2.7.4. [Set Operations](#274-set-operations)  
+      * 2.7.5. [Sorted Set Operations](#275-sorted-set-operations)  
+      * 2.7.6. [String Operations](#276-string-operations)  
+      * 2.7.7. [Cluster Operations](#277-cluster-operations)
 
 # 1. Overview
 
@@ -229,14 +229,14 @@ The `close()` operation shuts down the Redis client and closes the associated co
 public isolated function close() returns redis:Error?;
 ```
 
-# 3. Supported Operations
+## 2.7. Supported operations
 
 The Ballerina Redis connector supports various operations for interacting with Redis data structures.
 
 For complete details on all available operations in Redis, refer to
 the [Redis Command Reference](https://redis.io/commands).
 
-## 3.1 Hash Operations
+### 2.7.1. Hash Operations
 
 Hash operations allow manipulation of hash data structures in Redis.
 
@@ -257,7 +257,7 @@ Ballerina Redis connector supports the following hash operations:
 - `hStrLen`: Get the string length of the field value in a hash.
 - `hVals`: Get all the values in a hash.
 
-## 3.2 Key Operations
+### 2.7.2. Key Operations
 
 Key operations involve setting, retrieving, and deleting keys in the Redis database.
 
@@ -278,7 +278,7 @@ Ballerina Redis connector supports the following key operations:
 - `ttl`: Get the time to live for a key.
 - `RedisType`: Determine the type stored at key.
 
-# 3.3 List Operations
+### 2.7.3. List Operations
 
 List operations allow manipulation of lists stored in Redis.
 
@@ -301,7 +301,7 @@ Ballerina Redis connector supports the following list operations:
 - `rPush`: Append one or multiple values to a list.
 - `rPushX`: Append one or multiple values to a list, only if the list exists.
 
-## 3.4 Set Operations
+### 2.7.4. Set Operations
 
 Set operations allow manipulation of sets in Redis.
 
@@ -323,7 +323,7 @@ Ballerina Redis connector supports the following set operations:
 - `sUnion`: Return the union of multiple sets.
 - `sUnionStore`: Return the union of multiple sets and store it at the provided destination.
 
-## 3.5 Sorted Set Operations
+### 2.7.5. Sorted Set Operations
 
 Sorted Set operations allow manipulation of sorted sets in Redis.
 
@@ -350,7 +350,7 @@ Ballerina Redis connector supports the following sorted set operations:
 - `zScore`: Determine the score of a member in a sorted set.
 - `zUnionStore`: Union multiple sorted sets and store the resulting sorted set in a new key.
 
-## 3.6 String Operations
+### 2.7.6. String Operations
 
 String operations allow manipulation of string values in Redis.
 
@@ -382,7 +382,7 @@ Ballerina Redis connector supports the following string operations:
 - `setRange`: Overwrites part of a string at a key starting at the specified offset.
 - `strLen`: Gets the length of the value stored in a key.
 
-## 3.7 Cluster Operations
+### 2.7.7. Cluster Operations
 
 The Redis library supports cluster specific operations for Redis cluster operations.
 
