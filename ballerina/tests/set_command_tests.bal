@@ -41,14 +41,10 @@ function testSCard() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSDiff() {
-    var result = redis->sDiff(["{SetTag}testSDiffKey1", "{SetTag}testSDiffKey2"]);
-    if (result is string[]) {
-        test:assertEquals(result.length(), 2);
-        test:assertTrue((result[0] == "Three" && result[1] == "Four") || (result[0] == "Four" && result[1] == "Three"));
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testSDiff() returns error? {
+    string[] result = check redis->sDiff(["{SetTag}testSDiffKey1", "{SetTag}testSDiffKey2"]);
+    test:assertEquals(result.length(), 2);
+    test:assertTrue((result[0] == "Three" && result[1] == "Four") || (result[0] == "Four" && result[1] == "Three"));
 }
 
 @test:Config {
@@ -67,13 +63,9 @@ function testSDiffStore() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSInter() {
-    var result = redis->sInter(["{SetTag}testSInterKey1", "{SetTag}testSInterKey2"]);
-    if (result is string[]) {
-        test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testSInter() returns error? {
+    string[] result = check redis->sInter(["{SetTag}testSInterKey1", "{SetTag}testSInterKey2"]);
+    test:assertTrue((result[0] == "One" && result[1] == "Two") || (result[0] == "Two" && result[1] == "One"));
 }
 
 @test:Config {
@@ -96,41 +88,34 @@ function testSInterStore() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSIsMember() {
-    var result = redis->sIsMember("testSIsMemberKey", "testSIsMemberValue");
-    if (result is boolean) {
-        test:assertTrue(result);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testSIsMember() returns error? {
+    boolean result = check redis->sIsMember("testSIsMemberKey", "testSIsMemberValue");
+    test:assertTrue(result);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSMembers() {
-    var result = redis->sMembers("testSMembersKey");
-    if (result is string[]) {
-        test:assertEquals(result.length(), 3);
-        boolean allMembersRetrieved = true;
-        string[] memberArray = ["testSMembersValue1", "testSMembersValue2", "testSMembersValue3"];
-        foreach var m in memberArray {
-            boolean memberExists = false;
-            foreach var r in result {
-                if (m == r) {
-                    memberExists = true;
-                    break;
-                }
-            }
-            if (!memberExists) {
-                allMembersRetrieved = false;
+function testSMembers() returns error? {
+    string[] result = check redis->sMembers("testSMembersKey");
+
+    test:assertEquals(result.length(), 3);
+    boolean allMembersRetrieved = true;
+    string[] memberArray = ["testSMembersValue1", "testSMembersValue2", "testSMembersValue3"];
+    foreach var m in memberArray {
+        boolean memberExists = false;
+        foreach var r in result {
+            if (m == r) {
+                memberExists = true;
                 break;
             }
         }
-        test:assertTrue(allMembersRetrieved);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!memberExists) {
+            allMembersRetrieved = false;
+            break;
+        }
     }
+    test:assertTrue(allMembersRetrieved);
 }
 
 @test:Config {
@@ -175,29 +160,26 @@ function testSPop() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSRandMember() {
-    var result = redis->sRandMember("testSRandMemberKey", 2);
-    if (result is string[]) {
-        test:assertEquals(result.length(), 2);
-        boolean allMembersPopped = true;
-        string[] memberArray = ["testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"];
-        foreach var r in result {
-            boolean memberExists = false;
-            foreach var m in memberArray {
-                if (r == m) {
-                    memberExists = true;
-                    break;
-                }
-            }
-            if (!memberExists) {
-                allMembersPopped = false;
+function testSRandMember() returns error? {
+    string[] result = check redis->sRandMember("testSRandMemberKey", 2);
+
+    test:assertEquals(result.length(), 2);
+    boolean allMembersPopped = true;
+    string[] memberArray = ["testSRandMemberValue1", "testSRandMemberValue2", "testSRandMemberValue3"];
+    foreach var r in result {
+        boolean memberExists = false;
+        foreach var m in memberArray {
+            if (r == m) {
+                memberExists = true;
                 break;
             }
         }
-        test:assertTrue(allMembersPopped);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!memberExists) {
+            allMembersPopped = false;
+            break;
+        }
     }
+    test:assertTrue(allMembersPopped);
 }
 
 @test:Config {
@@ -216,29 +198,26 @@ function testSRem() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testSUnion() {
-    var result = redis->sUnion(["{SetTag}testUnionKey1", "{SetTag}testUnionKey2"]);
-    if (result is string[]) {
-        test:assertEquals(result.length(), 4);
-        boolean allUnionMembersExist = true;
-        string[] unionArray = ["testUnionValue1", "testUnionValue2", "testUnionValue3", "testUnionValue4"];
-        foreach var r in result {
-            boolean memberExists = false;
-            foreach var u in unionArray {
-                if (r == u) {
-                    memberExists = true;
-                    break;
-                }
-            }
-            if (!memberExists) {
-                allUnionMembersExist = false;
+function testSUnion() returns error? {
+    string[] result = check redis->sUnion(["{SetTag}testUnionKey1", "{SetTag}testUnionKey2"]);
+
+    test:assertEquals(result.length(), 4);
+    boolean allUnionMembersExist = true;
+    string[] unionArray = ["testUnionValue1", "testUnionValue2", "testUnionValue3", "testUnionValue4"];
+    foreach var r in result {
+        boolean memberExists = false;
+        foreach var u in unionArray {
+            if (r == u) {
+                memberExists = true;
                 break;
             }
         }
-        test:assertTrue(allUnionMembersExist);
-    } else {
-        test:assertFail("error from Connector: " + result.message());
+        if (!memberExists) {
+            allUnionMembersExist = false;
+            break;
+        }
     }
+    test:assertTrue(allUnionMembersExist);
 }
 
 @test:Config {

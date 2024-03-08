@@ -18,23 +18,15 @@ import ballerina/test;
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testPing() {
-    var result = redis->ping();
-    if result is string {
-        test:assertEquals(result, "PONG");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testPing() returns error? {
+    string result = check redis->ping();
+    test:assertEquals(result, "PONG");
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testEcho() {
-    var result = redis->echo("Hello");
-    if result is string {
-        test:assertEquals(result, "Hello");
-    } else {
-        test:assertFail("error from Connector: " + result.message());
-    }
+function testEcho() returns error? {
+    string result = check redis->echo("Hello");
+    test:assertEquals(result, "Hello");
 }
