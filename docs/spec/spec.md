@@ -75,7 +75,8 @@ The `ConnectionConfig` record represents the client endpoint configuration for R
   ```ballerina
   # The client endpoint configuration for Redis.
   #
-  # + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
+  # + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters.
+  #                If none is provided, the default Redis server configurations (localhost:6379) will be used.
   # + connectionPooling - Flag to indicate whether connection pooling is enabled
   # + isClusterConnection - Flag to indicate whether the connection is a cluster connection
   # + secureSocket - Configurations related to SSL/TLS encryption
