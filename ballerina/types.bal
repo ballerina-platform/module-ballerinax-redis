@@ -17,15 +17,14 @@ import ballerina/crypto;
 
 # The client endpoint configuration for Redis.
 #
-# + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters.
-#                If none is provided, the default Redis server configurations (localhost:6379) will be used.
+# + connection - Connection configurations of the Redis server. This can be either a single URI or a set of parameters
 # + connectionPooling - Flag to indicate whether connection pooling is enabled
 # + isClusterConnection - Flag to indicate whether the connection is a cluster connection
 # + secureSocket - Configurations related to SSL/TLS encryption
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     @display {label: "Connection Type"}
-    ConnectionUri|ConnectionParams connection?;
+    ConnectionUri|ConnectionParams connection = "redis://localhost:6379";
     @display {label: "Connection Pooling Enabled"}
     boolean connectionPooling = false;
     @display {label: "Cluster Mode Enabled"}

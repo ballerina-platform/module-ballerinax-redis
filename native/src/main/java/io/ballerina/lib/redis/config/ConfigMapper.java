@@ -64,9 +64,6 @@ public final class ConfigMapper {
     private static final BString VERIFY_MODE = StringUtils.fromString("verifyMode");
     private static final BString CONFIG_START_TLS_ENABLED = StringUtils.fromString("startTls");
 
-    // Default Redis server connection URI
-    private static final String DEFAULT_REDIS_URI = "redis://localhost:6379";
-
     private ConfigMapper() {
     }
 
@@ -82,9 +79,7 @@ public final class ConfigMapper {
         SecureSocket secureSocket = getSecureSocketFromBObject(config);
 
         Object connection = config.get(CONFIG_CONNECTION);
-        if (connection == null) {
-            return new ConnectionURI(DEFAULT_REDIS_URI, isClusterConnection, poolingEnabled, secureSocket);
-        } else if (connection instanceof BString connectionUri) {
+        if (connection instanceof BString connectionUri) {
             return new ConnectionURI(connectionUri.getValue(), isClusterConnection, poolingEnabled, secureSocket);
         } else if (connection instanceof BMap<?, ?> connectionParamsMap) {
             BMap<BString, Object> connectionParams = (BMap<BString, Object>) connectionParamsMap;
