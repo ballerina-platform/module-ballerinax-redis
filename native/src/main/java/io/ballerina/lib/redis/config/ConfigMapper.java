@@ -36,33 +36,36 @@ import static io.ballerina.lib.redis.utils.ConversionUtils.getStringValueOrNull;
 public final class ConfigMapper {
 
     // Redis client config names as Ballerina string objects
-    public static final BString CONFIG_CONNECTION = StringUtils.fromString("connection");
-    public static final BString CONFIG_HOST = StringUtils.fromString("host");
-    public static final BString CONFIG_PORT = StringUtils.fromString("port");
-    public static final BString CONFIG_USERNAME = StringUtils.fromString("username");
-    public static final BString CONFIG_PASSWORD = StringUtils.fromString("password");
-    public static final BString CONFIG_IS_CLUSTER_CONNECTION = StringUtils.fromString("isClusterConnection");
-    public static final BString CONFIG_POOLING_ENABLED = StringUtils.fromString("connectionPooling");
+    private static final BString CONFIG_CONNECTION = StringUtils.fromString("connection");
+    private static final BString CONFIG_HOST = StringUtils.fromString("host");
+    private static final BString CONFIG_PORT = StringUtils.fromString("port");
+    private static final BString CONFIG_USERNAME = StringUtils.fromString("username");
+    private static final BString CONFIG_PASSWORD = StringUtils.fromString("password");
+    private static final BString CONFIG_IS_CLUSTER_CONNECTION = StringUtils.fromString("isClusterConnection");
+    private static final BString CONFIG_POOLING_ENABLED = StringUtils.fromString("connectionPooling");
 
-    public static final BString CONFIG_OPTIONS = StringUtils.fromString("options");
-    public static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
-    public static final BString CONFIG_DATABASE = StringUtils.fromString("database");
-    public static final BString CONFIG_CONNECTION_TIMEOUT = StringUtils.fromString("connectionTimeout");
+    private static final BString CONFIG_OPTIONS = StringUtils.fromString("options");
+    private static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
+    private static final BString CONFIG_DATABASE = StringUtils.fromString("database");
+    private static final BString CONFIG_CONNECTION_TIMEOUT = StringUtils.fromString("connectionTimeout");
 
-    public static final BString CONFIG_SECURE_SOCKET = StringUtils.fromString("secureSocket");
-    public static final BString CONFIG_CERT = StringUtils.fromString("cert");
-    public static final BString CONFIG_KEY = StringUtils.fromString("key");
-    public static final BString CONFIG_TRUST_STORE_PATH = StringUtils.fromString("path");
-    public static final BString CONFIG_TRUST_STORE_PASSWORD = StringUtils.fromString("password");
-    public static final BString CONFIG_KEY_STORE_PATH = StringUtils.fromString("path");
-    public static final BString CONFIG_KEY_STORE_PASSWORD = StringUtils.fromString("password");
-    public static final BString CONFIG_CERT_FILE = StringUtils.fromString("certFile");
-    public static final BString CONFIG_KEY_FILE = StringUtils.fromString("keyFile");
-    public static final BString CONFIG_KEY_PASSWORD = StringUtils.fromString("keyPassword");
+    private static final BString CONFIG_SECURE_SOCKET = StringUtils.fromString("secureSocket");
+    private static final BString CONFIG_CERT = StringUtils.fromString("cert");
+    private static final BString CONFIG_KEY = StringUtils.fromString("key");
+    private static final BString CONFIG_TRUST_STORE_PATH = StringUtils.fromString("path");
+    private static final BString CONFIG_TRUST_STORE_PASSWORD = StringUtils.fromString("password");
+    private static final BString CONFIG_KEY_STORE_PATH = StringUtils.fromString("path");
+    private static final BString CONFIG_KEY_STORE_PASSWORD = StringUtils.fromString("password");
+    private static final BString CONFIG_CERT_FILE = StringUtils.fromString("certFile");
+    private static final BString CONFIG_KEY_FILE = StringUtils.fromString("keyFile");
+    private static final BString CONFIG_KEY_PASSWORD = StringUtils.fromString("keyPassword");
     private static final BString CONFIG_PROTOCOLS = StringUtils.fromString("protocols");
     private static final BString CONFIG_CIPHERS = StringUtils.fromString("ciphers");
     private static final BString VERIFY_MODE = StringUtils.fromString("verifyMode");
     private static final BString CONFIG_START_TLS_ENABLED = StringUtils.fromString("startTls");
+
+    // Default Redis server connection URI
+    private static final String DEFAULT_REDIS_URI = "redis://localhost:6379";
 
     private ConfigMapper() {
     }
@@ -79,11 +82,13 @@ public final class ConfigMapper {
         SecureSocket secureSocket = getSecureSocketFromBObject(config);
 
         Object connection = config.get(CONFIG_CONNECTION);
-        if (connection instanceof BString connectionUri) {
+        if (connection == null) {
+            return new ConnectionURI(DEFAULT_REDIS_URI, isClusterConnection, poolingEnabled, secureSocket);
+        } else if (connection instanceof BString connectionUri) {
             return new ConnectionURI(connectionUri.getValue(), isClusterConnection, poolingEnabled, secureSocket);
-        } else {
-            BMap<BString, Object> connectionParams = (BMap<BString, Object>) connection;
-            String host = connectionParams.getStringValue(CONFIG_HOST).getValue();
+        } else if (connection instanceof BMap<?, ?> connectionParamsMap) {
+            BMap<BString, Object> connectionParams = (BMap<BString, Object>) connectionParamsMap;
+            String host = getStringValueOrNull(connectionParams, CONFIG_HOST);
             int port = connectionParams.getIntValue(CONFIG_PORT).intValue();
             String username = getStringValueOrNull(connectionParams, CONFIG_USERNAME);
             String password = getStringValueOrNull(connectionParams, CONFIG_PASSWORD);
@@ -91,6 +96,8 @@ public final class ConfigMapper {
 
             return new ConnectionParams(host, port, username, password, isClusterConnection, poolingEnabled,
                     secureSocket, getConnectionOptionsFromBObject(options));
+        } else {
+            throw new IllegalArgumentException("Unsupported connection configuration type found: " + connection.getClass());
         }
     }
 
