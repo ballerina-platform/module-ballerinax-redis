@@ -92,7 +92,7 @@ public final class ConfigMapper {
             return new ConnectionParams(host, port, username, password, isClusterConnection, poolingEnabled,
                     secureSocket, getConnectionOptionsFromBObject(options));
         } else {
-            throw new IllegalArgumentException("Unsupported connection configuration type found: " + connection.getClass());
+            throw new IllegalArgumentException("Unsupported connection configuration type found");
         }
     }
 
