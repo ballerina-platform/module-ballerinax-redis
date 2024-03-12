@@ -24,7 +24,7 @@ import ballerina/crypto;
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     @display {label: "Connection Type"}
-    ConnectionUri|ConnectionParams connection?;
+    ConnectionUri|ConnectionParams connection = "redis://localhost:6379";
     @display {label: "Connection Pooling Enabled"}
     boolean connectionPooling = false;
     @display {label: "Cluster Mode Enabled"}

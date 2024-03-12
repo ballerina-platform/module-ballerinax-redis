@@ -18,6 +18,17 @@ import ballerina/test;
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+function testDefaultConfigs() returns error? {
+    Client redis = check new (); // Empty configs will use default Redis server configs ("localhost:6379") to connect
+    string ping = check redis->ping();
+    test:assertEquals(ping, "PONG");
+
+    check redis.close();
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testInvalidSchemaInRedisUri() {
     Client|Error initResult = new (connection = "invalidscheme://localhost:6379");
     test:assertTrue(initResult is Error);
