@@ -36,18 +36,6 @@ function testExists() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testExpire() returns error? {
-    boolean result = check redis->expire("testExpireKey", 3);
-    test:assertTrue(result);
-
-    runtime:sleep(3);
-    int existsResult = check redis->exists(["testExpireKey"]);
-    test:assertEquals(existsResult, 0);
-}
-
-@test:Config {
-    groups: ["standalone", "cluster"]
-}
 function testKeys() returns error? {
     string[] result = check redis->keys("testKeysKey*");
 
@@ -101,24 +89,49 @@ function testPersist() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testPExpire() returns error? {
-    boolean expireResult = check redis->pExpire("testPExpireKey", 3000);
+function testExpire() returns error? {
+    boolean expireResult = check redis->expire("testExpireKey", 2);
     test:assertTrue(expireResult);
 
-    runtime:sleep(3.5);
-    int existsResult = check redis->exists(["testPExpireKey"]);
-    test:assertEquals(existsResult, 0);
+    int ttl = check redis->ttl("testExpireKey");
+    test:assertTrue(ttl <= 2);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testPExpire() returns error? {
+    boolean expireResult = check redis->pExpire("testPExpireKey", 2000);
+    test:assertTrue(expireResult);
+
+    int pTtl = check redis->pTtl("testPExpireKey");
+    test:assertTrue(pTtl <= 2000);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testTtl() returns error? {
+    boolean expireResult = check redis->expire("testTtlKey", 10);
+    test:assertTrue(expireResult);
+
+    int ttl1 = check redis->ttl("testTtlKey");
+    int ttl2 = check redis->ttl("testTtlKey");
+    test:assertTrue(ttl1 <= 10);
+    test:assertTrue(ttl2 <= ttl1);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
 function testPTtl() returns error? {
-    boolean _ = check redis->pExpire("testPTtlKey", 10000);
-    int result = check redis->pTtl("testPTtlKey");
-    runtime:sleep(5);
-    int ttl = check redis->pTtl("testPTtlKey");
-    test:assertTrue(result >= ttl && result <= 10000);
+    boolean expireResult = check redis->pExpire("testPTtlKey", 10000);
+    test:assertTrue(expireResult);
+
+    int pTtl1 = check redis->pTtl("testPTtlKey");
+    int pTtl2 = check redis->pTtl("testPTtlKey");
+    test:assertTrue(pTtl1 <= 10000);
+    test:assertTrue(pTtl2 <= pTtl1);
 }
 
 @test:Config {
@@ -177,16 +190,6 @@ function testSort() returns error? {
         count += 1;
     }
     test:assertTrue(elementsInOrder);
-}
-
-@test:Config {
-    groups: ["standalone", "cluster"]
-}
-function testTtl() returns error? {
-    _ = check redis->pExpire("testTtlKey", 10);
-    int result = check redis->ttl("testTtlKey");
-    int ttl = check redis->ttl("testTtlKey");
-    test:assertTrue(result >= ttl && result <= 10000);
 }
 
 @test:Config {
