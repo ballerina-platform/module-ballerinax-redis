@@ -12,3 +12,4 @@ jobs:
     secrets: inherit
     with:
       repo-name: module-ballerinax-redis
+      additional-build-flags: "-PbuildUsingDocker=\"\""
