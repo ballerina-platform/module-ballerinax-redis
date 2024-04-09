@@ -15,8 +15,6 @@ The `ballerinax/redis` connector provides practical examples illustrating usage 
 
 2. For each example, create a `Config.toml` file with your Redis server configuration. Here's an example of how your `Config.toml` file should look:
 
-3. . Here's an example of how your `config.toml` file should look:
-
     ```toml
     host="<host>"
     port="<port>"
