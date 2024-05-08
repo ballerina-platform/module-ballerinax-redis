@@ -128,7 +128,7 @@ dependencies = [
 [[package]]
 org = "ballerinax"
 name = "redis"
-version = "3.0.2"
+version = "3.0.3"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "jballerina.java"},
