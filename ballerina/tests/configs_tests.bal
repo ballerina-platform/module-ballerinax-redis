@@ -40,8 +40,8 @@ function testInvalidSchemaInRedisUri() {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testInvalidHostInRedisUri() {
-    Client|Error initResult = new (connection = "redis://invalidhost:6379");
+function testInvalidHostInRedisUriWithPooling() {
+    Client|Error initResult = new (connection = "redis://invalidhost:6379", connectionPooling = true);
     test:assertTrue(initResult is Error);
     if initResult is Error {
         test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to invalidhost/<unresolved>:6379");
@@ -51,10 +51,10 @@ function testInvalidHostInRedisUri() {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testInvalidPortInRedisUri() {
-    Client|Error initResult = new (connection = "redis://localhost:6");
+function testInvalidPortInRedisUriOnClusterMode() {
+    Client|Error initResult = new (connection = "redis://localhost:1", connectionPooling = true, isClusterConnection = true);
     test:assertTrue(initResult is Error);
     if initResult is Error {
-        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to connect to localhost/<unresolved>:6");
+        test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to establish a connection to Redis Cluster");
     }
 }
