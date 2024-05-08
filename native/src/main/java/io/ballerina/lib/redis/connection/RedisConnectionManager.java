@@ -239,6 +239,8 @@ public class RedisConnectionManager<K, V> {
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+            // this is to foresee any connection issues, when pooling is enabled
+            testConnectionPool();
         } else {
             StatefulRedisConnection<K, V> statefulRedisConnection = redisClient.connect(codec);
             redisCommands = statefulRedisConnection.sync();
@@ -259,6 +261,8 @@ public class RedisConnectionManager<K, V> {
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
             objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+            // this is to foresee any connection issues, when pooling is enabled
+            testConnectionPool();
         } else {
             redisClusterCommands = redisClusterClient.connect(codec).sync();
         }
@@ -314,14 +318,6 @@ public class RedisConnectionManager<K, V> {
             return objectPool.borrowObject();
         } catch (Exception e) {
             throw new RedisConnectorException("Error occurred while obtaining connection from the pool: " + e);
-        }
-    }
-
-    private BaseRedisCommands<K, V> getCommandConnection() throws RedisConnectorException {
-        if (isClusterConnection()) {
-            return getRedisClusterCommands();
-        } else {
-            return getRedisCommands();
         }
     }
 
@@ -395,5 +391,27 @@ public class RedisConnectionManager<K, V> {
         }
 
         return sslOptionsBuilder.build();
+    }
+
+    /**
+     * Test the pooled connection by borrowing and returning a connection. This is to foresee any connection issues,
+     * when pooling is enabled.
+     *
+     * @throws RedisConnectorException if an error occurs while borrowing or returning a connection
+     */
+    private void testConnectionPool() throws RedisConnectorException {
+        StatefulConnection<K, V> connection = null;
+        try {
+            connection = objectPool.borrowObject();
+            if (connection == null) {
+                throw new RedisConnectorException("Failed to borrow a connection from the pool");
+            }
+        } catch (Exception e) {
+            throw new RedisConnectorException(e.getMessage());
+        } finally {
+            if (Objects.nonNull(connection)) {
+                objectPool.returnObject(connection);
+            }
+        }
     }
 }
