@@ -2,7 +2,7 @@
 distribution = "2201.7.0"
 org="ballerinax"
 name = "redis"
-version = "3.0.1"
+version = "3.0.2"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases",  "Cost/Freemium"]
 icon = "icon.png"
@@ -16,8 +16,8 @@ graalvmCompatible = true
 groupId = "io.ballerina.lib"
 artifactId = "redis-native"
 module = "redis-native"
-version="3.0.1"
-path = "../native/build/libs/redis-native-3.0.1.jar"
+version="3.0.2-SNAPSHOT"
+path = "../native/build/libs/redis-native-3.0.2-SNAPSHOT.jar"
 
 [[platform.java17.dependency]]
 groupId = "io.lettuce"
