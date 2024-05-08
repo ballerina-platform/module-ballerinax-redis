@@ -317,7 +317,8 @@ public class RedisConnectionManager<K, V> {
         try {
             return objectPool.borrowObject();
         } catch (Exception e) {
-            throw new RedisConnectorException("Error occurred while obtaining connection from the pool: " + e);
+            throw new RedisConnectorException("Error occurred while borrowing connection from the pool: %s"
+                    .formatted(e.getMessage()), e);
         }
     }
 
@@ -407,7 +408,7 @@ public class RedisConnectionManager<K, V> {
                 throw new RedisConnectorException("Failed to borrow a connection from the pool");
             }
         } catch (Exception e) {
-            throw new RedisConnectorException(e.getMessage());
+            throw new RedisConnectorException(e.getMessage(), e);
         } finally {
             if (Objects.nonNull(connection)) {
                 objectPool.returnObject(connection);
