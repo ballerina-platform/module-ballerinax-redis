@@ -11,7 +11,7 @@ Use the following command to start a Redis server using Docker. It will start th
 interact with Redis. 
 
 ```bash
- docker compose up
+docker compose up
 ```
 
 Once you run the following command, you can access the RedisInsight web interface by navigating to

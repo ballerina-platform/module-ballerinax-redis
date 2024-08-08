@@ -111,9 +111,9 @@ task startRedisServer() {
 
             exec {
                 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                    commandLine 'cmd', '/c', " docker compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
+                    commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
                 } else {
-                    commandLine 'sh', '-c', " docker compose -f tests/resources/docker/${dockerComposeFile} up -d"
+                    commandLine 'sh', '-c', "docker compose -f tests/resources/docker/${dockerComposeFile} up -d"
                 }
             }
         }
@@ -132,9 +132,9 @@ task stopRedisServer() {
 
                 exec {
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                        commandLine 'cmd', '/c', " docker compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
+                        commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
                     } else {
-                        commandLine 'sh', '-c', " docker compose -f tests/resources/docker/${dockerComposeFile} down"
+                        commandLine 'sh', '-c', "docker compose -f tests/resources/docker/${dockerComposeFile} down"
                     }
                 }
             }

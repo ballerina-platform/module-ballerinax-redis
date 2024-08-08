@@ -55,7 +55,7 @@ jobs:
       - name: Start Redis Server
         run: |
           cd ballerina/tests/resources/docker
-           docker compose -f compose-standalone.yml up -d 
+          docker compose -f compose-standalone.yml up -d 
 
       - name: Test with GraalVM
         run: |
@@ -65,4 +65,4 @@ jobs:
       - name: Stop Redis Server
         run: |
           cd ballerina/tests/resources/docker
-           docker compose -f compose-standalone.yml down
+          docker compose -f compose-standalone.yml down
