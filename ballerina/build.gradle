@@ -104,16 +104,16 @@ task startRedisServer() {
     gradle.taskGraph.whenReady { graph ->
         if (graph.hasTask(":${packageName}-ballerina:test")) {
             println("Starting redis server...")
-            def dockerComposeFile = "docker-compose-standalone.yml"
+            def dockerComposeFile = "compose-standalone.yml"
             if (System.getenv("TEST_CLUSTER_MODE")?.toBoolean()) {
-                dockerComposeFile = "docker-compose-cluster.yml"
+                dockerComposeFile = "compose-cluster.yml"
             }
 
             exec {
                 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                    commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
+                    commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
                 } else {
-                    commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/${dockerComposeFile} up -d"
+                    commandLine 'sh', '-c', "docker compose -f tests/resources/docker/${dockerComposeFile} up -d"
                 }
             }
         }
@@ -125,16 +125,16 @@ task stopRedisServer() {
         gradle.taskGraph.whenReady { graph ->
             if (graph.hasTask(":${packageName}-ballerina:test")) {
                 println("Stopping redis server...")
-                def dockerComposeFile = "docker-compose-standalone.yml"
+                def dockerComposeFile = "compose-standalone.yml"
                 if (System.getenv("TEST_CLUSTER_MODE")?.toBoolean()) {
-                    dockerComposeFile = "docker-compose-cluster.yml"
+                    dockerComposeFile = "compose-cluster.yml"
                 }
 
                 exec {
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                        commandLine 'cmd', '/c', "docker-compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
+                        commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
                     } else {
-                        commandLine 'sh', '-c', "docker-compose -f tests/resources/docker/${dockerComposeFile} down"
+                        commandLine 'sh', '-c', "docker compose -f tests/resources/docker/${dockerComposeFile} down"
                     }
                 }
             }

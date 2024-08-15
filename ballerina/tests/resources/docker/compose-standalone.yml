@@ -1,5 +1,3 @@
-version: '3.0'
-
 services:
   redis-standalone:
     image: redis:7.2.2
