@@ -72,7 +72,7 @@ Create a `redis:ConnectionConfig` instance by giving the Redis server configurat
 initialize the Ballerina Redis client using it.
 
 ```ballerina
-redis:Client redis = new (
+redis:Client redis = check new (
     connection = {
         host: "localhost",
         port: 6379
