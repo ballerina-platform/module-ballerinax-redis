@@ -9,17 +9,17 @@ icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-redis"
 license = ["Apache-2.0"]
 
-[platform.java17]
+[platform.java21]
 graalvmCompatible = true
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.ballerina.lib"
 artifactId = "redis-native"
 module = "redis-native"
 version="@project.version@"
 path = "../native/build/libs/redis-native-@project.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.lettuce"
 artifactId = "lettuce-core"
 version = "@lettuce.version@"
@@ -29,79 +29,79 @@ groupId = "org.apache.commons"
 artifactId = "commons-pool2"
 version = "@commons.pool2.version@"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "com.google.guava"
 artifactId = "guava"
 version = "@guava.version@"
 path = "./lib/guava-@guava.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "commons-io"
 artifactId = "commons-io"
 version = "@commons.io.version@"
 path = "./lib/commons-io-@commons.io.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-common"
 version = "@netty.version@"
 path = "./lib/netty-common-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-buffer"
 version = "@netty.version@"
 path = "./lib/netty-buffer-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport"
 version = "@netty.version@"
 path = "./lib/netty-transport-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-resolver"
 version = "@netty.version@"
 path = "./lib/netty-resolver-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-handler"
 version = "@netty.version@"
 path = "./lib/netty-handler-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-kqueue"
 version = "@netty.version@"
 path = "./lib/netty-transport-native-kqueue-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-epoll"
 version = "@netty.version@"
 path = "./lib/netty-transport-native-epoll-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-codec"
 version = "@netty.version@"
 path = "./lib/netty-codec-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.netty"
 artifactId = "netty-transport-native-unix-common"
 version = "@netty.version@"
 path = "./lib/netty-transport-native-unix-common-@netty.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "io.projectreactor"
 artifactId = "reactor-core"
 version = "@reactor-core.version@"
 path = "./lib/reactor-core-@reactor-core.version@.jar"
 
-[[platform.java17.dependency]]
+[[platform.java21.dependency]]
 groupId = "org.reactivestreams"
 artifactId = "reactive-streams"
 version = "@reactive-streams.version@"
