@@ -21,13 +21,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 apply plugin: 'java'
 
 task buildExamples {
-    gradle.taskGraph.whenReady { graph ->
-        if (graph.hasTask(":redis-examples:test")) {
-            buildExamples.enabled = false
-        } else {
-            testExamples.enabled = false
-        }
-    }
+
     doLast {
         try {
             exec {
