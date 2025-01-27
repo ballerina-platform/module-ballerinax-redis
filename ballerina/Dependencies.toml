@@ -5,7 +5,7 @@
 
 [ballerina]
 dependencies-toml-version = "2"
-distribution-version = "2201.8.0"
+distribution-version = "2201.11.0-20241218-101200-109f6cc7"
 
 [[package]]
 org = "ballerina"
@@ -128,7 +128,7 @@ dependencies = [
 [[package]]
 org = "ballerinax"
 name = "redis"
-version = "3.0.3"
+version = "3.1.0"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "jballerina.java"},
