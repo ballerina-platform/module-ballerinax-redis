@@ -2,7 +2,7 @@
 org = "nino"
 name = "rate_limiting"
 version = "0.1.0"
-distribution = "2201.8.3"
+distribution = "2201.11.0-20241218-101200-109f6cc7"
 
 [build-options]
 observabilityIncluded = true
