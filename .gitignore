@@ -38,6 +38,8 @@ target
 *.iws
 .gradle
 build
+core
+.core
 
 # Environment files
 *.env
