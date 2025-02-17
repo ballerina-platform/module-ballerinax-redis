@@ -39,6 +39,7 @@ target
 .gradle
 build
 core
+.core
 
 # Environment files
 *.env
