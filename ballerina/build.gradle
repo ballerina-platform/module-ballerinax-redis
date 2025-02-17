@@ -49,7 +49,6 @@ ballerina {
     module = packageName
     testCoverageParam = "--code-coverage --coverage-format=xml"
     isConnector = true
-    platform = "java21"
 }
 
 configurations {
