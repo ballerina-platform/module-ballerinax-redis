@@ -38,8 +38,8 @@ path = "./lib/guava-32.0.0-jre.jar"
 [[platform.java21.dependency]]
 groupId = "commons-io"
 artifactId = "commons-io"
-version = "2.7"
-path = "./lib/commons-io-2.7.jar"
+version = "2.14.0"
+path = "./lib/commons-io-2.14.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.netty"
