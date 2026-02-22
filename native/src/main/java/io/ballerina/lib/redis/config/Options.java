@@ -21,11 +21,12 @@ package io.ballerina.lib.redis.config;
 /**
  * Represents parameter based Redis connection options.
  *
- * @param clientName        client name
- * @param database          database index
- * @param connectionTimeout connection timeout
+ * @param clientName                  client name
+ * @param database                    database index
+ * @param connectionTimeout           connection timeout
+ * @param keepAliveIntervalInSeconds  interval in seconds between TCP keep-alive probes
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout) {
+public record Options(String clientName, int database, int connectionTimeout, int keepAliveIntervalInSeconds) {
 
 }

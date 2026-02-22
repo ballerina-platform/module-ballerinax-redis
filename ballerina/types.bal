@@ -66,6 +66,8 @@ public type ConnectionUri string;
 # + clientName - Name of the client
 # + database - Database index which the client should interact with. Not applicable for cluster connections
 # + connectionTimeout - Connection timeout in seconds
+# + keepAliveIntervalInSeconds - Interval in seconds between TCP keep-alive probes to detect stale connections.
+#   Set to 0 to disable. Default is 5 seconds.
 @display {label: "Connection Options"}
 public type Options record {|
     @display {label: "Client Name"}
@@ -74,6 +76,8 @@ public type Options record {|
     int database = 0;
     @display {label: "Connection Timeout"}
     int connectionTimeout = 60;
+    @display {label: "Keep Alive Interval"}
+    int keepAliveIntervalInSeconds = 5;
 |};
 
 # Configurations for secure communication with the Redis server.
