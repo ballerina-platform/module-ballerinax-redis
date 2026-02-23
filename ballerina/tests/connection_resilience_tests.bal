@@ -1,4 +1,4 @@
-// Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org)
+// Copyright (c) 2026 WSO2 LLC. (http://www.wso2.org)
 //
 // WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -89,25 +89,28 @@ function testStaleConnectionFailsWithoutKeepAlive() returns error? {
         }
     });
 
-    // Verify connection works before the disruption
-    _ = check redisClient->set("stale_conn_test_key", "value1");
-    string? val1 = check redisClient->get("stale_conn_test_key");
-    test:assertEquals(val1, "value1");
+    do {
+        // Verify connection works before the disruption
+        _ = check redisClient->set("stale_conn_test_key", "value1");
+        string? val1 = check redisClient->get("stale_conn_test_key");
+        test:assertEquals(val1, "value1");
 
-    // Add a blackhole toxic — silently drops all traffic without sending RST.
-    // The client still thinks the TCP connection is alive.
-    check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
+        // Add a blackhole toxic — silently drops all traffic without sending RST.
+        // The client still thinks the TCP connection is alive.
+        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
 
-    // Wait for existing in-flight data to drain
-    runtime:sleep(2);
+        // Wait for existing in-flight data to drain
+        runtime:sleep(2);
 
-    // Without keep-alive, the client has no way to detect the silently dead connection.
-    // The command should fail with a timeout error.
-    string?|Error val2 = redisClient->get("stale_conn_test_key");
-    test:assertTrue(val2 is Error, "Expected an error due to stale connection without keep-alive");
-
-    // Cleanup
-    http:Response|error removeToxicRes = toxiproxyClient->delete(string `/proxies/${proxyName}/toxics/${toxicName}`);
+        // Without keep-alive, the client has no way to detect the silently dead connection.
+        // The command should fail with a timeout error.
+        string?|Error val2 = redisClient->get("stale_conn_test_key");
+        test:assertTrue(val2 is Error, "Expected an error due to stale connection without keep-alive");
+    } on fail error e {
+        Error? closeErr = redisClient.close();
+        cleanupToxiProxy(toxiproxyClient, proxyName);
+        return e;
+    }
     Error? closeErr = redisClient.close();
     cleanupToxiProxy(toxiproxyClient, proxyName);
 }
@@ -136,30 +139,34 @@ function testConnectionRecoveryAfterSilentDrop() returns error? {
         }
     });
 
-    // Verify connection works before the disruption
-    _ = check redisClient->set("resilience_test_key", "value1");
-    string? val1 = check redisClient->get("resilience_test_key");
-    test:assertEquals(val1, "value1");
+    do {
+        // Verify connection works before the disruption
+        _ = check redisClient->set("resilience_test_key", "value1");
+        string? val1 = check redisClient->get("resilience_test_key");
+        test:assertEquals(val1, "value1");
 
-    // Add a blackhole toxic — silently drops all traffic without sending RST.
-    check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
+        // Add a blackhole toxic — silently drops all traffic without sending RST.
+        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
 
-    // Wait long enough for keep-alive probes to detect the dead connection.
-    // With idle=5s, interval=5s, count=3: detection takes ~20s.
-    runtime:sleep(25);
+        // Wait long enough for keep-alive probes to detect the dead connection.
+        // With idle=5s, interval=5s, count=3: detection takes ~20s.
+        runtime:sleep(25);
 
-    // Remove the toxic to restore connectivity — new connections can now be established.
-    check removeToxic(toxiproxyClient, proxyName, toxicName);
+        // Remove the toxic to restore connectivity — new connections can now be established.
+        check removeToxic(toxiproxyClient, proxyName, toxicName);
 
-    // Wait for Lettuce auto-reconnect to establish a new connection
-    runtime:sleep(5);
+        // Wait for Lettuce auto-reconnect to establish a new connection
+        runtime:sleep(5);
 
-    // With keep-alive + TimeoutOptions enabled, the client detected the dead connection
-    // and auto-reconnected. This GET should succeed.
-    string? val2 = check redisClient->get("resilience_test_key");
-    test:assertEquals(val2, "value1");
-
-    // Cleanup
+        // With keep-alive + TimeoutOptions enabled, the client detected the dead connection
+        // and auto-reconnected. This GET should succeed.
+        string? val2 = check redisClient->get("resilience_test_key");
+        test:assertEquals(val2, "value1");
+    } on fail error e {
+        Error? closeErr = redisClient.close();
+        cleanupToxiProxy(toxiproxyClient, proxyName);
+        return e;
+    }
     check redisClient.close();
     cleanupToxiProxy(toxiproxyClient, proxyName);
 }
