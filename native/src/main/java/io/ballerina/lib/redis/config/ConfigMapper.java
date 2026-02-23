@@ -48,7 +48,7 @@ public final class ConfigMapper {
     private static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
     private static final BString CONFIG_DATABASE = StringUtils.fromString("database");
     private static final BString CONFIG_CONNECTION_TIMEOUT = StringUtils.fromString("connectionTimeout");
-    private static final BString CONFIG_KEEP_ALIVE_INTERVAL = StringUtils.fromString("keepAliveIntervalInSeconds");
+    private static final BString CONFIG_KEEP_ALIVE_INTERVAL = StringUtils.fromString("keepAliveInterval");
 
     private static final BString CONFIG_SECURE_SOCKET = StringUtils.fromString("secureSocket");
     private static final BString CONFIG_CERT = StringUtils.fromString("cert");
@@ -100,10 +100,10 @@ public final class ConfigMapper {
     private static Options getConnectionOptionsFromBObject(BMap<BString, Object> connection) {
         int database = connection.getIntValue(CONFIG_DATABASE).intValue();
         int connectionTimeout = connection.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
-        int keepAliveIntervalInSeconds = connection.getIntValue(CONFIG_KEEP_ALIVE_INTERVAL).intValue();
+        int keepAliveInterval = connection.getIntValue(CONFIG_KEEP_ALIVE_INTERVAL).intValue();
         String clientName = getStringValueOrNull(connection, CONFIG_CLIENT_NAME);
 
-        return new Options(clientName, database, connectionTimeout, keepAliveIntervalInSeconds);
+        return new Options(clientName, database, connectionTimeout, keepAliveInterval);
     }
 
     private static SecureSocket getSecureSocketFromBObject(BMap<BString, Object> connection) {

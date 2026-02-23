@@ -66,7 +66,7 @@ function cleanupToxiProxy(http:Client toxiproxyClient, string proxyName) {
     http:Response|error deleteRes = toxiproxyClient->delete(string `/proxies/${proxyName}`);
 }
 
-// Reproduces the stale connection issue WITHOUT the fix (keepAliveIntervalInSeconds=0).
+// Reproduces the stale connection issue WITHOUT the fix (keepAliveInterval=0).
 // Uses a toxiproxy "timeout" toxic to blackhole traffic, simulating a silent connection drop
 // (no RST sent). Without keep-alive probes and TimeoutOptions, the client cannot detect
 // the dead connection and commands should fail with a timeout error.
@@ -79,16 +79,13 @@ function testStaleConnectionFailsWithoutKeepAlive() returns error? {
     http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
 
     // Connect with keep-alive DISABLED and a short command timeout.
-    // connectionTimeout controls the Lettuce command timeout (how long a command waits for a response).
-    // Without keep-alive and TimeoutOptions, stale connections cause commands to hang
-    // for the OS TCP timeout (~15 minutes). With connectionTimeout=3s, the command will
-    // timeout after 3 seconds, but without TimeoutOptions the timeout may not be enforced.
+    // The command should timeout after 3 seconds on a stale connection.
     Client redisClient = check new (connection = {
         host: "localhost",
         port: 6381,
         options: {
             connectionTimeout: 3,
-            keepAliveIntervalInSeconds: 0
+            keepAliveInterval: 0
         }
     });
 
@@ -115,7 +112,7 @@ function testStaleConnectionFailsWithoutKeepAlive() returns error? {
     cleanupToxiProxy(toxiproxyClient, proxyName);
 }
 
-// Verifies the fix: with keepAliveIntervalInSeconds=5 (default), TCP keep-alive probes
+// Verifies the fix: with keepAliveInterval=5, TCP keep-alive probes
 // detect dead connections and TimeoutOptions ensures commands timeout properly,
 // allowing Lettuce's auto-reconnect to establish a new connection.
 // Uses a toxiproxy "timeout" toxic to simulate a silent drop, then removes it to allow
@@ -129,12 +126,13 @@ function testConnectionRecoveryAfterSilentDrop() returns error? {
     string toxicName = "blackhole";
     http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
 
-    // Connect with keep-alive ENABLED (default keepAliveIntervalInSeconds=5)
+    // Connect with keep-alive ENABLED (keepAliveInterval=5)
     Client redisClient = check new (connection = {
         host: "localhost",
         port: 6381,
         options: {
-            connectionTimeout: 10
+            connectionTimeout: 10,
+            keepAliveInterval: 5
         }
     });
 

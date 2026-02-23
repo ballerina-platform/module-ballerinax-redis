@@ -24,9 +24,9 @@ package io.ballerina.lib.redis.config;
  * @param clientName                  client name
  * @param database                    database index
  * @param connectionTimeout           connection timeout
- * @param keepAliveIntervalInSeconds  interval in seconds between TCP keep-alive probes
+ * @param keepAliveInterval  interval in seconds between TCP keep-alive probes
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout, int keepAliveIntervalInSeconds) {
+public record Options(String clientName, int database, int connectionTimeout, int keepAliveInterval) {
 
 }

@@ -329,11 +329,10 @@ public class RedisConnectionManager<K, V> {
         int keepAliveInterval = resolveKeepAliveInterval(connectionConfig);
         RedisClient redisClient = RedisClient.create(redisURI);
 
-        ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder();
+        ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder()
+                .timeoutOptions(TimeoutOptions.enabled());
         if (keepAliveInterval > 0) {
-            clientOptionsBuilder
-                    .socketOptions(buildSocketOptions(keepAliveInterval))
-                    .timeoutOptions(TimeoutOptions.enabled());
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAliveInterval));
         }
 
         if (secureSocket != null) {
@@ -352,11 +351,10 @@ public class RedisConnectionManager<K, V> {
         int keepAliveInterval = resolveKeepAliveInterval(connectionConfig);
         RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
 
-        ClusterClientOptions.Builder clientOptionsBuilder = ClusterClientOptions.builder();
+        ClusterClientOptions.Builder clientOptionsBuilder = ClusterClientOptions.builder()
+                .timeoutOptions(TimeoutOptions.enabled());
         if (keepAliveInterval > 0) {
-            clientOptionsBuilder
-                    .socketOptions(buildSocketOptions(keepAliveInterval))
-                    .timeoutOptions(TimeoutOptions.enabled());
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAliveInterval));
         }
 
         if (secureSocket != null) {
@@ -370,14 +368,12 @@ public class RedisConnectionManager<K, V> {
         return redisClient;
     }
 
-    private static final int DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS = 5;
-
-    private SocketOptions buildSocketOptions(int keepAliveIntervalInSeconds) {
+    private SocketOptions buildSocketOptions(int keepAliveInterval) {
         SocketOptions.Builder builder = SocketOptions.builder();
-        if (keepAliveIntervalInSeconds > 0) {
+        if (keepAliveInterval > 0) {
             builder.keepAlive(SocketOptions.KeepAliveOptions.builder()
-                    .idle(Duration.ofSeconds(keepAliveIntervalInSeconds))
-                    .interval(Duration.ofSeconds(keepAliveIntervalInSeconds))
+                    .idle(Duration.ofSeconds(keepAliveInterval))
+                    .interval(Duration.ofSeconds(keepAliveInterval))
                     .count(3)
                     .enable()
                     .build());
@@ -387,9 +383,9 @@ public class RedisConnectionManager<K, V> {
 
     private int resolveKeepAliveInterval(ConnectionConfig connectionConfig) {
         if (connectionConfig instanceof ConnectionParams connectionParams) {
-            return connectionParams.options().keepAliveIntervalInSeconds();
+            return connectionParams.options().keepAliveInterval();
         }
-        return DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
+        return 0;
     }
 
     private SslOptions constructSslOptions(SecureSocket secureSocket) {
