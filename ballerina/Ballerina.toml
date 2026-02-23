@@ -2,7 +2,7 @@
 distribution = "2201.11.0"
 org="ballerinax"
 name = "redis"
-version = "3.1.1"
+version = "3.2.0"
 authors = ["Ballerina"]
 keywords = ["IT Operations/Databases", "Cost/Freemium", "Vendor/Redis", "Area/Database", "Type/Connector"]
 icon = "icon.png"
@@ -16,8 +16,8 @@ graalvmCompatible = true
 groupId = "io.ballerina.lib"
 artifactId = "redis-native"
 module = "redis-native"
-version="3.1.1-SNAPSHOT"
-path = "../native/build/libs/redis-native-3.1.1-SNAPSHOT.jar"
+version="3.2.0-SNAPSHOT"
+path = "../native/build/libs/redis-native-3.2.0-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.lettuce"

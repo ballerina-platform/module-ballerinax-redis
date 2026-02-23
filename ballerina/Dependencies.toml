@@ -345,7 +345,7 @@ dependencies = [
 [[package]]
 org = "ballerinax"
 name = "redis"
-version = "3.1.1"
+version = "3.2.0"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "http"},
