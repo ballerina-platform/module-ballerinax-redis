@@ -22,6 +22,7 @@ import io.ballerina.lib.redis.config.CertKey;
 import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.config.ConnectionParams;
 import io.ballerina.lib.redis.config.ConnectionURI;
+import io.ballerina.lib.redis.config.KeepAliveConfig;
 import io.ballerina.lib.redis.config.KeyStore;
 import io.ballerina.lib.redis.config.Options;
 import io.ballerina.lib.redis.config.SecureSocket;
@@ -326,13 +327,13 @@ public class RedisConnectionManager<K, V> {
 
     private RedisClient initializeClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
         SecureSocket secureSocket = connectionConfig.secureSocket();
-        int keepAliveInterval = resolveKeepAliveInterval(connectionConfig);
+        KeepAliveConfig keepAlive = resolveKeepAlive(connectionConfig);
         RedisClient redisClient = RedisClient.create(redisURI);
 
         ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder()
                 .timeoutOptions(TimeoutOptions.enabled());
-        if (keepAliveInterval > 0) {
-            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAliveInterval));
+        if (keepAlive != null) {
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAlive));
         }
 
         if (secureSocket != null) {
@@ -348,13 +349,13 @@ public class RedisConnectionManager<K, V> {
 
     private RedisClusterClient initializeClusterClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
         SecureSocket secureSocket = connectionConfig.secureSocket();
-        int keepAliveInterval = resolveKeepAliveInterval(connectionConfig);
+        KeepAliveConfig keepAlive = resolveKeepAlive(connectionConfig);
         RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
 
         ClusterClientOptions.Builder clientOptionsBuilder = ClusterClientOptions.builder()
                 .timeoutOptions(TimeoutOptions.enabled());
-        if (keepAliveInterval > 0) {
-            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAliveInterval));
+        if (keepAlive != null) {
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAlive));
         }
 
         if (secureSocket != null) {
@@ -368,24 +369,22 @@ public class RedisConnectionManager<K, V> {
         return redisClient;
     }
 
-    private SocketOptions buildSocketOptions(int keepAliveInterval) {
-        SocketOptions.Builder builder = SocketOptions.builder();
-        if (keepAliveInterval > 0) {
-            builder.keepAlive(SocketOptions.KeepAliveOptions.builder()
-                    .idle(Duration.ofSeconds(keepAliveInterval))
-                    .interval(Duration.ofSeconds(keepAliveInterval))
-                    .count(3)
-                    .enable()
-                    .build());
-        }
-        return builder.build();
+    private SocketOptions buildSocketOptions(KeepAliveConfig keepAlive) {
+        return SocketOptions.builder()
+                .keepAlive(SocketOptions.KeepAliveOptions.builder()
+                        .idle(Duration.ofSeconds(keepAlive.idle()))
+                        .interval(Duration.ofSeconds(keepAlive.interval()))
+                        .count(keepAlive.count())
+                        .enable()
+                        .build())
+                .build();
     }
 
-    private int resolveKeepAliveInterval(ConnectionConfig connectionConfig) {
+    private KeepAliveConfig resolveKeepAlive(ConnectionConfig connectionConfig) {
         if (connectionConfig instanceof ConnectionParams connectionParams) {
-            return connectionParams.options().keepAliveInterval();
+            return connectionParams.options().keepAlive();
         }
-        return 0;
+        return null;
     }
 
     private SslOptions constructSslOptions(SecureSocket secureSocket) {

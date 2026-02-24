@@ -18,6 +18,110 @@ import ballerina/http;
 import ballerina/lang.runtime;
 import ballerina/test;
 
+// Reproduces the stale connection issue WITHOUT the fix (keepAlive disabled).
+// Uses a toxiproxy "timeout" toxic to blackhole traffic, simulating a silent connection drop
+// (no RST sent). Without keep-alive probes and TimeoutOptions, the client cannot detect
+// the dead connection and commands should fail with a timeout error.
+@test:Config {
+    groups: ["standalone"]
+}
+function testStaleConnectionFailsWithoutKeepAlive() returns error? {
+    string proxyName = "redis-proxy-no-keepalive";
+    string toxicName = "blackhole";
+    http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
+
+    // Connect with keep-alive DISABLED and a short command timeout.
+    // The command should timeout after 3 seconds on a stale connection.
+    Client redisClient = check new (connection = {
+        host: "localhost",
+        port: 6381,
+        options: {
+            connectionTimeout: 3
+        }
+    });
+
+    do {
+        // Verify connection works before the disruption
+        _ = check redisClient->set("stale_conn_test_key", "value1");
+        string? val1 = check redisClient->get("stale_conn_test_key");
+        test:assertEquals(val1, "value1");
+
+        // Add a blackhole toxic — silently drops all traffic without sending RST.
+        // The client still thinks the TCP connection is alive.
+        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
+
+        // Wait for existing in-flight data to drain
+        runtime:sleep(2);
+
+        // Without keep-alive, the client has no way to detect the silently dead connection.
+        // The command should fail with a timeout error.
+        string?|Error val2 = redisClient->get("stale_conn_test_key");
+        test:assertTrue(val2 is Error, "Expected an error due to stale connection without keep-alive");
+    } on fail error e {
+        Error? closeErr = redisClient.close();
+        cleanupToxiProxy(toxiproxyClient, proxyName);
+        return e;
+    }
+    Error? closeErr = redisClient.close();
+    cleanupToxiProxy(toxiproxyClient, proxyName);
+}
+
+// Verifies the fix: with keepAlive enabled, TCP keep-alive probes
+// detect dead connections and TimeoutOptions ensures commands timeout properly,
+// allowing Lettuce's auto-reconnect to establish a new connection.
+// Uses a toxiproxy "timeout" toxic to simulate a silent drop, then removes it to allow
+// recovery. The GET command after recovery should succeed.
+@test:Config {
+    groups: ["standalone"],
+    dependsOn: [testStaleConnectionFailsWithoutKeepAlive]
+}
+function testConnectionRecoveryAfterSilentDrop() returns error? {
+    string proxyName = "redis-proxy-with-keepalive";
+    string toxicName = "blackhole";
+    http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
+
+    // Connect with keep-alive ENABLED
+    Client redisClient = check new (connection = {
+        host: "localhost",
+        port: 6381,
+        options: {
+            connectionTimeout: 10,
+            keepAlive: {idle: 5, interval: 5, count: 3}
+        }
+    });
+
+    do {
+        // Verify connection works before the disruption
+        _ = check redisClient->set("resilience_test_key", "value1");
+        string? val1 = check redisClient->get("resilience_test_key");
+        test:assertEquals(val1, "value1");
+
+        // Add a blackhole toxic — silently drops all traffic without sending RST.
+        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
+
+        // Wait long enough for keep-alive probes to detect the dead connection.
+        // With idle=5s, interval=5s, count=3: detection takes ~20s.
+        runtime:sleep(25);
+
+        // Remove the toxic to restore connectivity — new connections can now be established.
+        check removeToxic(toxiproxyClient, proxyName, toxicName);
+
+        // Wait for Lettuce auto-reconnect to establish a new connection
+        runtime:sleep(5);
+
+        // With keep-alive + TimeoutOptions enabled, the client detected the dead connection
+        // and auto-reconnected. This GET should succeed.
+        string? val2 = check redisClient->get("resilience_test_key");
+        test:assertEquals(val2, "value1");
+    } on fail error e {
+        Error? closeErr = redisClient.close();
+        cleanupToxiProxy(toxiproxyClient, proxyName);
+        return e;
+    }
+    check redisClient.close();
+    cleanupToxiProxy(toxiproxyClient, proxyName);
+}
+
 // Helper to create a toxiproxy proxy, returns the http client for further API calls.
 // Deletes any existing proxy with the same name first to avoid 409 conflicts.
 function createToxiProxy(string proxyName, string listenAddr, string upstream)
@@ -64,109 +168,4 @@ function removeToxic(http:Client toxiproxyClient, string proxyName, string toxic
 // Helper to clean up a toxiproxy proxy (best-effort, ignores errors)
 function cleanupToxiProxy(http:Client toxiproxyClient, string proxyName) {
     http:Response|error deleteRes = toxiproxyClient->delete(string `/proxies/${proxyName}`);
-}
-
-// Reproduces the stale connection issue WITHOUT the fix (keepAliveInterval=0).
-// Uses a toxiproxy "timeout" toxic to blackhole traffic, simulating a silent connection drop
-// (no RST sent). Without keep-alive probes and TimeoutOptions, the client cannot detect
-// the dead connection and commands should fail with a timeout error.
-@test:Config {
-    groups: ["standalone"]
-}
-function testStaleConnectionFailsWithoutKeepAlive() returns error? {
-    string proxyName = "redis-proxy-no-keepalive";
-    string toxicName = "blackhole";
-    http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
-
-    // Connect with keep-alive DISABLED and a short command timeout.
-    // The command should timeout after 3 seconds on a stale connection.
-    Client redisClient = check new (connection = {
-        host: "localhost",
-        port: 6381,
-        options: {
-            connectionTimeout: 3,
-            keepAliveInterval: 0
-        }
-    });
-
-    do {
-        // Verify connection works before the disruption
-        _ = check redisClient->set("stale_conn_test_key", "value1");
-        string? val1 = check redisClient->get("stale_conn_test_key");
-        test:assertEquals(val1, "value1");
-
-        // Add a blackhole toxic — silently drops all traffic without sending RST.
-        // The client still thinks the TCP connection is alive.
-        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
-
-        // Wait for existing in-flight data to drain
-        runtime:sleep(2);
-
-        // Without keep-alive, the client has no way to detect the silently dead connection.
-        // The command should fail with a timeout error.
-        string?|Error val2 = redisClient->get("stale_conn_test_key");
-        test:assertTrue(val2 is Error, "Expected an error due to stale connection without keep-alive");
-    } on fail error e {
-        Error? closeErr = redisClient.close();
-        cleanupToxiProxy(toxiproxyClient, proxyName);
-        return e;
-    }
-    Error? closeErr = redisClient.close();
-    cleanupToxiProxy(toxiproxyClient, proxyName);
-}
-
-// Verifies the fix: with keepAliveInterval=5, TCP keep-alive probes
-// detect dead connections and TimeoutOptions ensures commands timeout properly,
-// allowing Lettuce's auto-reconnect to establish a new connection.
-// Uses a toxiproxy "timeout" toxic to simulate a silent drop, then removes it to allow
-// recovery. The GET command after recovery should succeed.
-@test:Config {
-    groups: ["standalone"],
-    dependsOn: [testStaleConnectionFailsWithoutKeepAlive]
-}
-function testConnectionRecoveryAfterSilentDrop() returns error? {
-    string proxyName = "redis-proxy-with-keepalive";
-    string toxicName = "blackhole";
-    http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
-
-    // Connect with keep-alive ENABLED (keepAliveInterval=5)
-    Client redisClient = check new (connection = {
-        host: "localhost",
-        port: 6381,
-        options: {
-            connectionTimeout: 10,
-            keepAliveInterval: 5
-        }
-    });
-
-    do {
-        // Verify connection works before the disruption
-        _ = check redisClient->set("resilience_test_key", "value1");
-        string? val1 = check redisClient->get("resilience_test_key");
-        test:assertEquals(val1, "value1");
-
-        // Add a blackhole toxic — silently drops all traffic without sending RST.
-        check addBlackholdToxic(toxiproxyClient, proxyName, toxicName);
-
-        // Wait long enough for keep-alive probes to detect the dead connection.
-        // With idle=5s, interval=5s, count=3: detection takes ~20s.
-        runtime:sleep(25);
-
-        // Remove the toxic to restore connectivity — new connections can now be established.
-        check removeToxic(toxiproxyClient, proxyName, toxicName);
-
-        // Wait for Lettuce auto-reconnect to establish a new connection
-        runtime:sleep(5);
-
-        // With keep-alive + TimeoutOptions enabled, the client detected the dead connection
-        // and auto-reconnected. This GET should succeed.
-        string? val2 = check redisClient->get("resilience_test_key");
-        test:assertEquals(val2, "value1");
-    } on fail error e {
-        Error? closeErr = redisClient.close();
-        cleanupToxiProxy(toxiproxyClient, proxyName);
-        return e;
-    }
-    check redisClient.close();
-    cleanupToxiProxy(toxiproxyClient, proxyName);
 }

@@ -48,7 +48,10 @@ public final class ConfigMapper {
     private static final BString CONFIG_CLIENT_NAME = StringUtils.fromString("clientName");
     private static final BString CONFIG_DATABASE = StringUtils.fromString("database");
     private static final BString CONFIG_CONNECTION_TIMEOUT = StringUtils.fromString("connectionTimeout");
-    private static final BString CONFIG_KEEP_ALIVE_INTERVAL = StringUtils.fromString("keepAliveInterval");
+    private static final BString CONFIG_KEEP_ALIVE = StringUtils.fromString("keepAlive");
+    private static final BString CONFIG_KEEP_ALIVE_IDLE = StringUtils.fromString("idle");
+    private static final BString CONFIG_KEEP_ALIVE_INTERVAL = StringUtils.fromString("interval");
+    private static final BString CONFIG_KEEP_ALIVE_COUNT = StringUtils.fromString("count");
 
     private static final BString CONFIG_SECURE_SOCKET = StringUtils.fromString("secureSocket");
     private static final BString CONFIG_CERT = StringUtils.fromString("cert");
@@ -100,10 +103,21 @@ public final class ConfigMapper {
     private static Options getConnectionOptionsFromBObject(BMap<BString, Object> connection) {
         int database = connection.getIntValue(CONFIG_DATABASE).intValue();
         int connectionTimeout = connection.getIntValue(CONFIG_CONNECTION_TIMEOUT).intValue();
-        int keepAliveInterval = connection.getIntValue(CONFIG_KEEP_ALIVE_INTERVAL).intValue();
         String clientName = getStringValueOrNull(connection, CONFIG_CLIENT_NAME);
+        KeepAliveConfig keepAlive = getKeepAliveConfigFromBObject(connection);
 
-        return new Options(clientName, database, connectionTimeout, keepAliveInterval);
+        return new Options(clientName, database, connectionTimeout, keepAlive);
+    }
+
+    private static KeepAliveConfig getKeepAliveConfigFromBObject(BMap<BString, Object> connection) {
+        BMap<BString, Object> keepAliveMap = getMapValueOrNull(connection, CONFIG_KEEP_ALIVE);
+        if (keepAliveMap == null) {
+            return null;
+        }
+        int idle = keepAliveMap.getIntValue(CONFIG_KEEP_ALIVE_IDLE).intValue();
+        int interval = keepAliveMap.getIntValue(CONFIG_KEEP_ALIVE_INTERVAL).intValue();
+        int count = keepAliveMap.getIntValue(CONFIG_KEEP_ALIVE_COUNT).intValue();
+        return new KeepAliveConfig(idle, interval, count);
     }
 
     private static SecureSocket getSecureSocketFromBObject(BMap<BString, Object> connection) {
