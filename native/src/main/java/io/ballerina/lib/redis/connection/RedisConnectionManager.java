@@ -22,6 +22,7 @@ import io.ballerina.lib.redis.config.CertKey;
 import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.config.ConnectionParams;
 import io.ballerina.lib.redis.config.ConnectionURI;
+import io.ballerina.lib.redis.config.KeepAliveConfig;
 import io.ballerina.lib.redis.config.KeyStore;
 import io.ballerina.lib.redis.config.Options;
 import io.ballerina.lib.redis.config.SecureSocket;
@@ -30,7 +31,9 @@ import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SocketOptions;
 import io.lettuce.core.SslOptions;
+import io.lettuce.core.TimeoutOptions;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.BaseRedisCommands;
@@ -324,36 +327,64 @@ public class RedisConnectionManager<K, V> {
 
     private RedisClient initializeClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
         SecureSocket secureSocket = connectionConfig.secureSocket();
-        if (secureSocket == null) {
-            return RedisClient.create(redisURI);
-        }
-
-        redisURI.setSsl(true);
-        redisURI.setVerifyPeer(secureSocket.verifyMode());
-        redisURI.setStartTls(secureSocket.startTls());
+        KeepAliveConfig keepAlive = resolveKeepAlive(connectionConfig);
         RedisClient redisClient = RedisClient.create(redisURI);
 
-        SslOptions sslOptions = constructSslOptions(secureSocket);
-        ClientOptions clientOptions = ClientOptions.builder().sslOptions(sslOptions).build();
-        redisClient.setOptions(clientOptions);
+        ClientOptions.Builder clientOptionsBuilder = ClientOptions.builder()
+                .timeoutOptions(TimeoutOptions.enabled());
+        if (keepAlive != null) {
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAlive));
+        }
+
+        if (secureSocket != null) {
+            redisURI.setSsl(true);
+            redisURI.setVerifyPeer(secureSocket.verifyMode());
+            redisURI.setStartTls(secureSocket.startTls());
+            clientOptionsBuilder.sslOptions(constructSslOptions(secureSocket));
+        }
+
+        redisClient.setOptions(clientOptionsBuilder.build());
         return redisClient;
     }
 
     private RedisClusterClient initializeClusterClient(ConnectionConfig connectionConfig, RedisURI redisURI) {
         SecureSocket secureSocket = connectionConfig.secureSocket();
-        if (secureSocket == null) {
-            return RedisClusterClient.create(redisURI);
-        }
-
-        redisURI.setSsl(true);
-        redisURI.setVerifyPeer(secureSocket.verifyMode());
-        redisURI.setStartTls(secureSocket.startTls());
+        KeepAliveConfig keepAlive = resolveKeepAlive(connectionConfig);
         RedisClusterClient redisClient = RedisClusterClient.create(redisURI);
 
-        SslOptions sslOptions = constructSslOptions(secureSocket);
-        ClusterClientOptions clientOptions = ClusterClientOptions.builder().sslOptions(sslOptions).build();
-        redisClient.setOptions(clientOptions);
+        ClusterClientOptions.Builder clientOptionsBuilder = ClusterClientOptions.builder()
+                .timeoutOptions(TimeoutOptions.enabled());
+        if (keepAlive != null) {
+            clientOptionsBuilder.socketOptions(buildSocketOptions(keepAlive));
+        }
+
+        if (secureSocket != null) {
+            redisURI.setSsl(true);
+            redisURI.setVerifyPeer(secureSocket.verifyMode());
+            redisURI.setStartTls(secureSocket.startTls());
+            clientOptionsBuilder.sslOptions(constructSslOptions(secureSocket));
+        }
+
+        redisClient.setOptions(clientOptionsBuilder.build());
         return redisClient;
+    }
+
+    private SocketOptions buildSocketOptions(KeepAliveConfig keepAlive) {
+        return SocketOptions.builder()
+                .keepAlive(SocketOptions.KeepAliveOptions.builder()
+                        .idle(Duration.ofSeconds(keepAlive.idle()))
+                        .interval(Duration.ofSeconds(keepAlive.interval()))
+                        .count(keepAlive.count())
+                        .enable()
+                        .build())
+                .build();
+    }
+
+    private KeepAliveConfig resolveKeepAlive(ConnectionConfig connectionConfig) {
+        if (connectionConfig instanceof ConnectionParams connectionParams) {
+            return connectionParams.options().keepAlive();
+        }
+        return null;
     }
 
     private SslOptions constructSslOptions(SecureSocket secureSocket) {

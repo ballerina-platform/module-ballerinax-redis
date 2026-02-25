@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org)
+ * Copyright (c) 2026 WSO2 LLC. (http://www.wso2.org)
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,14 +19,13 @@
 package io.ballerina.lib.redis.config;
 
 /**
- * Represents parameter based Redis connection options.
+ * Represents TCP keep-alive configuration for detecting stale connections.
  *
- * @param clientName        client name
- * @param database          database index
- * @param connectionTimeout connection timeout
- * @param keepAlive         TCP keep-alive configuration, or null if disabled
+ * @param idle     time in seconds the connection must be idle before the first keep-alive probe
+ * @param interval time in seconds between individual keep-alive probes
+ * @param count    maximum number of keep-alive probes before the connection is considered dead
  * @since 3.0.0
  */
-public record Options(String clientName, int database, int connectionTimeout, KeepAliveConfig keepAlive) {
+public record KeepAliveConfig(int idle, int interval, int count) {
 
 }

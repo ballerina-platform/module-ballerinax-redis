@@ -12,3 +12,11 @@ services:
     volumes:
       - ./config/:/data/conf1/
       - ./secrets/:/data/secrets/
+
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.9.0
+    ports:
+      - '8474:8474'
+      - '6381:6381'
+    depends_on:
+      - redis-standalone

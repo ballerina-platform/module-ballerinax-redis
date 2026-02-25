@@ -61,11 +61,24 @@ public type ConnectionParams record {|
 @display {label: "Connection URI"}
 public type ConnectionUri string;
 
+# TCP keep-alive configuration for detecting stale connections.
+#
+# + idle - Time in seconds the connection must be idle before the first keep-alive probe is sent
+# + interval - Time in seconds between individual keep-alive probes
+# + count - Maximum number of keep-alive probes before the connection is considered dead
+public type KeepAliveConfig record {|
+    int idle = 7200;
+    int interval = 75;
+    int count = 9;
+|};
+
 # Connection options for Redis client endpoint.
 #
 # + clientName - Name of the client
 # + database - Database index which the client should interact with. Not applicable for cluster connections
 # + connectionTimeout - Connection timeout in seconds
+# + keepAlive - TCP keep-alive configuration for detecting stale connections.
+#   Set to `()` (nil) to disable. Default is `()` (disabled).
 @display {label: "Connection Options"}
 public type Options record {|
     @display {label: "Client Name"}
@@ -74,6 +87,8 @@ public type Options record {|
     int database = 0;
     @display {label: "Connection Timeout"}
     int connectionTimeout = 60;
+    @display {label: "Keep Alive Configuration"}
+    KeepAliveConfig? keepAlive = ();
 |};
 
 # Configurations for secure communication with the Redis server.
