@@ -1,11 +1,16 @@
 ## Overview
 
-[Redis](https://redis.io/) is an open-source, in-memory data structure store that can be used as a database,
-cache, and message broker. It supports various data structures such as strings, hashes, lists, sets, and more.
+[Redis](https://redis.io/) is an open-source, in-memory data structure store that can be used as a database, cache, and message broker. It supports various data structures such as strings, hashes, lists, sets, and more.
 
-The `ballerinax/redis` package offers APIs to connect to Redis servers and to manipulate key-value data, providing
-functionality to utilize Redis both as a database and cache. The current connector is compatible Redis server
-versions up to 7.2.x.
+The Redis connector offers APIs to connect to Redis servers and manipulate key-value data, providing functionality to utilize Redis both as a database and cache. It is compatible with Redis server versions up to 7.2.x.
+
+### Key Features
+
+- In-memory data storage for high-performance access
+- Support for various data structures (Strings, Hashes, Lists, Sets, etc.)
+- Efficient connection management and pooling
+- Support for complex Redis operations and commands
+- GraalVM compatible for native image builds
 
 ## Setup guide
 
