@@ -244,7 +244,7 @@ public class ListCommands {
     public static Object lTrim(BObject redisClient, BString redisKey, int startPos, int stopPos) {
         try {
             RedisListCommandsExecutor executor = getConnection(redisClient).getListCommandExecutor();
-            return StringUtils.fromString(executor.lTrim(redisKey.getValue(), startPos, startPos));
+            return StringUtils.fromString(executor.lTrim(redisKey.getValue(), startPos, stopPos));
         } catch (Throwable e) {
             return createBError(e);
         }

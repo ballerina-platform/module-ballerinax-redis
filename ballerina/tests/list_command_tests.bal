@@ -120,6 +120,9 @@ function testLSet() returns error? {
 function testLTrim() returns error? {
     string result = check redis->lTrim("testLTrimKey", 1, -1);
     test:assertEquals(result, "OK");
+
+    string[] remaining = check redis->lRange("testLTrimKey", 0, -1);
+    test:assertEquals(remaining, ["Two", "One"]);
 }
 
 @test:Config {
