@@ -3,3 +3,8 @@ CVE-2023-4586
 
 # False positive
 CVE-2021-29469
+
+# False positive: GHSA-rwm7-x88c-3g2p advisory text states only netty 4.2.x
+# (up to 4.2.12.Final) is affected; the 4.1.x branch does not contain the
+# vulnerable epoll half-close code path.
+CVE-2026-42577
