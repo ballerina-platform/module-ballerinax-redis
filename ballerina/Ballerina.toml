@@ -16,7 +16,7 @@ graalvmCompatible = true
 groupId = "io.ballerina.lib"
 artifactId = "redis-native"
 module = "redis-native"
-version="3.2.1-SNAPSHOT"
+version="3.2.1"
 path = "../native/build/libs/redis-native-3.2.1.jar"
 
 [[platform.java21.dependency]]
