@@ -52,7 +52,8 @@ function testFlushDb() returns error? {
     string setOtherDbResult = check redis->set("testFlushDbIsolationKey", "testFlushDbIsolationValue");
     test:assertEquals(setOtherDbResult, "OK");
 
-    check flushDbClient->flushDb();
+    string flushResult = check flushDbClient->flushDb();
+    test:assertEquals(flushResult, "OK");
 
     int existsResult = check flushDbClient->exists(["testFlushDbKey"]);
     test:assertEquals(existsResult, 0);
@@ -86,7 +87,8 @@ function testFlushAll() returns error? {
     string setResult = check flushAllClient->set("testFlushAllKey", "testFlushAllValue");
     test:assertEquals(setResult, "OK");
 
-    check flushAllClient->flushAll();
+    string flushResult = check flushAllClient->flushAll();
+    test:assertEquals(flushResult, "OK");
 
     int existsResult = check flushAllClient->exists(["testFlushAllKey"]);
     test:assertEquals(existsResult, 0);

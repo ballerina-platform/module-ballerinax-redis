@@ -70,12 +70,13 @@ public class ConnectionCommands {
      * Remove all keys from all databases.
      *
      * @param redisClient Client from the Ballerina redis client
+     * @return A string with the value `OK` if the operation was successful
      */
     public static Object flushAll(BObject redisClient) {
         try {
             RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
-            executor.flushAll();
-            return null;
+            String response = executor.flushAll();
+            return StringUtils.fromString(response);
         } catch (Throwable e) {
             return createBError(e);
         }
@@ -85,12 +86,13 @@ public class ConnectionCommands {
      * Remove all keys from the currently selected database.
      *
      * @param redisClient Client from the Ballerina redis client
+     * @return A string with the value `OK` if the operation was successful
      */
     public static Object flushDb(BObject redisClient) {
         try {
             RedisConnectionCommandExecutor executor = getConnection(redisClient).getConnectionCommandExecutor();
-            executor.flushDb();
-            return null;
+            String response = executor.flushDb();
+            return StringUtils.fromString(response);
         } catch (Throwable e) {
             return createBError(e);
         }
