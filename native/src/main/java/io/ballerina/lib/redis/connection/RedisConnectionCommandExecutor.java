@@ -65,16 +65,16 @@ public class RedisConnectionCommandExecutor {
         }
     }
 
-    public String flushAll() throws RedisConnectorException {
+    public void flushAll() throws RedisConnectorException {
         RedisClusterCommands<?, String> clusterCommands = null;
         RedisCommands<?, String> redisCommands = null;
         try {
             if (connManager.isClusterConnection()) {
                 clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
-                return clusterCommands.flushall();
+                clusterCommands.flushall();
             } else {
                 redisCommands = (RedisCommands<?, String>) connManager.getRedisCommands();
-                return redisCommands.flushall();
+                redisCommands.flushall();
             }
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
@@ -84,16 +84,16 @@ public class RedisConnectionCommandExecutor {
         }
     }
 
-    public String flushDb() throws RedisConnectorException {
+    public void flushDb() throws RedisConnectorException {
         RedisClusterCommands<?, String> clusterCommands = null;
         RedisCommands<?, String> redisCommands = null;
         try {
             if (connManager.isClusterConnection()) {
                 clusterCommands = (RedisAdvancedClusterCommands<?, String>) connManager.getRedisClusterCommands();
-                return clusterCommands.flushdb();
+                clusterCommands.flushdb();
             } else {
                 redisCommands = (RedisCommands<?, String>) connManager.getRedisCommands();
-                return redisCommands.flushdb();
+                redisCommands.flushdb();
             }
         } catch (RedisException e) {
             throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);

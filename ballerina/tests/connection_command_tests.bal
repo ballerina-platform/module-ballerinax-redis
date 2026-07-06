@@ -32,7 +32,9 @@ function testEcho() returns error? {
 }
 
 // `flushDb` is run against a dedicated database index (not the shared `redis` client's database) so that the
-// fixture data set up in `init.bal` and relied on by the rest of the test suite is not wiped out.
+// fixture data set up in `init.bal` and relied on by the rest of the test suite is not wiped out. A key is also
+// set on the shared `redis` client's (default) database to verify that `flushDb` only clears the selected
+// database and leaves other databases untouched.
 
 @test:Config {
     groups: ["standalone"]
@@ -47,11 +49,19 @@ function testFlushDb() returns error? {
     string setResult = check flushDbClient->set("testFlushDbKey", "testFlushDbValue");
     test:assertEquals(setResult, "OK");
 
-    string flushResult = check flushDbClient->flushDb();
-    test:assertEquals(flushResult, "OK");
+    string setOtherDbResult = check redis->set("testFlushDbIsolationKey", "testFlushDbIsolationValue");
+    test:assertEquals(setOtherDbResult, "OK");
+
+    check flushDbClient->flushDb();
 
     int existsResult = check flushDbClient->exists(["testFlushDbKey"]);
     test:assertEquals(existsResult, 0);
+
+    int otherDbExistsResult = check redis->exists(["testFlushDbIsolationKey"]);
+    test:assertEquals(otherDbExistsResult, 1);
+
+    int deleteResult = check redis->del(["testFlushDbIsolationKey"]);
+    test:assertEquals(deleteResult, 1);
 
     check flushDbClient.close();
 }
@@ -76,8 +86,7 @@ function testFlushAll() returns error? {
     string setResult = check flushAllClient->set("testFlushAllKey", "testFlushAllValue");
     test:assertEquals(setResult, "OK");
 
-    string flushResult = check flushAllClient->flushAll();
-    test:assertEquals(flushResult, "OK");
+    check flushAllClient->flushAll();
 
     int existsResult = check flushAllClient->exists(["testFlushAllKey"]);
     test:assertEquals(existsResult, 0);

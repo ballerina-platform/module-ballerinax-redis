@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-- Added `flushDb` and `flushAll` remote functions to the `redis:Client` to remove all the keys from the currently selected database or from all the databases respectively
+- [Added `flushDb` and `flushAll` remote functions to the `redis:Client` to remove all the keys from the currently selected database or from all the databases respectively](https://github.com/ballerina-platform/ballerina-library/issues/8880)
 
 ### Changed
 
