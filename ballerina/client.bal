@@ -1347,6 +1347,22 @@ public isolated client class Client {
         'class: "io.ballerina.lib.redis.ConnectionCommands"
     } external;
 
+    # Remove all the keys from the currently selected database.
+    #
+    # + return - String with the value `OK` if the operation was successful or `redis:Error` if an error occurs
+    @display {label: "Flush Database"}
+    isolated remote function flushDb() returns @display {label: "Result"} string|Error = @java:Method {
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
+    } external;
+
+    # Remove all the keys from all the databases.
+    #
+    # + return - String with the value `OK` if the operation was successful or `redis:Error` if an error occurs
+    @display {label: "Flush All Databases"}
+    isolated remote function flushAll() returns @display {label: "Result"} string|Error = @java:Method {
+        'class: "io.ballerina.lib.redis.ConnectionCommands"
+    } external;
+
     # Close the connection.
     #
     # + return - `nil` if the operation was successful or an `redis:Error` if an error occurs
