@@ -9,10 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - [Added `flushDb` and `flushAll` remote functions to the `redis:Client` to remove all the keys from the currently selected database or from all the databases respectively](https://github.com/ballerina-platform/ballerina-library/issues/8880)
 
 ### Changed
+- [**Breaking change:** Changed `mGet`'s return type from `string[]|Error` to `string?[]|Error` to fix a `redis:Error` (`InherentTypeViolation`) that occurred whenever a requested key did not exist; a missing key is now represented as `()`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ### Fixed
 - [Fixed client initialization for empty connection configs](https://github.com/ballerina-platform/ballerina-library/issues/6157)
-- [Fixed `mGet` returning an `InherentTypeViolation` error when a requested key does not exist](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ## [3.0.0] - 2024-03-08
 
