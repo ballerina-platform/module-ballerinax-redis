@@ -380,6 +380,7 @@ Ballerina Redis connector supports the following string operations:
 - `setBit`: Sets or clears the bit at an offset in the string value stored at a key.
 - `setEx`: Sets the value and expiration of a key in seconds.
 - `setNx`: Sets the value of a key, only if the key does not exist.
+- `setNxEx`: Sets the value and expiration of a key, only if the key does not exist.
 - `setRange`: Overwrites part of a string at a key starting at the specified offset.
 - `strLen`: Gets the length of the value stored in a key.
 

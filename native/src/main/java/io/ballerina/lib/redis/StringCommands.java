@@ -451,6 +451,24 @@ public class StringCommands {
     }
 
     /**
+     * Set the value and expiration of a key, only if the key does not exist.
+     *
+     * @param redisClient             Client from the Ballerina redis client
+     * @param key                     key
+     * @param value                   value
+     * @param expirationPeriodSeconds Expiration time to be set, in seconds
+     * @return `True` if the key was set, `False` if the key already existed
+     */
+    public static Object setNxEx(BObject redisClient, BString key, BString value, long expirationPeriodSeconds) {
+        try {
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return executor.setNxEx(key.getValue(), value.getValue(), expirationPeriodSeconds);
+        } catch (Throwable e) {
+            return createBError(e);
+        }
+    }
+
+    /**
      * Overwrite part of a string at key starting at the specified offset.
      *
      * @param redisClient Client from the Ballerina redis client

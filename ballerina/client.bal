@@ -327,6 +327,21 @@ public isolated client class Client {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
+    # Set the value and expiration of a key, only if the key does not exist. Combines `setNx` and `setEx`
+    # into a single atomic operation (`SET key value NX EX expirationTime`).
+    #
+    # + key - Key referring to a value
+    # + value - Value to be set
+    # + expirationTime - Expiration time to be set, in seconds
+    # + return - `True` if the key was set, `False` if the key already existed, or `redis:Error` if an error occurs
+    @display {label: "Set Expirable Value If Absent"}
+    isolated remote function setNxEx(@display {label: "Key"} string key,
+                                     @display {label: "Value"} string value,
+                                     @display {label: "TTL (s)"} int expirationTime)
+                             returns @display {label: "Result"} boolean|Error = @java:Method {
+        'class: "io.ballerina.lib.redis.StringCommands"
+    } external;
+
     # Overwrite part of string at key starting at the specified offset.
     #
     # + key - Key referring to a value

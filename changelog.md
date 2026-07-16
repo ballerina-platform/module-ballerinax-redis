@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - [Added `mGetOptional`, a nil-safe variant of `mGet` that represents a missing key as `()`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
+- [Added a `setNxEx` remote function to the `redis:Client` to atomically set a key's value and expiration only if the key does not already exist (`SET key value NX EX ttl`)](https://github.com/ballerina-platform/ballerina-library/issues/8907)
 
 ### Changed
 
