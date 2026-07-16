@@ -22,6 +22,7 @@ import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.PredefinedTypes;
+import io.ballerina.runtime.api.types.UnionType;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
@@ -158,13 +159,17 @@ public class ConversionUtils {
     }
 
     /**
-     * Create a Ballerina array value from a Ballerina map value.
+     * Create a Ballerina nilable-string array value from a Ballerina map value. A {@code null} entry value
+     * (a key that does not exist in Redis) is preserved as {@code ()} instead of raising an
+     * {@code InherentTypeViolation}, matching Redis' {@code MGET} semantics of returning nil for missing keys.
      *
      * @param bMap the Ballerina map value
      * @return the Ballerina array
      */
-    public static BArray createBStringArrayFromBMap(BMap<BString, Object> bMap) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
+    public static BArray createBNilableStringArrayFromBMap(BMap<BString, Object> bMap) {
+        UnionType nilableStringType = TypeCreator.createUnionType(PredefinedTypes.TYPE_STRING,
+                PredefinedTypes.TYPE_NULL);
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(nilableStringType));
         for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
             bStringArray.append(entry.getValue());
         }

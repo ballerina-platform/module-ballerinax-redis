@@ -163,15 +163,29 @@ public function testIncrByFloat() returns error? {
     groups: ["standalone", "cluster"]
 }
 function testMGet() returns error? {
-    string[] result = check redis->mGet(["testMGetKey1", "testMGetKey2"]);
-    test:assertEquals(result.length(), 2);
+    string?[] result = check redis->mGet(["testMGetKey1", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2"]);
+}
 
-    string? getResult1 = check redis->get("testMGetKey1");
-    test:assertEquals(getResult1, "testMGetValue1");
-    string? getResult2 = check redis->get("testMGetKey2");
-    test:assertEquals(getResult2, "testMGetValue2");
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetWithMissingKey() returns error? {
     string? getResult3 = check redis->get("testMGetKey3");
     test:assertEquals(getResult3, ());
+
+    // A missing key ("testMGetKey3") must surface as `()` at its position instead of
+    // failing the whole call with an InherentTypeViolation.
+    string?[] result = check redis->mGet(["testMGetKey1", "testMGetKey3", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", (), "testMGetValue2"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetWithAllMissingKeys() returns error? {
+    string?[] result = check redis->mGet(["nonExistentMGetKey1", "nonExistentMGetKey2"]);
+    test:assertEquals(result, [(), ()]);
 }
 
 @test:Config {
