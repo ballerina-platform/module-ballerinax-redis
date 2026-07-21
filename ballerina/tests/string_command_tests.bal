@@ -177,6 +177,15 @@ function testMGet() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+function testMGetWithDuplicateKeys() returns error? {
+    // A repeated key must produce a repeated result at its position, not collapse into one.
+    string[] result = check redis->mGet(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2", "testMGetValue1"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMSet() returns error? {
     map<any> keyValueMap = {
         testMSetKey1: "testMSetValue1",

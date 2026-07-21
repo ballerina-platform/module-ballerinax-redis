@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - [Fixed client initialization for empty connection configs](https://github.com/ballerina-platform/ballerina-library/issues/6157)
+- [Fixed `mGet` returning fewer results than requested when the key list contained duplicates](https://github.com/ballerina-platform/ballerina-library/issues/8908)
 
 ## [3.0.0] - 2024-03-08
 

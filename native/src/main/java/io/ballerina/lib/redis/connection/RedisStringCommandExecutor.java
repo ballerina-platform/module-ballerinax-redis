@@ -19,8 +19,6 @@
 package io.ballerina.lib.redis.connection;
 
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisStringCommands;
@@ -31,7 +29,6 @@ import java.util.Map;
 import static io.ballerina.lib.redis.utils.Constants.KEYS_MUST_NOT_BE_NULL;
 import static io.ballerina.lib.redis.utils.Constants.KEY_MUST_NOT_BE_NULL;
 import static io.ballerina.lib.redis.utils.Constants.REDIS_SERVER_ERROR;
-import static io.ballerina.lib.redis.utils.ConversionUtils.createBMapFromKeyValueList;
 
 /**
  * Executor implementation for Redis string commands.
@@ -270,12 +267,11 @@ public class RedisStringCommandExecutor {
         }
     }
 
-    public <K> BMap<BString, Object> mGet(K[] key) throws RedisConnectorException {
+    public <K> List<KeyValue<K, String>> mGet(K[] key) throws RedisConnectorException {
         RedisStringCommands<K, String> stringCommands = null;
         try {
             stringCommands = (RedisStringCommands<K, String>) connManager.getStringCommandConnection();
-            List<KeyValue<K, String>> result = stringCommands.mget(key);
-            return createBMapFromKeyValueList(result);
+            return stringCommands.mget(key);
         } catch (IllegalArgumentException e) {
             throw new RedisConnectorException(KEYS_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {

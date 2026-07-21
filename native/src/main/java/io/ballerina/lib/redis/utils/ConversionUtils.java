@@ -134,6 +134,26 @@ public class ConversionUtils {
     }
 
     /**
+     * Create a Ballerina array value from a key value list.
+     *
+     * @param list the key value list
+     * @return the Ballerina array
+     */
+    public static <K> BArray createBStringArrayFromKeyValueList(List<KeyValue<K, String>> list) {
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
+        for (KeyValue<K, String> item : list) {
+            String value;
+            try {
+                value = item.getValue();
+            } catch (NoSuchElementException e) {
+                value = null;
+            }
+            bStringArray.append(StringUtils.fromString(value));
+        }
+        return bStringArray;
+    }
+
+    /**
      * Create a Java array from a Ballerina array value.
      *
      * @param bStringArray the Ballerina array value
@@ -155,20 +175,6 @@ public class ConversionUtils {
             map.put(entry.getKey().getValue(), entry.getValue().toString());
         }
         return map;
-    }
-
-    /**
-     * Create a Ballerina array value from a Ballerina map value.
-     *
-     * @param bMap the Ballerina map value
-     * @return the Ballerina array
-     */
-    public static BArray createBStringArrayFromBMap(BMap<BString, Object> bMap) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
-            bStringArray.append(entry.getValue());
-        }
-        return bStringArray;
     }
 
     /**

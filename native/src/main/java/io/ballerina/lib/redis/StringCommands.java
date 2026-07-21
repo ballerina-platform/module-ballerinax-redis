@@ -26,7 +26,7 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 
 import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
-import static io.ballerina.lib.redis.utils.ConversionUtils.createBStringArrayFromBMap;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBStringArrayFromKeyValueList;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createMapFromBMap;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createStringArrayFromBArray;
 import static io.ballerina.lib.redis.utils.RedisUtils.getConnection;
@@ -304,7 +304,7 @@ public class StringCommands {
     public static Object mGet(BObject redisClient, BArray keys) {
         try {
             RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
-            return createBStringArrayFromBMap(executor.mGet(createStringArrayFromBArray(keys)));
+            return createBStringArrayFromKeyValueList(executor.mGet(createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
             return createBError(e);
         }
