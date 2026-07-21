@@ -371,7 +371,7 @@ Ballerina Redis connector supports the following string operations:
 - `incr`: Increments the integer value of a key by one.
 - `incrBy`: Increments the integer value of a key by a given amount.
 - `incrByFloat`: Increments the float value of a key by a given amount.
-- `mGet`: Gets the values of multiple keys.
+- `mGet`: Gets the values of multiple keys. Fails if any key does not exist; use `mGetNilable` if a key might not exist.
 - `mGetNilable`: Gets the values of multiple keys, representing a missing key as `()`.
 - `mSet`: Sets multiple keys to multiple values.
 - `mSetNx`: Sets multiple keys to multiple values, only if none of the keys exist.

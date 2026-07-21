@@ -314,7 +314,7 @@ public class StringCommands {
 
     /**
      * Get the values of all the given keys. Unlike {@link #mGet(BObject, BArray)}, a key that has
-     * no value is represented as {@code ()} in the returned array instead of failing.
+     * no value is represented as {@code ()} in the returned array.
      *
      * @param redisClient Client from the Ballerina redis client
      * @param keys        The keys of which the values need to be retrieved

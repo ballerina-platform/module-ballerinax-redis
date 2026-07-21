@@ -231,7 +231,7 @@ public isolated client class Client {
     } external;
 
     # Get values of all given keys. Unlike `mGet`, a key that does not exist is represented as
-    # `()` in the returned array instead of causing the call to fail.
+    # `()` in the returned array.
     #
     # + keys - Keys of which values need to be retrieved
     # + return - Array of values at specified keys, with `()` for a missing key
