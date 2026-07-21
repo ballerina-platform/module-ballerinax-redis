@@ -7,12 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - [Added `flushDb` and `flushAll` remote functions to the `redis:Client` to remove all the keys from the currently selected database or from all the databases respectively](https://github.com/ballerina-platform/ballerina-library/issues/8880)
+- [Added `mGetNilable`, a nil-safe variant of `mGet` that represents a missing key as `()` instead of failing](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ### Changed
 
 ### Fixed
 - [Fixed client initialization for empty connection configs](https://github.com/ballerina-platform/ballerina-library/issues/6157)
 - [Fixed `mGet` returning fewer results than requested when the key list contained duplicates](https://github.com/ballerina-platform/ballerina-library/issues/8908)
+- [Fixed `mGet` failing with a raw `InherentTypeViolation` error when a key does not exist; it now fails with a clear message pointing to `mGetNilable`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ## [3.0.0] - 2024-03-08
 

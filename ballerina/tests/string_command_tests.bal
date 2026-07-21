@@ -186,6 +186,49 @@ function testMGetWithDuplicateKeys() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+function testMGetWithMissingKeyError() returns error? {
+    string[]|Error result = redis->mGet(["testMGetKey1", "testMGetKey3"]);
+    test:assertTrue(result is Error);
+    if result is Error {
+        test:assertEquals(result.message(), "One or more keys returned nil, which cannot be represented in mGet. Use mGetNilable instead.");
+    }
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetNilable() returns error? {
+    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetNilableWithMissingKey() returns error? {
+    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey3", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", (), "testMGetValue2"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetNilableWithAllMissingKeys() returns error? {
+    string?[] result = check redis->mGetNilable(["nonExistentMGetKey1", "nonExistentMGetKey2"]);
+    test:assertEquals(result, [(), ()]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetNilableWithDuplicateKeys() returns error? {
+    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2", "testMGetValue1"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMSet() returns error? {
     map<any> keyValueMap = {
         testMSetKey1: "testMSetValue1",
