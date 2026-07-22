@@ -190,39 +190,39 @@ function testMGetWithMissingKeyError() returns error? {
     string[]|Error result = redis->mGet(["testMGetKey1", "testMGetKey3"]);
     test:assertTrue(result is Error);
     if result is Error {
-        test:assertEquals(result.message(), "One or more keys returned nil, which cannot be represented in mGet. Use mGetNilable instead.");
+        test:assertEquals(result.message(), "One or more keys returned nil, which cannot be represented in mGet. Use mGetOptional instead.");
     }
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testMGetNilable() returns error? {
-    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey2"]);
+function testMGetOptional() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey2"]);
     test:assertEquals(result, ["testMGetValue1", "testMGetValue2"]);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testMGetNilableWithMissingKey() returns error? {
-    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey3", "testMGetKey2"]);
+function testMGetOptionalWithMissingKey() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey3", "testMGetKey2"]);
     test:assertEquals(result, ["testMGetValue1", (), "testMGetValue2"]);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testMGetNilableWithAllMissingKeys() returns error? {
-    string?[] result = check redis->mGetNilable(["nonExistentMGetKey1", "nonExistentMGetKey2"]);
+function testMGetOptionalWithAllMissingKeys() returns error? {
+    string?[] result = check redis->mGetOptional(["nonExistentMGetKey1", "nonExistentMGetKey2"]);
     test:assertEquals(result, [(), ()]);
 }
 
 @test:Config {
     groups: ["standalone", "cluster"]
 }
-function testMGetNilableWithDuplicateKeys() returns error? {
-    string?[] result = check redis->mGetNilable(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
+function testMGetOptionalWithDuplicateKeys() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
     test:assertEquals(result, ["testMGetValue1", "testMGetValue2", "testMGetValue1"]);
 }
 

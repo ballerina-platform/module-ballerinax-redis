@@ -6,13 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-- [Added `mGetNilable`, a nil-safe variant of `mGet` that represents a missing key as `()`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
+- [Added `mGetOptional`, a nil-safe variant of `mGet` that represents a missing key as `()`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ### Changed
 
 ### Fixed
 - [Fixed `mGet` returning fewer results than requested when the key list contained duplicates](https://github.com/ballerina-platform/ballerina-library/issues/8908)
-- [Fixed `mGet` failing with a raw `InherentTypeViolation` error when a key does not exist; it now fails with a clear message pointing to `mGetNilable`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
+- [Fixed `mGet` failing with a raw `InherentTypeViolation` error when a key does not exist; it now fails with a clear message pointing to `mGetOptional`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
 
 ## [3.3.0] - 2026-07-06
 

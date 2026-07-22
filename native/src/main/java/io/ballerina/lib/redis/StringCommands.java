@@ -297,7 +297,7 @@ public class StringCommands {
 
     /**
      * Get the values of all the given keys. Fails if any key has no value; use
-     * {@link #mGetNilable(BObject, BArray)} if a key might not exist.
+     * {@link #mGetOptional(BObject, BArray)} if a key might not exist.
      *
      * @param redisClient Client from the Ballerina redis client
      * @param keys        The keys of which the values need to be retrieved
@@ -320,7 +320,7 @@ public class StringCommands {
      * @param keys        The keys of which the values need to be retrieved
      * @return Array of values at the specified keys, with {@code ()} for a missing key
      */
-    public static Object mGetNilable(BObject redisClient, BArray keys) {
+    public static Object mGetOptional(BObject redisClient, BArray keys) {
         try {
             RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
             return createBNilableStringArrayFromKeyValueList(executor.mGet(createStringArrayFromBArray(keys)));

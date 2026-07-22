@@ -38,7 +38,7 @@ public class Constants {
     public static final String ARGUMENTS_MUST_NOT_BE_NULL = "Arguments " + MUST_NOT_BE_NULL;
     public static final String REDIS_SERVER_ERROR = "Redis server error: ";
     public static final String MGET_NIL_VALUE_ERROR =
-            "One or more keys returned nil, which cannot be represented in mGet. Use mGetNilable instead.";
+            "One or more keys returned nil, which cannot be represented in mGet. Use mGetOptional instead.";
 
     // Other constants
     public static final String EMPTY_STRING = "";
