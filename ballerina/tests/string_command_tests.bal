@@ -319,6 +319,36 @@ public function testSetNx() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+public function testSetNxEx() returns error? {
+    boolean result = check redis->setNxEx("testSetNxExKey", "testSetNxExValue", 1);
+    test:assertEquals(result, true);
+
+    string? getResult = check redis->get("testSetNxExKey");
+    test:assertEquals(getResult, "testSetNxExValue");
+
+    boolean result2 = check redis->setNxEx("testSetNxExKey", "anotherValue", 1);
+    test:assertEquals(result2, false);
+
+    string? getResult2 = check redis->get("testSetNxExKey");
+    test:assertEquals(getResult2, "testSetNxExValue");
+
+    // NX must refuse based on key existence alone, regardless of the existing value's type -
+    // it should not error or overwrite even when the key holds a non-string value.
+    int pushResult = check redis->lPush("testSetNxExListKey", ["listValue"]);
+    test:assertEquals(pushResult, 1);
+    boolean result4 = check redis->setNxEx("testSetNxExListKey", "shouldNotBeSet", 1);
+    test:assertEquals(result4, false);
+    string[] listResult = check redis->lRange("testSetNxExListKey", 0, -1);
+    test:assertEquals(listResult, ["listValue"]);
+
+    runtime:sleep(2);
+    string? getResult3 = check redis->get("testSetNxExKey");
+    test:assertEquals(getResult3, ());
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 public function testSetRange() returns error? {
     int result = check redis->setRange("testSetRangeKey", 2, "!!!");
     test:assertEquals(result, 17);

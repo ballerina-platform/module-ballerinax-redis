@@ -21,6 +21,7 @@ package io.ballerina.lib.redis.connection;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisException;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.sync.RedisStringCommands;
 
 import java.util.List;
@@ -356,6 +357,21 @@ public class RedisStringCommandExecutor {
         try {
             stringCommands = (RedisStringCommands<K, String>) connManager.getStringCommandConnection();
             return stringCommands.setnx(key, value);
+        } catch (IllegalArgumentException e) {
+            throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
+        } catch (RedisException e) {
+            throw new RedisConnectorException(REDIS_SERVER_ERROR + e.getMessage(), e);
+        } finally {
+            connManager.releaseResources(stringCommands);
+        }
+    }
+
+    public <K> boolean setNxEx(K key, String value, long expirationPeriodSeconds) throws RedisConnectorException {
+        RedisStringCommands<K, String> stringCommands = null;
+        try {
+            stringCommands = (RedisStringCommands<K, String>) connManager.getStringCommandConnection();
+            String result = stringCommands.set(key, value, SetArgs.Builder.ex(expirationPeriodSeconds).nx());
+            return result != null;
         } catch (IllegalArgumentException e) {
             throw new RedisConnectorException(KEY_MUST_NOT_BE_NULL, e);
         } catch (RedisException e) {
