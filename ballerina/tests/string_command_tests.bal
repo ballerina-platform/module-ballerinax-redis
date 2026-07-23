@@ -177,6 +177,58 @@ function testMGet() returns error? {
 @test:Config {
     groups: ["standalone", "cluster"]
 }
+function testMGetWithDuplicateKeys() returns error? {
+    // A repeated key must produce a repeated result at its position, not collapse into one.
+    string[] result = check redis->mGet(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2", "testMGetValue1"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetWithMissingKeyError() returns error? {
+    string[]|Error result = redis->mGet(["testMGetKey1", "testMGetKey3"]);
+    test:assertTrue(result is Error);
+    if result is Error {
+        test:assertEquals(result.message(), "One or more keys returned nil, which cannot be represented in mGet. Use mGetOptional instead.");
+    }
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetOptional() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetOptionalWithMissingKey() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey3", "testMGetKey2"]);
+    test:assertEquals(result, ["testMGetValue1", (), "testMGetValue2"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetOptionalWithAllMissingKeys() returns error? {
+    string?[] result = check redis->mGetOptional(["nonExistentMGetKey1", "nonExistentMGetKey2"]);
+    test:assertEquals(result, [(), ()]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testMGetOptionalWithDuplicateKeys() returns error? {
+    string?[] result = check redis->mGetOptional(["testMGetKey1", "testMGetKey2", "testMGetKey1"]);
+    test:assertEquals(result, ["testMGetValue1", "testMGetValue2", "testMGetValue1"]);
+}
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
 function testMSet() returns error? {
     map<any> keyValueMap = {
         testMSetKey1: "testMSetValue1",

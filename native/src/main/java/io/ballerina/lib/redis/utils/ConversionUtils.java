@@ -18,10 +18,12 @@
 
 package io.ballerina.lib.redis.utils;
 
+import io.ballerina.lib.redis.exceptions.RedisConnectorException;
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.PredefinedTypes;
+import io.ballerina.runtime.api.types.UnionType;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
@@ -134,6 +136,41 @@ public class ConversionUtils {
     }
 
     /**
+     * Create a Ballerina array value from a key value list.
+     *
+     * @param list the key value list
+     * @return the Ballerina array
+     * @throws RedisConnectorException if any key in the list has no value
+     */
+    public static <K> BArray createBStringArrayFromKeyValueList(List<KeyValue<K, String>> list)
+            throws RedisConnectorException {
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
+        for (KeyValue<K, String> item : list) {
+            if (!item.hasValue()) {
+                throw new RedisConnectorException(Constants.MGET_NIL_VALUE_ERROR);
+            }
+            bStringArray.append(StringUtils.fromString(item.getValue()));
+        }
+        return bStringArray;
+    }
+
+    /**
+     * Create a nilable Ballerina array value from a key value list.
+     *
+     * @param list the key value list
+     * @return the Ballerina array
+     */
+    public static <K> BArray createBNilableStringArrayFromKeyValueList(List<KeyValue<K, String>> list) {
+        UnionType nilableStringType = TypeCreator.createUnionType(PredefinedTypes.TYPE_STRING,
+                PredefinedTypes.TYPE_NULL);
+        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(nilableStringType));
+        for (KeyValue<K, String> item : list) {
+            bStringArray.append(StringUtils.fromString(item.getValueOrElse(null)));
+        }
+        return bStringArray;
+    }
+
+    /**
      * Create a Java array from a Ballerina array value.
      *
      * @param bStringArray the Ballerina array value
@@ -155,20 +192,6 @@ public class ConversionUtils {
             map.put(entry.getKey().getValue(), entry.getValue().toString());
         }
         return map;
-    }
-
-    /**
-     * Create a Ballerina array value from a Ballerina map value.
-     *
-     * @param bMap the Ballerina map value
-     * @return the Ballerina array
-     */
-    public static BArray createBStringArrayFromBMap(BMap<BString, Object> bMap) {
-        BArray bStringArray = ValueCreator.createArrayValue(TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING));
-        for (Map.Entry<BString, Object> entry : bMap.entrySet()) {
-            bStringArray.append(entry.getValue());
-        }
-        return bStringArray;
     }
 
     /**

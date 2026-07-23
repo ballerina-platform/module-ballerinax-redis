@@ -218,13 +218,26 @@ public isolated client class Client {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 
-    # Get values of all given keys.
+    # Get values of all given keys. Fails with an `Error` if any of the given keys does not
+    # exist, since the returned type cannot represent a missing value. Use `mGetOptional` instead
+    # if any of the given keys might not exist.
     #
     # + keys - Keys of which values need to be retrieved
     # + return - Array of values at specified keys
     @display {label: "Get Values"}
     isolated remote function mGet(@display {label: "Keys"} string[] keys)
                           returns @display {label: "Values"} string[]|Error = @java:Method {
+        'class: "io.ballerina.lib.redis.StringCommands"
+    } external;
+
+    # Get values of all given keys. Unlike `mGet`, a key that does not exist is represented as
+    # `()` in the returned array.
+    #
+    # + keys - Keys of which values need to be retrieved
+    # + return - Array of values at specified keys, with `()` for a missing key
+    @display {label: "Get Values (Optional)"}
+    isolated remote function mGetOptional(@display {label: "Keys"} string[] keys)
+                          returns @display {label: "Values"} string?[]|Error = @java:Method {
         'class: "io.ballerina.lib.redis.StringCommands"
     } external;
 

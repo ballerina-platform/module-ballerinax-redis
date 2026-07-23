@@ -26,7 +26,8 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 
 import static io.ballerina.lib.redis.utils.ConversionUtils.createBError;
-import static io.ballerina.lib.redis.utils.ConversionUtils.createBStringArrayFromBMap;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBNilableStringArrayFromKeyValueList;
+import static io.ballerina.lib.redis.utils.ConversionUtils.createBStringArrayFromKeyValueList;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createMapFromBMap;
 import static io.ballerina.lib.redis.utils.ConversionUtils.createStringArrayFromBArray;
 import static io.ballerina.lib.redis.utils.RedisUtils.getConnection;
@@ -295,7 +296,8 @@ public class StringCommands {
     }
 
     /**
-     * Get the values of all the given keys.
+     * Get the values of all the given keys. Fails if any key has no value; use
+     * {@link #mGetOptional(BObject, BArray)} if a key might not exist.
      *
      * @param redisClient Client from the Ballerina redis client
      * @param keys        The keys of which the values need to be retrieved
@@ -304,7 +306,24 @@ public class StringCommands {
     public static Object mGet(BObject redisClient, BArray keys) {
         try {
             RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
-            return createBStringArrayFromBMap(executor.mGet(createStringArrayFromBArray(keys)));
+            return createBStringArrayFromKeyValueList(executor.mGet(createStringArrayFromBArray(keys)));
+        } catch (Throwable e) {
+            return createBError(e);
+        }
+    }
+
+    /**
+     * Get the values of all the given keys. Unlike {@link #mGet(BObject, BArray)}, a key that has
+     * no value is represented as {@code ()} in the returned array.
+     *
+     * @param redisClient Client from the Ballerina redis client
+     * @param keys        The keys of which the values need to be retrieved
+     * @return Array of values at the specified keys, with {@code ()} for a missing key
+     */
+    public static Object mGetOptional(BObject redisClient, BArray keys) {
+        try {
+            RedisStringCommandExecutor executor = getConnection(redisClient).getStringCommandExecutor();
+            return createBNilableStringArrayFromKeyValueList(executor.mGet(createStringArrayFromBArray(keys)));
         } catch (Throwable e) {
             return createBError(e);
         }
