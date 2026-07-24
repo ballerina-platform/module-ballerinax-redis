@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 - [Fixed `mGet` returning fewer results than requested when the key list contained duplicates](https://github.com/ballerina-platform/ballerina-library/issues/8908)
 - [Fixed `mGet` failing with a raw `InherentTypeViolation` error when a key does not exist; it now fails with a clear message pointing to `mGetOptional`](https://github.com/ballerina-platform/ballerina-library/issues/8889)
+- [Update Netty version to 4.1.136.Final to fix security vulnerabilities](https://github.com/ballerina-platform/ballerina-library/issues/8924)
 
 ## [3.3.0] - 2026-07-06
 
