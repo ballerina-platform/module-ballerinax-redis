@@ -65,7 +65,9 @@ dependencies {
     externalJars(group: 'io.netty', name: 'netty-handler', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-kqueue', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-epoll', version: "${nettyVersion}") {transitive = false}
-    externalJars(group: 'io.netty', name: 'netty-codec', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-codec-base', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-resolver-dns', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-codec-dns', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-unix-common', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.projectreactor', name: 'reactor-core', version: "${reactorCoreVersion}") {transitive = false}
     externalJars(group: 'org.reactivestreams', name: 'reactive-streams', version: "${reactiveStreamsVersion}") {transitive = false}
