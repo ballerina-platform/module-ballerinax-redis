@@ -17,6 +17,13 @@
  */
 
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
+
+abstract class BallerinaExecHelper {
+    @Inject abstract ExecOperations getExecOperations()
+}
 
 plugins {
     id 'io.ballerina.plugin'
@@ -48,7 +55,7 @@ ballerina {
     packageOrganization = packageOrg
     module = packageName
     testCoverageParam = "--code-coverage --coverage-format=xml"
-    isConnector = true
+    connector = true
 }
 
 configurations {
@@ -65,7 +72,9 @@ dependencies {
     externalJars(group: 'io.netty', name: 'netty-handler', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-kqueue', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-epoll', version: "${nettyVersion}") {transitive = false}
-    externalJars(group: 'io.netty', name: 'netty-codec', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-codec-base', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-resolver-dns', version: "${nettyVersion}") {transitive = false}
+    externalJars(group: 'io.netty', name: 'netty-codec-dns', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-transport-native-unix-common', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.projectreactor', name: 'reactor-core', version: "${reactorCoreVersion}") {transitive = false}
     externalJars(group: 'org.reactivestreams', name: 'reactive-streams', version: "${reactiveStreamsVersion}") {transitive = false}
@@ -87,8 +96,9 @@ task updateTomlFiles {
 }
 
 task commitTomlFiles {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
-        project.exec {
+        execHelper.execOperations.exec {
             ignoreExitValue true
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                 commandLine 'cmd', '/c', "git commit -m \"[Automated] Update the toml files\" Ballerina.toml Dependencies.toml"
@@ -100,6 +110,7 @@ task commitTomlFiles {
 }
 
 task startRedisServer() {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     gradle.taskGraph.whenReady { graph ->
         if (graph.hasTask(":${packageName}-ballerina:test")) {
             println("Starting redis server...")
@@ -108,7 +119,7 @@ task startRedisServer() {
                 dockerComposeFile = "compose-cluster.yml"
             }
 
-            exec {
+            execHelper.execOperations.exec {
                 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                     commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} up && exit %%ERRORLEVEL%%"
                 } else {
@@ -120,6 +131,7 @@ task startRedisServer() {
 }
 
 task stopRedisServer() {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
         gradle.taskGraph.whenReady { graph ->
             if (graph.hasTask(":${packageName}-ballerina:test")) {
@@ -129,7 +141,7 @@ task stopRedisServer() {
                     dockerComposeFile = "compose-cluster.yml"
                 }
 
-                exec {
+                execHelper.execOperations.exec {
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                         commandLine 'cmd', '/c', "docker compose -f tests/resources/docker/${dockerComposeFile} down && exit %%ERRORLEVEL%%"
                     } else {

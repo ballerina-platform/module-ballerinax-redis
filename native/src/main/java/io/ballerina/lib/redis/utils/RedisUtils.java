@@ -27,7 +27,6 @@ import io.ballerina.runtime.api.values.BString;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.codec.RedisCodec;
 import io.lettuce.core.codec.StringCodec;
-import io.lettuce.core.codec.Utf8StringCodec;
 
 import static io.ballerina.lib.redis.utils.Codec.STRING_CODEC;
 import static io.ballerina.lib.redis.utils.Constants.CONN_OBJ;
@@ -69,7 +68,7 @@ public class RedisUtils {
         return switch (codec) {
             case BYTE_ARRAY_CODEC -> new ByteArrayCodec();
             case STRING_CODEC -> new StringCodec();
-            case UTF8_STRING_CODEC -> new Utf8StringCodec();
+            case UTF8_STRING_CODEC -> StringCodec.UTF8;
         };
     }
 
