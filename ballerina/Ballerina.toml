@@ -73,18 +73,6 @@ path = "./lib/netty-handler-4.2.18.Final.jar"
 
 [[platform.java25.dependency]]
 groupId = "io.netty"
-artifactId = "netty-transport-native-kqueue"
-version = "4.2.18.Final"
-path = "./lib/netty-transport-native-kqueue-4.2.18.Final.jar"
-
-[[platform.java25.dependency]]
-groupId = "io.netty"
-artifactId = "netty-transport-native-epoll"
-version = "4.2.18.Final"
-path = "./lib/netty-transport-native-epoll-4.2.18.Final.jar"
-
-[[platform.java25.dependency]]
-groupId = "io.netty"
 artifactId = "netty-codec-base"
 version = "4.2.18.Final"
 path = "./lib/netty-codec-base-4.2.18.Final.jar"

@@ -70,8 +70,6 @@ dependencies {
     externalJars(group: 'io.netty', name: 'netty-transport', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-resolver', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-handler', version: "${nettyVersion}") {transitive = false}
-    externalJars(group: 'io.netty', name: 'netty-transport-native-kqueue', version: "${nettyVersion}") {transitive = false}
-    externalJars(group: 'io.netty', name: 'netty-transport-native-epoll', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-codec-base', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-resolver-dns', version: "${nettyVersion}") {transitive = false}
     externalJars(group: 'io.netty', name: 'netty-codec-dns', version: "${nettyVersion}") {transitive = false}
