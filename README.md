@@ -1,7 +1,7 @@
 # Ballerina Redis Connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/ci.yml)
-[![Trivy](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/trivy-scan.yml)
+[![Security Scan](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/security-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/security-scan.yml)
 [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-redis/branch/master/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-redis)
 [![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/build-with-bal-test-graalvm.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/actions/workflows/build-with-bal-test-graalvm.yml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-redis.svg)](https://github.com/ballerina-platform/module-ballerinax-redis/commits/master)
