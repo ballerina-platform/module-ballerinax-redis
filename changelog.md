@@ -6,11 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Changed
-- Bumped the minimum supported Ballerina distribution to Swan Lake Update 12 (`2201.12.0`) and updated the locked dependency versions accordingly, so that no dependency is resolved from a distribution older than Update 12
 
-### Fixed
-- [Update Netty version to 4.1.137.Final](https://github.com/ballerina-platform/ballerina-library/issues/9093)
 - [Migrate to Netty 4.2.18.Final and upgrade Lettuce to 7.7.0.RELEASE ahead of the Netty 4.1 end-of-life](https://github.com/ballerina-platform/ballerina-library/issues/9152)
+- Migrate to Ballerina SwanLake Update 14 with Java 25 support
 
 ## [3.4.0] - 2026-07-24
 

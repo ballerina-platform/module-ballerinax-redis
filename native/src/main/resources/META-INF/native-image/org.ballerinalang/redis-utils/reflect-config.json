@@ -2794,40 +2794,6 @@
     ]
   },
   {
-    "name": "io.lettuce.core.PlainChannelInitializer"
-  },
-  {
-    "name": "io.lettuce.core.PlainChannelInitializer$1",
-    "methods": [
-      {
-        "name": "channelActive",
-        "parameterTypes": [
-          "io.netty.channel.ChannelHandlerContext"
-        ]
-      },
-      {
-        "name": "channelInactive",
-        "parameterTypes": [
-          "io.netty.channel.ChannelHandlerContext"
-        ]
-      },
-      {
-        "name": "exceptionCaught",
-        "parameterTypes": [
-          "io.netty.channel.ChannelHandlerContext",
-          "java.lang.Throwable"
-        ]
-      },
-      {
-        "name": "userEventTriggered",
-        "parameterTypes": [
-          "io.netty.channel.ChannelHandlerContext",
-          "java.lang.Object"
-        ]
-      }
-    ]
-  },
-  {
     "name": "io.lettuce.core.RedisAsyncCommandsImpl",
     "methods": [
       {
@@ -4155,9 +4121,6 @@
         "name": "producerLimit"
       }
     ]
-  },
-  {
-    "name": "org.HdrHistogram.Histogram"
   },
   {
     "name": "org.apache.commons.pool2.impl.DefaultEvictionPolicy",
