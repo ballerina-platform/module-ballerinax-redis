@@ -1,0 +1,4 @@
+# ballerina:14 is a false positive: `password` is read from the login form parameters at runtime; the
+# `auth` service config uses `fileUserStoreConfig` (users come from Config.toml). The rule matches identifier names.
+[rule]
+exclude = ["ballerina:14"]

@@ -23,6 +23,10 @@ import ballerinax/redis;
 configurable string host = ?;
 configurable int port = ?;
 
+// Credentials accepted by the `login` resource (a dummy implementation for this example).
+configurable string demoUsername = ?;
+configurable string demoPassword = ?;
+
 redis:ConnectionConfig redisConfig = {
     connection: {
         host,
@@ -55,7 +59,7 @@ service / on new http:Listener(9090) {
         string password = (check req.getFormParams()).get("password");
 
         // Validate username and password (dummy implementation)
-        if username == "user" && password == "pass" {
+        if username == demoUsername && password == demoPassword {
             // Generate a unique session ID
             string sessionId = uuid:createType1AsString();
 

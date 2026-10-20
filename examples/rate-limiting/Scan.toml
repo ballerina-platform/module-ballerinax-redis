@@ -1,0 +1,4 @@
+# ballerina:14 is a false positive: `apiKey` is read from the incoming `X-API-Key` request header at runtime,
+# it is not a fixed value. The rule matches the identifier name.
+[rule]
+exclude = ["ballerina:14"]

@@ -18,6 +18,10 @@ Update Redis client related configurations in `Config.toml` in the example direc
 host = "<host>"
 port = "<port>"
 
+# credentials accepted by the login resource
+demoUsername = "<username>"
+demoPassword = "<password>"
+
 # user-store based basic-auth configurations
 [[ballerina.auth.users]]
 username="alice"
