@@ -141,6 +141,58 @@ function createToxiProxy(string proxyName, string listenAddr, string upstream)
     return toxiproxyClient;
 }
 
+// With `poolMaxWait` set (1 second in tests/Config.toml), a pooled client fails an operation once every connection in
+// the pool stays busy for longer than that, instead of waiting until one is returned.
+@test:Config {
+    groups: ["standalone"]
+}
+function testPoolMaxWaitWhenAllPooledConnectionsAreBusy() returns error? {
+    string proxyName = "redis-proxy-pool-max-wait";
+    http:Client toxiproxyClient = check createToxiProxy(proxyName, "0.0.0.0:6381", "redis-standalone:6379");
+    Client redisClient = check new (connection = {host: "localhost", port: 6381}, connectionPooling = true);
+
+    do {
+        // Each operation now takes ~3 seconds, so 8 concurrent operations keep all the pooled connections busy
+        check addLatencyToxic(toxiproxyClient, proxyName, "latency", 3000);
+        future<string?|Error>[] busyOperations = [];
+        foreach int i in 0 ..< 8 {
+            future<string?|Error> busyOperation = start redisClient->get("pool_max_wait_key");
+            busyOperations.push(busyOperation);
+        }
+        runtime:sleep(0.5);
+
+        string?|Error result = redisClient->get("pool_max_wait_key");
+        test:assertTrue(result is Error, "Expected the operation to fail after poolMaxWait");
+        if result is Error {
+            test:assertTrue(result.message().includes("borrowing connection from the pool"), result.message());
+        }
+        foreach future<string?|Error> busyOperation in busyOperations {
+            _ = check wait busyOperation;
+        }
+    } on fail error e {
+        Error? closeErr = redisClient.close();
+        cleanupToxiProxy(toxiproxyClient, proxyName);
+        return e;
+    }
+    Error? closeErr = redisClient.close();
+    cleanupToxiProxy(toxiproxyClient, proxyName);
+}
+
+// Helper to add a "latency" toxic that delays the data sent back from Redis.
+function addLatencyToxic(http:Client toxiproxyClient, string proxyName, string toxicName, int latency) returns error? {
+    json toxicPayload = {
+        "name": toxicName,
+        "type": "latency",
+        "attributes": {
+            "latency": latency
+        }
+    };
+    http:Response res = check toxiproxyClient->post(string `/proxies/${proxyName}/toxics`, toxicPayload);
+    if res.statusCode != 200 {
+        return error(string `Failed to add toxic '${toxicName}': ${res.statusCode}`);
+    }
+}
+
 // Helper to add a "timeout" toxic that blackholes all traffic (simulates silent connection drop).
 function addBlackholdToxic(http:Client toxiproxyClient, string proxyName, string toxicName) returns error? {
     json toxicPayload = {

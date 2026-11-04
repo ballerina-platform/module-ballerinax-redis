@@ -218,6 +218,16 @@ The `ConnectionConfig` has a `connectionPooling` field that can be set to `true`
 Currently, the connection pooling has limited configuration options, and the default pool size and other configurations
 of the underlying connection pool are used by the client.
 
+The `poolMaxWait` configurable sets the maximum time in seconds that a pooled client waits for a connection when all
+the connections in the pool are in use. Once it elapses, the operation fails with a `redis:Error`. Zero or a negative
+value, which is the default, waits until a connection is available. It applies to all the pooled clients in the
+program and is set in the `Config.toml` file.
+
+```toml
+[ballerinax.redis]
+poolMaxWait = 30
+```
+
 ## 2.6. Closing the connection
 
 The `close()` operation shuts down the Redis client and closes the associated connection pool.
