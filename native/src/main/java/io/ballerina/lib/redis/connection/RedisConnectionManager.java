@@ -54,6 +54,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -67,8 +68,8 @@ import java.util.function.Supplier;
  */
 public class RedisConnectionManager<K, V> {
 
-    // Effectively unbounded, but positive: commons-pool2 2.12+ busy-spins in create() with a negative max wait
-    private static final Duration POOL_MAX_WAIT = Duration.ofDays(365L * 100);
+    // Effectively unbounded, but positive: commons-pool2 2.12+ busy-spins in create() with a non-positive max wait
+    private static final Duration UNBOUNDED_POOL_MAX_WAIT = Duration.ofDays(365L * 100);
 
     // Lettuce connection objects
     private RedisCommands<K, V> redisCommands;
@@ -77,6 +78,7 @@ public class RedisConnectionManager<K, V> {
     private final RedisCodec<K, V> codec;
     private boolean isClusterConnection;
     private boolean poolingEnabled;
+    private Duration poolMaxWait = UNBOUNDED_POOL_MAX_WAIT;
 
     // Command executors
     private RedisConnectionCommandExecutor connectionCommandExecutor;
@@ -95,8 +97,10 @@ public class RedisConnectionManager<K, V> {
      * Initializes a Redis client with the provided options.
      *
      * @param connectionConfig Redis connection configurations
+     * @param poolMaxWait      maximum time to wait for a pooled connection
      */
-    public void init(ConnectionConfig connectionConfig) throws RedisConnectorException {
+    public void init(ConnectionConfig connectionConfig, Duration poolMaxWait) throws RedisConnectorException {
+        this.poolMaxWait = poolMaxWait;
         this.isClusterConnection = connectionConfig.isClusterConnection();
         this.poolingEnabled = connectionConfig.poolingEnabled();
         if (isClusterConnection) {
@@ -274,9 +278,23 @@ public class RedisConnectionManager<K, V> {
         }
     }
 
-    private static <T> GenericObjectPoolConfig<T> createPoolConfig() {
+    /**
+     * Converts the configured pool max wait to a duration. Zero or a negative value waits until a connection is
+     * available.
+     *
+     * @param seconds maximum time in seconds to wait for a pooled connection
+     * @return the max wait to set on the pool
+     */
+    public static Duration toPoolMaxWait(BigDecimal seconds) {
+        if (seconds.signum() <= 0 || seconds.compareTo(BigDecimal.valueOf(UNBOUNDED_POOL_MAX_WAIT.toSeconds())) >= 0) {
+            return UNBOUNDED_POOL_MAX_WAIT;
+        }
+        return Duration.ofNanos(Math.max(1, seconds.movePointRight(9).longValue()));
+    }
+
+    private <T> GenericObjectPoolConfig<T> createPoolConfig() {
         GenericObjectPoolConfig<T> poolConfig = new GenericObjectPoolConfig<>();
-        poolConfig.setMaxWait(POOL_MAX_WAIT);
+        poolConfig.setMaxWait(poolMaxWait);
         return poolConfig;
     }
 

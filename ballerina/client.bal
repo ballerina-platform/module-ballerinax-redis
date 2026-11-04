@@ -16,6 +16,10 @@
 
 import ballerina/jballerina.java;
 
+# Maximum time in seconds that a pooled client waits for a connection when all the connections in the pool are in
+# use, after which the operation fails. Zero or a negative value waits until a connection is available.
+configurable decimal poolMaxWait = -1;
+
 # Ballerina Redis connector provides the capability to access Redis cache.
 # This connector lets you to perform operations to access and manipulate key-value data stored in a Redis database. 
 # 
@@ -27,15 +31,17 @@ public isolated client class Client {
     # + config - configuration for the connector
     # + return - `redis:Error` in case of failures or `nil` if successful. 
     public isolated function init(*ConnectionConfig config) returns Error? {
-        check self.initClient(self, config);
+        check self.initClient(self, config, poolMaxWait);
     }
 
     # Initialize redis client.
     #
     # + redisClient - client
     # + clientEndpointConfig - Client end point configuration
+    # + poolMaxWait - Maximum time in seconds to wait for a pooled connection
     # + return - `redis:Error` if error occurs
-    isolated function initClient(Client redisClient, ConnectionConfig clientEndpointConfig) returns Error? = @java:Method {
+    isolated function initClient(Client redisClient, ConnectionConfig clientEndpointConfig, decimal poolMaxWait)
+            returns Error? = @java:Method {
         'class: "io.ballerina.lib.redis.utils.RedisUtils"
     } external;
 
