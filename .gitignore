@@ -46,7 +46,6 @@ core
 
 # Ballerina configuartion files
 **/Config.toml
-!ballerina/tests/Config.toml
 
 # Ballerina dependencies toml files in the examples
 examples/**/Dependencies.toml

@@ -1,2 +1,0 @@
-[ballerinax.redis]
-poolMaxWait = 1
