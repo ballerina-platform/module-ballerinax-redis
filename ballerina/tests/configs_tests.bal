@@ -73,12 +73,17 @@ function testConcurrentOperationsBeyondPoolSize() returns error? {
         future<string|error> result = start setAndGet(pooledClient, key, i.toString());
         results.push(result);
     }
-    foreach int i in 0 ..< results.length() {
-        string value = check wait results[i];
-        test:assertEquals(value, i.toString());
+    (string|error)[] values = [];
+    foreach future<string|error> result in results {
+        string|error value = wait result;
+        values.push(value);
     }
-    _ = check pooledClient->del(keys);
+    int|Error deleted = pooledClient->del(keys);
     check pooledClient.close();
+    _ = check deleted;
+    foreach int i in 0 ..< values.length() {
+        test:assertEquals(check values[i], i.toString());
+    }
 }
 
 isolated function setAndGet(Client redisClient, string key, string value) returns string|error {

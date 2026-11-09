@@ -21,7 +21,6 @@ import io.ballerina.lib.redis.config.ConfigMapper;
 import io.ballerina.lib.redis.config.ConnectionConfig;
 import io.ballerina.lib.redis.connection.RedisConnectionManager;
 import io.ballerina.lib.redis.exceptions.RedisConnectorException;
-import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
@@ -43,17 +42,15 @@ public class RedisUtils {
     /**
      * Initialize the redis client.
      *
-     * @param config      redis client configuration as a map
-     * @param poolMaxWait maximum time in seconds to wait for a pooled connection
+     * @param config redis client configuration as a map
      */
     @SuppressWarnings("unused")
-    public static Object initClient(BObject client, BMap<BString, Object> config, BDecimal poolMaxWait) {
+    public static Object initClient(BObject client, BMap<BString, Object> config) {
         try {
             ConnectionConfig connectionConfig = ConfigMapper.from(config);
             RedisCodec<?, ?> codec = retrieveRedisCodec(STRING_CODEC);
             RedisConnectionManager<?, ?> connectionManager = new RedisConnectionManager<>(codec);
-            connectionManager.init(connectionConfig,
-                    RedisConnectionManager.toPoolMaxWait(poolMaxWait.decimalValue()));
+            connectionManager.init(connectionConfig);
             client.addNativeData(CONN_OBJ, connectionManager);
             return null;
         } catch (Throwable e) {

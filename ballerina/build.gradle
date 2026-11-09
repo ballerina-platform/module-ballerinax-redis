@@ -60,7 +60,13 @@ ballerina {
 }
 
 configurations {
-    externalJars
+    externalJars {
+        // Needed to pick the JRE variant of dependencies that publish Gradle module metadata (e.g. Guava 33+)
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment, TargetJvmEnvironment.STANDARD_JVM))
+        }
+    }
 }
 
 dependencies {
