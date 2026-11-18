@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Update Netty to 4.1.137.Final to address CVE-2026-75595 and CVE-2026-75596.
 - Upgrade Guava to 33.8.0-jre to address CVE-2026-102554
 - Bumped the minimum supported Ballerina distribution to Swan Lake Update 12 (`2201.12.0`) and updated the locked dependency versions accordingly, so that no dependency is resolved from a distribution older than Update 12
 
