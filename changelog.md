@@ -6,7 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Changed
+
+- Upgrade Guava to 33.8.0-jre to address CVE-2026-102554
 - Bumped the minimum supported Ballerina distribution to Swan Lake Update 12 (`2201.12.0`) and updated the locked dependency versions accordingly, so that no dependency is resolved from a distribution older than Update 12
+
+### Fixed
+
+- [Fixed pooled clients busy-spinning and freezing the application on concurrent first use when commons-pool2 2.12+ is on the classpath](https://github.com/ballerina-platform/ballerina-library/issues/9498)
 
 ## [3.4.0] - 2026-07-24
 

@@ -67,6 +67,9 @@ import java.util.function.Supplier;
  */
 public class RedisConnectionManager<K, V> {
 
+    // Effectively unbounded, but positive: commons-pool2 2.12+ busy-spins in create() with a negative max wait
+    private static final Duration POOL_MAX_WAIT = Duration.ofDays(365L * 100);
+
     // Lettuce connection objects
     private RedisCommands<K, V> redisCommands;
     private RedisAdvancedClusterCommands<K, V> redisClusterCommands;
@@ -241,7 +244,7 @@ public class RedisConnectionManager<K, V> {
         RedisClient redisClient = initializeClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClient.connect(codec);
-            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, createPoolConfig());
             // this is to foresee any connection issues, when pooling is enabled
             testConnectionPool();
         } else {
@@ -263,12 +266,18 @@ public class RedisConnectionManager<K, V> {
         RedisClusterClient redisClusterClient = initializeClusterClient(connectionConfig, redisURI);
         if (poolingEnabled) {
             Supplier<StatefulConnection<K, V>> supplier = () -> redisClusterClient.connect(codec);
-            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, new GenericObjectPoolConfig<>());
+            objectPool = ConnectionPoolSupport.createGenericObjectPool(supplier, createPoolConfig());
             // this is to foresee any connection issues, when pooling is enabled
             testConnectionPool();
         } else {
             redisClusterCommands = redisClusterClient.connect(codec).sync();
         }
+    }
+
+    private static <T> GenericObjectPoolConfig<T> createPoolConfig() {
+        GenericObjectPoolConfig<T> poolConfig = new GenericObjectPoolConfig<>();
+        poolConfig.setMaxWait(POOL_MAX_WAIT);
+        return poolConfig;
     }
 
     private RedisURI constructRedisUri(ConnectionParams connectionParams) {

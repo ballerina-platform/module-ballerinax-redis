@@ -58,3 +58,36 @@ function testInvalidPortInRedisUriOnClusterMode() {
         test:assertEquals(initResult.message(), "Error while initializing the redis client: Unable to establish a connection to Redis Cluster");
     }
 }
+
+@test:Config {
+    groups: ["standalone", "cluster"]
+}
+function testConcurrentOperationsBeyondPoolSize() returns error? {
+    // More concurrent callers than the default pool size (8), so some must wait for a connection to be returned
+    Client pooledClient = check new (clusterMode ? getClusterConfigs() : getStandaloneConfigs());
+    string[] keys = [];
+    future<string|error>[] results = [];
+    foreach int i in 0 ..< 20 {
+        string key = string `{pool-test}:key-${i}`;
+        keys.push(key);
+        future<string|error> result = start setAndGet(pooledClient, key, i.toString());
+        results.push(result);
+    }
+    (string|error)[] values = [];
+    foreach future<string|error> result in results {
+        string|error value = wait result;
+        values.push(value);
+    }
+    int|Error deleted = pooledClient->del(keys);
+    check pooledClient.close();
+    _ = check deleted;
+    foreach int i in 0 ..< values.length() {
+        test:assertEquals(check values[i], i.toString());
+    }
+}
+
+isolated function setAndGet(Client redisClient, string key, string value) returns string|error {
+    _ = check redisClient->set(key, value);
+    string? stored = check redisClient->get(key);
+    return stored ?: "";
+}
